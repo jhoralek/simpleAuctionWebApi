@@ -31,7 +31,7 @@ namespace SA.EntityFramework.Migrations
 
                     b.Property<int>("CountryId");
 
-                    b.Property<DateTime>("Creted");
+                    b.Property<DateTime?>("Created");
 
                     b.Property<string>("PostCode")
                         .IsRequired()
@@ -59,7 +59,7 @@ namespace SA.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Creted");
+                    b.Property<DateTime?>("Created");
 
                     b.Property<decimal>("Price");
 
@@ -85,7 +85,7 @@ namespace SA.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Creted");
+                    b.Property<DateTime?>("Created");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -120,7 +120,7 @@ namespace SA.EntityFramework.Migrations
                         .HasAnnotation("MySQL:Collation", "utf8_general_ci")
                         .HasAnnotation("MySQL:Charset", "utf8");
 
-                    b.Property<DateTime>("Creted");
+                    b.Property<DateTime?>("Created");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -174,7 +174,7 @@ namespace SA.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Creted");
+                    b.Property<DateTime?>("Created");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -228,7 +228,7 @@ namespace SA.EntityFramework.Migrations
                         .HasAnnotation("MySQL:Collation", "utf8_general_ci")
                         .HasAnnotation("MySQL:Charset", "utf8");
 
-                    b.Property<DateTime>("Creted");
+                    b.Property<DateTime?>("Created");
 
                     b.Property<int>("CustomerId");
 
@@ -363,7 +363,7 @@ namespace SA.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Creted");
+                    b.Property<DateTime?>("Created");
 
                     b.Property<int>("CustomerId");
 

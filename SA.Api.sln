@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SA.Api", "SA.Api\SA.Api.csproj", "{9901DD31-49AB-45CB-B135-48D283DD3B08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SA.Api", "SA.Api\SA.Api.csproj", "{9901DD31-49AB-45CB-B135-48D283DD3B08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SA.Core", "SA.Core\SA.Core.csproj", "{1C08B09A-D4A1-418A-B18E-722AB2A2D6A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SA.Core", "SA.Core\SA.Core.csproj", "{1C08B09A-D4A1-418A-B18E-722AB2A2D6A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SA.EntityFramework", "SA.EntityFramework\SA.EntityFramework.csproj", "{4209B5F3-941C-4BE9-ABD3-9A4EC6B20DBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SA.EntityFramework", "SA.EntityFramework\SA.EntityFramework.csproj", "{4209B5F3-941C-4BE9-ABD3-9A4EC6B20DBB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
