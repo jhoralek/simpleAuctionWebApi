@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SA.EntityFramework.Migrations
 {
-    public partial class db_init : Migration
+    public partial class db_initialization : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,7 +18,7 @@ namespace SA.EntityFramework.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    Creted = table.Column<DateTime>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -35,7 +35,7 @@ namespace SA.EntityFramework.Migrations
                         .Annotation("MySQL:AutoIncrement", true),
                     City = table.Column<string>(nullable: false),
                     CountryId = table.Column<int>(nullable: false),
-                    Creted = table.Column<DateTime>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: true),
                     PostCode = table.Column<string>(nullable: false),
                     Street = table.Column<string>(nullable: false)
                 },
@@ -62,7 +62,7 @@ namespace SA.EntityFramework.Migrations
                     BirthNumber = table.Column<string>(nullable: true),
                     CompanyLegalNumer = table.Column<string>(nullable: true),
                     CompanyNumber = table.Column<string>(nullable: true),
-                    Creted = table.Column<DateTime>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: true),
                     Email = table.Column<string>(nullable: false),
                     FeeExspiration = table.Column<DateTime>(nullable: true),
                     FirstName = table.Column<string>(nullable: false),
@@ -92,7 +92,7 @@ namespace SA.EntityFramework.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    Creted = table.Column<DateTime>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: true),
                     CustomerId = table.Column<int>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     IsAgreeementToTerms = table.Column<bool>(nullable: false),
@@ -125,7 +125,7 @@ namespace SA.EntityFramework.Migrations
                     Body = table.Column<string>(maxLength: 100, nullable: true),
                     Colors = table.Column<string>(maxLength: 200, nullable: true),
                     ContactToAppointment = table.Column<string>(maxLength: 100, nullable: true),
-                    Creted = table.Column<DateTime>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: true),
                     CustomerId = table.Column<int>(nullable: false),
                     DateOfFirstRegistration = table.Column<DateTime>(nullable: true),
                     Defects = table.Column<string>(nullable: true),
@@ -183,7 +183,7 @@ namespace SA.EntityFramework.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    Creted = table.Column<DateTime>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: true),
                     Price = table.Column<decimal>(nullable: false),
                     RecordId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false)
@@ -214,7 +214,7 @@ namespace SA.EntityFramework.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    Creted = table.Column<DateTime>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(nullable: false),
                     Path = table.Column<string>(nullable: false),
                     RecordId = table.Column<int>(nullable: false),
