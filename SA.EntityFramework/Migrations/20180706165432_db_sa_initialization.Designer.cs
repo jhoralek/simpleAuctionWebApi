@@ -10,8 +10,8 @@ using System;
 namespace SA.EntityFramework.Migrations
 {
     [DbContext(typeof(SaDbContext))]
-    [Migration("20180629231350_db_initialization")]
-    partial class db_initialization
+    [Migration("20180706165432_db_sa_initialization")]
+    partial class db_sa_initialization
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
