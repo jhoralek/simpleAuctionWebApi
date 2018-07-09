@@ -6,11 +6,11 @@ using SA.EntityFramework.EntityFramework.Repository;
 
 namespace SA.Api.Controllers
 {
-    [Route("api/Countries")]
-    public class CountriesController : BaseController<Country>
+    [Route("api/Bids")]
+    public class BidsController : BaseController<Bid>
     {
-        public CountriesController(IEntityRepository<Country> repository) 
-            : base(repository) {}
+        public BidsController(IEntityRepository<Bid> repository)
+            : base(repository) { }
 
         [Authorize("read:messages")]
         [HttpGet]
@@ -18,10 +18,10 @@ namespace SA.Api.Controllers
             => Ok(await _repository.GetAll());
 
         [Authorize("read:messages")]
-        [HttpGet("{name}", Name = "FindCountries")]
-        public async Task<IActionResult> FindByName(string name)
+        [HttpGet("{price}", Name = "FindBids")]
+        public async Task<IActionResult> FindByEmail(string price)
         {
-            var items = await _repository.Find(name);
+            var items = await _repository.Find(price);
             if (items == null)
             {
                 return NotFound();
@@ -31,7 +31,7 @@ namespace SA.Api.Controllers
 
         [Authorize("read:messages")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Country item)
+        public async Task<IActionResult> Update(int id, [FromBody] Bid item)
         {
             if (item == null)
             {
@@ -43,7 +43,7 @@ namespace SA.Api.Controllers
 
         [Authorize("read:messages")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Country item)
+        public async Task<IActionResult> Create([FromBody] Bid item)
         {
             if (item == null)
             {
@@ -51,7 +51,7 @@ namespace SA.Api.Controllers
             }
 
             await _repository.Add(item);
-            return CreatedAtRoute("FindCountries", new { Controller = "Countries", name = item.Name }, item);
+            return CreatedAtRoute("FindBids", new { Controller = "Bids", name = item.Price }, item);
         }
     }
 }

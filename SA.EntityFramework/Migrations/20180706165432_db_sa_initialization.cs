@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SA.EntityFramework.Migrations
 {
-    public partial class db_initialization : Migration
+    public partial class db_sa_initialization : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

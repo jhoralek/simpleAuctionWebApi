@@ -1,15 +1,15 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
+using System.Threading.Tasks;
 
 namespace SA.Api.Controllers
 {
-    [Route("api/Countries")]
-    public class CountriesController : BaseController<Country>
+    [Route("api/Files")]
+    public class FilesController : BaseController<File>
     {
-        public CountriesController(IEntityRepository<Country> repository) 
+        public FilesController(IEntityRepository<File> repository) 
             : base(repository) {}
 
         [Authorize("read:messages")]
@@ -17,8 +17,7 @@ namespace SA.Api.Controllers
         public async Task<IActionResult> GetAll()
             => Ok(await _repository.GetAll());
 
-        [Authorize("read:messages")]
-        [HttpGet("{name}", Name = "FindCountries")]
+        [HttpGet("{name}", Name = "FindFiles")]
         public async Task<IActionResult> FindByName(string name)
         {
             var items = await _repository.Find(name);
@@ -31,7 +30,7 @@ namespace SA.Api.Controllers
 
         [Authorize("read:messages")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Country item)
+        public async Task<IActionResult> Update(int id, [FromBody] File item)
         {
             if (item == null)
             {
@@ -43,7 +42,7 @@ namespace SA.Api.Controllers
 
         [Authorize("read:messages")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Country item)
+        public async Task<IActionResult> Create([FromBody] File item)
         {
             if (item == null)
             {
@@ -51,7 +50,7 @@ namespace SA.Api.Controllers
             }
 
             await _repository.Add(item);
-            return CreatedAtRoute("FindCountries", new { Controller = "Countries", name = item.Name }, item);
+            return CreatedAtRoute("FindFiles", new { Controller = "Files", name = item.Name }, item);
         }
     }
 }

@@ -6,19 +6,18 @@ using SA.EntityFramework.EntityFramework.Repository;
 
 namespace SA.Api.Controllers
 {
-    [Route("api/Countries")]
-    public class CountriesController : BaseController<Country>
+    [Route("api/Records")]
+    public class RecordsController : BaseController<Record>
     {
-        public CountriesController(IEntityRepository<Country> repository) 
-            : base(repository) {}
+        public RecordsController(IEntityRepository<Record> repository)
+            : base(repository) { }
 
         [Authorize("read:messages")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
-            => Ok(await _repository.GetAll());
+                => Ok(await _repository.GetAll());
 
-        [Authorize("read:messages")]
-        [HttpGet("{name}", Name = "FindCountries")]
+        [HttpGet("{name}", Name = "FindRecords")]
         public async Task<IActionResult> FindByName(string name)
         {
             var items = await _repository.Find(name);
@@ -31,7 +30,7 @@ namespace SA.Api.Controllers
 
         [Authorize("read:messages")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Country item)
+        public async Task<IActionResult> Update(int id, [FromBody] Record item)
         {
             if (item == null)
             {
@@ -43,7 +42,7 @@ namespace SA.Api.Controllers
 
         [Authorize("read:messages")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Country item)
+        public async Task<IActionResult> Create([FromBody] Record item)
         {
             if (item == null)
             {
@@ -51,7 +50,7 @@ namespace SA.Api.Controllers
             }
 
             await _repository.Add(item);
-            return CreatedAtRoute("FindCountries", new { Controller = "Countries", name = item.Name }, item);
+            return CreatedAtRoute("FindRecords", new { Controller = "Records", name = item.Name }, item);
         }
     }
 }

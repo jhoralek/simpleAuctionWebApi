@@ -7,31 +7,34 @@ using System.Threading.Tasks;
 
 namespace SA.EntityFramework.EntityFramework.Repository
 {
-    public class CountriesRepository : IEntityRepository<Country>
+    public class FilesRepository : IEntityRepository<File>
     {
         private readonly SaDbContext _context;
-        public CountriesRepository(SaDbContext context)
+        public FilesRepository(SaDbContext context)
         {
             _context = context;
         }
 
-        public async Task Add(Country item)
+        public async Task Add(File item)
         {
             item.Created = DateTime.Now;
-            await _context.Countries.AddAsync(item);
+            await _context.Files.AddAsync(item);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Country>> Find(string key)
+        public async Task<IEnumerable<File>> Find(string key)
             => await GetQueryAll()
                 .Where(x => x.Name.StartsWith(key))
                 .ToListAsync();
 
-        public async Task<IEnumerable<Country>> GetAll()
-            => await GetQueryAll().ToListAsync();
+        public async Task<IEnumerable<File>> GetAll()
+            => await _context.Files.ToListAsync();
 
-        public async Task<Country> GetById(int id)
-            => await GetQueryAll().FirstOrDefaultAsync(x => x.Id == id);
+        public async Task<File> GetById(int id)
+            => await GetQueryAll()
+                .Include(x => x.Record)
+                .Include(x => x.User)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task Remove(int id)
         {
@@ -45,10 +48,10 @@ namespace SA.EntityFramework.EntityFramework.Repository
             }
         }
 
-        public IQueryable<Country> GetQueryAll()
-            => _context.Countries.AsQueryable();
+        public IQueryable<File> GetQueryAll()
+            => _context.Files.AsQueryable();
 
-        public async Task Update(int id, Country item)
+        public async Task Update(int id, File item)
         {
             var itemToUpdate = await GetQueryAll()
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -56,9 +59,10 @@ namespace SA.EntityFramework.EntityFramework.Repository
             if (itemToUpdate != null)
             {
                 itemToUpdate.Name = item.Name;
-
+                itemToUpdate.Path = item.Path;
+                itemToUpdate.RecordId = item.RecordId;
                 await _context.SaveChangesAsync();
             }
-        }
+        }                
     }
 }
