@@ -15,6 +15,7 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SA.Application\SA.Application.csproj" />
     <ProjectReference Include="..\SA.EntityFramework\SA.EntityFramework.csproj" />
   </ItemGroup>
 </Project>

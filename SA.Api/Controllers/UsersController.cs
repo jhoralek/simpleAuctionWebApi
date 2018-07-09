@@ -6,10 +6,10 @@ using SA.EntityFramework.EntityFramework.Repository;
 
 namespace SA.Api.Controllers
 {
-    [Route("api/Countries")]
-    public class CountriesController : BaseController<Country>
+    [Route("api/Users")]
+    public class UsersController : BaseController<User>
     {
-        public CountriesController(IEntityRepository<Country> repository) 
+        public UsersController(IEntityRepository<User> repository) 
             : base(repository) {}
 
         [Authorize("read:messages")]
@@ -18,10 +18,10 @@ namespace SA.Api.Controllers
             => Ok(await _repository.GetAll());
 
         [Authorize("read:messages")]
-        [HttpGet("{name}", Name = "FindCountries")]
-        public async Task<IActionResult> FindByName(string name)
+        [HttpGet("{userName}", Name = "FindUsers")]
+        public async Task<IActionResult> FindByUserName(string userName)
         {
-            var items = await _repository.Find(name);
+            var items = await _repository.Find(userName);
             if (items == null)
             {
                 return NotFound();
@@ -31,7 +31,7 @@ namespace SA.Api.Controllers
 
         [Authorize("read:messages")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Country item)
+        public async Task<IActionResult> Update(int id, [FromBody] User item)
         {
             if (item == null)
             {
@@ -43,7 +43,7 @@ namespace SA.Api.Controllers
 
         [Authorize("read:messages")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Country item)
+        public async Task<IActionResult> Create([FromBody] User item)
         {
             if (item == null)
             {
@@ -51,7 +51,7 @@ namespace SA.Api.Controllers
             }
 
             await _repository.Add(item);
-            return CreatedAtRoute("FindCountries", new { Controller = "Countries", name = item.Name }, item);
+            return CreatedAtRoute("FindUsers", new { Controller = "Users", name = item.UserName }, item);
         }
     }
 }

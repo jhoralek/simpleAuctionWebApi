@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SA.EntityFramework.EntityFramework.Repository
@@ -11,5 +12,6 @@ namespace SA.EntityFramework.EntityFramework.Repository
         Task<T> GetById(int id);
         Task Remove(int id);
         Task Update(int id, T item);
+        IQueryable<T> GetQueryAll();
     }
 }

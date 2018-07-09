@@ -6,10 +6,10 @@ using SA.EntityFramework.EntityFramework.Repository;
 
 namespace SA.Api.Controllers
 {
-    [Route("api/Countries")]
-    public class CountriesController : BaseController<Country>
+    [Route("api/Customers")]
+    public class CustomersController : BaseController<Customer>
     {
-        public CountriesController(IEntityRepository<Country> repository) 
+        public CustomersController(IEntityRepository<Customer> repository) 
             : base(repository) {}
 
         [Authorize("read:messages")]
@@ -17,11 +17,10 @@ namespace SA.Api.Controllers
         public async Task<IActionResult> GetAll()
             => Ok(await _repository.GetAll());
 
-        [Authorize("read:messages")]
-        [HttpGet("{name}", Name = "FindCountries")]
-        public async Task<IActionResult> FindByName(string name)
+        [HttpGet("{email}", Name = "FindCustomers")]
+        public async Task<IActionResult> FindByEmail(string email)
         {
-            var items = await _repository.Find(name);
+            var items = await _repository.Find(email);
             if (items == null)
             {
                 return NotFound();
@@ -31,7 +30,7 @@ namespace SA.Api.Controllers
 
         [Authorize("read:messages")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Country item)
+        public async Task<IActionResult> Update(int id, [FromBody] Customer item)
         {
             if (item == null)
             {
@@ -43,7 +42,7 @@ namespace SA.Api.Controllers
 
         [Authorize("read:messages")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Country item)
+        public async Task<IActionResult> Create([FromBody] Customer item)
         {
             if (item == null)
             {
@@ -51,7 +50,7 @@ namespace SA.Api.Controllers
             }
 
             await _repository.Add(item);
-            return CreatedAtRoute("FindCountries", new { Controller = "Countries", name = item.Name }, item);
+            return CreatedAtRoute("FindCustomers", new { Controller = "Customers", name = item.Email }, item);
         }
     }
 }
