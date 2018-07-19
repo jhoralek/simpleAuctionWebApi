@@ -11,8 +11,7 @@ namespace SA.Api.Controllers
     {
         public RecordsController(IEntityRepository<Record> repository)
             : base(repository) { }
-
-        [Authorize("read:messages")]
+        
         [HttpGet]
         public async Task<IActionResult> GetAll()
                 => Ok(await _repository.GetAll());

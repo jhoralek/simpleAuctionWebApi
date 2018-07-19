@@ -37,7 +37,7 @@ namespace SA.Application.Security
             }
 
             var token = await RequestToken();
-            persistedUser.Token = $"{token.token_type} {token.access_token}";
+            persistedUser.Token = $"{token.TokenType} {token.AccessToken}";
 
             await _userRepository.Update(persistedUser.Id, persistedUser);
 

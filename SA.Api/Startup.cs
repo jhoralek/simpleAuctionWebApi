@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +29,14 @@ namespace SA.Api
         {
             string domain = $"https://{_configuration["Auth0:Domain"]}/";
 
+            services.AddCors(options =>
+                options.AddPolicy("SA",
+                    policy => policy
+                        .WithOrigins(_configuration["Cors:Url"])
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()));
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -44,8 +53,10 @@ namespace SA.Api
                 options.AddPolicy("read:messages", policy => policy.Requirements.Add(new HasScopeRequirement("read:messages", domain)));
             });
 
-            services.AddMvc().AddJsonOptions(a => a.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
-            services.AddMvc().AddJsonOptions(a => a.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects);
+            services.AddMvc(options => options.Filters.Add(new CorsAuthorizationFilterFactory("SA")))
+                .AddJsonOptions(a => a.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
+                .AddJsonOptions(a => a.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects);
+
             services.AddDbContext<SaDbContext>(options => options.UseMySQL(_configuration["ConnectionString:Sa"]), ServiceLifetime.Singleton);
 
             services.AddSingleton<IEntityRepository<Country>, CountriesRepository>();
