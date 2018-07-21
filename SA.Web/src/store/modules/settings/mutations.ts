@@ -6,12 +6,12 @@ const mutations: MutationTree<SettingsState> = {
      * Initialization of the state
      * @param state Settigns state
      * @param res - resource with language mutation
-     * @param countries - countries with specific lang mutation
      */
-    SETTINGS_INITIAL_STATE(state, { res, countries }) {
+    SETTINGS_INITIAL_STATE(state, res) {
         state.language = 'cs';
         state.resource = res;
-        state.countries = countries;
+        state.countries = undefined;
+        state.apiUrl = 'http://localhost:58131/api';
     },
     /**
      * Change language
@@ -26,6 +26,14 @@ const mutations: MutationTree<SettingsState> = {
             state.resource = res;
             state.countries = countries;
         }
+    },
+    /**
+     * Load countries
+     * @param state Settings state
+     * @param countries Countries to be changed
+     */
+    SETTINGS_LOAD_COUNTRIES(state, countries) {
+        state.countries = countries;
     },
 };
 

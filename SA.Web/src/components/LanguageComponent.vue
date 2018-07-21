@@ -18,19 +18,18 @@
 <script lang="ts">
 
 import { Component, Vue } from 'vue-property-decorator';
-import { State, Getter, Action } from 'vuex-class';
+import { Action, namespace } from 'vuex-class';
 
 import { SettingsState } from '@/store/types';
 import { Translator } from '@/lang';
+import BaseComponent from '@/components/BaseComponent.vue';
 
-const namespace: string = 'settings';
+const SettingsAction = namespace('settings', Action);
 
 @Component({})
-export default class LanguageComponent extends Vue {
+export default class LanguageComponent extends BaseComponent {
 
-    @State('settings') public settings: SettingsState;
-    @Getter('getTranslate', { namespace }) public resx: string;
-    @Action('changeLanguage', { namespace }) public change: any;
+    @SettingsAction('changeLanguage') public change: any;
 
     get current(): any {
         return require(`@/assets/${this.settings.language}.png`);

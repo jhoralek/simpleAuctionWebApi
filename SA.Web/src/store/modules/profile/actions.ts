@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { ActionTree } from 'vuex';
 import {
     RootState,
@@ -5,15 +6,12 @@ import {
 } from '@/store/types';
 
 import { User } from '@/model';
+import { UserShortInfo } from '@/poco';
 
 import {
     USER_INITIAL_STATE,
     USER_CHANGE,
 } from '@/store/mutation-types';
-
-import { UserService } from '@/services';
-
-const service: UserService = new UserService();
 
 const actions: ActionTree<ProfileState, RootState> = {
     /**
@@ -30,34 +28,36 @@ const actions: ActionTree<ProfileState, RootState> = {
      * Load user to the store
      * @param param - commit
      */
-    loadUser({ commit }, id: number): Promise<User> {
-        return service.getById(id).then((user) => {
-            commit(USER_CHANGE, user);
-            return user;
-        });
+    loadUser({ commit, rootState }, id: number): Promise<User> {
+        return axios.get(`${rootState.settings.apiUrl}/users/${id}`)
+            .then((response) => {
+                return new Promise<User>((resolve) => {
+                    const user: User = response.data as User;
+                    commit(USER_CHANGE, user);
+                    return resolve(user);
+                });
+            })
+            .catch((error) => {
+                return error;
+            });
     },
     /**
-     * Load user by his token string
-     * - Used when web page is reloaded by browser. Then we need to
-     *   load user from localStorage where the auth store is located
-     * @param param - commit
-     * @param token - User's unique token string
+     * Load user by userNam and valid token
+     * @param param0 - commit with rootState
+     * @param userInfo - User short object with userName and token
      */
-    loadByToken({ commit }, token: string): Promise<User> {
-        return service.getByToken(token).then((user) => {
-            commit(USER_CHANGE, user);
-            return user;
-        });
-    },
-    /**
-     * Update user in storage (reload state and return the object)
-     * @param param - commit
-     * @param user - user object
-     */
-    updateUser({ commit }, user: User): Promise<User> {
-        return service.updateUser(user).then((response) => {
-            commit(USER_CHANGE, response);
-            return response;
+    loadByUserNameAndToken({commit, rootState}, userInfo: UserShortInfo): Promise<User> {
+        return new Promise<User>((resolve) => {
+            return axios.post(`${rootState.settings.apiUrl}/users/loadByNameAndToken`,
+                { userInfo })
+                .then((response) => {
+                    const user: User = response.data as User;
+                    commit(USER_CHANGE, user);
+                    return resolve(user);
+                })
+                .catch((error) => {
+                    return error;
+                });
         });
     },
 };

@@ -3,6 +3,7 @@ using SA.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace SA.EntityFramework.EntityFramework.Repository
@@ -15,30 +16,25 @@ namespace SA.EntityFramework.EntityFramework.Repository
             _context = context;
         }
 
-        public async Task Add(File item)
+        public async Task AddAsync(File item)
         {
             item.Created = DateTime.Now;
             await _context.Files.AddAsync(item);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<File>> Find(string key)
-            => await GetQueryAll()
-                .Where(x => x.Name.StartsWith(key))
-                .ToListAsync();
+        public async Task<IEnumerable<File>> FindAsync(string key)
+            => await GetAllAsync(x => x.Name.StartsWith(key));
 
-        public async Task<IEnumerable<File>> GetAll()
-            => await _context.Files.ToListAsync();
-
-        public async Task<File> GetById(int id)
-            => await GetQueryAll()
+        public async Task<File> GetByIdAsync(int id)
+            => await GetAllInternal()
                 .Include(x => x.Record)
                 .Include(x => x.User)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-        public async Task Remove(int id)
+        public async Task RemoveAsync(int id)
         {
-            var itemToDelte = await GetQueryAll()
+            var itemToDelte = await GetAllInternal()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToDelte != null)
@@ -48,12 +44,12 @@ namespace SA.EntityFramework.EntityFramework.Repository
             }
         }
 
-        public IQueryable<File> GetQueryAll()
+        public IQueryable<File> GetAllInternal()
             => _context.Files.AsQueryable();
 
-        public async Task Update(int id, File item)
+        public async Task UpdateAsync(int id, File item)
         {
-            var itemToUpdate = await GetQueryAll()
+            var itemToUpdate = await GetAllInternal()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToUpdate != null)
@@ -63,6 +59,16 @@ namespace SA.EntityFramework.EntityFramework.Repository
                 itemToUpdate.RecordId = item.RecordId;
                 await _context.SaveChangesAsync();
             }
-        }                
+        }
+
+        public async Task<IEnumerable<File>> GetAllAsync(Expression<Func<File, bool>> query = null)
+            => await
+                (query != null
+                    ? GetAllInternal().Where(query)
+                    : GetAllInternal())
+                .ToListAsync();
+
+        public Task<File> GetOneAsync(Expression<Func<File, bool>> query)
+            => GetAllInternal().FirstOrDefaultAsync(query);
     }
 }

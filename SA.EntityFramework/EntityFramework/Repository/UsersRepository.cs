@@ -3,6 +3,7 @@ using SA.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace SA.EntityFramework.EntityFramework.Repository
@@ -15,27 +16,22 @@ namespace SA.EntityFramework.EntityFramework.Repository
             _context = context;
         }
 
-        public async Task Add(User item)
+        public async Task AddAsync(User item)
         {
             item.Created = DateTime.Now;
             await _context.Users.AddAsync(item);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<User>> Find(string key)
-            => await GetAllInternal()
-                .Where(x => x.UserName.StartsWith(key))
-                .ToListAsync();
+        public async Task<IEnumerable<User>> FindAsync(string key)
+            => await GetAllAsync(x => x.UserName.StartsWith(key));            
 
-        public async Task<IEnumerable<User>> GetAll()
-            => await GetAllInternal().ToListAsync();
-
-        public async Task<User> GetById(int id)
+        public async Task<User> GetByIdAsync(int id)
             => await GetAllInternal().FirstOrDefaultAsync(x => x.Id == id);
 
-        public async Task Remove(int id)
+        public async Task RemoveAsync(int id)
         {
-            var itemToDelte = await GetQueryAll()
+            var itemToDelte = await GetAllInternal()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToDelte != null)
@@ -45,9 +41,9 @@ namespace SA.EntityFramework.EntityFramework.Repository
             }
         }
 
-        public async Task Update(int id, User item)
+        public async Task UpdateAsync(int id, User item)
         {
-            var itemToUpdate = await GetQueryAll()
+            var itemToUpdate = await GetAllInternal()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToUpdate != null)
@@ -60,15 +56,25 @@ namespace SA.EntityFramework.EntityFramework.Repository
             }
         }
 
-        public IQueryable<User> GetQueryAll()
+        public IQueryable<User> GetAllInternal()
             => _context.Users.AsQueryable();
 
-        public IQueryable<User> GetAllInternal()
+        public IQueryable<User> GetAllUserInternal()
             => _context.Users
                 .Include(x => x.Bids)
                 .Include(x => x.Customer)
                 .Include(x => x.Customer.Address)
                 .Include(x => x.Customer.Address.Country)
                 .Include(x => x.Records);
+
+        public async Task<IEnumerable<User>> GetAllAsync(Expression<Func<User, bool>> query = null)
+             => await
+                (query != null
+                    ? GetAllUserInternal().Where(query)
+                    : GetAllUserInternal())
+                .ToListAsync();
+
+        public Task<User> GetOneAsync(Expression<Func<User, bool>> query)
+            => GetAllUserInternal().FirstOrDefaultAsync(query);
     }
 }

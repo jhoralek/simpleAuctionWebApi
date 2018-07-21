@@ -1,20 +1,19 @@
 import { ActionTree } from 'vuex';
+import axios from 'axios';
 import {
     RootState,
     AuthState,
-    LoginUser,
 } from '@/store/types';
-import { User } from '@/model';
+import {
+    AuthResponse,
+    LoginDto,
+ } from '@/poco';
 
 import {
     AUTH_LOGIN_USER,
     AUTH_LOGOUT_USER,
     AUTH_INITIAL_STATE,
 } from '@/store/mutation-types';
-
-import { AuthService } from '@/services';
-
-const service: AuthService = new AuthService();
 
 const actions: ActionTree<AuthState, RootState> = {
     /**
@@ -23,11 +22,28 @@ const actions: ActionTree<AuthState, RootState> = {
      * @param param - commit with mutating of the state
      * @param login - object with login information
      */
-    loginUser({commit}, login: LoginUser): Promise<User> {
-         return service.login(login.userName, login.password).then((user) => {
-             commit(AUTH_LOGIN_USER, { login, user });
-             return user;
-         });
+    loginUser({commit, rootState, dispatch}, login: LoginDto): Promise<AuthResponse> {
+        return new Promise<AuthResponse>((resolve) => {
+            return axios.post(`${rootState.settings.apiUrl}/accounts/login`, {
+                    UserName: login.userName,
+                    Password: login.password })
+                .then((response) => {
+                    const user: AuthResponse = response.data as AuthResponse;
+                    commit(AUTH_LOGIN_USER, { login, user });
+                    if (user.error !== null) {
+                        dispatch('error/change',
+                        { error: true, message: user.error },
+                        { root: true });
+                    }
+                    return resolve(user);
+                })
+                .catch((error) => {
+                    dispatch('error/change',
+                        { error: true, message: error },
+                        { root: true });
+                    return resolve({ error } as AuthResponse);
+                });
+        });
     },
     /**
      * Reset LoginUser object

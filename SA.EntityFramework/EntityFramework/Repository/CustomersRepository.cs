@@ -3,6 +3,7 @@ using SA.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace SA.EntityFramework.EntityFramework.Repository
@@ -15,27 +16,23 @@ namespace SA.EntityFramework.EntityFramework.Repository
             _context = context;
         }
 
-        public async Task Add(Customer item)
+        public async Task AddAsync(Customer item)
         {
             item.Created = DateTime.Now;
             await _context.Customers.AddAsync(item);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Customer>> Find(string key)
+        public async Task<IEnumerable<Customer>> FindAsync(string key)
+            => await GetAllAsync(x => x.Email.StartsWith(key));
+
+        public async Task<Customer> GetByIdAsync(int id)
             => await GetCustomersInternal()
-                .Where(x => x.Email.StartsWith(key))
-                .ToListAsync();
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-        public async Task<IEnumerable<Customer>> GetAll()
-            => await GetCustomersInternal().ToListAsync();
-
-        public async Task<Customer> GetById(int id)
-            => await GetCustomersInternal().FirstOrDefaultAsync(x => x.Id == id);
-
-        public async Task Remove(int id)
+        public async Task RemoveAsync(int id)
         {
-            var itemToDelte = await GetQueryAll()
+            var itemToDelte = await GetAllInternal()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToDelte != null)
@@ -45,9 +42,9 @@ namespace SA.EntityFramework.EntityFramework.Repository
             }
         }
 
-        public async Task Update(int id, Customer item)
+        public async Task UpdateAsync(int id, Customer item)
         {
-            var itemToUpdate = await GetQueryAll()
+            var itemToUpdate = await GetAllInternal()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToUpdate != null)
@@ -67,13 +64,23 @@ namespace SA.EntityFramework.EntityFramework.Repository
             }
         }
 
-        public IQueryable<Customer> GetQueryAll()
+        public IQueryable<Customer> GetAllInternal()
             => _context.Customers.AsQueryable();
 
         private IQueryable<Customer> GetCustomersInternal()
-            => GetQueryAll()
+            => GetAllInternal()
                 .Include(x => x.Address)
                 .Include(x => x.Address.Country)
                 .Include(x => x.Records);
+
+        public async Task<IEnumerable<Customer>> GetAllAsync(Expression<Func<Customer, bool>> query = null)
+            => await
+                (query != null
+                    ? GetCustomersInternal().Where(query)
+                    : GetCustomersInternal())
+                .ToListAsync();
+
+        public Task<Customer> GetOneAsync(Expression<Func<Customer, bool>> query)
+            => GetCustomersInternal().FirstOrDefaultAsync(query);
     }
 }

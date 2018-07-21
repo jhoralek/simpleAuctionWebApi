@@ -6,11 +6,12 @@ import actions from './actions';
 import mutations from './mutations';
 
 export const state: AuthState = {
-    login: undefined,
     userName: undefined,
     token: undefined,
+    language: undefined,
     isAuthenticated: false,
     error: false,
+    errorMessage: undefined,
 };
 
 const namespaced: boolean = true;

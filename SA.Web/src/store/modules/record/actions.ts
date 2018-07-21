@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { ActionTree } from 'vuex';
 import {
     RootState,
@@ -11,10 +12,6 @@ import {
     RECORD_CHANGE_LIST_STATE,
     RECORD_CHANGE_CURRENT_STATE,
 } from '@/store/mutation-types';
-
-import { RecordService } from '@/services';
-
-const service: RecordService = new RecordService();
 
 const actions: ActionTree<RecordState, RootState> = {
     /**
@@ -30,20 +27,30 @@ const actions: ActionTree<RecordState, RootState> = {
     /**
      * Load all active records
      */
-    loadAllActive({commit}): Promise<Record[]> {
-        return service.getAllActive().then((records) => {
-            commit(RECORD_CHANGE_LIST_STATE, records);
-            return records;
-        });
+    loadAllActive({commit, rootState}): Promise<Record[]> {
+        return axios.get(`${rootState.settings.apiUrl}/records`)
+            .then((response) => {
+                const records: Record[] = response.data as Record[];
+                commit(RECORD_CHANGE_LIST_STATE, records);
+                return records;
+            })
+            .catch((error) => {
+                return error;
+            });
     },
     /**
      * Get record detail by id
      * @param id - record id
      */
-    getDetail({ commit }, id: number): Promise<Record> {
-        return service.getById(id).then((record) => {
+    getDetail({ commit, rootState }, id: number): Promise<Record> {
+        return axios.get(`${rootState.settings.apiUrl}/records/${id}`)
+        .then((response) => {
+            const record: Record = response.data as Record;
             commit(RECORD_CHANGE_CURRENT_STATE, record);
             return record;
+        })
+        .catch((error) => {
+            return error;
         });
     },
 };

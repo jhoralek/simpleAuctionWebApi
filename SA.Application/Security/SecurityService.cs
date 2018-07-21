@@ -23,29 +23,42 @@ namespace SA.Application.Security
             _userRepository = userRepository;
         }
 
-        public async Task<User> Login(LoginUserDto user)
+        public async Task<AuthResponse> Login(LoginUserDto user)
         {
             var hashPassword = GetMD5HashData(user.Password);
-            var persistedUser = _userRepository.GetQueryAll()
+            var persistedUser = _userRepository.GetAllInternal()
                 .Where(u => u.UserName == user.UserName
                     && u.Password == hashPassword)
                 .FirstOrDefault();
 
             if (persistedUser == null)
             {
-                return null;
+                return new AuthResponse { Error = "UserNotAuthenticated" };
             }
 
             var token = await RequestToken();
+
+            if (!string.IsNullOrWhiteSpace(token.Error))
+            {
+                return new AuthResponse
+                {
+                    Error = $"{token.Error}: {token.ErrorDescription}"
+                };
+            }
+
             persistedUser.Token = $"{token.TokenType} {token.AccessToken}";
 
-            await _userRepository.Update(persistedUser.Id, persistedUser);
+            await _userRepository.UpdateAsync(persistedUser.Id, persistedUser);
 
-            return persistedUser;
-
+            return new AuthResponse
+            {
+                Token = persistedUser.Token,
+                UserName = persistedUser.UserName,
+                Language = persistedUser.Language,
+            };
         }
 
-        public async Task<TokenDto> RequestToken()
+        private async Task<TokenDto> RequestToken()
         {
             using (var client = new HttpClient())
             {

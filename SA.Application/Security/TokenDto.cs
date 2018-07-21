@@ -14,6 +14,10 @@ namespace SA.Application.Security
         /// Expiration in seconds
         /// </summary>
         [JsonProperty("expires_in")]
-        public virtual int ExpiresIn { get; set; }
+        public virtual int? ExpiresIn { get; set; }
+        [JsonProperty("error")]
+        public virtual string Error { get; set; }
+        [JsonProperty("error_description")]
+        public virtual string ErrorDescription { get; set; }
     }
 }

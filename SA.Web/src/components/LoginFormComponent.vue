@@ -1,7 +1,7 @@
 <template>
     <div class="loginForm">
-        <div v-if="auth.login && !auth.isAuthenticated">
-            <v-dialog class="login-dialog-container" v-model="auth.error" persistent max-width="500px">
+        <div v-if="!auth.isAuthenticated">
+            <v-dialog class="login-dialog-container" v-model="openedModal" persistent max-width="500px">
                 <v-btn class="login-button" slot="activator" flat>{{ resx('login') }}</v-btn>
                 <v-card>
                     <v-form lazy-validation>
@@ -14,13 +14,13 @@
                                         <v-flex xs12 sm12 md12>
                                             <v-text-field
                                                 :label= "labelUserName"
-                                                v-model="auth.login.userName"
+                                                v-model="userName"
                                                 required></v-text-field>
                                         </v-flex>
                                         <v-flex xs12 sm12 md12>
                                             <v-text-field
                                                 :label="labelPassword"
-                                                v-model="auth.login.password"
+                                                v-model="password"
                                                 :append-icon="visible ? 'visibility_off' : 'visibility'"
                                                 :append-icon-cb="() => (visible = !visible)"
                                                 :type="visible ? 'text' : 'password'"
@@ -35,12 +35,13 @@
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="info" flat @click.native="auth.error = false">{{ resx('close') }}</v-btn>
+                            <v-btn color="info" flat @click.native="openedModal = false">{{ resx('close') }}</v-btn>
                             <v-btn color="success" flat @click="submit">{{ resx('submit') }}</v-btn>
                         </v-card-actions>
                     </v-form>
                 </v-card>
             </v-dialog>
+
         </div>
         <div v-if="auth.isAuthenticated">
             <v-btn class="logout-button" flat @click="logout">{{ resx('logout') }}</v-btn>
@@ -51,27 +52,32 @@
 <script lang="ts">
 
 import { Component, Vue } from 'vue-property-decorator';
-import { State, Action, Getter } from 'vuex-class';
+import { State, Action, namespace } from 'vuex-class';
 
-import { AuthState, SettingsState } from '@/store/types';
+import { AuthState, ProfileState } from '@/store/types';
+import { log } from 'util';
+import BaseComponent from '@/components/BaseComponent.vue';
+import { AuthResponse, UserShortInfo } from '@/poco';
+import { profile } from '@/store/modules';
 
-const namespaceAuth: string = 'auth';
-const namespaceProfile: string = 'profile';
-const namespaceSettings: string = 'settings';
+const SettingsAction = namespace('settings', Action);
+const AuthAction = namespace('auth', Action);
+const ProfileAction = namespace('profile', Action);
 
 @Component({})
-export default class LoginFormComponent extends Vue {
+export default class LoginFormComponent extends BaseComponent {
     @State('auth') public  auth: AuthState;
-    @State('settings') public settings: SettingsState;
+    @State('profile') public profile: ProfileState;
 
-    @Getter('getTranslate', { namespace: namespaceSettings }) public resx: string;
-
-    @Action('loginUser', { namespace: namespaceAuth }) public login: any;
-    @Action('logoutUser', { namespace: namespaceAuth }) public logoutUser: any;
-    @Action('loadUser', { namespace: namespaceProfile }) public user: any;
-    @Action('changeLanguage', { namespace: namespaceSettings }) public langChange: any;
+    @ProfileAction('loadByUserNameAndToken') public user: any;
+    @SettingsAction('changeLanguage') public langChange: any;
+    @AuthAction('loginUser') public login: any;
+    @AuthAction('logoutUser') public logoutUser: any;
 
     private visiblePwd: boolean = false;
+    private openedModal: boolean = false;
+    private userName: string = '';
+    private password: string = '';
 
     // this is because I cannot pass getter function to the component props
     // so I need to create computed props. They can be used in component props
@@ -96,11 +102,14 @@ export default class LoginFormComponent extends Vue {
     }
 
     public submit() {
-        this.login(this.auth.login).then((response) => {
-            if (response !== undefined) {
-                this.user(response.id).then((user) => {
-                    this.langChange(user.language);
-                });
+        this.login({
+            userName: this.userName,
+            password: this.password,
+        }).then((response) => {
+            const authResponse: AuthResponse = response as AuthResponse;
+            if (authResponse.userName !== null) {
+                this.openedModal = !this.auth.isAuthenticated;
+                this.langChange(this.auth.language);
             }
         });
     }
