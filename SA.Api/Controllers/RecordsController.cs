@@ -1,25 +1,36 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using SA.Application.Records;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
 
 namespace SA.Api.Controllers
 {
+    [EnableCors("SA")]
     [Route("api/Records")]
     public class RecordsController : BaseController<Record>
     {
-        public RecordsController(IEntityRepository<Record> repository)
-            : base(repository) { }
-        
+        private readonly IRecordService _recordService;
+        public RecordsController(
+            IEntityRepository<Record> repository,
+            IRecordService recordService)
+            : base(repository)
+        {
+            _recordService = recordService;
+        }
+
+        [Authorize("read:messages")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
-                => Ok(await _repository.GetAll());
+                => Ok(await _recordService.GetAllPublished());
 
+        [Authorize("read:messages")]
         [HttpGet("{name}", Name = "FindRecords")]
         public async Task<IActionResult> FindByName(string name)
         {
-            var items = await _repository.Find(name);
+            var items = await _repository.FindAsync(name);
             if (items == null)
             {
                 return NotFound();
@@ -35,7 +46,7 @@ namespace SA.Api.Controllers
             {
                 return BadRequest();
             }
-            await _repository.Update(id, item);
+            await _repository.UpdateAsync(id, item);
             return NoContent();
         }
 
@@ -48,7 +59,7 @@ namespace SA.Api.Controllers
                 return BadRequest();
             }
 
-            await _repository.Add(item);
+            await _repository.AddAsync(item);
             return CreatedAtRoute("FindRecords", new { Controller = "Records", name = item.Name }, item);
         }
     }

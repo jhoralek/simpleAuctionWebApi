@@ -45,6 +45,22 @@
             </v-flex>
           </v-layout>
         </v-footer>
+        <v-snackbar
+              color="red lighten-1"
+              v-model="error.error"
+              :bottom="true"
+              :multi-line="true"
+              :right="true"
+              :timeout="6000"
+              :vertical="true">
+              {{ resx(error.message) }}
+              <v-btn
+                  color="white"
+                  flat
+                  @click="initError">
+                  {{ resx('close') }}
+              </v-btn>
+          </v-snackbar>
       </v-content>
     </v-app>
   </div>
@@ -53,7 +69,7 @@
 <script lang="ts">
 
 import { Component, Vue } from 'vue-property-decorator';
-import { State, Action, Getter } from 'vuex-class';
+import { State, Action, Getter, namespace } from 'vuex-class';
 
 import {
   LoginFormComponent,
@@ -64,11 +80,17 @@ import {
   AuthState,
   ProfileState,
   SettingsState,
+  ErrorState,
 } from '@/store/types';
 
-const namespaceAuth: string = 'auth';
-const namespaceProfile: string = 'profile';
-const namespaceSettings: string = 'settings';
+import { UserShortInfo } from '@/poco';
+
+const SettingsGetter = namespace('settings', Getter);
+const AuthGetter = namespace('auth', Getter);
+const AuthAction = namespace('auth', Action);
+const ProfileAction = namespace('profile', Action);
+const SettingsAction = namespace('settings', Action);
+const ErrorAction = namespace('error', Action);
 
 @Component({
   components: {
@@ -78,32 +100,34 @@ const namespaceSettings: string = 'settings';
 })
 export default class App extends Vue {
   // define states in app root
+  @State('error') public error: ErrorState;
   @State('auth') public auth: AuthState;
   @State('profile') public profile: ProfileState;
   @State('settings') public settings: SettingsState;
 
-  @Getter('getTranslate', { namespace: namespaceSettings }) public resx: string;
+  @SettingsGetter('getTranslate') public resx: string;
 
-  @Action('initialState', { namespace: namespaceAuth }) public initAuth: any;
-  @Action('initialState', { namespace: namespaceProfile }) public initProfile: any;
-  @Action('initialState', { namespace: namespaceSettings}) public initSettings: any;
-  @Action('loadByToken', { namespace: namespaceProfile }) public loadByToken: any;
-  @Action('changeLanguage', { namespace: namespaceSettings }) public setLang: any;
+  @AuthAction('initialState') public initAuth: any;
+  @ProfileAction('loadByToken') public loadByToken: any;
+  @ProfileAction('initialState')  public initProfile: any;
+  @SettingsAction('initialState') public initSettings: any;
+  @SettingsAction('changeLanguage') public setLang: any;
+  @ErrorAction('initialState') public initError: any;
 
   /**
    * When app is mounted, then initialize stores
    * and restore auth when is available
    */
   public mounted() {
-    this.initSettings().then((settings) => {
-      this.initProfile().then((x) => {
-        if (this.auth.isAuthenticated) {
-          this.loadByToken(this.auth.token).then((user) => {
-            this.setLang(user.language);
-          });
-        } else {
-          this.initAuth();
-        }
+    this.initError().then((response) => {
+      this.initSettings().then((settings) => {
+        this.initProfile().then((x) => {
+          if (this.auth.isAuthenticated) {
+              this.setLang(this.profile.user.language);
+          } else {
+            this.initAuth();
+          }
+        });
       });
     });
   }

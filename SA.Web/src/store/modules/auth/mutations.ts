@@ -9,22 +9,24 @@ const mutations: MutationTree<AuthState> = {
      */
     AUTH_INITIAL_STATE(state) {
         state.isAuthenticated = false;
-        state.login = { userName: '', password: '' };
         state.token = undefined;
+        state.language = undefined;
         state.userName = undefined;
         state.error = false;
+        state.errorMessage = undefined;
     },
     /**
      * Mutate state of login
      * @param state Store state
      * @param any - contains login and user object
      */
-    AUTH_LOGIN_USER(state, { login, user }) {
-        state.login = login;
+    AUTH_LOGIN_USER(state, { user }) {
         state.userName = user.userName;
         state.token  = user.token;
-        state.isAuthenticated = user !== undefined;
-        state.error = user === undefined;
+        state.language = user.language;
+        state.isAuthenticated = user.error === null;
+        state.error = user.error !== null;
+        state.errorMessage = user.error;
     },
     /**
      * Logout user
@@ -32,10 +34,11 @@ const mutations: MutationTree<AuthState> = {
      */
     AUTH_LOGOUT_USER(state) {
         state.isAuthenticated = false;
-        state.login = { userName: '', password: '' };
         state.token = undefined;
+        state.language = undefined;
         state.userName = undefined;
         state.error = false;
+        state.errorMessage = undefined;
     },
 };
 

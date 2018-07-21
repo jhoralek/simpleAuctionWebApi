@@ -1,11 +1,14 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using SA.Application.Account;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
 
 namespace SA.Api.Controllers
 {
+    [EnableCors("SA")]
     [Route("api/Users")]
     public class UsersController : BaseController<User>
     {
@@ -15,13 +18,13 @@ namespace SA.Api.Controllers
         [Authorize("read:messages")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
-            => Ok(await _repository.GetAll());
+            => Ok(await _repository.GetAllAsync());
 
         [Authorize("read:messages")]
         [HttpGet("{userName}", Name = "FindUsers")]
         public async Task<IActionResult> FindByUserName(string userName)
         {
-            var items = await _repository.Find(userName);
+            var items = await _repository.FindAsync(userName);
             if (items == null)
             {
                 return NotFound();
@@ -37,7 +40,7 @@ namespace SA.Api.Controllers
             {
                 return BadRequest();
             }
-            await _repository.Update(id, item);
+            await _repository.UpdateAsync(id, item);
             return NoContent();
         }
 
@@ -50,8 +53,15 @@ namespace SA.Api.Controllers
                 return BadRequest();
             }
 
-            await _repository.Add(item);
+            await _repository.AddAsync(item);
             return CreatedAtRoute("FindUsers", new { Controller = "Users", name = item.UserName }, item);
         }
+
+        [Authorize("read:messages")]
+        [Route("LoadByNameAndToken")]
+        [HttpPost]
+        public async Task<IActionResult> LoadByNameAndToken([FromBody] UserShortInfoDto userInfo)
+            => Json(await _repository.GetOneAsync(x => x.UserName == userInfo.UserName
+                && x.Token == userInfo.Token));
     }
 }

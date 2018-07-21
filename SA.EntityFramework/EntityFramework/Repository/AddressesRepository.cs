@@ -3,6 +3,7 @@ using SA.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace SA.EntityFramework.EntityFramework.Repository
@@ -15,28 +16,23 @@ namespace SA.EntityFramework.EntityFramework.Repository
             _context = context;
         }
 
-        public async Task Add(Address item)
+        public async Task AddAsync(Address item)
         {
             item.Created = DateTime.Now;
             await _context.Addresses.AddAsync(item);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Address>> Find(string key)
-            => await GetAllInternal()
-                .Where(x => x.Street.StartsWith(key))
-                .ToListAsync();
+        public async Task<IEnumerable<Address>> FindAsync(string key)
+            => await GetAllAsync(x => x.Street.StartsWith(key));
 
-        public async Task<IEnumerable<Address>> GetAll()
-            => await GetAllInternal().ToListAsync();
+        public async Task<Address> GetByIdAsync(int id)
+            => await GetAllAddressInternal()
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-        public async Task<Address> GetById(int id)
-            => await GetAllInternal()
-            .FirstOrDefaultAsync(x => x.Id == id);
-
-        public async Task Remove(int id)
+        public async Task RemoveAsync(int id)
         {
-            var itemToDelete = await GetQueryAll()
+            var itemToDelete = await GetAllInternal()
                     .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToDelete != null)
@@ -46,9 +42,9 @@ namespace SA.EntityFramework.EntityFramework.Repository
             }
         }
 
-        public async Task Update(int id, Address item)
+        public async Task UpdateAsync(int id, Address item)
         {
-            var itemToUpdate = await GetQueryAll()
+            var itemToUpdate = await GetAllInternal()
                     .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToUpdate != null)
@@ -62,10 +58,20 @@ namespace SA.EntityFramework.EntityFramework.Repository
             }
         }
 
-        public IQueryable<Address> GetQueryAll()
+        public IQueryable<Address> GetAllInternal()
             => _context.Addresses.AsQueryable();
 
-        private IQueryable<Address> GetAllInternal()
-            => GetQueryAll().Include(x => x.Country);
+        public async Task<IEnumerable<Address>> GetAllAsync(Expression<Func<Address, bool>> query = null)
+        => await 
+            (query != null 
+                ? GetAllAddressInternal().Where(query)
+                : GetAllAddressInternal())
+            .ToListAsync();
+
+        private IQueryable<Address> GetAllAddressInternal()
+            => GetAllInternal().Include(x => x.Country);
+
+        public Task<Address> GetOneAsync(Expression<Func<Address, bool>> query)
+            => GetAllAddressInternal().FirstOrDefaultAsync(query);
     }
 }

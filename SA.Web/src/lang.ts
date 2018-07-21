@@ -71,6 +71,7 @@ export class Translator {
         titleBefore: 'Titul před',
         user: 'Uživatel',
         userName: 'Uživatelské jméno',
+        UserNotAuthenticated: 'Špatné jméno nebo heslo!',
         validation_min_chars: 'Minimum znaků {0}',
         webPageUrl: 'URL webových stránek',
     };
@@ -119,6 +120,7 @@ export class Translator {
         titleBefore: 'Postfix',
         user: 'User',
         userName: 'User name',
+        UserNotAuthenticated: 'Wrong user name or password!',
         validation_min_chars: 'At least {0} characters',
         webPageUrl: 'Web page URL',
     };

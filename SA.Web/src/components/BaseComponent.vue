@@ -1,15 +1,15 @@
 <script lang="ts">
 
 import { Component, Vue } from 'vue-property-decorator';
-import { State, Getter } from 'vuex-class';
+import { State, Getter, Action, namespace } from 'vuex-class';
 import { SettingsState } from '@/store/types';
 
-const namespace: string = 'settings';
+const SettingsGetter = namespace('settings', Getter);
 
 @Component({})
 export default class BaseComponent extends Vue {
 
   @State('settings') public settings: SettingsState;
-  @Getter('getTranslate', { namespace }) public resx: string;
+  @SettingsGetter('getTranslate') public resx: string;
 }
 </script>

@@ -3,6 +3,7 @@ using SA.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace SA.EntityFramework.EntityFramework.Repository
@@ -15,27 +16,23 @@ namespace SA.EntityFramework.EntityFramework.Repository
             _context = context;
         }
 
-        public async Task Add(Record item)
+        public async Task AddAsync(Record item)
         {
             item.Created = DateTime.Now;
             await _context.Records.AddAsync(item);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Record>> Find(string key)
+        public async Task<IEnumerable<Record>> FindAsync(string key)
+            => await GetAllAsync(x => x.Name.StartsWith(key));
+
+        public async Task<Record> GetByIdAsync(int id)
             => await GetRecordsInternal()
-                .Where(x => x.Name.StartsWith(key))
-                .ToListAsync();
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-        public async Task<IEnumerable<Record>> GetAll()
-            => await GetRecordsInternal().ToListAsync();
-
-        public async Task<Record> GetById(int id)
-            => await GetRecordsInternal().FirstOrDefaultAsync(x => x.Id == id);
-
-        public async Task Remove(int id)
+        public async Task RemoveAsync(int id)
         {
-            var itemToDelte = await GetQueryAll()
+            var itemToDelte = await GetAllInternal()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToDelte != null)
@@ -45,9 +42,9 @@ namespace SA.EntityFramework.EntityFramework.Repository
             }
         }
 
-        public async Task Update(int id, Record item)
+        public async Task UpdateAsync(int id, Record item)
         {
-            var itemToUpdate = await GetQueryAll()
+            var itemToUpdate = await GetAllInternal()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToUpdate != null)
@@ -89,12 +86,22 @@ namespace SA.EntityFramework.EntityFramework.Repository
             }
         }
 
-        public IQueryable<Record> GetQueryAll()
+        public IQueryable<Record> GetAllInternal()
             => _context.Records.AsQueryable();
 
         private IQueryable<Record> GetRecordsInternal()
-            => GetQueryAll()
+            => GetAllInternal()
                 .Include(x => x.User)
                 .Include(x => x.Customer);
+
+        public async Task<IEnumerable<Record>> GetAllAsync(Expression<Func<Record, bool>> query = null)
+            => await
+                (query != null
+                    ? GetRecordsInternal().Where(query)
+                    : GetRecordsInternal())
+                .ToListAsync();
+
+        public Task<Record> GetOneAsync(Expression<Func<Record, bool>> query)
+            => GetRecordsInternal().FirstOrDefaultAsync(query);
     }
 }

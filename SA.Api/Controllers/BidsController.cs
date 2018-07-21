@@ -1,11 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
 
 namespace SA.Api.Controllers
 {
+    [EnableCors("SA")]
     [Route("api/Bids")]
     public class BidsController : BaseController<Bid>
     {
@@ -15,13 +17,13 @@ namespace SA.Api.Controllers
         [Authorize("read:messages")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
-            => Ok(await _repository.GetAll());
+            => Ok(await _repository.GetAllAsync());
 
         [Authorize("read:messages")]
         [HttpGet("{price}", Name = "FindBids")]
         public async Task<IActionResult> FindByEmail(string price)
         {
-            var items = await _repository.Find(price);
+            var items = await _repository.FindAsync(price);
             if (items == null)
             {
                 return NotFound();
@@ -37,7 +39,7 @@ namespace SA.Api.Controllers
             {
                 return BadRequest();
             }
-            await _repository.Update(id, item);
+            await _repository.UpdateAsync(id, item);
             return NoContent();
         }
 
@@ -50,7 +52,7 @@ namespace SA.Api.Controllers
                 return BadRequest();
             }
 
-            await _repository.Add(item);
+            await _repository.AddAsync(item);
             return CreatedAtRoute("FindBids", new { Controller = "Bids", name = item.Price }, item);
         }
     }

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { ActionTree } from 'vuex';
 import {
     RootState,
@@ -10,28 +11,29 @@ import { Country } from '@/model';
 import {
     SETTINGS_INITIAL_STATE,
     SETTINGS_CHANGE_LANG,
+    SETTINGS_LOAD_COUNTRIES,
 } from '@/store/mutation-types';
 
 import { Translator } from '@/lang';
-import { SettingsService } from '@/services';
-
-const service: SettingsService = new SettingsService();
 
 const actions: ActionTree<SettingsState, RootState> = {
     /**
      * Initial state of Settings object
      * @param param - commit
      */
-    initialState({ state, commit }): Promise<boolean> {
+    initialState({ state, commit, rootState, dispatch }): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
             if (!state.language) {
                 const res: Dictionary<string> = Translator.setResource('');
-                return service.getCountries('cs').then((countries) => {
-                    commit(SETTINGS_INITIAL_STATE, { res, countries });
+                commit(SETTINGS_INITIAL_STATE, res);
+                dispatch('loadCountries').then((countries) => {
                     return resolve(true);
+                })
+                .catch((error) => {
+                    return resolve(false);
                 });
             }
-            return resolve(false);
+            return resolve(true);
         });
     },
     /**
@@ -39,23 +41,36 @@ const actions: ActionTree<SettingsState, RootState> = {
      * @param param - commit
      * @param language - new language value
      */
-    changeLanguage({commit }, language: string): Promise<boolean> {
+    changeLanguage({commit, rootState }, language: string): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
-            return service.getCountries(language).then((countries) => {
-                const res: Dictionary<string> = Translator.setResource(language);
-                commit(SETTINGS_CHANGE_LANG, { language, res, countries });
-                return resolve(true);
-            });
-
+            const res: Dictionary<string> = Translator.setResource(language);
+            return axios.get(`${rootState.settings.apiUrl}/settings/countries?lang=${language}`)
+                    .then((response) => {
+                        const countries: Country[] = response.data as Country[];
+                        commit(SETTINGS_CHANGE_LANG, { language, res, countries });
+                        return resolve(true);
+                    })
+                    .catch((error) => {
+                        return resolve(false);
+                    });
         });
     },
     /**
      * Load countries
      * @param param - state
      */
-    loadCountries({state}): Promise<Country[]> {
-        return service.getCountries(state.language).then((response) => {
-            return response;
+    loadCountries({commit, rootState}): Promise<Dictionary<Country[]>> {
+        const lang: string = rootState.settings.language;
+        return new Promise<Dictionary<Country[]>>((resolve) => {
+            return axios.get(`${rootState.settings.apiUrl}/settings/countries?lang=${lang}`)
+                .then((response) => {
+                    const countries: Dictionary<Country[]> = response.data as Dictionary<Country[]>;
+                    commit(SETTINGS_LOAD_COUNTRIES, countries);
+                    return resolve(countries);
+                })
+                .catch((error) => {
+                    return error;
+                });
         });
     },
 };

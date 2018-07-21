@@ -17,6 +17,13 @@ const getters: GetterTree<SettingsState, RootState> = {
     getCountries(state) {
         return state.countries;
     },
+    /**
+     * Get api url
+     * @param state Settings state
+     */
+    getApiUrl(state) {
+        return state.apiUrl;
+    },
 };
 
 export default getters;

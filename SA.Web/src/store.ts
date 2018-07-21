@@ -8,6 +8,7 @@ import {
   auth,
   settings,
   record,
+  error,
 } from '@/store/modules';
 
 Vue.use(Vuex);
@@ -27,12 +28,14 @@ const store: StoreOptions<RootState> = {
     auth: undefined,
     profile: undefined,
     record: undefined,
+    error: undefined,
   },
   modules: {
     profile, // my own Store state hook up as a module
     auth,
     settings,
     record,
+    error,
   },
   plugins: [vuexLocal.plugin], // vuex in localStorage as a plugin
 };

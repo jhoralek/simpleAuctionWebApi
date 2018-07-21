@@ -1,12 +1,7 @@
 import {
     User,
-    Customer,
-    Address,
     Country,
     Record,
-    File,
-    FileShort,
-    Bid,
 } from '@/model';
 
 /**
@@ -18,6 +13,7 @@ export interface RootState {
     auth: AuthState;
     profile: ProfileState;
     record: RecordState;
+    error: ErrorState;
 }
 /**
  * User state
@@ -30,11 +26,12 @@ export interface ProfileState {
  * Used for authentication
  */
 export interface AuthState {
-    login?: LoginUser;
     userName: string;
     token: string;
+    language: string;
     isAuthenticated: boolean;
     error: boolean;
+    errorMessage: string;
 }
 /**
  * Default settings off webpage
@@ -43,6 +40,7 @@ export interface SettingsState {
     language: string;
     resource: Dictionary<string>;
     countries: Dictionary<Country[]>;
+    apiUrl: string;
 }
 /**
  * Record state
@@ -52,17 +50,15 @@ export interface RecordState {
     records: Record[];
     error: boolean;
 }
+
+/**
+ * Error state
+ */
+export interface ErrorState {
+    error: boolean;
+    message: string;
+}
+
 export interface Dictionary<T> {
     [key: string]: T;
 }
-/**
- * This profile is used only for auth and
- * education purposes in this app
- *
- * It's depricated
- */
-export interface LoginUser {
-    userName: string;
-    password: string;
-}
-

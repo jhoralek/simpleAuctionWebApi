@@ -9,6 +9,7 @@ export const state: SettingsState = {
     language: undefined,
     resource: undefined,
     countries: undefined,
+    apiUrl: undefined,
 };
 
 const namespaced: boolean = true;
