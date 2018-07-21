@@ -63,7 +63,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "4eb13b34deb74a324503"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "4c90e5a5af0fb4ea3ea0"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -57564,14 +57564,11 @@ var store = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es6.promise */ "./node_modules/core-js/modules/es6.promise.js");
-/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _store_mutation_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/store/mutation-types */ "./src/store/mutation-types.ts");
-/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/services */ "./src/services/index.ts");
+/* harmony import */ var _store_mutation_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/store/mutation-types */ "./src/store/mutation-types.ts");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/services */ "./src/services/index.ts");
 
 
-
-var service = new _services__WEBPACK_IMPORTED_MODULE_2__["AuthService"]();
+var service = new _services__WEBPACK_IMPORTED_MODULE_1__["AuthService"]();
 var actions = {
   /**
    * Login user
@@ -57582,7 +57579,7 @@ var actions = {
   loginUser: function loginUser(_ref, login) {
     var commit = _ref.commit;
     return service.login(login.userName, login.password).then(function (user) {
-      commit(_store_mutation_types__WEBPACK_IMPORTED_MODULE_1__["AUTH_LOGIN_USER"], {
+      commit(_store_mutation_types__WEBPACK_IMPORTED_MODULE_0__["AUTH_LOGIN_USER"], {
         login: login,
         user: user
       });
@@ -57596,7 +57593,7 @@ var actions = {
    */
   logoutUser: function logoutUser(_ref2) {
     var commit = _ref2.commit;
-    commit(_store_mutation_types__WEBPACK_IMPORTED_MODULE_1__["AUTH_LOGOUT_USER"]);
+    commit(_store_mutation_types__WEBPACK_IMPORTED_MODULE_0__["AUTH_LOGOUT_USER"]);
   },
 
   /**
@@ -57605,7 +57602,7 @@ var actions = {
    */
   initialState: function initialState(_ref3) {
     var commit = _ref3.commit;
-    commit(_store_mutation_types__WEBPACK_IMPORTED_MODULE_1__["AUTH_INITIAL_STATE"]);
+    commit(_store_mutation_types__WEBPACK_IMPORTED_MODULE_0__["AUTH_INITIAL_STATE"]);
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (actions);
