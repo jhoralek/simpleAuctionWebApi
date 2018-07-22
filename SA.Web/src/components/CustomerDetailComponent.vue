@@ -1,6 +1,5 @@
 <template>
-  <div class="customerDetail" v-if="isLoaded">
-    <h2>{{ resx('customer') }}</h2>
+  <div class="customerDetail" v-if="customer">
     <v-container>
       <v-form lazy-validation>
         <v-text-field
@@ -74,7 +73,6 @@
             </v-date-picker>
           </v-dialog>
         </v-flex>
-        <AddressComponent />
       </v-form>
     </v-container>
   </div>
@@ -82,27 +80,15 @@
 
 <script lang="ts">
 
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Prop } from 'vue-property-decorator';
 import { State, Getter } from 'vuex-class';
-import { SettingsState } from '@/store/types';
-import AddressComponent from './AddressComponent.vue';
+
+import BaseComponent from './BaseComponent.vue';
 import { Customer } from '@/model';
 
-const namespaceProfile: string = 'profile';
-const namespaceSettings: string = 'settings';
-
-@Component({
-  components: {
-    AddressComponent,
-  },
-})
-export default class CustomerDetailComponent extends Vue {
-
-  @State('settings') public settings: SettingsState;
-
-  @Getter('getTranslate', { namespace: namespaceSettings }) public resx: string;
-  @Getter('getUsersCustomer', { namespace: namespaceProfile }) public customer: Customer;
-  @Getter('isCustomerLoaded', { namespace: namespaceProfile }) public isLoaded: boolean;
+@Component({})
+export default class CustomerDetailComponent extends BaseComponent {
+  @Prop({default: undefined}) public customer: Customer;
 
   private dateModal: boolean = false;
 

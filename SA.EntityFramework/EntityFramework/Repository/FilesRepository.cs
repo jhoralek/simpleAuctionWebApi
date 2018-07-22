@@ -70,5 +70,8 @@ namespace SA.EntityFramework.EntityFramework.Repository
 
         public Task<File> GetOneAsync(Expression<Func<File, bool>> query)
             => GetAllInternal().FirstOrDefaultAsync(query);
+
+        public async Task<IEnumerable<File>> GetAllSimpleAsync(Expression<Func<File, bool>> query = null)
+           => await GetAllAsync(query);
     }
 }

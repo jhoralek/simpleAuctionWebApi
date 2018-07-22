@@ -4,6 +4,7 @@
             <v-dialog class="login-dialog-container" v-model="openedModal" persistent max-width="500px">
                 <v-btn class="login-button" slot="activator" flat>{{ resx('login') }}</v-btn>
                 <v-card>
+                    <v-progress-linear v-if="isLoging" :indeterminate="isLoging"></v-progress-linear>
                     <v-form lazy-validation>
                         <v-card-title>
                             <span class="headline">{{ resx('login') }}</span>
@@ -78,6 +79,7 @@ export default class LoginFormComponent extends BaseComponent {
     private openedModal: boolean = false;
     private userName: string = '';
     private password: string = '';
+    private isLoging: boolean = false;
 
     // this is because I cannot pass getter function to the component props
     // so I need to create computed props. They can be used in component props
@@ -102,6 +104,7 @@ export default class LoginFormComponent extends BaseComponent {
     }
 
     public submit() {
+        this.isLoging = true;
         this.login({
             userName: this.userName,
             password: this.password,
@@ -110,6 +113,7 @@ export default class LoginFormComponent extends BaseComponent {
                 this.openedModal = !this.auth.isAuthenticated;
                 this.langChange(this.auth.language);
             }
+            this.isLoging = false;
         });
     }
 

@@ -1,6 +1,5 @@
 <template>
-  <div class="customerDetail" v-if="isLoaded">
-    <h2>{{ resx('address') }}</h2>
+  <div class="address" v-if="address">
     <v-container>
         <v-text-field
           v-model="address.street"
@@ -25,22 +24,18 @@
 
 <script lang="ts">
 
-import { Component } from 'vue-property-decorator';
-import { State, Getter } from 'vuex-class';
-import { SettingsState } from '@/store/types';
+import { Component, Prop } from 'vue-property-decorator';
+import { Getter, namespace } from 'vuex-class';
 
-import { Address, Country} from '@/model';
+import { Address, Country } from '@/model';
 import BaseComponent from './BaseComponent.vue';
 
-const namespaceProfile: string = 'profile';
-const namespaceSettings: string = 'settings';
+const SettingsGetter = namespace('settings', Getter);
 
 @Component({})
 export default class CustomerDetailComponent extends BaseComponent {
-
-  @Getter('getCustomersAddress', { namespace: namespaceProfile }) public address: Address;
-  @Getter('isCustomerLoaded', { namespace: namespaceProfile }) public isLoaded: boolean;
-  @Getter('getCountries', { namespace: namespaceSettings }) public countries: Country[];
+  @Prop({default: undefined}) public address: Address;
+  @SettingsGetter('getCountries') public countries: Country[];
 
   private dateModal: boolean = false;
 

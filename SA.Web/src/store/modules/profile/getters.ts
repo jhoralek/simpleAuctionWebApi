@@ -25,6 +25,14 @@ const getters: GetterTree<ProfileState, RootState> = {
         return customer;
     },
     /**
+     * Get customer's full name
+     * @param state Profile state
+     */
+    getCustomersFullName(state): string {
+        const { customer } = state.user && state.user;
+        return `${customer.firstName} ${customer.lastName}`;
+    },
+    /**
      * Get customers address
      * @param state - Store state
      */

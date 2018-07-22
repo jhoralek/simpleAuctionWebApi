@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <v-progress-linear v-if="isLoading" :indeterminate="isLoading"></v-progress-linear>
     <v-app v-if="settings.language">
       <v-toolbar>
         <v-toolbar-title>{{ resx('auctionHall') }}</v-toolbar-title>
@@ -101,11 +102,13 @@ export default class App extends Vue {
   @SettingsAction('changeLanguage') public setLang: any;
   @MessageAction('initialState') public initMessage: any;
 
+  private isLoading: boolean = false;
   /**
    * When app is mounted, then initialize stores
    * and restore auth when is available
    */
   public mounted() {
+    this.isLoading = true;
     this.initMessage().then((response) => {
       this.initSettings().then((settings) => {
         this.initProfile().then((x) => {
@@ -114,6 +117,7 @@ export default class App extends Vue {
           } else {
             this.initAuth();
           }
+          this.isLoading = false;
         });
       });
     });

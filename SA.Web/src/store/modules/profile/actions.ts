@@ -5,7 +5,7 @@ import {
     ProfileState,
 } from '@/store/types';
 
-import { User } from '@/model';
+import { User, MessageStatusEnum } from '@/model';
 import { UserShortInfo } from '@/poco';
 
 import {
@@ -22,6 +22,30 @@ const actions: ActionTree<ProfileState, RootState> = {
         return new Promise<boolean>((resolve) => {
             commit(USER_INITIAL_STATE);
             return resolve(true);
+        });
+    },
+    loadLoggedUser({ commit, rootState, dispatch }): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            const { auth } = rootState;
+            return axios.get(
+                `${rootState.settings.apiUrl}/users/loadByNameAndToken?uName=${auth.userName}&token=${auth.token}`,
+                { headers: { authorization: auth.token }})
+                .then((response) => {
+                    const user: User = response.data as User;
+                    commit(USER_CHANGE, user);
+                    resolve(true);
+                })
+                .catch((error) => {
+                    dispatch('message/change', {
+                        mod: 'Profile',
+                        message: {
+                            state: MessageStatusEnum.Error,
+                            message: error,
+                        },
+                    },
+                    { root: true });
+                    resolve(false);
+                });
         });
     },
     /**

@@ -73,5 +73,8 @@ namespace SA.EntityFramework.EntityFramework.Repository
 
         public Task<Address> GetOneAsync(Expression<Func<Address, bool>> query)
             => GetAllAddressInternal().FirstOrDefaultAsync(query);
+
+        public async Task<IEnumerable<Address>> GetAllSimpleAsync(Expression<Func<Address, bool>> query = null)
+            => await GetAllAsync(query);
     }
 }

@@ -61,11 +61,9 @@ namespace SA.EntityFramework.EntityFramework.Repository
 
         public IQueryable<User> GetAllUserInternal()
             => _context.Users
-                .Include(x => x.Bids)
                 .Include(x => x.Customer)
                 .Include(x => x.Customer.Address)
-                .Include(x => x.Customer.Address.Country)
-                .Include(x => x.Records);
+                .Include(x => x.Customer.Address.Country);
 
         public async Task<IEnumerable<User>> GetAllAsync(Expression<Func<User, bool>> query = null)
              => await
@@ -76,5 +74,11 @@ namespace SA.EntityFramework.EntityFramework.Repository
 
         public Task<User> GetOneAsync(Expression<Func<User, bool>> query)
             => GetAllUserInternal().FirstOrDefaultAsync(query);
+
+        public async Task<IEnumerable<User>> GetAllSimpleAsync(Expression<Func<User, bool>> query = null)
+           => await(query != null
+                        ? GetAllInternal().Where(query)
+                        : GetAllInternal())
+                    .ToListAsync();
     }
 }

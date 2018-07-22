@@ -62,5 +62,11 @@ namespace SA.Api.Controllers
             await _repository.AddAsync(item);
             return CreatedAtRoute("FindRecords", new { Controller = "Records", name = item.Name }, item);
         }
+
+        [Authorize("read:messages")]
+        [HttpGet("{id}")]
+        [Route("allActiveWithUsersBids")]
+        public ActionResult AllActiveWithUsersBids(int id)
+            => Json( _recordService.GetAllForCustomerMinimum(id));
     }
 }

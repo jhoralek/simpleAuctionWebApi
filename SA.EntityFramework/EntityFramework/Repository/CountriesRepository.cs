@@ -71,5 +71,8 @@ namespace SA.EntityFramework.EntityFramework.Repository
 
         public Task<Country> GetOneAsync(Expression<Func<Country, bool>> query)
             => GetAllInternal().FirstOrDefaultAsync(query);
+
+        public async Task<IEnumerable<Country>> GetAllSimpleAsync(Expression<Func<Country, bool>> query = null)
+           => await GetAllAsync(query);
     }
 }

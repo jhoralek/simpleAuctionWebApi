@@ -17,7 +17,7 @@ const getters: GetterTree<SettingsState, RootState> = {
      * @param state - Settings state
      */
     getCountries(state) {
-        return state.countries;
+        return state.countries[state.language];
     },
     /**
      * Get api url

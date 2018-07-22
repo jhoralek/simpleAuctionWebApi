@@ -1,6 +1,5 @@
 <template>
   <div class="userDetailForm" v-if="user">
-    <h2>{{ resx('user') }}</h2>
     <v-container>
       <v-form lazy-validation>
         <v-text-field
@@ -34,24 +33,17 @@
 
 <script lang="ts">
 
-import { Component, Vue } from 'vue-property-decorator';
-import { State, Getter } from 'vuex-class';
+import { Component, Prop } from 'vue-property-decorator';
 
 import { SettingsState } from '@/store/types';
 import { User } from '@/model';
+import BaseComponent from './BaseComponent.vue';
 
 import { Translator } from '@/lang';
-import { Transform } from 'stream';
-
-const namespaceProfile: string = 'profile';
-const namespaceSettings: string = 'settings';
 
 @Component({})
-export default class UserDetailComponent extends Vue {
-  @State('settings') public settings: SettingsState;
-
-  @Getter('getTranslate', { namespace: namespaceSettings }) public resx: string;
-  @Getter('getUser', { namespace: namespaceProfile }) public user: User;
+export default class UserDetailComponent extends BaseComponent {
+  @Prop({ default: undefined }) public user: User;
 
   get labelUserName(): string {
     return this.settings.resource.userName;
