@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,12 @@ namespace SA.Api.Controllers
         [Authorize("read:messages")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
-                => Ok(await _recordService.GetAllPublished());
+                => Json(await _recordService.GetAllPublished());
+        
+        [HttpGet]
+        [Route("getAllActiveForList")]
+        public async Task<IActionResult> GetAllActiveForList()
+            => Json(await _recordService.GetAllActiveForList());
 
         [Authorize("read:messages")]
         [HttpGet("{name}", Name = "FindRecords")]

@@ -27,17 +27,26 @@ const actions: ActionTree<RecordState, RootState> = {
     /**
      * Load all active records
      */
-    loadAllActive({commit, rootState}): Promise<Record[]> {
-        return axios.get(`${rootState.settings.apiUrl}/records`)
-            .then((response) => {
-                const records: Record[] = response.data as Record[];
+    loadAllActive({commit, rootState, dispatch}): Promise<boolean> {
+        return new Promise<boolean> ((resolve) => {
+            return axios.get(
+                `${rootState.settings.apiUrl}/records/getAllActiveForList`)
+                .then((response) => {
+                    const records: Record[] = response.data as Record[];
 
-                commit(RECORD_CHANGE_LIST_STATE, records);
-                return records;
-            })
-            .catch((error) => {
-                return error;
-            });
+                    commit(RECORD_CHANGE_LIST_STATE, records);
+                    return resolve(true);
+                })
+                .catch((error) => {
+                    dispatch('message/change', {
+                        mod: 'Record',
+                        message: {
+                            state: MessageStatusEnum.Error,
+                            message: error,
+                        },
+                    });
+                });
+        });
     },
     /**
      * Get record detail by id
@@ -63,7 +72,7 @@ const actions: ActionTree<RecordState, RootState> = {
         return new Promise<boolean>((resolve) => {
             return axios.get(
                 `${rootState.settings.apiUrl}/records/allActiveWithUsersBids?id=${id}`,
-                { headers: { authorization: rootState.profile.user.token } })
+                { headers: { authorization: rootState.auth.token } })
                 .then((response) => {
                     const recods: Record[] = response.data as Record[];
                     commit(RECORD_CHANGE_LIST_STATE, recods);
@@ -88,7 +97,7 @@ const actions: ActionTree<RecordState, RootState> = {
     getActualPrice({rootState, dispatch}, id: number): Promise<number> {
         return new Promise<number>((resolve) => {
             return axios.get(`${rootState.settings.apiUrl}/bids/getActualPrice?id=${id}`,
-            { headers: { authorization: rootState.profile.user.token } })
+            { headers: { authorization: rootState.auth.token } })
                 .then((response) => {
                     return resolve(response.data as number);
                 })

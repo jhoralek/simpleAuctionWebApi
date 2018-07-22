@@ -1,61 +1,81 @@
 <template>
-  <div class="auction" v-if="all">
-    <v-container fluid>
-      <h1>{{ resx('auctions') }}</h1>
-      <v-container fluid v-for="(rec, index) in recordsPerPage" :key="index">
-        <RecordComponent :record="rec" :is-list-detail="true" />
-      </v-container>
-      <div class="text-xs-center" v-if="recordLength > 1">
-        <v-pagination :length="recordLength" v-model="page" :total-visible="7"></v-pagination>
-      </div>
+  <div class="auction">
+    <v-progress-linear v-if="isLoading" :indeterminate="isLoading"></v-progress-linear>
+    <v-container v-if="records">
+      <v-layout>
+        <v-flex xs12>
+          <section grid-list-md class="page-head">
+            <v-flex xs8 md6>
+              <h1 class="display-1 primary--text">{{ resx('auctions') }}</h1>
+            </v-flex>
+            <v-flex xs4 md6>
+              <v-switch
+                v-model="viewType"
+                :label="`${getViewType ? resx('table'): resx('grid')}`" />
+            </v-flex>
+          </section>
+          <section>
+            <v-layout mb-5 row wrap>
+              <v-flex xs12>
+                <v-container pa-0 fluid grid-list-md>
+                  <AuctionTableComponent :records="records" v-if="getViewType" />
+                  <AuctionGridComponent :records="records" v-if="getViewType === false" />
+                </v-container>
+              </v-flex>
+            </v-layout>
+          </section>
+        </v-flex>
+      </v-layout>
     </v-container>
   </div>
 </template>
 
 <script lang="ts">
 
-import Component from 'vue-class-component';
-import { Action, Getter } from 'vuex-class';
+import { Component, Prop } from 'vue-property-decorator';
+import { Action, Getter, namespace } from 'vuex-class';
+import { log } from 'util';
 
-import BaseView from '@/views/BaseView.vue';
 import { Record } from '@/model';
-import RecordComponent from '@/components/RecordComponent.vue';
+import BaseView from '@/views/BaseView.vue';
+import {
+  AuctionTableComponent,
+  AuctionGridComponent,
+} from '@/components';
 
-const namespace: string = 'record';
+const RecordAction = namespace('record', Action);
+const RecordGetter = namespace('record', Getter);
+const SettingsAction = namespace('settings', Action);
+const SettingsGetter = namespace('settings', Getter);
 
 @Component({
   components: {
-    RecordComponent,
+    AuctionTableComponent,
+    AuctionGridComponent,
   },
 })
 export default class Auction extends BaseView {
-    @Getter('getRecords', { namespace }) public all: Record[];
-    @Action('loadAllActive', { namespace }) public loadAll: any;
-    @Action('initialState', { namespace }) public init: any;
 
-    public page: number = 1;
-    private itemPerPage: number = 2;
+  @RecordGetter('getRecords') private records: Record[];
+  @RecordAction('loadAllActive') private loadRecords: any;
+  @SettingsAction('changeDataViewType') private changeViewType: any;
+  @SettingsGetter('getDataViewType') private getViewType: boolean;
 
-    public mounted() {
-      this.init().then((initialized) => {
-        if (initialized) {
-          this.loadAll();
-        }
-      });
-    }
+  private isLoading: boolean = true;
 
-    get recordLength(): number {
-      return this.all.length > 0
-        ? Math.ceil(this.all.length / this.itemPerPage)
-        : 0;
-    }
+  private mounted() {
+    this.loadRecords().then((response) => {
+      this.isLoading = false;
+    });
+  }
 
-    get recordsPerPage(): Record[] {
-      const from: number  = (this.page * this.itemPerPage) - this.itemPerPage;
-      const to: number = this.page * this.itemPerPage;
+  get viewType(): boolean {
+    return this.getViewType;
+  }
 
-      return this.all.slice(from, to);
-    }
+  set viewType(type: boolean) {
+    this.changeViewType(type);
+  }
 }
 
 </script>

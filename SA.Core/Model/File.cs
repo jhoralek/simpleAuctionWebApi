@@ -25,6 +25,6 @@ namespace SA.Core.Model
         [Required]
         public virtual int RecordId { get; set; }
 
-        public virtual Record Record { get; set; }
+        public Record Record { get; set; }
     }
 }

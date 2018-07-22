@@ -6,6 +6,8 @@ import RecordComponent from './RecordComponent.vue';
 import MessageComponent from './MessageComponent.vue';
 import AddressComponent from './AddressComponent.vue';
 import AuctionSummaryComponent from './AuctionSummaryComponent.vue';
+import AuctionTableComponent from './AuctionTableComponent.vue';
+import AuctionGridComponent from './AuctionGridComponent.vue';
 
 export {
     LoginFormComponent,
@@ -16,4 +18,6 @@ export {
     MessageComponent,
     AddressComponent,
     AuctionSummaryComponent,
+    AuctionTableComponent,
+    AuctionGridComponent,
 };

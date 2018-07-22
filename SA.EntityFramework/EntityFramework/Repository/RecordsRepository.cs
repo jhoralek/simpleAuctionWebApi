@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace SA.EntityFramework.EntityFramework.Repository
 {
@@ -13,7 +15,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
         private readonly SaDbContext _context;
         public RecordsRepository(SaDbContext context)
         {
-            _context = context;
+            _context = context;            
         }
 
         public async Task AddAsync(Record item)
@@ -92,7 +94,9 @@ namespace SA.EntityFramework.EntityFramework.Repository
         private IQueryable<Record> GetRecordsInternal()
             => GetAllInternal()
                 .Include(x => x.User)
-                .Include(x => x.Customer);
+                .Include(x => x.Customer)
+                .Include(x => x.Bids)
+                .Include(x => x.Files);
 
         public async Task<IEnumerable<Record>> GetAllAsync(Expression<Func<Record, bool>> query = null)
             => await
@@ -109,5 +113,9 @@ namespace SA.EntityFramework.EntityFramework.Repository
                         ? GetAllInternal().Where(query)
                         : GetAllInternal())
                     .ToListAsync();
+
+        public async Task<IEnumerable<TResult>> GetAllProjectToAsync<TResult>(Expression<Func<Record, bool>> query = null) 
+            where TResult : class
+            => await GetAllInternal().Where(query).ProjectTo<TResult>().ToListAsync();            
     }
 }

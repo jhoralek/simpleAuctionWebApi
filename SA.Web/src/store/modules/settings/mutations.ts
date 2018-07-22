@@ -12,6 +12,7 @@ const mutations: MutationTree<SettingsState> = {
         state.resource = res;
         state.countries = undefined;
         state.apiUrl = 'http://localhost:58131/api';
+        state.tableView = true;
     },
     /**
      * Change language
@@ -34,6 +35,14 @@ const mutations: MutationTree<SettingsState> = {
      */
     SETTINGS_LOAD_COUNTRIES(state, countries) {
         state.countries = countries;
+    },
+    /**
+     * Mutate setup of data view
+     * @param state Settings state
+     * @param tableView True - tableView / False - gridView
+     */
+    SETTINGS_CHAGE_DATA_VIEW(state, tableView) {
+        state.tableView = tableView;
     },
 };
 

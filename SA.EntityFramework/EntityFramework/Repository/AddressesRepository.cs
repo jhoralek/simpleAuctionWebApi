@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using SA.Core.Model;
 using System;
 using System.Collections.Generic;
@@ -76,5 +77,9 @@ namespace SA.EntityFramework.EntityFramework.Repository
 
         public async Task<IEnumerable<Address>> GetAllSimpleAsync(Expression<Func<Address, bool>> query = null)
             => await GetAllAsync(query);
+
+        public async Task<IEnumerable<TResult>> GetAllProjectToAsync<TResult>(Expression<Func<Address, bool>> query = null) where TResult : class
+            => await GetAllAddressInternal().Where(query).ProjectTo<TResult>().ToListAsync();
+            
     }
 }

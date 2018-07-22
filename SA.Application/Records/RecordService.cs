@@ -39,7 +39,7 @@ namespace SA.Application.Records
                     Id = x.Id,
                     Name = x.Name,
                     ValidTo = x.ValidTo,
-                    CurrentPrice = x.Bids.Max(y => y.Price)
+                    CurrentPrice = x.Bids.Any() ? x.Bids.Max(y => y.Price) : x.StartingPrice
                 })
                 .AsEnumerable();
 
@@ -55,15 +55,24 @@ namespace SA.Application.Records
                     && x.ValidTo >= now);
         }
 
+        public async Task<IEnumerable<RecordTableDto>> GetAllActiveForList()
+        {
+            var now = DateTime.Now;
+            var items = await _recordRepository
+                .GetAllProjectToAsync<RecordTableDto>(x => x.IsActive
+                    && x.ValidFrom <= now
+                    && x.ValidTo >= now);
+            
+            return items;
+        }
+
         public async Task<IEnumerable<Record>> GetAllUsersActiveWithBids(int id)
         {
             var bids = await _bidRepository.GetAllSimpleAsync(x => x.UserId == id);
             var recordIds = bids.Select(x => x.RecordId);
 
-            var items = await _recordRepository
-                .GetAllSimpleAsync(x => x.IsActive && recordIds.Contains(x.Id));
-
-            return items;
+            return await _recordRepository
+                .GetAllSimpleAsync(x => x.IsActive && recordIds.Contains(x.Id));            
         }
 
         public async Task<Record> GetById(int id)

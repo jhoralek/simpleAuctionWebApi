@@ -39,4 +39,5 @@ export default interface Record {
     bids?: Bid[];
     id?: number;
     currentPrice: number;
+    numberOfBids: number;
 }

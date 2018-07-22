@@ -9,7 +9,7 @@
             class="elevation-1">
             <template slot="items" slot-scope="props">
                 <td>{{ props.item.name }}</td>
-                <td>{{ props.item.validTo | moment('DD.MM.YYYY') }}</td>
+                <td>{{ props.item.validTo | moment('DD.MM.YYYY HH:mm') }}</td>
                 <td>{{ props.item.currentPrice }}</td>
                 <td>
                     <v-icon

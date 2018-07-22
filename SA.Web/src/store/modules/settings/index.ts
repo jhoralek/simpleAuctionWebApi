@@ -10,6 +10,7 @@ export const state: SettingsState = {
     resource: undefined,
     countries: undefined,
     apiUrl: undefined,
+    tableView: true,
 };
 
 const namespaced: boolean = true;
