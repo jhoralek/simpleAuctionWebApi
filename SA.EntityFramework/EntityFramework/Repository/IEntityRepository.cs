@@ -10,6 +10,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
     {
         Task AddAsync(T item);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> query = null);
+        Task<IEnumerable<T>> GetAllSimpleAsync(Expression<Func<T, bool>> query = null);
         Task<T> GetOneAsync(Expression<Func<T, bool>> query);
         Task<IEnumerable<T>> FindAsync(string key);
         Task<T> GetByIdAsync(int id);

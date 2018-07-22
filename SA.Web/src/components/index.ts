@@ -3,6 +3,9 @@ import UserDetailComponent from './UserDetailComponent.vue';
 import CustomerDetailComponent from './CustomerDetailComponent.vue';
 import LanguageComponent from './LanguageComponent.vue';
 import RecordComponent from './RecordComponent.vue';
+import MessageComponent from './MessageComponent.vue';
+import AddressComponent from './AddressComponent.vue';
+import AuctionSummaryComponent from './AuctionSummaryComponent.vue';
 
 export {
     LoginFormComponent,
@@ -10,4 +13,7 @@ export {
     CustomerDetailComponent,
     LanguageComponent,
     RecordComponent,
+    MessageComponent,
+    AddressComponent,
+    AuctionSummaryComponent,
 };

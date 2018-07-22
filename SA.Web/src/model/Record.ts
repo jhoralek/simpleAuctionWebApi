@@ -1,5 +1,5 @@
-import { FuelEnum } from './FuelEnum';
-import { User, FileShort } from '@/model';
+import { FuelEnum } from '@/model/FuelEnum';
+import { User, FileShort, Bid } from '@/model';
 
 export default interface Record {
     isActive: boolean;
@@ -36,5 +36,7 @@ export default interface Record {
     mostTechnicallyWeighOfRide?: string; // nejvetsi technicky pripustna hmotnost jizdni soupravy
     maximumWeightOfRide?: string; // nejvetsi povolena hmotnost jizdni soupravy
     files?: FileShort[];
+    bids?: Bid[];
     id?: number;
+    currentPrice: number;
 }

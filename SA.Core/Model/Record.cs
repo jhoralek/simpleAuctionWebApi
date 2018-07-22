@@ -157,5 +157,7 @@ namespace SA.Core.Model
         public virtual Customer Customer { get; set; }
 
         public virtual ICollection<File> Files { get; set; } = new List<File>();
+
+        public virtual ICollection<Bid> Bids { get; set; } = new List<Bid>();
     }
 }

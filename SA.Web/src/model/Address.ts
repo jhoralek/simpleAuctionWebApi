@@ -1,4 +1,4 @@
-import Country from './Country';
+import Country from '@/model/Country';
 
 export default interface Address {
     street: string;

@@ -82,5 +82,11 @@ namespace SA.EntityFramework.EntityFramework.Repository
 
         public Task<Customer> GetOneAsync(Expression<Func<Customer, bool>> query)
             => GetCustomersInternal().FirstOrDefaultAsync(query);
+
+        public async Task<IEnumerable<Customer>> GetAllSimpleAsync(Expression<Func<Customer, bool>> query = null)
+           => await (query != null
+                        ? GetAllInternal().Where(query)
+                        : GetAllInternal())
+                    .ToListAsync();
     }
 }

@@ -7,6 +7,7 @@ export class Translator {
         'en',
         'de',
         'ru',
+        'sk',
     ];
     /**
      * Set resource
@@ -22,6 +23,8 @@ export class Translator {
                 return this.de;
             case 'ru':
                 return this.ru;
+            case 'sk':
+                return this.sk;
             default:
                 return this.cs;
         }
@@ -30,9 +33,12 @@ export class Translator {
     private static cs: Dictionary<string> = {
         about: 'O nás',
         address: 'Adresa',
+        action: 'Akce',
         active: 'Aktivní',
         auctions: 'Aukce',
         auctionHall: 'Aukční síň',
+        actualPrice: 'Aktuální cena',
+        bids: 'Příhozy',
         birthNumber: 'Rodné číslo',
         cancel: 'Zrušit',
         city: 'Město',
@@ -45,6 +51,7 @@ export class Translator {
         customerDetail: 'Detail zákazníka',
         dealer: 'Prodávající',
         email: 'Email',
+        end: 'Konec',
         faq: 'Otázky a odpovědi',
         feeExpirationDate: 'Datum vypršení poplatku',
         firstName: 'Jméno',
@@ -55,6 +62,7 @@ export class Translator {
         link: 'Odkaz',
         login: 'Přihlásit se',
         logout: 'Odhlásit',
+        name: 'Název',
         news: 'Novinky',
         ok: 'OK',
         password: 'Heslo',
@@ -70,8 +78,10 @@ export class Translator {
         titleAfter: 'Titul za',
         titleBefore: 'Titul před',
         user: 'Uživatel',
+        userLoggedInSuccessfully: 'Úspěšně přihlášen.',
+        userLoggedOutSuccessfully: 'Úspěšně odhlášen.',
         userName: 'Uživatelské jméno',
-        UserNotAuthenticated: 'Špatné jméno nebo heslo!',
+        userNotAuthenticated: 'Špatné jméno nebo heslo!',
         validation_min_chars: 'Minimum znaků {0}',
         webPageUrl: 'URL webových stránek',
     };
@@ -80,8 +90,11 @@ export class Translator {
         about: 'About',
         address: 'Address',
         active: 'Active',
+        action: 'Action',
         auctions: 'Auctions',
         auctionHall: 'Auction hall',
+        actualPrice: 'Current price',
+        bids: 'Bids',
         birthNumber: 'Birth number',
         cancel: 'Cancel',
         city: 'City',
@@ -94,6 +107,7 @@ export class Translator {
         customerDetail: 'Customer\'s detail',
         dealer: 'Dealer',
         email: 'Email',
+        end: 'End',
         faq: 'FAQ',
         feeExpirationDate: 'Fee expiration date',
         firstName: 'First name',
@@ -104,6 +118,7 @@ export class Translator {
         link: 'Link',
         login: 'Login',
         logout: 'Logout',
+        name: 'Name',
         news: 'News',
         ok: 'OK',
         password: 'Password',
@@ -119,11 +134,15 @@ export class Translator {
         titleAfter: 'Prefix',
         titleBefore: 'Postfix',
         user: 'User',
+        userLoggedInSuccessfully: 'Successfully logged in.',
+        userLoggedOutSuccessfully: 'Logged out successfully.',
         userName: 'User name',
-        UserNotAuthenticated: 'Wrong user name or password!',
+        userNotAuthenticated: 'Wrong user name or password!',
         validation_min_chars: 'At least {0} characters',
         webPageUrl: 'Web page URL',
     };
+
+    private static sk: Dictionary<string> = {};
 
     private static de: Dictionary<string> = {};
 

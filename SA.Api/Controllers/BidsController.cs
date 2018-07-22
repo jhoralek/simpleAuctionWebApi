@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,15 @@ namespace SA.Api.Controllers
 
             await _repository.AddAsync(item);
             return CreatedAtRoute("FindBids", new { Controller = "Bids", name = item.Price }, item);
+        }
+
+        [Authorize("read:messages")]
+        [HttpGet("{recordId}")]
+        [Route("getActualPrice")]
+        public async Task<IActionResult> GetActualPrice(int recordId)
+        {
+            var bids = await _repository.GetAllSimpleAsync(x => x.RecordId == recordId);
+            return Json(bids.Max(x => x.Price));
         }
     }
 }

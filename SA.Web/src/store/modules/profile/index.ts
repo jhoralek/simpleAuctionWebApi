@@ -1,9 +1,9 @@
 import { Module } from 'vuex';
 import { RootState, ProfileState } from '@/store/types';
 
-import getters from './getters';
-import actions from './actions';
-import mutations from './mutations';
+import getters from '@/store/modules/profile/getters';
+import actions from '@/store/modules/profile/actions';
+import mutations from '@/store/modules/profile/mutations';
 
 // my profile state will grow depends on the app,
 // or I can create more profiles

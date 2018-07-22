@@ -1,9 +1,9 @@
 import { Module } from 'vuex';
 import { RootState,  AuthState } from '@/store/types';
 
-import getters from './getters';
-import actions from './actions';
-import mutations from './mutations';
+import getters from '@/store/modules/auth/getters';
+import actions from '@/store/modules/auth/actions';
+import mutations from '@/store/modules/auth/mutations';
 
 export const state: AuthState = {
     userName: undefined,

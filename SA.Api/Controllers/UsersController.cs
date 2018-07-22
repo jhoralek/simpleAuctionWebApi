@@ -59,9 +59,9 @@ namespace SA.Api.Controllers
 
         [Authorize("read:messages")]
         [Route("LoadByNameAndToken")]
-        [HttpPost]
-        public async Task<IActionResult> LoadByNameAndToken([FromBody] UserShortInfoDto userInfo)
-            => Json(await _repository.GetOneAsync(x => x.UserName == userInfo.UserName
-                && x.Token == userInfo.Token));
+        [HttpGet("{uName}/{token}")]
+        public async Task<IActionResult> LoadByNameAndToken(string uName, string token)
+            => Json(await _repository.GetOneAsync(x => x.UserName == uName
+                && x.Token == token));
     }
 }

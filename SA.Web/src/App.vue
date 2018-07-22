@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <v-progress-linear v-if="isLoading" :indeterminate="isLoading"></v-progress-linear>
     <v-app v-if="settings.language">
       <v-toolbar>
         <v-toolbar-title>{{ resx('auctionHall') }}</v-toolbar-title>
@@ -45,22 +46,7 @@
             </v-flex>
           </v-layout>
         </v-footer>
-        <v-snackbar
-              color="red lighten-1"
-              v-model="error.error"
-              :bottom="true"
-              :multi-line="true"
-              :right="true"
-              :timeout="6000"
-              :vertical="true">
-              {{ resx(error.message) }}
-              <v-btn
-                  color="white"
-                  flat
-                  @click="initError">
-                  {{ resx('close') }}
-              </v-btn>
-          </v-snackbar>
+        <MessageComponent />
       </v-content>
     </v-app>
   </div>
@@ -74,13 +60,14 @@ import { State, Action, Getter, namespace } from 'vuex-class';
 import {
   LoginFormComponent,
   LanguageComponent,
+  MessageComponent,
 } from '@/components';
 
 import {
   AuthState,
   ProfileState,
   SettingsState,
-  ErrorState,
+  MessageState,
 } from '@/store/types';
 
 import { UserShortInfo } from '@/poco';
@@ -90,17 +77,18 @@ const AuthGetter = namespace('auth', Getter);
 const AuthAction = namespace('auth', Action);
 const ProfileAction = namespace('profile', Action);
 const SettingsAction = namespace('settings', Action);
-const ErrorAction = namespace('error', Action);
+const MessageAction = namespace('message', Action);
 
 @Component({
   components: {
     LoginFormComponent,
     LanguageComponent,
+    MessageComponent,
   },
 })
 export default class App extends Vue {
   // define states in app root
-  @State('error') public error: ErrorState;
+  @State('message') public message: MessageState;
   @State('auth') public auth: AuthState;
   @State('profile') public profile: ProfileState;
   @State('settings') public settings: SettingsState;
@@ -112,14 +100,16 @@ export default class App extends Vue {
   @ProfileAction('initialState')  public initProfile: any;
   @SettingsAction('initialState') public initSettings: any;
   @SettingsAction('changeLanguage') public setLang: any;
-  @ErrorAction('initialState') public initError: any;
+  @MessageAction('initialState') public initMessage: any;
 
+  private isLoading: boolean = false;
   /**
    * When app is mounted, then initialize stores
    * and restore auth when is available
    */
   public mounted() {
-    this.initError().then((response) => {
+    this.isLoading = true;
+    this.initMessage().then((response) => {
       this.initSettings().then((settings) => {
         this.initProfile().then((x) => {
           if (this.auth.isAuthenticated) {
@@ -127,6 +117,7 @@ export default class App extends Vue {
           } else {
             this.initAuth();
           }
+          this.isLoading = false;
         });
       });
     });

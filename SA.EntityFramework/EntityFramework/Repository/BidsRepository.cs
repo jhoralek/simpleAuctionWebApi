@@ -81,5 +81,11 @@ namespace SA.EntityFramework.EntityFramework.Repository
 
         public Task<Bid> GetOneAsync(Expression<Func<Bid, bool>> query)
             => GetAllBidInternal().FirstOrDefaultAsync(query);
+
+        public async Task<IEnumerable<Bid>> GetAllSimpleAsync(Expression<Func<Bid, bool>> query = null)
+           => await(query != null
+                        ? GetAllInternal().Where(query)
+                        : GetAllInternal())
+                    .ToListAsync();
     }
 }

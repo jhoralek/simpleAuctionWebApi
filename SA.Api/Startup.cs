@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
+using SA.Application.Records;
 using SA.Application.Security;
 using SA.Core.Model;
 using SA.Core.Security;
@@ -70,6 +71,7 @@ namespace SA.Api
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
             services.AddSingleton<ISecurityService, SecurityService>();
+            services.AddSingleton<IRecordService, RecordService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

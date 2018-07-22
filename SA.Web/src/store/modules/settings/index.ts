@@ -1,9 +1,9 @@
 import { Module } from 'vuex';
 import { RootState, SettingsState } from '@/store/types';
 
-import getters from './getters';
-import actions from './actions';
-import mutations from './mutations';
+import getters from '@/store/modules/settings/getters';
+import actions from '@/store/modules/settings/actions';
+import mutations from '@/store/modules/settings/mutations';
 
 export const state: SettingsState = {
     language: undefined,

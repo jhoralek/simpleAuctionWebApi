@@ -1,11 +1,11 @@
-import AuthResponse from './AuthResponse';
-import UserShortInfo from './UserShortInfo';
-import Error from './Error';
-import LoginDto from './LoginDto';
+import AuthResponse from '@/poco/AuthResponse';
+import UserShortInfo from '@/poco/UserShortInfo';
+import MessageDto from '@/poco/MessageDto';
+import LoginDto from '@/poco/LoginDto';
 
 export {
     AuthResponse,
     UserShortInfo,
-    Error,
+    MessageDto,
     LoginDto,
 };
