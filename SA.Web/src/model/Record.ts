@@ -1,4 +1,4 @@
-import { FuelEnum } from './FuelEnum';
+import { FuelEnum } from '@/model/FuelEnum';
 import { User, FileShort } from '@/model';
 
 export default interface Record {

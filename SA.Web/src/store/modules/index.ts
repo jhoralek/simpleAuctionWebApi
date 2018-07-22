@@ -1,13 +1,13 @@
-import { auth } from './auth';
-import { profile } from './profile';
-import { settings } from './settings';
-import { record } from './record';
-import { error } from './error';
+import { auth } from '@/store/modules/auth';
+import { profile } from '@/store/modules/profile';
+import { settings } from '@/store/modules/settings';
+import { record } from '@/store/modules/record';
+import { message } from '@/store/modules/message';
 
 export {
     auth,
     profile,
     settings,
     record,
-    error,
+    message,
 };

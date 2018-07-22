@@ -2,7 +2,9 @@ import {
     User,
     Country,
     Record,
+    MessageStatusEnum,
 } from '@/model';
+import MessageDto from '@/poco/MessageDto';
 
 /**
  * This is root state of app store
@@ -13,7 +15,7 @@ export interface RootState {
     auth: AuthState;
     profile: ProfileState;
     record: RecordState;
-    error: ErrorState;
+    message: MessageState;
 }
 /**
  * User state
@@ -54,9 +56,11 @@ export interface RecordState {
 /**
  * Error state
  */
-export interface ErrorState {
-    error: boolean;
-    message: string;
+export interface MessageState {
+    isOn: boolean;
+    module: string;
+    created: Date;
+    message: MessageDto;
 }
 
 export interface Dictionary<T> {

@@ -1,4 +1,4 @@
-import Address from './Address';
+import Address from '@/model/Address';
 
 export default interface Customer {
     firstName: string;

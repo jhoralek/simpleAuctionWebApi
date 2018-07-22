@@ -1,5 +1,5 @@
 
-import Customer from './Customer';
+import Customer from '@/model/Customer';
 
 export default interface User {
         userName: string;

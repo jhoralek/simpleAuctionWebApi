@@ -70,8 +70,10 @@ export class Translator {
         titleAfter: 'Titul za',
         titleBefore: 'Titul před',
         user: 'Uživatel',
+        userLoggedInSuccessfully: 'Úspěšně přihlášen.',
+        userLoggedOutSuccessfully: 'Úspěšně odhlášen.',
         userName: 'Uživatelské jméno',
-        UserNotAuthenticated: 'Špatné jméno nebo heslo!',
+        userNotAuthenticated: 'Špatné jméno nebo heslo!',
         validation_min_chars: 'Minimum znaků {0}',
         webPageUrl: 'URL webových stránek',
     };
@@ -119,8 +121,10 @@ export class Translator {
         titleAfter: 'Prefix',
         titleBefore: 'Postfix',
         user: 'User',
+        userLoggedInSuccessfully: 'Successfully logged in.',
+        userLoggedOutSuccessfully: 'Logged out successfully.',
         userName: 'User name',
-        UserNotAuthenticated: 'Wrong user name or password!',
+        userNotAuthenticated: 'Wrong user name or password!',
         validation_min_chars: 'At least {0} characters',
         webPageUrl: 'Web page URL',
     };

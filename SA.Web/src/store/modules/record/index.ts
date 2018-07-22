@@ -1,9 +1,9 @@
 import { Module } from 'vuex';
 import { RootState, RecordState } from '@/store/types';
 
-import actions from './actions';
-import getters from './getters';
-import mutations from './mutations';
+import actions from '@/store/modules/record/actions';
+import getters from '@/store/modules/record/getters';
+import mutations from '@/store/modules/record/mutations';
 
 export const state: RecordState = {
     current: undefined,

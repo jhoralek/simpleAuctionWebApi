@@ -1,10 +1,11 @@
-import Customer from './Customer';
-import User from './User';
-import { File, FileShort } from './File';
-import Country from './Country';
-import Record from './Record';
-import Bid from './Bid';
-import Address from './Address';
+import Customer from '@/model/Customer';
+import User from '@/model/User';
+import { File, FileShort } from '@/model/File';
+import Country from '@/model/Country';
+import Record from '@/model/Record';
+import Bid from '@/model/Bid';
+import Address from '@/model/Address';
+import MessageStatusEnum from '@/model/MessageStatusEnum';
 
 export {
     Address,
@@ -15,4 +16,5 @@ export {
     FileShort,
     Record,
     User,
+    MessageStatusEnum,
 };

@@ -106,8 +106,7 @@ export default class LoginFormComponent extends BaseComponent {
             userName: this.userName,
             password: this.password,
         }).then((response) => {
-            const authResponse: AuthResponse = response as AuthResponse;
-            if (authResponse.userName !== null) {
+            if (response) {
                 this.openedModal = !this.auth.isAuthenticated;
                 this.langChange(this.auth.language);
             }
