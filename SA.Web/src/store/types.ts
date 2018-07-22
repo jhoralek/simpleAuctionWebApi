@@ -2,9 +2,8 @@ import {
     User,
     Country,
     Record,
-    MessageStatusEnum,
 } from '@/model';
-import MessageDto from '@/poco/MessageDto';
+import { MessageDto } from '@/poco';
 
 /**
  * This is root state of app store
@@ -43,6 +42,7 @@ export interface SettingsState {
     resource: Dictionary<string>;
     countries: Dictionary<Country[]>;
     apiUrl: string;
+    tableView: boolean;
 }
 /**
  * Record state

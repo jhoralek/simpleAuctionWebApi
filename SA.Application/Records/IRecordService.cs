@@ -13,5 +13,7 @@ namespace SA.Application.Records
         Task<IEnumerable<Record>> GetAllUsersActiveWithBids(int id);
 
         IEnumerable<RecordMinimumDto> GetAllForCustomerMinimum(int id);
+
+        Task<IEnumerable<RecordTableDto>> GetAllActiveForList();
     }
 }

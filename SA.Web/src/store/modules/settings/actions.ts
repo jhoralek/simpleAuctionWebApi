@@ -12,6 +12,7 @@ import {
     SETTINGS_INITIAL_STATE,
     SETTINGS_CHANGE_LANG,
     SETTINGS_LOAD_COUNTRIES,
+    SETTINGS_CHAGE_DATA_VIEW,
 } from '@/store/mutation-types';
 
 import { Translator } from '@/lang';
@@ -72,6 +73,14 @@ const actions: ActionTree<SettingsState, RootState> = {
                     return error;
                 });
         });
+    },
+    /**
+     * Change data view type
+     * @param param0 state with commit
+     * @param tableView new value for data view type
+     */
+    changeDataViewType({commit}, tableView: boolean): void {
+        commit(SETTINGS_CHAGE_DATA_VIEW, tableView);
     },
 };
 

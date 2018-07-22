@@ -26,6 +26,13 @@ const getters: GetterTree<SettingsState, RootState> = {
     getApiUrl(state) {
         return state.apiUrl;
     },
+    /**
+     * Get type of data view
+     * @param state Settings state
+     */
+    getDataViewType(state) {
+        return state.tableView;
+    },
 };
 
 export default getters;

@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +14,7 @@ using SA.Core.Model;
 using SA.Core.Security;
 using SA.EntityFramework.EntityFramework;
 using SA.EntityFramework.EntityFramework.Repository;
+using System.Linq;
 
 namespace SA.Api
 {
@@ -56,7 +58,8 @@ namespace SA.Api
 
             services.AddMvc(options => options.Filters.Add(new CorsAuthorizationFilterFactory("SA")))
                 .AddJsonOptions(a => a.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
-                .AddJsonOptions(a => a.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects);
+                .AddJsonOptions(a => a.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects)
+                .AddJsonOptions(a => a.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddDbContext<SaDbContext>(options => options.UseMySQL(_configuration["ConnectionString:Sa"]), ServiceLifetime.Singleton);
 
@@ -72,6 +75,13 @@ namespace SA.Api
 
             services.AddSingleton<ISecurityService, SecurityService>();
             services.AddSingleton<IRecordService, RecordService>();
+
+            Mapper.Initialize(cfg => {
+                cfg.CreateMap<Record, RecordTableDto>()
+                    .ForMember(dto => dto.CurrentPrice, dto => dto.MapFrom(x => x.Bids.Any() ? x.Bids.Max(y => y.Price) : x.StartingPrice))
+                    .ForMember(dto => dto.NumberOfBids, dto => dto.MapFrom(x => x.Bids.Count()));
+                cfg.CreateMap<File, FileSimpleDto>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -17,5 +17,6 @@ namespace SA.EntityFramework.EntityFramework.Repository
         Task RemoveAsync(int id);
         Task UpdateAsync(int id, T item);
         IQueryable<T> GetAllInternal();
+        Task<IEnumerable<TResult>> GetAllProjectToAsync<TResult>(Expression<Func<T, bool>> query = null) where TResult : class;
     }
 }

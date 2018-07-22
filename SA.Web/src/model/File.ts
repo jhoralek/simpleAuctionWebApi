@@ -12,6 +12,8 @@ interface FileShort {
     id?: number;
     name: string;
     path: string;
+    userId: number;
+    recordId: number;
 }
 
 export {
