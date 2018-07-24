@@ -8,6 +8,7 @@ import News from './News.vue';
 import ProtectionPersonalData from './ProtectionPersonalData.vue';
 import TermsAndConditions from './TermsAndConditions.vue';
 import Auction from './Auction.vue';
+import AuctionDetail from './AuctionDetail.vue';
 
 export {
     About,
@@ -20,4 +21,5 @@ export {
     News,
     ProtectionPersonalData,
     TermsAndConditions,
+    AuctionDetail,
 };

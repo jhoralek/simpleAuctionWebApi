@@ -14,6 +14,6 @@ namespace SA.Application.Records
 
         IEnumerable<RecordMinimumDto> GetAllForCustomerMinimum(int id);
 
-        Task<IEnumerable<RecordTableDto>> GetAllActiveForList();
+        Task<IEnumerable<RecordTableDto>> GetAllForList();
     }
 }

@@ -55,12 +55,11 @@ namespace SA.Application.Records
                     && x.ValidTo >= now);
         }
 
-        public async Task<IEnumerable<RecordTableDto>> GetAllActiveForList()
+        public async Task<IEnumerable<RecordTableDto>> GetAllForList()
         {
             var now = DateTime.Now;
             var items = await _recordRepository
                 .GetAllProjectToAsync<RecordTableDto>(x => x.IsActive
-                    && x.ValidFrom <= now
                     && x.ValidTo >= now);
             
             return items;

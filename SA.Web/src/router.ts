@@ -11,6 +11,7 @@ import {
   ProtectionPersonalData,
   TermsAndConditions,
   Auction,
+  AuctionDetail,
 } from '@/views';
 
 import { state } from '@/store/modules/auth';
@@ -78,6 +79,11 @@ export default new Router({
       path: '/termsAndConditions',
       name: 'termsAndConditions',
       component: TermsAndConditions,
+    },
+    {
+      path: '/auctionDetail',
+      name: 'auctionDetail',
+      component: AuctionDetail,
     },
   ],
 });

@@ -1,34 +1,49 @@
 <template>
-  <div class="aution-table">
+  <div class="aution-table" v-if="records">
       <v-data-table
         :headers="headers"
         :items="records"
+        :loading="isLoading"
         :pagination.sync="pagination"
         hide-actions
         class="elevation-1">
+        <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
         <template slot="items" slot-scope="props">
             <td>{{ props.item.name }}</td>
             <td>{{ props.item.state }}</td>
             <td class="text-xs-right">{{ props.item.currentPrice }} CZK</td>
             <td class="text-xs-right">{{ props.item.minimumBid }} CZK</td>
             <td class="text-xs-right">
-                <v-avatar class="teal" :size="30">
-                    <span white--text headline>{{ props.item.numberOfBids }}</span>
+                <v-avatar color="teal" :size="30">
+                    <span class="white--text" headline>{{ props.item.numberOfBids }}</span>
                 </v-avatar>
             </td>
             <td>
                 <v-chip color="red lighten-1" text-color="white">
-                    {{ countDown(props.item) }}<span id="count-down"></span>
+                    <CountdownComponent
+                        :id="recordIdToString(props.item)"
+                        :date="props.item.validTo" />
                 </v-chip>
             </td>
-            <td>
-                <v-icon
-                    style="cursor: pointer"
-                    small
-                    class="mr-2"
-                    >
-                    arrow_forward
-                </v-icon>
+            <td class="text-xs-center">
+              <v-tooltip top>
+                <v-btn icon slot="activator" @click="detail(props.item)">
+                  <v-icon>desktop_windows</v-icon>
+                </v-btn>
+                <span>{{ resx('detailOfAuction') }}</span>
+              </v-tooltip>
+              <v-tooltip top>
+                <v-btn icon slot="activator">
+                  <v-icon>favorite</v-icon>
+                </v-btn>
+                <span>{{ resx('intoFavorites') }}</span>
+              </v-tooltip>
+              <v-tooltip top>
+                <v-btn icon slot="activator">
+                  <v-icon>share</v-icon>
+                </v-btn>
+                <span>{{ resx('share') }}</span>
+              </v-tooltip>
             </td>
         </template>
     </v-data-table>
@@ -41,16 +56,24 @@
 <script lang="ts">
 
 import { Component, Prop } from 'vue-property-decorator';
-import { Getter, namespace } from 'vuex-class';
+import { Action, namespace } from 'vuex-class';
 
 import { Record } from '@/model';
 import BaseComponent from './BaseComponent.vue';
-import Helpers from '@/helpers';
+import CountdownComponent from './helpers/CountdownComponent.vue';
 
-@Component({})
+const RecordAction = namespace('record', Action);
+
+@Component({
+    components: {
+        CountdownComponent,
+    },
+})
 export default class AuctionTableComponent extends BaseComponent {
-    @Prop({default: undefined}) private records: Record[];
+    @Prop({default: undefined}) public records: Record[];
+    @RecordAction('getDetail') public loadRecord: any;
 
+    private isLoading: boolean = false;
     private headers: any[] = [];
     private pagination: any = {
         rowsPerPage: 10,
@@ -90,17 +113,13 @@ export default class AuctionTableComponent extends BaseComponent {
             value: 'validTo' });
         this.headers.push({
             text: this.settings.resource.action,
-            align: 'left',
+            align: 'center',
             sortable: true,
             value: 'action' });
     }
 
-    private countDown(record: Record): void {
-        const x = setInterval(() => {
-            const thick = Helpers.countDown(record.validTo);
-            document.getElementById('count-down')
-            .innerHTML = thick;
-        }, 1000);
+    private countDownId(id: number): string {
+        return `count-down-${id}`;
     }
 
     get pages() {
@@ -111,12 +130,20 @@ export default class AuctionTableComponent extends BaseComponent {
         return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage);
     }
 
+    private recordIdToString(record: Record): string {
+        return record.id.toString();
+    }
+
+    private detail(record: Record): void {
+        this.isLoading = true;
+        this.loadRecord(record.id).then((response) => {
+        const result = response as boolean;
+        this.isLoading = false;
+        if (result) {
+            this.$router.push({ name: 'auctionDetail' });
+        }
+        });
+    }
 }
 
 </script>
-
-<style>
-#count-down {
-  margin-left: 5px;
-}
-</style>
