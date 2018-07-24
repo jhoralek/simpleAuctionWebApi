@@ -63,7 +63,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "47da6ddbcea06f89951d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "5bcae5e79792bb1a549b"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -2754,7 +2754,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex_class__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex-class */ "./node_modules/vuex-class/lib/index.js");
 /* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/components */ "./src/components/index.ts");
 /* harmony import */ var _store_types__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @/store/types */ "./src/store/types.ts");
-/* harmony import */ var _store_types__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_store_types__WEBPACK_IMPORTED_MODULE_9__);
 
 
 
@@ -2940,6 +2939,59 @@ CustomerDetailComponent = tslib__WEBPACK_IMPORTED_MODULE_6__["__decorate"]([Obje
 
 /***/ }),
 
+/***/ "./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib/index.js!./node_modules/ts-loader/index.js??ref--13-2!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionDetailComponent.vue?vue&type=script&lang=ts":
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-2!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AuctionDetailComponent.vue?vue&type=script&lang=ts ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/inherits */ "./node_modules/@babel/runtime/helpers/builtin/es6/inherits.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf.js");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var vue_property_decorator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-property-decorator */ "./node_modules/vue-property-decorator/lib/vue-property-decorator.js");
+/* harmony import */ var vuex_class__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex-class */ "./node_modules/vuex-class/lib/index.js");
+/* harmony import */ var _BaseComponent_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./BaseComponent.vue */ "./src/components/BaseComponent.vue");
+/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/model */ "./src/model/index.ts");
+
+
+
+
+
+
+var _a;
+
+
+
+
+
+var RecordGetter = Object(vuex_class__WEBPACK_IMPORTED_MODULE_6__["namespace"])('record', vuex_class__WEBPACK_IMPORTED_MODULE_6__["Getter"]);
+
+var AuctionDetalComponent =
+/*#__PURE__*/
+function (_BaseComponent) {
+  function AuctionDetalComponent() {
+    Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, AuctionDetalComponent);
+
+    return Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(AuctionDetalComponent).apply(this, arguments));
+  }
+
+  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_1__["default"])(AuctionDetalComponent, _BaseComponent);
+
+  return AuctionDetalComponent;
+}(_BaseComponent_vue__WEBPACK_IMPORTED_MODULE_7__["default"]);
+
+tslib__WEBPACK_IMPORTED_MODULE_4__["__decorate"]([RecordGetter('getCurrent'), tslib__WEBPACK_IMPORTED_MODULE_4__["__metadata"]("design:type", typeof (_a = typeof _model__WEBPACK_IMPORTED_MODULE_8__["Record"] !== "undefined" && _model__WEBPACK_IMPORTED_MODULE_8__["Record"]) === "function" && _a || Object)], AuctionDetalComponent.prototype, "record", void 0);
+
+AuctionDetalComponent = tslib__WEBPACK_IMPORTED_MODULE_4__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_5__["Component"])({})], AuctionDetalComponent);
+/* harmony default export */ __webpack_exports__["default"] = (AuctionDetalComponent);
+
+/***/ }),
+
 /***/ "./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib/index.js!./node_modules/ts-loader/index.js??ref--13-2!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionGridComponent.vue?vue&type=script&lang=ts":
 /*!**************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-2!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AuctionGridComponent.vue?vue&type=script&lang=ts ***!
@@ -2949,17 +3001,20 @@ CustomerDetailComponent = tslib__WEBPACK_IMPORTED_MODULE_6__["__decorate"]([Obje
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es6.function.name */ "./node_modules/core-js/modules/es6.function.name.js");
-/* harmony import */ var core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/inherits */ "./node_modules/@babel/runtime/helpers/builtin/es6/inherits.js");
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/createClass */ "./node_modules/@babel/runtime/helpers/builtin/es6/createClass.js");
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn.js");
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf.js");
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var vue_property_decorator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-property-decorator */ "./node_modules/vue-property-decorator/lib/vue-property-decorator.js");
-/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/helpers */ "./src/helpers.ts");
-/* harmony import */ var _BaseComponent_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./BaseComponent.vue */ "./src/components/BaseComponent.vue");
+/* harmony import */ var core_js_modules_es6_regexp_to_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es6.regexp.to-string */ "./node_modules/core-js/modules/es6.regexp.to-string.js");
+/* harmony import */ var core_js_modules_es6_regexp_to_string__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_regexp_to_string__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es6.function.name */ "./node_modules/core-js/modules/es6.function.name.js");
+/* harmony import */ var core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/inherits */ "./node_modules/@babel/runtime/helpers/builtin/es6/inherits.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/createClass */ "./node_modules/@babel/runtime/helpers/builtin/es6/createClass.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf.js");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var vue_property_decorator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-property-decorator */ "./node_modules/vue-property-decorator/lib/vue-property-decorator.js");
+/* harmony import */ var vuex_class__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vuex-class */ "./node_modules/vuex-class/lib/index.js");
+/* harmony import */ var _BaseComponent_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./BaseComponent.vue */ "./src/components/BaseComponent.vue");
+/* harmony import */ var _helpers_CountdownComponent_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./helpers/CountdownComponent.vue */ "./src/components/helpers/CountdownComponent.vue");
 
 
 
@@ -2970,17 +3025,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+var RecordAction = Object(vuex_class__WEBPACK_IMPORTED_MODULE_9__["namespace"])('record', vuex_class__WEBPACK_IMPORTED_MODULE_9__["Action"]);
 
 var AuctionGridComponent =
 /*#__PURE__*/
 function (_BaseComponent) {
   function AuctionGridComponent() {
-    Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, AuctionGridComponent);
+    var _this;
 
-    return Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__["default"])(this, Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__["default"])(AuctionGridComponent).apply(this, arguments));
+    Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_2__["default"])(this, AuctionGridComponent);
+
+    _this = Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5__["default"])(this, Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6__["default"])(AuctionGridComponent).apply(this, arguments));
+    _this.selectedRecordObj = undefined;
+    _this.isLoading = false;
+    return _this;
   }
 
-  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(AuctionGridComponent, [{
+  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_4__["default"])(AuctionGridComponent, [{
     key: "randomImagePath",
     value: function randomImagePath(record) {
       var files = record.files;
@@ -2988,25 +3051,51 @@ function (_BaseComponent) {
       return "/".concat(rf.path, "/").concat(rf.recordId, "/images/").concat(rf.name);
     }
   }, {
-    key: "countDown",
-    value: function countDown(record) {
-      var x = setInterval(function () {
-        var thick = _helpers__WEBPACK_IMPORTED_MODULE_8__["default"].countDown(record.validTo);
-        document.getElementById('count-down').innerHTML = thick;
-      }, 1000);
+    key: "recordIdToString",
+    value: function recordIdToString(record) {
+      return record.id.toString();
+    }
+  }, {
+    key: "detail",
+    value: function detail(record) {
+      var _this2 = this;
+
+      this.selectedRecordObj = record;
+      this.isLoading = true;
+      this.loadRecord(record.id).then(function (response) {
+        var result = response;
+        _this2.isLoading = false;
+
+        if (result) {
+          _this2.$router.push({
+            name: 'auctionDetail'
+          });
+        }
+      });
+    }
+  }, {
+    key: "selectedRecord",
+    get: function get() {
+      return this.selectedRecordObj;
     }
   }]);
 
-  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_2__["default"])(AuctionGridComponent, _BaseComponent);
+  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_3__["default"])(AuctionGridComponent, _BaseComponent);
 
   return AuctionGridComponent;
-}(_BaseComponent_vue__WEBPACK_IMPORTED_MODULE_9__["default"]);
+}(_BaseComponent_vue__WEBPACK_IMPORTED_MODULE_10__["default"]);
 
-tslib__WEBPACK_IMPORTED_MODULE_6__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_7__["Prop"])({
+tslib__WEBPACK_IMPORTED_MODULE_7__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_8__["Prop"])({
   default: undefined
-}), tslib__WEBPACK_IMPORTED_MODULE_6__["__metadata"]("design:type", Array)], AuctionGridComponent.prototype, "records", void 0);
+}), tslib__WEBPACK_IMPORTED_MODULE_7__["__metadata"]("design:type", Array)], AuctionGridComponent.prototype, "records", void 0);
 
-AuctionGridComponent = tslib__WEBPACK_IMPORTED_MODULE_6__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_7__["Component"])({})], AuctionGridComponent);
+tslib__WEBPACK_IMPORTED_MODULE_7__["__decorate"]([RecordAction('getDetail'), tslib__WEBPACK_IMPORTED_MODULE_7__["__metadata"]("design:type", Object)], AuctionGridComponent.prototype, "loadRecord", void 0);
+
+AuctionGridComponent = tslib__WEBPACK_IMPORTED_MODULE_7__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_8__["Component"])({
+  components: {
+    CountdownComponent: _helpers_CountdownComponent_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
+  }
+})], AuctionGridComponent);
 /* harmony default export */ __webpack_exports__["default"] = (AuctionGridComponent);
 
 /***/ }),
@@ -3150,17 +3239,20 @@ AuctionSummaryComponent = tslib__WEBPACK_IMPORTED_MODULE_7__["__decorate"]([Obje
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es6.function.name */ "./node_modules/core-js/modules/es6.function.name.js");
-/* harmony import */ var core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/inherits */ "./node_modules/@babel/runtime/helpers/builtin/es6/inherits.js");
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/createClass */ "./node_modules/@babel/runtime/helpers/builtin/es6/createClass.js");
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn.js");
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf.js");
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var vue_property_decorator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-property-decorator */ "./node_modules/vue-property-decorator/lib/vue-property-decorator.js");
-/* harmony import */ var _BaseComponent_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./BaseComponent.vue */ "./src/components/BaseComponent.vue");
-/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @/helpers */ "./src/helpers.ts");
+/* harmony import */ var core_js_modules_es6_regexp_to_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es6.regexp.to-string */ "./node_modules/core-js/modules/es6.regexp.to-string.js");
+/* harmony import */ var core_js_modules_es6_regexp_to_string__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_regexp_to_string__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es6.function.name */ "./node_modules/core-js/modules/es6.function.name.js");
+/* harmony import */ var core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/inherits */ "./node_modules/@babel/runtime/helpers/builtin/es6/inherits.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/createClass */ "./node_modules/@babel/runtime/helpers/builtin/es6/createClass.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf.js");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var vue_property_decorator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-property-decorator */ "./node_modules/vue-property-decorator/lib/vue-property-decorator.js");
+/* harmony import */ var vuex_class__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vuex-class */ "./node_modules/vuex-class/lib/index.js");
+/* harmony import */ var _BaseComponent_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./BaseComponent.vue */ "./src/components/BaseComponent.vue");
+/* harmony import */ var _helpers_CountdownComponent_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./helpers/CountdownComponent.vue */ "./src/components/helpers/CountdownComponent.vue");
 
 
 
@@ -3171,6 +3263,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+var RecordAction = Object(vuex_class__WEBPACK_IMPORTED_MODULE_9__["namespace"])('record', vuex_class__WEBPACK_IMPORTED_MODULE_9__["Action"]);
 
 var AuctionTableComponent =
 /*#__PURE__*/
@@ -3178,9 +3273,10 @@ function (_BaseComponent) {
   function AuctionTableComponent() {
     var _this;
 
-    Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, AuctionTableComponent);
+    Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_2__["default"])(this, AuctionTableComponent);
 
-    _this = Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__["default"])(this, Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__["default"])(AuctionTableComponent).apply(this, arguments));
+    _this = Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5__["default"])(this, Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_6__["default"])(AuctionTableComponent).apply(this, arguments));
+    _this.isLoading = false;
     _this.headers = [];
     _this.pagination = {
       rowsPerPage: 10,
@@ -3189,7 +3285,7 @@ function (_BaseComponent) {
     return _this;
   }
 
-  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(AuctionTableComponent, [{
+  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_4__["default"])(AuctionTableComponent, [{
     key: "mounted",
     value: function mounted() {
       this.headers.push({
@@ -3230,18 +3326,37 @@ function (_BaseComponent) {
       });
       this.headers.push({
         text: this.settings.resource.action,
-        align: 'left',
+        align: 'center',
         sortable: true,
         value: 'action'
       });
     }
   }, {
-    key: "countDown",
-    value: function countDown(record) {
-      var x = setInterval(function () {
-        var thick = _helpers__WEBPACK_IMPORTED_MODULE_9__["default"].countDown(record.validTo);
-        document.getElementById('count-down').innerHTML = thick;
-      }, 1000);
+    key: "countDownId",
+    value: function countDownId(id) {
+      return "count-down-".concat(id);
+    }
+  }, {
+    key: "recordIdToString",
+    value: function recordIdToString(record) {
+      return record.id.toString();
+    }
+  }, {
+    key: "detail",
+    value: function detail(record) {
+      var _this2 = this;
+
+      this.isLoading = true;
+      this.loadRecord(record.id).then(function (response) {
+        var result = response;
+        _this2.isLoading = false;
+
+        if (result) {
+          _this2.$router.push({
+            name: 'auctionDetail'
+          });
+        }
+      });
     }
   }, {
     key: "pages",
@@ -3254,16 +3369,22 @@ function (_BaseComponent) {
     }
   }]);
 
-  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_2__["default"])(AuctionTableComponent, _BaseComponent);
+  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_3__["default"])(AuctionTableComponent, _BaseComponent);
 
   return AuctionTableComponent;
-}(_BaseComponent_vue__WEBPACK_IMPORTED_MODULE_8__["default"]);
+}(_BaseComponent_vue__WEBPACK_IMPORTED_MODULE_10__["default"]);
 
-tslib__WEBPACK_IMPORTED_MODULE_6__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_7__["Prop"])({
+tslib__WEBPACK_IMPORTED_MODULE_7__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_8__["Prop"])({
   default: undefined
-}), tslib__WEBPACK_IMPORTED_MODULE_6__["__metadata"]("design:type", Array)], AuctionTableComponent.prototype, "records", void 0);
+}), tslib__WEBPACK_IMPORTED_MODULE_7__["__metadata"]("design:type", Array)], AuctionTableComponent.prototype, "records", void 0);
 
-AuctionTableComponent = tslib__WEBPACK_IMPORTED_MODULE_6__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_7__["Component"])({})], AuctionTableComponent);
+tslib__WEBPACK_IMPORTED_MODULE_7__["__decorate"]([RecordAction('getDetail'), tslib__WEBPACK_IMPORTED_MODULE_7__["__metadata"]("design:type", Object)], AuctionTableComponent.prototype, "loadRecord", void 0);
+
+AuctionTableComponent = tslib__WEBPACK_IMPORTED_MODULE_7__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_8__["Component"])({
+  components: {
+    CountdownComponent: _helpers_CountdownComponent_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
+  }
+})], AuctionTableComponent);
 /* harmony default export */ __webpack_exports__["default"] = (AuctionTableComponent);
 
 /***/ }),
@@ -3281,11 +3402,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/inherits */ "./node_modules/@babel/runtime/helpers/builtin/es6/inherits.js");
 /* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn.js");
 /* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf.js");
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var vue_property_decorator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-property-decorator */ "./node_modules/vue-property-decorator/lib/vue-property-decorator.js");
-/* harmony import */ var vuex_class__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex-class */ "./node_modules/vuex-class/lib/index.js");
-/* harmony import */ var _store_types__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @/store/types */ "./src/store/types.ts");
-/* harmony import */ var _store_types__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_store_types__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/es6.promise */ "./node_modules/core-js/modules/es6.promise.js");
+/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var vue_property_decorator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-property-decorator */ "./node_modules/vue-property-decorator/lib/vue-property-decorator.js");
+/* harmony import */ var vuex_class__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex-class */ "./node_modules/vuex-class/lib/index.js");
+/* harmony import */ var _store_types__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/store/types */ "./src/store/types.ts");
+
 
 
 
@@ -3297,7 +3420,7 @@ var _a;
 
 
 
-var SettingsGetter = Object(vuex_class__WEBPACK_IMPORTED_MODULE_6__["namespace"])('settings', vuex_class__WEBPACK_IMPORTED_MODULE_6__["Getter"]);
+var SettingsGetter = Object(vuex_class__WEBPACK_IMPORTED_MODULE_7__["namespace"])('settings', vuex_class__WEBPACK_IMPORTED_MODULE_7__["Getter"]);
 
 var BaseComponent =
 /*#__PURE__*/
@@ -3311,13 +3434,13 @@ function (_Vue) {
   Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_1__["default"])(BaseComponent, _Vue);
 
   return BaseComponent;
-}(vue_property_decorator__WEBPACK_IMPORTED_MODULE_5__["Vue"]);
+}(vue_property_decorator__WEBPACK_IMPORTED_MODULE_6__["Vue"]);
 
-tslib__WEBPACK_IMPORTED_MODULE_4__["__decorate"]([Object(vuex_class__WEBPACK_IMPORTED_MODULE_6__["State"])('settings'), tslib__WEBPACK_IMPORTED_MODULE_4__["__metadata"]("design:type", typeof (_a = typeof _store_types__WEBPACK_IMPORTED_MODULE_7__["SettingsState"] !== "undefined" && _store_types__WEBPACK_IMPORTED_MODULE_7__["SettingsState"]) === "function" && _a || Object)], BaseComponent.prototype, "settings", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_5__["__decorate"]([Object(vuex_class__WEBPACK_IMPORTED_MODULE_7__["State"])('settings'), tslib__WEBPACK_IMPORTED_MODULE_5__["__metadata"]("design:type", typeof (_a = typeof _store_types__WEBPACK_IMPORTED_MODULE_8__["SettingsState"] !== "undefined" && _store_types__WEBPACK_IMPORTED_MODULE_8__["SettingsState"]) === "function" && _a || Object)], BaseComponent.prototype, "settings", void 0);
 
-tslib__WEBPACK_IMPORTED_MODULE_4__["__decorate"]([SettingsGetter('getTranslate'), tslib__WEBPACK_IMPORTED_MODULE_4__["__metadata"]("design:type", String)], BaseComponent.prototype, "resx", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_5__["__decorate"]([SettingsGetter('getTranslate'), tslib__WEBPACK_IMPORTED_MODULE_5__["__metadata"]("design:type", String)], BaseComponent.prototype, "resx", void 0);
 
-BaseComponent = tslib__WEBPACK_IMPORTED_MODULE_4__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_5__["Component"])({})], BaseComponent);
+BaseComponent = tslib__WEBPACK_IMPORTED_MODULE_5__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_6__["Component"])({})], BaseComponent);
 /* harmony default export */ __webpack_exports__["default"] = (BaseComponent);
 
 /***/ }),
@@ -3562,7 +3685,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_property_decorator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-property-decorator */ "./node_modules/vue-property-decorator/lib/vue-property-decorator.js");
 /* harmony import */ var vuex_class__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuex-class */ "./node_modules/vuex-class/lib/index.js");
 /* harmony import */ var _store_types__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @/store/types */ "./src/store/types.ts");
-/* harmony import */ var _store_types__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_store_types__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var _components_BaseComponent_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @/components/BaseComponent.vue */ "./src/components/BaseComponent.vue");
 
 
@@ -3698,7 +3820,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex_class__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex-class */ "./node_modules/vuex-class/lib/index.js");
 /* harmony import */ var _components_BaseComponent_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/components/BaseComponent.vue */ "./src/components/BaseComponent.vue");
 /* harmony import */ var _store_types__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @/store/types */ "./src/store/types.ts");
-/* harmony import */ var _store_types__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_store_types__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var _poco__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @/poco */ "./src/poco/index.ts");
 /* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @/model */ "./src/model/index.ts");
 
@@ -3914,6 +4035,81 @@ UserDetailComponent = tslib__WEBPACK_IMPORTED_MODULE_5__["__decorate"]([Object(v
 
 /***/ }),
 
+/***/ "./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib/index.js!./node_modules/ts-loader/index.js??ref--13-2!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/helpers/CountdownComponent.vue?vue&type=script&lang=ts":
+/*!********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-2!./node_modules/vue-loader/lib??vue-loader-options!./src/components/helpers/CountdownComponent.vue?vue&type=script&lang=ts ***!
+  \********************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/inherits */ "./node_modules/@babel/runtime/helpers/builtin/es6/inherits.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/createClass */ "./node_modules/@babel/runtime/helpers/builtin/es6/createClass.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf.js");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var vue_property_decorator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-property-decorator */ "./node_modules/vue-property-decorator/lib/vue-property-decorator.js");
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @/helpers */ "./src/helpers.ts");
+
+
+
+
+
+
+
+
+
+var CountdownComponent =
+/*#__PURE__*/
+function (_Vue) {
+  function CountdownComponent() {
+    Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, CountdownComponent);
+
+    return Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__["default"])(this, Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__["default"])(CountdownComponent).apply(this, arguments));
+  }
+
+  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(CountdownComponent, [{
+    key: "mounted",
+    value: function mounted() {
+      var _this = this;
+
+      var realDate = new Date(this.date);
+      var x = setInterval(function () {
+        var element = document.getElementById("count-down-".concat(_this.id));
+
+        if (element !== null) {
+          var thick = _helpers__WEBPACK_IMPORTED_MODULE_7__["default"].countDown(realDate);
+          element.innerHTML = thick;
+        }
+      }, 1000);
+    }
+  }, {
+    key: "countDownSelector",
+    value: function countDownSelector() {
+      return "count-down-".concat(this.id);
+    }
+  }]);
+
+  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_1__["default"])(CountdownComponent, _Vue);
+
+  return CountdownComponent;
+}(vue_property_decorator__WEBPACK_IMPORTED_MODULE_6__["Vue"]);
+
+tslib__WEBPACK_IMPORTED_MODULE_5__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_6__["Prop"])({
+  default: undefined
+}), tslib__WEBPACK_IMPORTED_MODULE_5__["__metadata"]("design:type", String)], CountdownComponent.prototype, "date", void 0);
+
+tslib__WEBPACK_IMPORTED_MODULE_5__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_6__["Prop"])({
+  default: 1
+}), tslib__WEBPACK_IMPORTED_MODULE_5__["__metadata"]("design:type", String)], CountdownComponent.prototype, "id", void 0);
+
+CountdownComponent = tslib__WEBPACK_IMPORTED_MODULE_5__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_6__["Component"])({})], CountdownComponent);
+/* harmony default export */ __webpack_exports__["default"] = (CountdownComponent);
+
+/***/ }),
+
 /***/ "./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib/index.js!./node_modules/ts-loader/index.js??ref--13-2!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/About.vue?vue&type=script&lang=ts":
 /*!******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-2!./node_modules/vue-loader/lib??vue-loader-options!./src/views/About.vue?vue&type=script&lang=ts ***!
@@ -4031,7 +4227,7 @@ function (_BaseView) {
 
 tslib__WEBPACK_IMPORTED_MODULE_5__["__decorate"]([RecordGetter('getRecords'), tslib__WEBPACK_IMPORTED_MODULE_5__["__metadata"]("design:type", Array)], Auction.prototype, "records", void 0);
 
-tslib__WEBPACK_IMPORTED_MODULE_5__["__decorate"]([RecordAction('loadAllActive'), tslib__WEBPACK_IMPORTED_MODULE_5__["__metadata"]("design:type", Object)], Auction.prototype, "loadRecords", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_5__["__decorate"]([RecordAction('loadAllPublished'), tslib__WEBPACK_IMPORTED_MODULE_5__["__metadata"]("design:type", Object)], Auction.prototype, "loadRecords", void 0);
 
 tslib__WEBPACK_IMPORTED_MODULE_5__["__decorate"]([SettingsAction('changeDataViewType'), tslib__WEBPACK_IMPORTED_MODULE_5__["__metadata"]("design:type", Object)], Auction.prototype, "changeViewType", void 0);
 
@@ -4044,6 +4240,55 @@ Auction = tslib__WEBPACK_IMPORTED_MODULE_5__["__decorate"]([Object(vue_property_
   }
 })], Auction);
 /* harmony default export */ __webpack_exports__["default"] = (Auction);
+
+/***/ }),
+
+/***/ "./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib/index.js!./node_modules/ts-loader/index.js??ref--13-2!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/AuctionDetail.vue?vue&type=script&lang=ts":
+/*!**************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-2!./node_modules/vue-loader/lib??vue-loader-options!./src/views/AuctionDetail.vue?vue&type=script&lang=ts ***!
+  \**************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/inherits */ "./node_modules/@babel/runtime/helpers/builtin/es6/inherits.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf.js");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var vue_property_decorator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-property-decorator */ "./node_modules/vue-property-decorator/lib/vue-property-decorator.js");
+/* harmony import */ var _views_BaseView_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/views/BaseView.vue */ "./src/views/BaseView.vue");
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @/components */ "./src/components/index.ts");
+
+
+
+
+
+
+
+
+
+var AuctionDetail =
+/*#__PURE__*/
+function (_BaseView) {
+  function AuctionDetail() {
+    Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, AuctionDetail);
+
+    return Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(AuctionDetail).apply(this, arguments));
+  }
+
+  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_1__["default"])(AuctionDetail, _BaseView);
+
+  return AuctionDetail;
+}(_views_BaseView_vue__WEBPACK_IMPORTED_MODULE_6__["default"]);
+
+AuctionDetail = tslib__WEBPACK_IMPORTED_MODULE_4__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_5__["Component"])({
+  components: {
+    AuctionDetailComponent: _components__WEBPACK_IMPORTED_MODULE_7__["AuctionDetailComponent"]
+  }
+})], AuctionDetail);
+/* harmony default export */ __webpack_exports__["default"] = (AuctionDetail);
 
 /***/ }),
 
@@ -4159,7 +4404,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/model */ "./src/model/index.ts");
 /* harmony import */ var _BaseView_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./BaseView.vue */ "./src/views/BaseView.vue");
 /* harmony import */ var _store_types__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @/store/types */ "./src/store/types.ts");
-/* harmony import */ var _store_types__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_store_types__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @/components */ "./src/components/index.ts");
 
 
@@ -4781,6 +5025,32 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/cache-loader/dist/cjs.js?{\"cacheDirectory\":\"c:\\\\Work\\\\solutions-git\\\\github\\\\simpleAuctionWebApi\\\\SA.Web\\\\node_modules\\\\.cache\\\\vue-loader\",\"cacheIdentifier\":\"c09953a0-vue-loader-template\"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionDetailComponent.vue?vue&type=template&id=eefb230e":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"c://Work//solutions-git//github//simpleAuctionWebApi//SA.Web//node_modules//.cache//vue-loader","cacheIdentifier":"c09953a0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AuctionDetailComponent.vue?vue&type=template&id=eefb230e ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.record
+    ? _c("v-container", [_c("h1", [_vm._v(_vm._s(_vm.record.name))])])
+    : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/cache-loader/dist/cjs.js?{\"cacheDirectory\":\"c:\\\\Work\\\\solutions-git\\\\github\\\\simpleAuctionWebApi\\\\SA.Web\\\\node_modules\\\\.cache\\\\vue-loader\",\"cacheIdentifier\":\"c09953a0-vue-loader-template\"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionGridComponent.vue?vue&type=template&id=98878a38":
 /*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"c://Work//solutions-git//github//simpleAuctionWebApi//SA.Web//node_modules//.cache//vue-loader","cacheIdentifier":"c09953a0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AuctionGridComponent.vue?vue&type=template&id=98878a38 ***!
@@ -4796,102 +5066,100 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.records
-    ? _c(
-        "v-flex",
-        { attrs: { xs12: "", md4: "" } },
-        [
-          _c(
-            "v-card",
+  return _c(
+    "div",
+    { staticClass: "auction-grid-list" },
+    [
+      _vm.records
+        ? _c(
+            "v-container",
+            _vm._b(
+              { attrs: { fluid: "" } },
+              "v-container",
+              ((_obj = {}), (_obj["grid-list-xs"] = true), _obj),
+              false
+            ),
             [
               _c(
-                "v-container",
-                { attrs: { fluid: "", "grid-list-md": "" } },
-                [
-                  _c(
-                    "v-layout",
-                    { attrs: { row: "" } },
-                    _vm._l(_vm.records, function(record) {
-                      return _c(
-                        "v-flex",
-                        { key: record.id },
+                "v-layout",
+                { attrs: { row: "", wrap: "" } },
+                _vm._l(_vm.records, function(record, index) {
+                  return _c(
+                    "v-flex",
+                    { key: index, attrs: { xs12: "", sm3: "" } },
+                    [
+                      _c(
+                        "v-card",
                         [
+                          _vm.isLoading
+                            ? _c("v-progress-linear", {
+                                attrs: { indeterminate: "" }
+                              })
+                            : _vm._e(),
                           _c(
-                            "v-card",
+                            "v-card-media",
+                            {
+                              attrs: {
+                                src: _vm.randomImagePath(record),
+                                height: "200px"
+                              }
+                            },
                             [
                               _c(
-                                "v-card-media",
+                                "v-container",
                                 {
                                   attrs: {
-                                    src: _vm.randomImagePath(record),
-                                    height: "200px"
+                                    "fill-height": "",
+                                    fluid: "",
+                                    "grid-list-xs": ""
                                   }
                                 },
                                 [
                                   _c(
-                                    "v-container",
-                                    {
-                                      attrs: {
-                                        "fill-height": "",
-                                        fluid: "",
-                                        "grid-list-xs": ""
-                                      }
-                                    },
+                                    "v-layout",
+                                    { attrs: { row: "" } },
                                     [
                                       _c(
-                                        "v-layout",
-                                        { attrs: { row: "" } },
+                                        "v-flex",
+                                        { attrs: { xs3: "" } },
                                         [
                                           _c(
-                                            "v-flex",
-                                            { attrs: { xs3: "" } },
+                                            "v-chip",
+                                            {
+                                              attrs: {
+                                                color: "green lighten-1",
+                                                "text-color": "white"
+                                              }
+                                            },
                                             [
-                                              _c(
-                                                "v-chip",
-                                                {
-                                                  attrs: {
-                                                    color: "green lighten-1",
-                                                    "text-color": "white"
-                                                  }
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "\n                        " +
-                                                      _vm._s(
-                                                        _vm.resx("currentPrice")
-                                                      ) +
-                                                      ": " +
-                                                      _vm._s(
-                                                        record.currentPrice
-                                                      ) +
-                                                      " CZK\n                      "
-                                                  )
-                                                ]
-                                              ),
-                                              _c(
-                                                "v-chip",
-                                                {
-                                                  attrs: {
-                                                    color: "red lighten-1",
-                                                    "text-color": "white"
-                                                  }
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "\n                         " +
-                                                      _vm._s(
-                                                        _vm.countDown(record)
-                                                      ) +
-                                                      _vm._s(
-                                                        _vm.resx("endOfAuction")
-                                                      ) +
-                                                      "\n                         "
-                                                  ),
-                                                  _c("span", {
-                                                    attrs: { id: "count-down" }
-                                                  })
-                                                ]
+                                              _vm._v(
+                                                "\n                      " +
+                                                  _vm._s(
+                                                    _vm.resx("currentPrice")
+                                                  ) +
+                                                  ": " +
+                                                  _vm._s(record.currentPrice) +
+                                                  " CZK\n                    "
                                               )
+                                            ]
+                                          ),
+                                          _c(
+                                            "v-chip",
+                                            {
+                                              attrs: {
+                                                color: "red lighten-1",
+                                                "text-color": "white"
+                                              }
+                                            },
+                                            [
+                                              _c("CountdownComponent", {
+                                                attrs: {
+                                                  id: _vm.recordIdToString(
+                                                    record
+                                                  ),
+                                                  date: record.validTo
+                                                }
+                                              })
                                             ],
                                             1
                                           )
@@ -4903,45 +5171,89 @@ var render = function() {
                                   )
                                 ],
                                 1
-                              ),
-                              _c("v-card-title", { staticClass: "headline" }, [
-                                _c("span", [_vm._v(_vm._s(record.name))])
-                              ]),
-                              _c("v-card-title", [
-                                _c(
-                                  "blockquote",
-                                  { staticClass: "blockquote mb-5" },
-                                  [
-                                    _vm._v(
-                                      "\n                  " +
-                                        _vm._s(record.state) +
-                                        "\n                "
-                                    )
-                                  ]
+                              )
+                            ],
+                            1
+                          ),
+                          _c("v-card-title", { staticClass: "headline" }, [
+                            _c("span", [_vm._v(_vm._s(record.name))])
+                          ]),
+                          _c("v-card-text", [
+                            _c(
+                              "blockquote",
+                              { staticClass: "blockquote mb-5" },
+                              [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(record.state) +
+                                    "\n              "
                                 )
-                              ]),
+                              ]
+                            )
+                          ]),
+                          _c(
+                            "v-card-actions",
+                            [
+                              _c("v-spacer"),
                               _c(
-                                "v-card-actions",
+                                "v-tooltip",
+                                { attrs: { top: "" } },
                                 [
-                                  _c("v-spacer"),
                                   _c(
                                     "v-btn",
-                                    { attrs: { icon: "" } },
+                                    {
+                                      attrs: { slot: "activator", icon: "" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.detail(record)
+                                        }
+                                      },
+                                      slot: "activator"
+                                    },
+                                    [_c("v-icon", [_vm._v("desktop_windows")])],
+                                    1
+                                  ),
+                                  _c("span", [
+                                    _vm._v(_vm._s(_vm.resx("detailOfAuction")))
+                                  ])
+                                ],
+                                1
+                              ),
+                              _c(
+                                "v-tooltip",
+                                { attrs: { top: "" } },
+                                [
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: { slot: "activator", icon: "" },
+                                      slot: "activator"
+                                    },
                                     [_c("v-icon", [_vm._v("favorite")])],
                                     1
                                   ),
+                                  _c("span", [
+                                    _vm._v(_vm._s(_vm.resx("intoFavorites")))
+                                  ])
+                                ],
+                                1
+                              ),
+                              _c(
+                                "v-tooltip",
+                                { attrs: { top: "" } },
+                                [
                                   _c(
                                     "v-btn",
-                                    { attrs: { icon: "" } },
-                                    [_c("v-icon", [_vm._v("bookmark")])],
-                                    1
-                                  ),
-                                  _c(
-                                    "v-btn",
-                                    { attrs: { icon: "" } },
+                                    {
+                                      attrs: { slot: "activator", icon: "" },
+                                      slot: "activator"
+                                    },
                                     [_c("v-icon", [_vm._v("share")])],
                                     1
-                                  )
+                                  ),
+                                  _c("span", [
+                                    _vm._v(_vm._s(_vm.resx("share")))
+                                  ])
                                 ],
                                 1
                               )
@@ -4951,18 +5263,19 @@ var render = function() {
                         ],
                         1
                       )
-                    })
+                    ],
+                    1
                   )
-                ],
-                1
+                })
               )
             ],
             1
           )
-        ],
-        1
-      )
-    : _vm._e()
+        : _vm._e()
+    ],
+    1
+  )
+  var _obj
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -5092,117 +5405,186 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "aution-table" },
-    [
-      _c("v-data-table", {
-        staticClass: "elevation-1",
-        attrs: {
-          headers: _vm.headers,
-          items: _vm.records,
-          pagination: _vm.pagination,
-          "hide-actions": ""
-        },
-        on: {
-          "update:pagination": function($event) {
-            _vm.pagination = $event
-          }
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "items",
-            fn: function(props) {
-              return [
-                _c("td", [_vm._v(_vm._s(props.item.name))]),
-                _c("td", [_vm._v(_vm._s(props.item.state))]),
-                _c("td", { staticClass: "text-xs-right" }, [
-                  _vm._v(_vm._s(props.item.currentPrice) + " CZK")
-                ]),
-                _c("td", { staticClass: "text-xs-right" }, [
-                  _vm._v(_vm._s(props.item.minimumBid) + " CZK")
-                ]),
-                _c(
-                  "td",
-                  { staticClass: "text-xs-right" },
-                  [
-                    _c(
-                      "v-avatar",
-                      { staticClass: "teal", attrs: { size: 30 } },
-                      [
-                        _c(
-                          "span",
-                          { attrs: { "white--text": "", headline: "" } },
-                          [_vm._v(_vm._s(props.item.numberOfBids))]
-                        )
-                      ]
-                    )
-                  ],
-                  1
-                ),
-                _c(
-                  "td",
-                  [
-                    _c(
-                      "v-chip",
-                      {
-                        attrs: { color: "red lighten-1", "text-color": "white" }
-                      },
-                      [
-                        _vm._v(
-                          "\n                  " +
-                            _vm._s(_vm.countDown(props.item))
-                        ),
-                        _c("span", { attrs: { id: "count-down" } })
-                      ]
-                    )
-                  ],
-                  1
-                ),
-                _c(
-                  "td",
-                  [
-                    _c(
-                      "v-icon",
-                      {
-                        staticClass: "mr-2",
-                        staticStyle: { cursor: "pointer" },
-                        attrs: { small: "" }
-                      },
-                      [
-                        _vm._v(
-                          "\n                  arrow_forward\n              "
-                        )
-                      ]
-                    )
-                  ],
-                  1
-                )
-              ]
-            }
-          }
-        ])
-      }),
-      _c(
+  return _vm.records
+    ? _c(
         "div",
-        { staticClass: "text-xs-center pt-2" },
+        { staticClass: "aution-table" },
         [
-          _c("v-pagination", {
-            attrs: { length: _vm.pages },
-            model: {
-              value: _vm.pagination.page,
-              callback: function($$v) {
-                _vm.$set(_vm.pagination, "page", $$v)
+          _c(
+            "v-data-table",
+            {
+              staticClass: "elevation-1",
+              attrs: {
+                headers: _vm.headers,
+                items: _vm.records,
+                loading: _vm.isLoading,
+                pagination: _vm.pagination,
+                "hide-actions": ""
               },
-              expression: "pagination.page"
-            }
-          })
+              on: {
+                "update:pagination": function($event) {
+                  _vm.pagination = $event
+                }
+              },
+              scopedSlots: _vm._u([
+                {
+                  key: "items",
+                  fn: function(props) {
+                    return [
+                      _c("td", [_vm._v(_vm._s(props.item.name))]),
+                      _c("td", [_vm._v(_vm._s(props.item.state))]),
+                      _c("td", { staticClass: "text-xs-right" }, [
+                        _vm._v(_vm._s(props.item.currentPrice) + " CZK")
+                      ]),
+                      _c("td", { staticClass: "text-xs-right" }, [
+                        _vm._v(_vm._s(props.item.minimumBid) + " CZK")
+                      ]),
+                      _c(
+                        "td",
+                        { staticClass: "text-xs-right" },
+                        [
+                          _c(
+                            "v-avatar",
+                            { attrs: { color: "teal", size: 30 } },
+                            [
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "white--text",
+                                  attrs: { headline: "" }
+                                },
+                                [_vm._v(_vm._s(props.item.numberOfBids))]
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _c(
+                        "td",
+                        [
+                          _c(
+                            "v-chip",
+                            {
+                              attrs: {
+                                color: "red lighten-1",
+                                "text-color": "white"
+                              }
+                            },
+                            [
+                              _c("CountdownComponent", {
+                                attrs: {
+                                  id: _vm.recordIdToString(props.item),
+                                  date: props.item.validTo
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _c(
+                        "td",
+                        { staticClass: "text-xs-center" },
+                        [
+                          _c(
+                            "v-tooltip",
+                            { attrs: { top: "" } },
+                            [
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { slot: "activator", icon: "" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.detail(props.item)
+                                    }
+                                  },
+                                  slot: "activator"
+                                },
+                                [_c("v-icon", [_vm._v("desktop_windows")])],
+                                1
+                              ),
+                              _c("span", [
+                                _vm._v(_vm._s(_vm.resx("detailOfAuction")))
+                              ])
+                            ],
+                            1
+                          ),
+                          _c(
+                            "v-tooltip",
+                            { attrs: { top: "" } },
+                            [
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { slot: "activator", icon: "" },
+                                  slot: "activator"
+                                },
+                                [_c("v-icon", [_vm._v("favorite")])],
+                                1
+                              ),
+                              _c("span", [
+                                _vm._v(_vm._s(_vm.resx("intoFavorites")))
+                              ])
+                            ],
+                            1
+                          ),
+                          _c(
+                            "v-tooltip",
+                            { attrs: { top: "" } },
+                            [
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { slot: "activator", icon: "" },
+                                  slot: "activator"
+                                },
+                                [_c("v-icon", [_vm._v("share")])],
+                                1
+                              ),
+                              _c("span", [_vm._v(_vm._s(_vm.resx("share")))])
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ]
+                  }
+                }
+              ])
+            },
+            [
+              _c("v-progress-linear", {
+                attrs: { slot: "progress", color: "blue", indeterminate: "" },
+                slot: "progress"
+              })
+            ],
+            1
+          ),
+          _c(
+            "div",
+            { staticClass: "text-xs-center pt-2" },
+            [
+              _c("v-pagination", {
+                attrs: { length: _vm.pages },
+                model: {
+                  value: _vm.pagination.page,
+                  callback: function($$v) {
+                    _vm.$set(_vm.pagination, "page", $$v)
+                  },
+                  expression: "pagination.page"
+                }
+              })
+            ],
+            1
+          )
         ],
         1
       )
-    ],
-    1
-  )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -5969,6 +6351,32 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/cache-loader/dist/cjs.js?{\"cacheDirectory\":\"c:\\\\Work\\\\solutions-git\\\\github\\\\simpleAuctionWebApi\\\\SA.Web\\\\node_modules\\\\.cache\\\\vue-loader\",\"cacheIdentifier\":\"c09953a0-vue-loader-template\"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/helpers/CountdownComponent.vue?vue&type=template&id=708fc313":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"c://Work//solutions-git//github//simpleAuctionWebApi//SA.Web//node_modules//.cache//vue-loader","cacheIdentifier":"c09953a0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/helpers/CountdownComponent.vue?vue&type=template&id=708fc313 ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("span", {
+    attrs: { classs: "count-down", id: _vm.countDownSelector() }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/cache-loader/dist/cjs.js?{\"cacheDirectory\":\"c:\\\\Work\\\\solutions-git\\\\github\\\\simpleAuctionWebApi\\\\SA.Web\\\\node_modules\\\\.cache\\\\vue-loader\",\"cacheIdentifier\":\"c09953a0-vue-loader-template\"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/About.vue?vue&type=template&id=c9ad842e":
 /*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"c://Work//solutions-git//github//simpleAuctionWebApi//SA.Web//node_modules//.cache//vue-loader","cacheIdentifier":"c09953a0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/About.vue?vue&type=template&id=c9ad842e ***!
@@ -6021,7 +6429,7 @@ var render = function() {
     "div",
     { staticClass: "auction" },
     [
-      _vm.isLoading
+      _vm.isLoading && _vm.records === undefined
         ? _c("v-progress-linear", { attrs: { indeterminate: _vm.isLoading } })
         : _vm._e(),
       _vm.records
@@ -6122,6 +6530,35 @@ var render = function() {
           )
         : _vm._e()
     ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/cache-loader/dist/cjs.js?{\"cacheDirectory\":\"c:\\\\Work\\\\solutions-git\\\\github\\\\simpleAuctionWebApi\\\\SA.Web\\\\node_modules\\\\.cache\\\\vue-loader\",\"cacheIdentifier\":\"c09953a0-vue-loader-template\"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/AuctionDetail.vue?vue&type=template&id=6a51af50":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"c://Work//solutions-git//github//simpleAuctionWebApi//SA.Web//node_modules//.cache//vue-loader","cacheIdentifier":"c09953a0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/AuctionDetail.vue?vue&type=template&id=6a51af50 ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "auction-detail" },
+    [_c("AuctionDetailComponent")],
     1
   )
 }
@@ -16619,44 +17056,6 @@ exports.push([module.i, "\n.login-form-button:before {\r\n  height: 100%;\n}\r\n
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionGridComponent.vue?vue&type=style&index=0&lang=css":
-/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AuctionGridComponent.vue?vue&type=style&index=0&lang=css ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n#count-down {\r\n  margin-left: 5px;\n}\r\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionTableComponent.vue?vue&type=style&index=0&lang=css":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AuctionTableComponent.vue?vue&type=style&index=0&lang=css ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n#count-down {\r\n  margin-left: 5px;\n}\r\n", ""]);
-
-// exports
-
-
-/***/ }),
-
 /***/ "./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/LanguageComponent.vue?vue&type=style&index=0&lang=css":
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/LanguageComponent.vue?vue&type=style&index=0&lang=css ***!
@@ -16689,6 +17088,25 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 // module
 exports.push([module.i, "\n.login-dialog-container {\r\n    height: 100%;\n}\n.login-dialog-container div {\r\n    vertical-align: middle;\r\n    height: 100%;\n}\r\n\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/helpers/CountdownComponent.vue?vue&type=style&index=0&lang=css":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/helpers/CountdownComponent.vue?vue&type=style&index=0&lang=css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.count-down {\r\n  margin-left: 5px;\n}\r\n", ""]);
 
 // exports
 
@@ -30071,70 +30489,6 @@ if(true) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js??ref--6-oneOf-1-0!./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionGridComponent.vue?vue&type=style&index=0&lang=css":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-style-loader??ref--6-oneOf-1-0!./node_modules/css-loader??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AuctionGridComponent.vue?vue&type=style&index=0&lang=css ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(/*! !../../node_modules/css-loader??ref--6-oneOf-1-1!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/postcss-loader/lib??ref--6-oneOf-1-2!../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../node_modules/vue-loader/lib??vue-loader-options!./AuctionGridComponent.vue?vue&type=style&index=0&lang=css */ "./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionGridComponent.vue?vue&type=style&index=0&lang=css");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var add = __webpack_require__(/*! ../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
-var update = add("c2f9da76", content, false, {"sourceMap":false,"shadowMode":false});
-// Hot Module Replacement
-if(true) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept(/*! !../../node_modules/css-loader??ref--6-oneOf-1-1!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/postcss-loader/lib??ref--6-oneOf-1-2!../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../node_modules/vue-loader/lib??vue-loader-options!./AuctionGridComponent.vue?vue&type=style&index=0&lang=css */ "./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionGridComponent.vue?vue&type=style&index=0&lang=css", function(__WEBPACK_OUTDATED_DEPENDENCIES__) { (function() {
-     var newContent = __webpack_require__(/*! !../../node_modules/css-loader??ref--6-oneOf-1-1!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/postcss-loader/lib??ref--6-oneOf-1-2!../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../node_modules/vue-loader/lib??vue-loader-options!./AuctionGridComponent.vue?vue&type=style&index=0&lang=css */ "./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionGridComponent.vue?vue&type=style&index=0&lang=css");
-     if(typeof newContent === 'string') newContent = [[module.i, newContent, '']];
-     update(newContent);
-   })(__WEBPACK_OUTDATED_DEPENDENCIES__); });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ "./node_modules/vue-style-loader/index.js??ref--6-oneOf-1-0!./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionTableComponent.vue?vue&type=style&index=0&lang=css":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-style-loader??ref--6-oneOf-1-0!./node_modules/css-loader??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/AuctionTableComponent.vue?vue&type=style&index=0&lang=css ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(/*! !../../node_modules/css-loader??ref--6-oneOf-1-1!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/postcss-loader/lib??ref--6-oneOf-1-2!../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../node_modules/vue-loader/lib??vue-loader-options!./AuctionTableComponent.vue?vue&type=style&index=0&lang=css */ "./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionTableComponent.vue?vue&type=style&index=0&lang=css");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var add = __webpack_require__(/*! ../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
-var update = add("6ddd6f0e", content, false, {"sourceMap":false,"shadowMode":false});
-// Hot Module Replacement
-if(true) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept(/*! !../../node_modules/css-loader??ref--6-oneOf-1-1!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/postcss-loader/lib??ref--6-oneOf-1-2!../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../node_modules/vue-loader/lib??vue-loader-options!./AuctionTableComponent.vue?vue&type=style&index=0&lang=css */ "./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionTableComponent.vue?vue&type=style&index=0&lang=css", function(__WEBPACK_OUTDATED_DEPENDENCIES__) { (function() {
-     var newContent = __webpack_require__(/*! !../../node_modules/css-loader??ref--6-oneOf-1-1!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/postcss-loader/lib??ref--6-oneOf-1-2!../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../node_modules/vue-loader/lib??vue-loader-options!./AuctionTableComponent.vue?vue&type=style&index=0&lang=css */ "./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionTableComponent.vue?vue&type=style&index=0&lang=css");
-     if(typeof newContent === 'string') newContent = [[module.i, newContent, '']];
-     update(newContent);
-   })(__WEBPACK_OUTDATED_DEPENDENCIES__); });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
 /***/ "./node_modules/vue-style-loader/index.js??ref--6-oneOf-1-0!./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/LanguageComponent.vue?vue&type=style&index=0&lang=css":
 /*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-style-loader??ref--6-oneOf-1-0!./node_modules/css-loader??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/LanguageComponent.vue?vue&type=style&index=0&lang=css ***!
@@ -30189,6 +30543,38 @@ if(true) {
  if(!content.locals) {
    module.hot.accept(/*! !../../node_modules/css-loader??ref--6-oneOf-1-1!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/postcss-loader/lib??ref--6-oneOf-1-2!../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../node_modules/vue-loader/lib??vue-loader-options!./LoginFormComponent.vue?vue&type=style&index=0&lang=css */ "./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/LoginFormComponent.vue?vue&type=style&index=0&lang=css", function(__WEBPACK_OUTDATED_DEPENDENCIES__) { (function() {
      var newContent = __webpack_require__(/*! !../../node_modules/css-loader??ref--6-oneOf-1-1!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/postcss-loader/lib??ref--6-oneOf-1-2!../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../node_modules/vue-loader/lib??vue-loader-options!./LoginFormComponent.vue?vue&type=style&index=0&lang=css */ "./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/LoginFormComponent.vue?vue&type=style&index=0&lang=css");
+     if(typeof newContent === 'string') newContent = [[module.i, newContent, '']];
+     update(newContent);
+   })(__WEBPACK_OUTDATED_DEPENDENCIES__); });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js??ref--6-oneOf-1-0!./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/helpers/CountdownComponent.vue?vue&type=style&index=0&lang=css":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-style-loader??ref--6-oneOf-1-0!./node_modules/css-loader??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/helpers/CountdownComponent.vue?vue&type=style&index=0&lang=css ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-oneOf-1-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/lib??ref--6-oneOf-1-2!../../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../../node_modules/vue-loader/lib??vue-loader-options!./CountdownComponent.vue?vue&type=style&index=0&lang=css */ "./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/helpers/CountdownComponent.vue?vue&type=style&index=0&lang=css");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = __webpack_require__(/*! ../../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
+var update = add("fac78e2e", content, false, {"sourceMap":false,"shadowMode":false});
+// Hot Module Replacement
+if(true) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept(/*! !../../../node_modules/css-loader??ref--6-oneOf-1-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/lib??ref--6-oneOf-1-2!../../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../../node_modules/vue-loader/lib??vue-loader-options!./CountdownComponent.vue?vue&type=style&index=0&lang=css */ "./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/helpers/CountdownComponent.vue?vue&type=style&index=0&lang=css", function(__WEBPACK_OUTDATED_DEPENDENCIES__) { (function() {
+     var newContent = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-oneOf-1-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/lib??ref--6-oneOf-1-2!../../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../../node_modules/vue-loader/lib??vue-loader-options!./CountdownComponent.vue?vue&type=style&index=0&lang=css */ "./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/helpers/CountdownComponent.vue?vue&type=style&index=0&lang=css");
      if(typeof newContent === 'string') newContent = [[module.i, newContent, '']];
      update(newContent);
    })(__WEBPACK_OUTDATED_DEPENDENCIES__); });
@@ -60900,6 +61286,93 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/components/AuctionDetailComponent.vue":
+/*!***************************************************!*\
+  !*** ./src/components/AuctionDetailComponent.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AuctionDetailComponent_vue_vue_type_template_id_eefb230e__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AuctionDetailComponent.vue?vue&type=template&id=eefb230e */ "./src/components/AuctionDetailComponent.vue?vue&type=template&id=eefb230e");
+/* harmony import */ var _AuctionDetailComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AuctionDetailComponent.vue?vue&type=script&lang=ts */ "./src/components/AuctionDetailComponent.vue?vue&type=script&lang=ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AuctionDetailComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AuctionDetailComponent_vue_vue_type_template_id_eefb230e__WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AuctionDetailComponent_vue_vue_type_template_id_eefb230e__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (true) {
+  var api = __webpack_require__(/*! ./node_modules/vue-hot-reload-api/dist/index.js */ "./node_modules/vue-hot-reload-api/dist/index.js")
+  api.install(__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"))
+  if (api.compatible) {
+    module.hot.accept()
+    if (!module.hot.data) {
+      api.createRecord('eefb230e', component.options)
+    } else {
+      api.reload('eefb230e', component.options)
+    }
+    module.hot.accept(/*! ./AuctionDetailComponent.vue?vue&type=template&id=eefb230e */ "./src/components/AuctionDetailComponent.vue?vue&type=template&id=eefb230e", function(__WEBPACK_OUTDATED_DEPENDENCIES__) { /* harmony import */ _AuctionDetailComponent_vue_vue_type_template_id_eefb230e__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AuctionDetailComponent.vue?vue&type=template&id=eefb230e */ "./src/components/AuctionDetailComponent.vue?vue&type=template&id=eefb230e");
+(function () {
+      api.rerender('eefb230e', {
+        render: _AuctionDetailComponent_vue_vue_type_template_id_eefb230e__WEBPACK_IMPORTED_MODULE_0__["render"],
+        staticRenderFns: _AuctionDetailComponent_vue_vue_type_template_id_eefb230e__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]
+      })
+    })(__WEBPACK_OUTDATED_DEPENDENCIES__); })
+  }
+}
+component.options.__file = "src\\components\\AuctionDetailComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./src/components/AuctionDetailComponent.vue?vue&type=script&lang=ts":
+/*!***************************************************************************!*\
+  !*** ./src/components/AuctionDetailComponent.vue?vue&type=script&lang=ts ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_cache_loader_dist_cjs_js_ref_13_0_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_13_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionDetailComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/cache-loader/dist/cjs.js??ref--13-0!../../node_modules/babel-loader/lib!../../node_modules/ts-loader??ref--13-2!../../node_modules/vue-loader/lib??vue-loader-options!./AuctionDetailComponent.vue?vue&type=script&lang=ts */ "./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib/index.js!./node_modules/ts-loader/index.js??ref--13-2!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionDetailComponent.vue?vue&type=script&lang=ts");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_cache_loader_dist_cjs_js_ref_13_0_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_13_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionDetailComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./src/components/AuctionDetailComponent.vue?vue&type=template&id=eefb230e":
+/*!*********************************************************************************!*\
+  !*** ./src/components/AuctionDetailComponent.vue?vue&type=template&id=eefb230e ***!
+  \*********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _cache_loader_cacheDirectory_c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_cache_vue_loader_cacheIdentifier_c09953a0_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionDetailComponent_vue_vue_type_template_id_eefb230e__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!cache-loader?{"cacheDirectory":"c://Work//solutions-git//github//simpleAuctionWebApi//SA.Web//node_modules//.cache//vue-loader","cacheIdentifier":"c09953a0-vue-loader-template"}!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../node_modules/vue-loader/lib??vue-loader-options!./AuctionDetailComponent.vue?vue&type=template&id=eefb230e */ "./node_modules/cache-loader/dist/cjs.js?{\"cacheDirectory\":\"c:\\\\Work\\\\solutions-git\\\\github\\\\simpleAuctionWebApi\\\\SA.Web\\\\node_modules\\\\.cache\\\\vue-loader\",\"cacheIdentifier\":\"c09953a0-vue-loader-template\"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionDetailComponent.vue?vue&type=template&id=eefb230e");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _cache_loader_cacheDirectory_c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_cache_vue_loader_cacheIdentifier_c09953a0_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionDetailComponent_vue_vue_type_template_id_eefb230e__WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _cache_loader_cacheDirectory_c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_cache_vue_loader_cacheIdentifier_c09953a0_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionDetailComponent_vue_vue_type_template_id_eefb230e__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./src/components/AuctionGridComponent.vue":
 /*!*************************************************!*\
   !*** ./src/components/AuctionGridComponent.vue ***!
@@ -60911,9 +61384,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AuctionGridComponent_vue_vue_type_template_id_98878a38__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AuctionGridComponent.vue?vue&type=template&id=98878a38 */ "./src/components/AuctionGridComponent.vue?vue&type=template&id=98878a38");
 /* harmony import */ var _AuctionGridComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AuctionGridComponent.vue?vue&type=script&lang=ts */ "./src/components/AuctionGridComponent.vue?vue&type=script&lang=ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _AuctionGridComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AuctionGridComponent.vue?vue&type=style&index=0&lang=css */ "./src/components/AuctionGridComponent.vue?vue&type=style&index=0&lang=css");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -60921,7 +61392,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _AuctionGridComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_1__["default"],
   _AuctionGridComponent_vue_vue_type_template_id_98878a38__WEBPACK_IMPORTED_MODULE_0__["render"],
   _AuctionGridComponent_vue_vue_type_template_id_98878a38__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -60968,22 +61439,6 @@ component.options.__file = "src\\components\\AuctionGridComponent.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_cache_loader_dist_cjs_js_ref_13_0_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_13_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionGridComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/cache-loader/dist/cjs.js??ref--13-0!../../node_modules/babel-loader/lib!../../node_modules/ts-loader??ref--13-2!../../node_modules/vue-loader/lib??vue-loader-options!./AuctionGridComponent.vue?vue&type=script&lang=ts */ "./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib/index.js!./node_modules/ts-loader/index.js??ref--13-2!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionGridComponent.vue?vue&type=script&lang=ts");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_cache_loader_dist_cjs_js_ref_13_0_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_13_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionGridComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./src/components/AuctionGridComponent.vue?vue&type=style&index=0&lang=css":
-/*!*********************************************************************************!*\
-  !*** ./src/components/AuctionGridComponent.vue?vue&type=style&index=0&lang=css ***!
-  \*********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionGridComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-style-loader??ref--6-oneOf-1-0!../../node_modules/css-loader??ref--6-oneOf-1-1!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/postcss-loader/lib??ref--6-oneOf-1-2!../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../node_modules/vue-loader/lib??vue-loader-options!./AuctionGridComponent.vue?vue&type=style&index=0&lang=css */ "./node_modules/vue-style-loader/index.js??ref--6-oneOf-1-0!./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionGridComponent.vue?vue&type=style&index=0&lang=css");
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionGridComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionGridComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionGridComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionGridComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionGridComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -61103,9 +61558,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AuctionTableComponent_vue_vue_type_template_id_b36801dc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AuctionTableComponent.vue?vue&type=template&id=b36801dc */ "./src/components/AuctionTableComponent.vue?vue&type=template&id=b36801dc");
 /* harmony import */ var _AuctionTableComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AuctionTableComponent.vue?vue&type=script&lang=ts */ "./src/components/AuctionTableComponent.vue?vue&type=script&lang=ts");
-/* empty/unused harmony star reexport *//* harmony import */ var _AuctionTableComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AuctionTableComponent.vue?vue&type=style&index=0&lang=css */ "./src/components/AuctionTableComponent.vue?vue&type=style&index=0&lang=css");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -61113,7 +61566,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _AuctionTableComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_1__["default"],
   _AuctionTableComponent_vue_vue_type_template_id_b36801dc__WEBPACK_IMPORTED_MODULE_0__["render"],
   _AuctionTableComponent_vue_vue_type_template_id_b36801dc__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -61160,22 +61613,6 @@ component.options.__file = "src\\components\\AuctionTableComponent.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_cache_loader_dist_cjs_js_ref_13_0_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_13_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionTableComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/cache-loader/dist/cjs.js??ref--13-0!../../node_modules/babel-loader/lib!../../node_modules/ts-loader??ref--13-2!../../node_modules/vue-loader/lib??vue-loader-options!./AuctionTableComponent.vue?vue&type=script&lang=ts */ "./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib/index.js!./node_modules/ts-loader/index.js??ref--13-2!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionTableComponent.vue?vue&type=script&lang=ts");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_cache_loader_dist_cjs_js_ref_13_0_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_13_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionTableComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./src/components/AuctionTableComponent.vue?vue&type=style&index=0&lang=css":
-/*!**********************************************************************************!*\
-  !*** ./src/components/AuctionTableComponent.vue?vue&type=style&index=0&lang=css ***!
-  \**********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionTableComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-style-loader??ref--6-oneOf-1-0!../../node_modules/css-loader??ref--6-oneOf-1-1!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/postcss-loader/lib??ref--6-oneOf-1-2!../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../node_modules/vue-loader/lib??vue-loader-options!./AuctionTableComponent.vue?vue&type=style&index=0&lang=css */ "./node_modules/vue-style-loader/index.js??ref--6-oneOf-1-0!./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/AuctionTableComponent.vue?vue&type=style&index=0&lang=css");
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionTableComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionTableComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionTableComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionTableComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionTableComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -61817,11 +62254,116 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/components/helpers/CountdownComponent.vue":
+/*!*******************************************************!*\
+  !*** ./src/components/helpers/CountdownComponent.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CountdownComponent_vue_vue_type_template_id_708fc313__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CountdownComponent.vue?vue&type=template&id=708fc313 */ "./src/components/helpers/CountdownComponent.vue?vue&type=template&id=708fc313");
+/* harmony import */ var _CountdownComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CountdownComponent.vue?vue&type=script&lang=ts */ "./src/components/helpers/CountdownComponent.vue?vue&type=script&lang=ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _CountdownComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CountdownComponent.vue?vue&type=style&index=0&lang=css */ "./src/components/helpers/CountdownComponent.vue?vue&type=style&index=0&lang=css");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _CountdownComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CountdownComponent_vue_vue_type_template_id_708fc313__WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CountdownComponent_vue_vue_type_template_id_708fc313__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (true) {
+  var api = __webpack_require__(/*! ./node_modules/vue-hot-reload-api/dist/index.js */ "./node_modules/vue-hot-reload-api/dist/index.js")
+  api.install(__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"))
+  if (api.compatible) {
+    module.hot.accept()
+    if (!module.hot.data) {
+      api.createRecord('708fc313', component.options)
+    } else {
+      api.reload('708fc313', component.options)
+    }
+    module.hot.accept(/*! ./CountdownComponent.vue?vue&type=template&id=708fc313 */ "./src/components/helpers/CountdownComponent.vue?vue&type=template&id=708fc313", function(__WEBPACK_OUTDATED_DEPENDENCIES__) { /* harmony import */ _CountdownComponent_vue_vue_type_template_id_708fc313__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CountdownComponent.vue?vue&type=template&id=708fc313 */ "./src/components/helpers/CountdownComponent.vue?vue&type=template&id=708fc313");
+(function () {
+      api.rerender('708fc313', {
+        render: _CountdownComponent_vue_vue_type_template_id_708fc313__WEBPACK_IMPORTED_MODULE_0__["render"],
+        staticRenderFns: _CountdownComponent_vue_vue_type_template_id_708fc313__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]
+      })
+    })(__WEBPACK_OUTDATED_DEPENDENCIES__); })
+  }
+}
+component.options.__file = "src\\components\\helpers\\CountdownComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./src/components/helpers/CountdownComponent.vue?vue&type=script&lang=ts":
+/*!*******************************************************************************!*\
+  !*** ./src/components/helpers/CountdownComponent.vue?vue&type=script&lang=ts ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_cache_loader_dist_cjs_js_ref_13_0_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_13_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CountdownComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/cache-loader/dist/cjs.js??ref--13-0!../../../node_modules/babel-loader/lib!../../../node_modules/ts-loader??ref--13-2!../../../node_modules/vue-loader/lib??vue-loader-options!./CountdownComponent.vue?vue&type=script&lang=ts */ "./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib/index.js!./node_modules/ts-loader/index.js??ref--13-2!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/helpers/CountdownComponent.vue?vue&type=script&lang=ts");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_cache_loader_dist_cjs_js_ref_13_0_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_13_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CountdownComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./src/components/helpers/CountdownComponent.vue?vue&type=style&index=0&lang=css":
+/*!***************************************************************************************!*\
+  !*** ./src/components/helpers/CountdownComponent.vue?vue&type=style&index=0&lang=css ***!
+  \***************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CountdownComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-style-loader??ref--6-oneOf-1-0!../../../node_modules/css-loader??ref--6-oneOf-1-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/lib??ref--6-oneOf-1-2!../../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../../node_modules/vue-loader/lib??vue-loader-options!./CountdownComponent.vue?vue&type=style&index=0&lang=css */ "./node_modules/vue-style-loader/index.js??ref--6-oneOf-1-0!./node_modules/css-loader/index.js??ref--6-oneOf-1-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js??ref--6-oneOf-1-2!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/helpers/CountdownComponent.vue?vue&type=style&index=0&lang=css");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CountdownComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CountdownComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CountdownComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CountdownComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CountdownComponent_vue_vue_type_style_index_0_lang_css__WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./src/components/helpers/CountdownComponent.vue?vue&type=template&id=708fc313":
+/*!*************************************************************************************!*\
+  !*** ./src/components/helpers/CountdownComponent.vue?vue&type=template&id=708fc313 ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _cache_loader_cacheDirectory_c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_cache_vue_loader_cacheIdentifier_c09953a0_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CountdownComponent_vue_vue_type_template_id_708fc313__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!cache-loader?{"cacheDirectory":"c://Work//solutions-git//github//simpleAuctionWebApi//SA.Web//node_modules//.cache//vue-loader","cacheIdentifier":"c09953a0-vue-loader-template"}!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../../node_modules/vue-loader/lib??vue-loader-options!./CountdownComponent.vue?vue&type=template&id=708fc313 */ "./node_modules/cache-loader/dist/cjs.js?{\"cacheDirectory\":\"c:\\\\Work\\\\solutions-git\\\\github\\\\simpleAuctionWebApi\\\\SA.Web\\\\node_modules\\\\.cache\\\\vue-loader\",\"cacheIdentifier\":\"c09953a0-vue-loader-template\"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/helpers/CountdownComponent.vue?vue&type=template&id=708fc313");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _cache_loader_cacheDirectory_c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_cache_vue_loader_cacheIdentifier_c09953a0_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CountdownComponent_vue_vue_type_template_id_708fc313__WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _cache_loader_cacheDirectory_c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_cache_vue_loader_cacheIdentifier_c09953a0_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CountdownComponent_vue_vue_type_template_id_708fc313__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./src/components/index.ts":
 /*!*********************************!*\
   !*** ./src/components/index.ts ***!
   \*********************************/
-/*! exports provided: LoginFormComponent, UserDetailComponent, CustomerDetailComponent, LanguageComponent, RecordComponent, MessageComponent, AddressComponent, AuctionSummaryComponent, AuctionTableComponent, AuctionGridComponent */
+/*! exports provided: LoginFormComponent, UserDetailComponent, CustomerDetailComponent, LanguageComponent, RecordComponent, MessageComponent, AddressComponent, AuctionSummaryComponent, AuctionTableComponent, AuctionGridComponent, CountdownComponent, AuctionDetailComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61855,6 +62397,14 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony import */ var _AuctionGridComponent_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./AuctionGridComponent.vue */ "./src/components/AuctionGridComponent.vue");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AuctionGridComponent", function() { return _AuctionGridComponent_vue__WEBPACK_IMPORTED_MODULE_9__["default"]; });
+
+/* harmony import */ var _helpers_CountdownComponent_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./helpers/CountdownComponent.vue */ "./src/components/helpers/CountdownComponent.vue");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CountdownComponent", function() { return _helpers_CountdownComponent_vue__WEBPACK_IMPORTED_MODULE_10__["default"]; });
+
+/* harmony import */ var _AuctionDetailComponent_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./AuctionDetailComponent.vue */ "./src/components/AuctionDetailComponent.vue");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AuctionDetailComponent", function() { return _AuctionDetailComponent_vue__WEBPACK_IMPORTED_MODULE_11__["default"]; });
+
+
 
 
 
@@ -61994,6 +62544,7 @@ Translator.cs = {
   customer: 'Zákazník',
   customerDetail: 'Detail zákazníka',
   dealer: 'Prodávající',
+  detailOfAuction: 'Detail aukce',
   email: 'Email',
   end: 'Konec',
   endOfAuction: 'Konec aukce za',
@@ -62003,9 +62554,11 @@ Translator.cs = {
   forDealers: 'Pro prodejce',
   grid: 'Mříž',
   home: 'Domů',
+  intoFavorites: 'Do oblíbených',
   language: 'Jazyk',
   lastName: 'Příjmení',
   link: 'Odkaz',
+  loadingData: 'Nahrávám',
   login: 'Přihlásit se',
   logout: 'Odhlásit',
   minimumBid: 'Minimální příhoz',
@@ -62019,6 +62572,7 @@ Translator.cs = {
   protectionPersonalData: 'Ochrana osobních údajů',
   requiredFields: 'Povinné  pole',
   sendingNews: 'Zasílat novinky',
+  share: 'Sdílet',
   state: 'Stav',
   street: 'Ulice',
   submit: 'Odeslat',
@@ -62056,6 +62610,7 @@ Translator.en = {
   customer: 'Customer',
   customerDetail: 'Customer\'s detail',
   dealer: 'Dealer',
+  detailOfAuction: 'Detail of auction',
   email: 'Email',
   end: 'End',
   endOfAuction: 'End of auction for',
@@ -62065,9 +62620,11 @@ Translator.en = {
   forDealers: 'For dealers',
   grid: 'Grid',
   home: 'Home',
+  intoFavorites: 'To favorites',
   language: 'Language',
   lastName: 'Last name',
   link: 'Link',
+  loadingData: 'Loading',
   login: 'Login',
   logout: 'Logout',
   minimumBid: 'Minimum bid',
@@ -62081,6 +62638,7 @@ Translator.en = {
   protectionPersonalData: 'Protection of personal data',
   requiredFields: 'Required fields',
   sendingNews: 'Sending news',
+  share: 'Share',
   state: 'State',
   street: 'Street',
   submit: 'Submit',
@@ -62461,6 +63019,10 @@ var authenticated = function authenticated(to, from, next) {
     path: '/termsAndConditions',
     name: 'termsAndConditions',
     component: _views__WEBPACK_IMPORTED_MODULE_2__["TermsAndConditions"]
+  }, {
+    path: '/auctionDetail',
+    name: 'auctionDetail',
+    component: _views__WEBPACK_IMPORTED_MODULE_2__["AuctionDetail"]
   }]
 }));
 
@@ -63178,12 +63740,12 @@ var actions = {
   /**
    * Load all active records
    */
-  loadAllActive: function loadAllActive(_ref2) {
+  loadAllPublished: function loadAllPublished(_ref2) {
     var commit = _ref2.commit,
         rootState = _ref2.rootState,
         dispatch = _ref2.dispatch;
     return new Promise(function (resolve) {
-      return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(rootState.settings.apiUrl, "/records/getAllActiveForList")).then(function (response) {
+      return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(rootState.settings.apiUrl, "/records/getAllForList")).then(function (response) {
         var records = response.data;
         commit(_store_mutation_types__WEBPACK_IMPORTED_MODULE_2__["RECORD_CHANGE_LIST_STATE"], records);
         return resolve(true);
@@ -63195,6 +63757,7 @@ var actions = {
             message: error
           }
         });
+        return resolve(false);
       });
     });
   },
@@ -63205,13 +63768,23 @@ var actions = {
    */
   getDetail: function getDetail(_ref3, id) {
     var commit = _ref3.commit,
-        rootState = _ref3.rootState;
-    return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(rootState.settings.apiUrl, "/records/").concat(id)).then(function (response) {
-      var record = response.data;
-      commit(_store_mutation_types__WEBPACK_IMPORTED_MODULE_2__["RECORD_CHANGE_CURRENT_STATE"], record);
-      return record;
-    }).catch(function (error) {
-      return error;
+        rootState = _ref3.rootState,
+        dispatch = _ref3.dispatch;
+    return new Promise(function (resolve) {
+      return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(rootState.settings.apiUrl, "/records/getById?id=").concat(id)).then(function (response) {
+        var record = response.data;
+        commit(_store_mutation_types__WEBPACK_IMPORTED_MODULE_2__["RECORD_CHANGE_CURRENT_STATE"], record);
+        return resolve(true);
+      }).catch(function (error) {
+        dispatch('message/change', {
+          mod: 'Record',
+          message: {
+            state: _model__WEBPACK_IMPORTED_MODULE_1__["MessageStatusEnum"].Error,
+            message: error
+          }
+        });
+        return resolve(false);
+      });
     });
   },
 
@@ -63692,9 +64265,13 @@ var MESSAGE_CHANGE_STATE = 'MESSAGE_CHANGE_STATE';
 /*!****************************!*\
   !*** ./src/store/types.ts ***!
   \****************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es6.promise */ "./node_modules/core-js/modules/es6.promise.js");
+/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_0__);
 
 
 /***/ }),
@@ -63868,6 +64445,93 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _cache_loader_cacheDirectory_c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_cache_vue_loader_cacheIdentifier_c09953a0_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Auction_vue_vue_type_template_id_64a42c9f__WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _cache_loader_cacheDirectory_c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_cache_vue_loader_cacheIdentifier_c09953a0_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Auction_vue_vue_type_template_id_64a42c9f__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./src/views/AuctionDetail.vue":
+/*!*************************************!*\
+  !*** ./src/views/AuctionDetail.vue ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AuctionDetail_vue_vue_type_template_id_6a51af50__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AuctionDetail.vue?vue&type=template&id=6a51af50 */ "./src/views/AuctionDetail.vue?vue&type=template&id=6a51af50");
+/* harmony import */ var _AuctionDetail_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AuctionDetail.vue?vue&type=script&lang=ts */ "./src/views/AuctionDetail.vue?vue&type=script&lang=ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AuctionDetail_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AuctionDetail_vue_vue_type_template_id_6a51af50__WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AuctionDetail_vue_vue_type_template_id_6a51af50__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (true) {
+  var api = __webpack_require__(/*! ./node_modules/vue-hot-reload-api/dist/index.js */ "./node_modules/vue-hot-reload-api/dist/index.js")
+  api.install(__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"))
+  if (api.compatible) {
+    module.hot.accept()
+    if (!module.hot.data) {
+      api.createRecord('6a51af50', component.options)
+    } else {
+      api.reload('6a51af50', component.options)
+    }
+    module.hot.accept(/*! ./AuctionDetail.vue?vue&type=template&id=6a51af50 */ "./src/views/AuctionDetail.vue?vue&type=template&id=6a51af50", function(__WEBPACK_OUTDATED_DEPENDENCIES__) { /* harmony import */ _AuctionDetail_vue_vue_type_template_id_6a51af50__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AuctionDetail.vue?vue&type=template&id=6a51af50 */ "./src/views/AuctionDetail.vue?vue&type=template&id=6a51af50");
+(function () {
+      api.rerender('6a51af50', {
+        render: _AuctionDetail_vue_vue_type_template_id_6a51af50__WEBPACK_IMPORTED_MODULE_0__["render"],
+        staticRenderFns: _AuctionDetail_vue_vue_type_template_id_6a51af50__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]
+      })
+    })(__WEBPACK_OUTDATED_DEPENDENCIES__); })
+  }
+}
+component.options.__file = "src\\views\\AuctionDetail.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./src/views/AuctionDetail.vue?vue&type=script&lang=ts":
+/*!*************************************************************!*\
+  !*** ./src/views/AuctionDetail.vue?vue&type=script&lang=ts ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_cache_loader_dist_cjs_js_ref_13_0_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_13_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionDetail_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/cache-loader/dist/cjs.js??ref--13-0!../../node_modules/babel-loader/lib!../../node_modules/ts-loader??ref--13-2!../../node_modules/vue-loader/lib??vue-loader-options!./AuctionDetail.vue?vue&type=script&lang=ts */ "./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib/index.js!./node_modules/ts-loader/index.js??ref--13-2!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/AuctionDetail.vue?vue&type=script&lang=ts");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_cache_loader_dist_cjs_js_ref_13_0_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_13_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionDetail_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./src/views/AuctionDetail.vue?vue&type=template&id=6a51af50":
+/*!*******************************************************************!*\
+  !*** ./src/views/AuctionDetail.vue?vue&type=template&id=6a51af50 ***!
+  \*******************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _cache_loader_cacheDirectory_c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_cache_vue_loader_cacheIdentifier_c09953a0_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionDetail_vue_vue_type_template_id_6a51af50__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!cache-loader?{"cacheDirectory":"c://Work//solutions-git//github//simpleAuctionWebApi//SA.Web//node_modules//.cache//vue-loader","cacheIdentifier":"c09953a0-vue-loader-template"}!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../node_modules/vue-loader/lib??vue-loader-options!./AuctionDetail.vue?vue&type=template&id=6a51af50 */ "./node_modules/cache-loader/dist/cjs.js?{\"cacheDirectory\":\"c:\\\\Work\\\\solutions-git\\\\github\\\\simpleAuctionWebApi\\\\SA.Web\\\\node_modules\\\\.cache\\\\vue-loader\",\"cacheIdentifier\":\"c09953a0-vue-loader-template\"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/AuctionDetail.vue?vue&type=template&id=6a51af50");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _cache_loader_cacheDirectory_c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_cache_vue_loader_cacheIdentifier_c09953a0_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionDetail_vue_vue_type_template_id_6a51af50__WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _cache_loader_cacheDirectory_c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_cache_vue_loader_cacheIdentifier_c09953a0_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AuctionDetail_vue_vue_type_template_id_6a51af50__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -64635,7 +65299,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!****************************!*\
   !*** ./src/views/index.ts ***!
   \****************************/
-/*! exports provided: About, Auction, Contact, Customer, Home, Faq, ForDealers, News, ProtectionPersonalData, TermsAndConditions */
+/*! exports provided: About, Auction, Contact, Customer, Home, Faq, ForDealers, News, ProtectionPersonalData, TermsAndConditions, AuctionDetail */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -64669,6 +65333,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony import */ var _Auction_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Auction.vue */ "./src/views/Auction.vue");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Auction", function() { return _Auction_vue__WEBPACK_IMPORTED_MODULE_9__["default"]; });
+
+/* harmony import */ var _AuctionDetail_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./AuctionDetail.vue */ "./src/views/AuctionDetail.vue");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AuctionDetail", function() { return _AuctionDetail_vue__WEBPACK_IMPORTED_MODULE_10__["default"]; });
+
 
 
 

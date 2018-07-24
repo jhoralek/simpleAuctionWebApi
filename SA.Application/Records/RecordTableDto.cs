@@ -9,6 +9,7 @@ namespace SA.Application.Records
     {
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }
+        public virtual DateTime ValidFrom { get; set; }
         public virtual DateTime ValidTo { get; set; }
         public virtual decimal MinimumBid { get; set; }
         public virtual decimal CurrentPrice { get; set; }

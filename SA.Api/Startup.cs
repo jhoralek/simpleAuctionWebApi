@@ -14,6 +14,8 @@ using SA.Core.Model;
 using SA.Core.Security;
 using SA.EntityFramework.EntityFramework;
 using SA.EntityFramework.EntityFramework.Repository;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SA.Api
@@ -78,7 +80,7 @@ namespace SA.Api
 
             Mapper.Initialize(cfg => {
                 cfg.CreateMap<Record, RecordTableDto>()
-                    .ForMember(dto => dto.CurrentPrice, dto => dto.MapFrom(x => x.Bids.Any() ? x.Bids.Max(y => y.Price) : x.StartingPrice))
+                    .ForMember(dto => dto.CurrentPrice, dto => dto.MapFrom(x => x.Bids.Any() ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().Price : x.StartingPrice))
                     .ForMember(dto => dto.NumberOfBids, dto => dto.MapFrom(x => x.Bids.Count()));
                 cfg.CreateMap<File, FileSimpleDto>();
             });

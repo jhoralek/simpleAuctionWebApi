@@ -27,10 +27,10 @@ const actions: ActionTree<RecordState, RootState> = {
     /**
      * Load all active records
      */
-    loadAllActive({commit, rootState, dispatch}): Promise<boolean> {
+    loadAllPublished({commit, rootState, dispatch}): Promise<boolean> {
         return new Promise<boolean> ((resolve) => {
             return axios.get(
-                `${rootState.settings.apiUrl}/records/getAllActiveForList`)
+                `${rootState.settings.apiUrl}/records/getAllForList`)
                 .then((response) => {
                     const records: Record[] = response.data as Record[];
 
@@ -45,6 +45,7 @@ const actions: ActionTree<RecordState, RootState> = {
                             message: error,
                         },
                     });
+                    return resolve(false);
                 });
         });
     },
@@ -52,16 +53,25 @@ const actions: ActionTree<RecordState, RootState> = {
      * Get record detail by id
      * @param id - record id
      */
-    getDetail({ commit, rootState }, id: number): Promise<Record> {
-        return axios.get(`${rootState.settings.apiUrl}/records/${id}`)
-            .then((response) => {
-                const record: Record = response.data as Record;
-                commit(RECORD_CHANGE_CURRENT_STATE, record);
-                return record;
-            })
-            .catch((error) => {
-                return error;
-            });
+    getDetail({ commit, rootState, dispatch }, id: number): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.get(`${rootState.settings.apiUrl}/records/getById?id=${id}`)
+                .then((response) => {
+                    const record: Record = response.data as Record;
+                    commit(RECORD_CHANGE_CURRENT_STATE, record);
+                    return resolve(true);
+                })
+                .catch((error) => {
+                    dispatch('message/change', {
+                        mod: 'Record',
+                        message: {
+                            state: MessageStatusEnum.Error,
+                            message: error,
+                        },
+                    });
+                    return resolve(false);
+                });
+        });
     },
     /**
      * Get all users active auctions where bidding

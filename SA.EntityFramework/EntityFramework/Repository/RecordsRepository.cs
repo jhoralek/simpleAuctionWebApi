@@ -114,8 +114,20 @@ namespace SA.EntityFramework.EntityFramework.Repository
                         : GetAllInternal())
                     .ToListAsync();
 
-        public async Task<IEnumerable<TResult>> GetAllProjectToAsync<TResult>(Expression<Func<Record, bool>> query = null) 
+        public async Task<IEnumerable<TResult>> GetAllProjectToAsync<TResult>(Expression<Func<Record, bool>> query = null)
             where TResult : class
-            => await GetAllInternal().Where(query).ProjectTo<TResult>().ToListAsync();            
+        {
+            try
+            {
+                var items = GetAllInternal().Where(query);
+                var maped = items.ProjectTo<TResult>();
+                var result = await maped.ToListAsync();
+                return result;
+            }catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return null;
+        }
     }
 }

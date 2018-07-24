@@ -1,6 +1,6 @@
 <template>
   <div class="auction">
-    <v-progress-linear v-if="isLoading" :indeterminate="isLoading"></v-progress-linear>
+    <v-progress-linear v-if="isLoading && records === undefined" :indeterminate="isLoading"></v-progress-linear>
     <v-container v-if="records">
       <v-layout>
         <v-flex xs12>
@@ -57,7 +57,7 @@ const SettingsGetter = namespace('settings', Getter);
 export default class Auction extends BaseView {
 
   @RecordGetter('getRecords') private records: Record[];
-  @RecordAction('loadAllActive') private loadRecords: any;
+  @RecordAction('loadAllPublished') private loadRecords: any;
   @SettingsAction('changeDataViewType') private changeViewType: any;
   @SettingsGetter('getDataViewType') private getViewType: boolean;
 

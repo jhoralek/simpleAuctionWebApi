@@ -8,6 +8,8 @@ import AddressComponent from './AddressComponent.vue';
 import AuctionSummaryComponent from './AuctionSummaryComponent.vue';
 import AuctionTableComponent from './AuctionTableComponent.vue';
 import AuctionGridComponent from './AuctionGridComponent.vue';
+import CountdownComponent from './helpers/CountdownComponent.vue';
+import AuctionDetailComponent from './AuctionDetailComponent.vue';
 
 export {
     LoginFormComponent,
@@ -20,4 +22,6 @@ export {
     AuctionSummaryComponent,
     AuctionTableComponent,
     AuctionGridComponent,
+    CountdownComponent,
+    AuctionDetailComponent,
 };

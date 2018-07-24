@@ -25,12 +25,17 @@ namespace SA.Api.Controllers
         [Authorize("read:messages")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
-                => Json(await _recordService.GetAllPublished());
+                => Json(await _recordService.GetAll());
         
         [HttpGet]
-        [Route("getAllActiveForList")]
-        public async Task<IActionResult> GetAllActiveForList()
-            => Json(await _recordService.GetAllActiveForList());
+        [Route("getAllForList")]
+        public async Task<IActionResult> GetAllForList()
+            => Json(await _recordService.GetAllForList());
+
+        [Route("getById")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+            => Json(await _recordService.GetById(id));
 
         [Authorize("read:messages")]
         [HttpGet("{name}", Name = "FindRecords")]
