@@ -35,7 +35,7 @@ namespace SA.Api.Controllers
         [Route("getById")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
-            => Json(await _recordService.GetById(id));
+            => Json(await _recordService.GetById<RecordDetailDto>(id));
 
         [Authorize("read:messages")]
         [HttpGet("{name}", Name = "FindRecords")]

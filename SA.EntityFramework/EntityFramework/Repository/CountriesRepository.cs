@@ -70,8 +70,11 @@ namespace SA.EntityFramework.EntityFramework.Repository
                     : GetAllInternal())
                 .ToListAsync();
 
-        public Task<Country> GetOneAsync(Expression<Func<Country, bool>> query)
-            => GetAllInternal().FirstOrDefaultAsync(query);
+        public async Task<TResult> GetOneAsync<TResult>(Expression<Func<Country, bool>> query)
+            where TResult : class
+            => await GetAllInternal().Where(query)
+                    .ProjectTo<TResult>()
+                    .FirstOrDefaultAsync();
 
         public async Task<IEnumerable<Country>> GetAllSimpleAsync(Expression<Func<Country, bool>> query = null)
            => await GetAllAsync(query);

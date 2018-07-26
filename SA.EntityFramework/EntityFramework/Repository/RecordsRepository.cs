@@ -105,8 +105,11 @@ namespace SA.EntityFramework.EntityFramework.Repository
                     : GetRecordsInternal())
                 .ToListAsync();
 
-        public Task<Record> GetOneAsync(Expression<Func<Record, bool>> query)
-            => GetRecordsInternal().FirstOrDefaultAsync(query);
+        public async Task<TResult> GetOneAsync<TResult>(Expression<Func<Record, bool>> query)
+            where TResult : class
+            => await GetRecordsInternal().Where(query)
+                    .ProjectTo<TResult>()
+                    .FirstOrDefaultAsync();
 
         public async Task<IEnumerable<Record>> GetAllSimpleAsync(Expression<Func<Record, bool>> query = null)
            => await (query != null

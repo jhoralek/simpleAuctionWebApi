@@ -73,8 +73,11 @@ namespace SA.EntityFramework.EntityFramework.Repository
                     : GetAllUserInternal())
                 .ToListAsync();
 
-        public Task<User> GetOneAsync(Expression<Func<User, bool>> query)
-            => GetAllUserInternal().FirstOrDefaultAsync(query);
+        public async Task<TResult> GetOneAsync<TResult>(Expression<Func<User, bool>> query)
+            where TResult : class
+            => await GetAllUserInternal().Where(query)
+                    .ProjectTo<TResult>()
+                    .FirstOrDefaultAsync();
 
         public async Task<IEnumerable<User>> GetAllSimpleAsync(Expression<Func<User, bool>> query = null)
            => await(query != null

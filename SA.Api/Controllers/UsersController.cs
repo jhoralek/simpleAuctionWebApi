@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using SA.Application.Account;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
 
@@ -61,7 +60,7 @@ namespace SA.Api.Controllers
         [Route("LoadByNameAndToken")]
         [HttpGet("{uName}/{token}")]
         public async Task<IActionResult> LoadByNameAndToken(string uName, string token)
-            => Json(await _repository.GetOneAsync(x => x.UserName == uName
+            => Json(await _repository.GetOneAsync<User>(x => x.UserName == uName
                 && x.Token == token));
     }
 }

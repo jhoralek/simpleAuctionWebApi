@@ -76,5 +76,8 @@ namespace SA.Application.Records
 
         public async Task<Record> GetById(int id)
             => await _recordRepository.GetByIdAsync(id);
+
+        public async Task<T> GetById<T>(int id) where T: class
+            => await _recordRepository.GetOneAsync<T>(q => q.Id == id);
     }
 }

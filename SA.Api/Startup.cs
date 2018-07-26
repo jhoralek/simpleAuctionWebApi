@@ -80,9 +80,13 @@ namespace SA.Api
 
             Mapper.Initialize(cfg => {
                 cfg.CreateMap<Record, RecordTableDto>()
-                    .ForMember(dto => dto.CurrentPrice, dto => dto.MapFrom(x => x.Bids.Any() ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().Price : x.StartingPrice))
+                    .ForMember(dto => dto.CurrentPrice, dto => dto.MapFrom(x => x.Bids.Any() 
+                        ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().Price 
+                        : x.StartingPrice))
                     .ForMember(dto => dto.NumberOfBids, dto => dto.MapFrom(x => x.Bids.Count()));
+                cfg.CreateMap<Record, RecordDetailDto>();
                 cfg.CreateMap<File, FileSimpleDto>();
+                cfg.CreateMap<Bid, BidSimpleDto>();
             });
         }
 

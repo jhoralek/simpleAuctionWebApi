@@ -63,7 +63,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "5bcae5e79792bb1a549b"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2dd85a24a8cd7388b0d8"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -2948,15 +2948,20 @@ CustomerDetailComponent = tslib__WEBPACK_IMPORTED_MODULE_6__["__decorate"]([Obje
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/inherits */ "./node_modules/@babel/runtime/helpers/builtin/es6/inherits.js");
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn.js");
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf.js");
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var vue_property_decorator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-property-decorator */ "./node_modules/vue-property-decorator/lib/vue-property-decorator.js");
-/* harmony import */ var vuex_class__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex-class */ "./node_modules/vuex-class/lib/index.js");
-/* harmony import */ var _BaseComponent_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./BaseComponent.vue */ "./src/components/BaseComponent.vue");
-/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/model */ "./src/model/index.ts");
+/* harmony import */ var core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es6.function.name */ "./node_modules/core-js/modules/es6.function.name.js");
+/* harmony import */ var core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/inherits */ "./node_modules/@babel/runtime/helpers/builtin/es6/inherits.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/createClass */ "./node_modules/@babel/runtime/helpers/builtin/es6/createClass.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf.js");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var vue_property_decorator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-property-decorator */ "./node_modules/vue-property-decorator/lib/vue-property-decorator.js");
+/* harmony import */ var vuex_class__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuex-class */ "./node_modules/vuex-class/lib/index.js");
+/* harmony import */ var _BaseComponent_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./BaseComponent.vue */ "./src/components/BaseComponent.vue");
+/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @/model */ "./src/model/index.ts");
+
+
 
 
 
@@ -2969,25 +2974,45 @@ var _a;
 
 
 
-var RecordGetter = Object(vuex_class__WEBPACK_IMPORTED_MODULE_6__["namespace"])('record', vuex_class__WEBPACK_IMPORTED_MODULE_6__["Getter"]);
+var RecordGetter = Object(vuex_class__WEBPACK_IMPORTED_MODULE_8__["namespace"])('record', vuex_class__WEBPACK_IMPORTED_MODULE_8__["Getter"]);
 
 var AuctionDetalComponent =
 /*#__PURE__*/
 function (_BaseComponent) {
   function AuctionDetalComponent() {
-    Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, AuctionDetalComponent);
+    var _this;
 
-    return Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(AuctionDetalComponent).apply(this, arguments));
+    Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, AuctionDetalComponent);
+
+    _this = Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__["default"])(this, Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__["default"])(AuctionDetalComponent).apply(this, arguments));
+    _this.espander1 = [true];
+    _this.espander = [true, true, true, true, true, true];
+    return _this;
   }
 
-  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_1__["default"])(AuctionDetalComponent, _BaseComponent);
+  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(AuctionDetalComponent, [{
+    key: "filePath",
+    value: function filePath(file) {
+      return "/".concat(file.path, "/").concat(file.recordId, "/images/").concat(file.name);
+    }
+  }, {
+    key: "currentPrice",
+    value: function currentPrice(record) {
+      var price = record.bids.length > 0 ? Math.max.apply(Math, record.bids.map(function (o) {
+        return o.price;
+      })) : record.startingPrice;
+      return "".concat(price);
+    }
+  }]);
+
+  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_2__["default"])(AuctionDetalComponent, _BaseComponent);
 
   return AuctionDetalComponent;
-}(_BaseComponent_vue__WEBPACK_IMPORTED_MODULE_7__["default"]);
+}(_BaseComponent_vue__WEBPACK_IMPORTED_MODULE_9__["default"]);
 
-tslib__WEBPACK_IMPORTED_MODULE_4__["__decorate"]([RecordGetter('getCurrent'), tslib__WEBPACK_IMPORTED_MODULE_4__["__metadata"]("design:type", typeof (_a = typeof _model__WEBPACK_IMPORTED_MODULE_8__["Record"] !== "undefined" && _model__WEBPACK_IMPORTED_MODULE_8__["Record"]) === "function" && _a || Object)], AuctionDetalComponent.prototype, "record", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_6__["__decorate"]([RecordGetter('getCurrent'), tslib__WEBPACK_IMPORTED_MODULE_6__["__metadata"]("design:type", typeof (_a = typeof _model__WEBPACK_IMPORTED_MODULE_10__["Record"] !== "undefined" && _model__WEBPACK_IMPORTED_MODULE_10__["Record"]) === "function" && _a || Object)], AuctionDetalComponent.prototype, "record", void 0);
 
-AuctionDetalComponent = tslib__WEBPACK_IMPORTED_MODULE_4__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_5__["Component"])({})], AuctionDetalComponent);
+AuctionDetalComponent = tslib__WEBPACK_IMPORTED_MODULE_6__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_7__["Component"])({})], AuctionDetalComponent);
 /* harmony default export */ __webpack_exports__["default"] = (AuctionDetalComponent);
 
 /***/ }),
@@ -5041,7 +5066,1138 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _vm.record
-    ? _c("v-container", [_c("h1", [_vm._v(_vm._s(_vm.record.name))])])
+    ? _c(
+        "v-container",
+        { attrs: { "grid-list-xs": "" } },
+        [
+          _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", lg6: "" } },
+                [
+                  _c(
+                    "v-container",
+                    { attrs: { "grid-list-xs": "" } },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { column: "", "fill-height": "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "", md12: "" } },
+                            [
+                              _c(
+                                "v-carousel",
+                                _vm._l(_vm.record.files, function(item, i) {
+                                  return _c("v-carousel-item", {
+                                    key: i,
+                                    attrs: { src: _vm.filePath(item) }
+                                  })
+                                })
+                              )
+                            ],
+                            1
+                          ),
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c(
+                                "v-card",
+                                [
+                                  _c(
+                                    "v-card-text",
+                                    { staticClass: "px-0" },
+                                    [
+                                      _c(
+                                        "v-flex",
+                                        {
+                                          attrs: { xs12: "", "offset-xs1": "" }
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                    TODO: tady bude informace o cene, prihozech, tlacitko na prihodit, doba kdy bude konec\n                                "
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c(
+                                "v-container",
+                                [
+                                  _c(
+                                    "v-layout",
+                                    { attrs: { row: "", wrap: "" } },
+                                    [
+                                      _c("v-flex", { attrs: { xs6: "" } }, [
+                                        _c(
+                                          "h1",
+                                          {
+                                            staticClass:
+                                              "display-3 font-weight-medium"
+                                          },
+                                          [_vm._v(_vm._s(_vm.record.name))]
+                                        )
+                                      ]),
+                                      _c(
+                                        "v-flex",
+                                        {
+                                          attrs: {
+                                            xs6: "",
+                                            "justify-end": "",
+                                            "align-center": ""
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "h1",
+                                            {
+                                              staticClass:
+                                                " red--text text--lighten-1 display-3 font-weight-bold"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                        " +
+                                                  _vm._s(
+                                                    _vm.currentPrice(_vm.record)
+                                                  ) +
+                                                  "\n                                    "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", lg6: "" } },
+                [
+                  _c(
+                    "v-container",
+                    { attrs: { "grid-list-xs": "" } },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { column: "", "fill-height": "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c(
+                                "v-expansion-panel",
+                                { attrs: { expand: "" } },
+                                [
+                                  _c(
+                                    "v-expansion-panel-content",
+                                    { attrs: { value: _vm.espander } },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          attrs: { slot: "header" },
+                                          slot: "header"
+                                        },
+                                        [
+                                          _c(
+                                            "h3",
+                                            { staticClass: "headline" },
+                                            [
+                                              _vm._v(
+                                                _vm._s(
+                                                  _vm.resx("carInformation")
+                                                )
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      ),
+                                      _c(
+                                        "v-container",
+                                        { staticClass: "grey lighten-3" },
+                                        [
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                "offset-xs1": ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "dateOfFirstRegistration"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm._f("moment")(
+                                                            _vm.record
+                                                              .dateOfFirstRegistration,
+                                                            "YYYY"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx("doors")
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.record.doors)
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx("mileAge")
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record.mileage
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx("power")
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.record.power)
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.resx("fuel"))
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.record.fuel)
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx("color")
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record.colors
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "transmission"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .transmission
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "numberOfSeets"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .numberOfSeets
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.resx("axle"))
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.record.axle)
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx("euroNorm")
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record.euroNorm
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "auditControlIsProvidedBy"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .registrationCheck
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "vehicleVinNumber"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.record.vin)
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "technicalViewOfTheVehicle"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm._f("moment")(
+                                                            _vm.record.stk,
+                                                            "DD.MM.YYYY"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _c(
+                                    "v-expansion-panel-content",
+                                    { attrs: { value: _vm.espander } },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          attrs: { slot: "header" },
+                                          slot: "header"
+                                        },
+                                        [
+                                          _c(
+                                            "h3",
+                                            { staticClass: "headline" },
+                                            [
+                                              _vm._v(
+                                                _vm._s(_vm.resx("equipment"))
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      ),
+                                      _c(
+                                        "v-container",
+                                        { staticClass: "grey lighten-3" },
+                                        [
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                "offset-xs1": ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs12: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record.equipment
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _c(
+                                    "v-expansion-panel-content",
+                                    { attrs: { value: _vm.espander } },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          attrs: { slot: "header" },
+                                          slot: "header"
+                                        },
+                                        [
+                                          _c(
+                                            "h3",
+                                            { staticClass: "headline" },
+                                            [_vm._v(_vm._s(_vm.resx("state")))]
+                                          )
+                                        ]
+                                      ),
+                                      _c(
+                                        "v-container",
+                                        { staticClass: "grey lighten-3" },
+                                        [
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                "offset-xs1": ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs12: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.record.state)
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _c(
+                                    "v-expansion-panel-content",
+                                    { attrs: { value: _vm.espander } },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          attrs: { slot: "header" },
+                                          slot: "header"
+                                        },
+                                        [
+                                          _c(
+                                            "h3",
+                                            { staticClass: "headline" },
+                                            [
+                                              _vm._v(
+                                                _vm._s(
+                                                  _vm.resx("specification")
+                                                )
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      ),
+                                      _c(
+                                        "v-container",
+                                        { staticClass: "grey lighten-3" },
+                                        [
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                "offset-xs1": ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx("dimensions")
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record.dimensions
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "maximumWeight"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .maximumWeight
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "operationWeight"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .operationWeight
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "maximumWeightOfRide"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .maximumWeightOfRide
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "mostTechnicallyWeightOfRide"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .mostTechnicallyAcceptableWeight
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "mostTechnicallyAcceptableWeight"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .mostTechnicallyAcceptableWeight
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _c(
+                                    "v-expansion-panel-content",
+                                    { attrs: { value: _vm.espander } },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          attrs: { slot: "header" },
+                                          slot: "header"
+                                        },
+                                        [
+                                          _c(
+                                            "h3",
+                                            { staticClass: "headline" },
+                                            [
+                                              _vm._v(
+                                                _vm._s(_vm.resx("defects"))
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      ),
+                                      _c(
+                                        "v-container",
+                                        { staticClass: "grey lighten-3" },
+                                        [
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                "offset-xs1": ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs12: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record.defects
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _c(
+                                    "v-expansion-panel-content",
+                                    { attrs: { value: _vm.espander } },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          attrs: { slot: "header" },
+                                          slot: "header"
+                                        },
+                                        [
+                                          _c(
+                                            "h3",
+                                            { staticClass: "headline" },
+                                            [
+                                              _vm._v(
+                                                _vm._s(
+                                                  _vm.resx("moreDescription")
+                                                )
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      ),
+                                      _c(
+                                        "v-container",
+                                        { staticClass: "grey lighten-3" },
+                                        [
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                "offset-xs1": ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs12: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .moreDescription
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
     : _vm._e()
 }
 var staticRenderFns = []
@@ -62530,28 +63686,40 @@ Translator.cs = {
   active: 'Aktivní',
   auctions: 'Aukce',
   auctionHall: 'Aukční síň',
+  auditControlIsProvidedBy: 'Evidenční kontrolu zajišťuje',
   actualPrice: 'Aktuální cena',
+  axle: 'Konfigurace nápravy',
   bids: 'Příhozy',
   birthNumber: 'Rodné číslo',
   cancel: 'Zrušit',
+  carInformation: 'Informace o vozidle',
   city: 'Město',
   close: 'Zavřít',
+  color: 'Barva',
   companyLegalNumber: 'DIČ',
   companyNumber: 'IČO',
   contact: 'Kontakt',
+  contactToAppointment: 'Prodávající',
   country: 'Země',
   currentPrice: 'Cena',
   customer: 'Zákazník',
   customerDetail: 'Detail zákazníka',
+  dateOfFirstRegistration: 'Datum první registrace',
   dealer: 'Prodávající',
+  defects: 'Závady',
   detailOfAuction: 'Detail aukce',
+  dimensions: 'Celkové rozměry (délka / šířka / výška)',
+  doors: 'Dveře',
+  equipment: 'Vybavení',
   email: 'Email',
   end: 'Konec',
   endOfAuction: 'Konec aukce za',
+  euroNorm: 'Euronorma',
   faq: 'Otázky a odpovědi',
   feeExpirationDate: 'Datum vypršení poplatku',
   firstName: 'Jméno',
   forDealers: 'Pro prodejce',
+  fuel: 'Palivo',
   grid: 'Mříž',
   home: 'Domů',
   intoFavorites: 'Do oblíbených',
@@ -62561,33 +63729,47 @@ Translator.cs = {
   loadingData: 'Nahrávám',
   login: 'Přihlásit se',
   logout: 'Odhlásit',
+  maximumWeight: 'Nejvyšší povolená hmotnost',
+  maximumWeightOfRide: 'Nejvyšší technicky přípustná hmotnost jízdní soupravy',
+  mileAge: 'Najeto',
   minimumBid: 'Minimální příhoz',
+  moreDescription: 'Další informace',
+  mostTechnicallyWeightOfRide: 'Nejvyšší technicky přípustná hmotnost',
+  mostTechnicallyAcceptableWeight: 'Největší povolená hmotnost jízdní soupravy',
   name: 'Název',
   news: 'Novinky',
   numberOfBids: 'Počet příhozů',
+  numberOfSeets: 'Počet sedadel',
   ok: 'OK',
+  operationWeight: 'Provozní hmotnost',
   password: 'Heslo',
   phoneNumber: 'Telefonní číslo',
   postCode: 'PSČ',
+  power: 'Výkon',
   protectionPersonalData: 'Ochrana osobních údajů',
   requiredFields: 'Povinné  pole',
   sendingNews: 'Zasílat novinky',
   share: 'Sdílet',
+  specification: 'Technické údaje',
   state: 'Stav',
   street: 'Ulice',
   submit: 'Odeslat',
   table: 'Tabulka',
+  technicalViewOfTheVehicle: 'STK',
   terms: 'Podmínky',
   termsAndConditions: 'Obchodní podmínky',
   titleAfter: 'Titul za',
   titleBefore: 'Titul před',
+  transmission: 'Řazení',
   user: 'Uživatel',
   userLoggedInSuccessfully: 'Úspěšně přihlášen.',
   userLoggedOutSuccessfully: 'Úspěšně odhlášen.',
   userName: 'Uživatelské jméno',
   userNotAuthenticated: 'Špatné jméno nebo heslo!',
   validation_min_chars: 'Minimum znaků {0}',
-  webPageUrl: 'URL webových stránek'
+  vehicleVinNumber: 'VIN vozidla',
+  webPageUrl: 'URL webových stránek',
+  yearOfManufacture: 'Rok výroby'
 };
 Translator.en = {
   about: 'About',
@@ -62596,28 +63778,40 @@ Translator.en = {
   action: 'Action',
   auctions: 'Auctions',
   auctionHall: 'Auction hall',
+  auditControlIsProvidedBy: 'Audit control is provided by',
   actualPrice: 'Current price',
+  axle: 'Axle',
   bids: 'Bids',
   birthNumber: 'Birth number',
   cancel: 'Cancel',
+  carInformation: 'Vehicle information',
   city: 'City',
   close: 'Close',
+  color: 'Color',
   companyLegalNumber: 'Company legal number',
   companyNumber: 'Company number',
   contact: 'Contact',
+  contactToAppointment: 'Seller',
   country: 'Country',
   currentPrice: 'Price',
   customer: 'Customer',
   customerDetail: 'Customer\'s detail',
+  dateOfFirstRegistration: 'Date of first registration',
   dealer: 'Dealer',
+  defects: 'Defets',
   detailOfAuction: 'Detail of auction',
+  dimensions: 'Overall dimensions (length / width / height)',
+  doors: 'Doors',
+  equipment: 'Equipment',
   email: 'Email',
   end: 'End',
   endOfAuction: 'End of auction for',
+  euroNorm: 'Euronorm',
   faq: 'FAQ',
   feeExpirationDate: 'Fee expiration date',
   firstName: 'First name',
   forDealers: 'For dealers',
+  fuel: 'Fuel',
   grid: 'Grid',
   home: 'Home',
   intoFavorites: 'To favorites',
@@ -62627,33 +63821,47 @@ Translator.en = {
   loadingData: 'Loading',
   login: 'Login',
   logout: 'Logout',
+  maximumWeight: 'Maximum allowable weight',
+  maximumWeightOfRide: 'Technically permissible maximum mass of the combination',
+  mileAge: 'Mileage',
   minimumBid: 'Minimum bid',
+  moreDescription: 'More information',
+  mostTechnicallyWeightOfRide: 'Technically permissible maximum weight',
+  mostTechnicallyAcceptableWeight: 'The maximum permitted weight of the combination',
   name: 'Name',
   news: 'News',
   numberOfBids: 'Number of bids',
+  numberOfSeets: 'Number of seets',
   ok: 'OK',
+  operationWeight: 'Operating weight',
   password: 'Password',
   phoneNumber: 'Phone number',
   postCode: 'Post code',
+  power: 'Power',
   protectionPersonalData: 'Protection of personal data',
   requiredFields: 'Required fields',
   sendingNews: 'Sending news',
   share: 'Share',
+  specification: 'Specifications',
   state: 'State',
   street: 'Street',
   submit: 'Submit',
   table: 'Table',
+  technicalViewOfTheVehicle: 'Technical view of the vehicle',
   terms: 'Terms',
   termsAndConditions: 'Terms and conditions',
   titleAfter: 'Prefix',
   titleBefore: 'Postfix',
+  transmission: 'Transmission',
   user: 'User',
   userLoggedInSuccessfully: 'Successfully logged in.',
   userLoggedOutSuccessfully: 'Logged out successfully.',
   userName: 'User name',
   userNotAuthenticated: 'Wrong user name or password!',
   validation_min_chars: 'At least {0} characters',
-  webPageUrl: 'Web page URL'
+  vehicleVinNumber: 'Vehicle VIN',
+  webPageUrl: 'Web page URL',
+  yearOfManufacture: 'Year of manufacture'
 };
 Translator.sk = {};
 Translator.de = {};
@@ -62811,37 +64019,34 @@ var MessageStatusEnum;
 /*!****************************!*\
   !*** ./src/model/index.ts ***!
   \****************************/
-/*! exports provided: Address, Bid, Country, Customer, File, FileShort, Record, User, MessageStatusEnum */
+/*! exports provided: Address, Bid, Country, Customer, File, Record, User, MessageStatusEnum */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _model_Customer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/model/Customer */ "./src/model/Customer.ts");
-/* harmony import */ var _model_Customer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_model_Customer__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Customer", function() { return _model_Customer__WEBPACK_IMPORTED_MODULE_0___default.a; });
-/* harmony import */ var _model_User__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/model/User */ "./src/model/User.ts");
-/* harmony import */ var _model_User__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_model_User__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "User", function() { return _model_User__WEBPACK_IMPORTED_MODULE_1___default.a; });
-/* harmony import */ var _model_File__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/model/File */ "./src/model/File.ts");
-/* harmony import */ var _model_File__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_model_File__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "File", function() { return _model_File__WEBPACK_IMPORTED_MODULE_2__["File"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FileShort", function() { return _model_File__WEBPACK_IMPORTED_MODULE_2__["FileShort"]; });
-
-/* harmony import */ var _model_Country__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/model/Country */ "./src/model/Country.ts");
-/* harmony import */ var _model_Country__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_model_Country__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Country", function() { return _model_Country__WEBPACK_IMPORTED_MODULE_3___default.a; });
-/* harmony import */ var _model_Record__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/model/Record */ "./src/model/Record.ts");
-/* harmony import */ var _model_Record__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_model_Record__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Record", function() { return _model_Record__WEBPACK_IMPORTED_MODULE_4___default.a; });
-/* harmony import */ var _model_Bid__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/model/Bid */ "./src/model/Bid.ts");
-/* harmony import */ var _model_Bid__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_model_Bid__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Bid", function() { return _model_Bid__WEBPACK_IMPORTED_MODULE_5___default.a; });
-/* harmony import */ var _model_Address__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/model/Address */ "./src/model/Address.ts");
-/* harmony import */ var _model_Address__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_model_Address__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Address", function() { return _model_Address__WEBPACK_IMPORTED_MODULE_6___default.a; });
-/* harmony import */ var _model_MessageStatusEnum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @/model/MessageStatusEnum */ "./src/model/MessageStatusEnum.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MessageStatusEnum", function() { return _model_MessageStatusEnum__WEBPACK_IMPORTED_MODULE_7__["default"]; });
+/* harmony import */ var _Customer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Customer */ "./src/model/Customer.ts");
+/* harmony import */ var _Customer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_Customer__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Customer", function() { return _Customer__WEBPACK_IMPORTED_MODULE_0___default.a; });
+/* harmony import */ var _User__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./User */ "./src/model/User.ts");
+/* harmony import */ var _User__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_User__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "User", function() { return _User__WEBPACK_IMPORTED_MODULE_1___default.a; });
+/* harmony import */ var _File__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./File */ "./src/model/File.ts");
+/* harmony import */ var _File__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_File__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "File", function() { return _File__WEBPACK_IMPORTED_MODULE_2___default.a; });
+/* harmony import */ var _Country__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Country */ "./src/model/Country.ts");
+/* harmony import */ var _Country__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_Country__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Country", function() { return _Country__WEBPACK_IMPORTED_MODULE_3___default.a; });
+/* harmony import */ var _Record__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Record */ "./src/model/Record.ts");
+/* harmony import */ var _Record__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_Record__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Record", function() { return _Record__WEBPACK_IMPORTED_MODULE_4___default.a; });
+/* harmony import */ var _Bid__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Bid */ "./src/model/Bid.ts");
+/* harmony import */ var _Bid__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_Bid__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Bid", function() { return _Bid__WEBPACK_IMPORTED_MODULE_5___default.a; });
+/* harmony import */ var _Address__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Address */ "./src/model/Address.ts");
+/* harmony import */ var _Address__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_Address__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Address", function() { return _Address__WEBPACK_IMPORTED_MODULE_6___default.a; });
+/* harmony import */ var _MessageStatusEnum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./MessageStatusEnum */ "./src/model/MessageStatusEnum.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MessageStatusEnum", function() { return _MessageStatusEnum__WEBPACK_IMPORTED_MODULE_7__["default"]; });
 
 
 
@@ -62858,6 +64063,17 @@ __webpack_require__.r(__webpack_exports__);
 /***/ "./src/poco/AuthResponse.ts":
 /*!**********************************!*\
   !*** ./src/poco/AuthResponse.ts ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ "./src/poco/FileShortDto.ts":
+/*!**********************************!*\
+  !*** ./src/poco/FileShortDto.ts ***!
   \**********************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
@@ -62903,23 +64119,27 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************!*\
   !*** ./src/poco/index.ts ***!
   \***************************/
-/*! exports provided: AuthResponse, UserShortInfo, MessageDto, LoginDto */
+/*! exports provided: AuthResponse, UserShortInfo, MessageDto, LoginDto, FileShortDto */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _poco_AuthResponse__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/poco/AuthResponse */ "./src/poco/AuthResponse.ts");
-/* harmony import */ var _poco_AuthResponse__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_poco_AuthResponse__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "AuthResponse", function() { return _poco_AuthResponse__WEBPACK_IMPORTED_MODULE_0___default.a; });
-/* harmony import */ var _poco_UserShortInfo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/poco/UserShortInfo */ "./src/poco/UserShortInfo.ts");
-/* harmony import */ var _poco_UserShortInfo__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_poco_UserShortInfo__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "UserShortInfo", function() { return _poco_UserShortInfo__WEBPACK_IMPORTED_MODULE_1___default.a; });
-/* harmony import */ var _poco_MessageDto__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/poco/MessageDto */ "./src/poco/MessageDto.ts");
-/* harmony import */ var _poco_MessageDto__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_poco_MessageDto__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "MessageDto", function() { return _poco_MessageDto__WEBPACK_IMPORTED_MODULE_2___default.a; });
-/* harmony import */ var _poco_LoginDto__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/poco/LoginDto */ "./src/poco/LoginDto.ts");
-/* harmony import */ var _poco_LoginDto__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_poco_LoginDto__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "LoginDto", function() { return _poco_LoginDto__WEBPACK_IMPORTED_MODULE_3___default.a; });
+/* harmony import */ var _AuthResponse__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AuthResponse */ "./src/poco/AuthResponse.ts");
+/* harmony import */ var _AuthResponse__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_AuthResponse__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "AuthResponse", function() { return _AuthResponse__WEBPACK_IMPORTED_MODULE_0___default.a; });
+/* harmony import */ var _UserShortInfo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UserShortInfo */ "./src/poco/UserShortInfo.ts");
+/* harmony import */ var _UserShortInfo__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_UserShortInfo__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "UserShortInfo", function() { return _UserShortInfo__WEBPACK_IMPORTED_MODULE_1___default.a; });
+/* harmony import */ var _MessageDto__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MessageDto */ "./src/poco/MessageDto.ts");
+/* harmony import */ var _MessageDto__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_MessageDto__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "MessageDto", function() { return _MessageDto__WEBPACK_IMPORTED_MODULE_2___default.a; });
+/* harmony import */ var _LoginDto__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./LoginDto */ "./src/poco/LoginDto.ts");
+/* harmony import */ var _LoginDto__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_LoginDto__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "LoginDto", function() { return _LoginDto__WEBPACK_IMPORTED_MODULE_3___default.a; });
+/* harmony import */ var _FileShortDto__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./FileShortDto */ "./src/poco/FileShortDto.ts");
+/* harmony import */ var _FileShortDto__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_FileShortDto__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "FileShortDto", function() { return _FileShortDto__WEBPACK_IMPORTED_MODULE_4___default.a; });
+
 
 
 
@@ -62957,18 +64177,21 @@ if (false) {}
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var _views__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/views */ "./src/views/index.ts");
-/* harmony import */ var _store_modules_auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/store/modules/auth */ "./src/store/modules/auth/index.ts");
+/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es6.promise */ "./node_modules/core-js/modules/es6.promise.js");
+/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var _views__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/views */ "./src/views/index.ts");
+/* harmony import */ var _store_modules_auth__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/store/modules/auth */ "./src/store/modules/auth/index.ts");
 
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
+
+vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
 
 var authenticated = function authenticated(to, from, next) {
-  if (_store_modules_auth__WEBPACK_IMPORTED_MODULE_3__["state"].isAuthenticated) {
+  if (_store_modules_auth__WEBPACK_IMPORTED_MODULE_4__["state"].isAuthenticated) {
     next();
     return;
   }
@@ -62976,53 +64199,53 @@ var authenticated = function authenticated(to, from, next) {
   next('/');
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
+/* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
   mode: 'history',
   routes: [{
     path: '/about',
     name: 'about',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["About"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["About"]
   }, {
     path: '/auctions',
     name: 'auctions',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["Auction"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["Auction"]
   }, {
     path: '/contact',
     name: 'contact',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["Contact"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["Contact"]
   }, {
     path: '/customer',
     name: 'customer',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["Customer"],
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["Customer"],
     beforeEnter: authenticated
   }, {
     path: '/faq',
     name: 'faq',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["Faq"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["Faq"]
   }, {
     path: '/forDealers',
     name: 'forDealres',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["ForDealers"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["ForDealers"]
   }, {
     path: '/',
     name: 'home',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["Home"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["Home"]
   }, {
     path: '/news',
     name: 'news',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["News"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["News"]
   }, {
     path: '/protectionPersonalData',
     name: 'protectionPersonalData',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["ProtectionPersonalData"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["ProtectionPersonalData"]
   }, {
     path: '/termsAndConditions',
     name: 'termsAndConditions',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["TermsAndConditions"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["TermsAndConditions"]
   }, {
     path: '/auctionDetail',
     name: 'auctionDetail',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["AuctionDetail"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["AuctionDetail"]
   }]
 }));
 
@@ -63050,7 +64273,7 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_1_
 var vuexLocal = new vuex_persist__WEBPACK_IMPORTED_MODULE_2___default.a({
   storage: window.localStorage,
   supportCircular: true,
-  modules: ['auth', 'settings'],
+  modules: ['auth', 'settings', 'record'],
   key: 'simple_auction'
 }); // create store with RootState
 
