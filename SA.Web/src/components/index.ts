@@ -9,6 +9,7 @@ import AuctionSummaryComponent from './AuctionSummaryComponent.vue';
 import AuctionTableComponent from './AuctionTableComponent.vue';
 import AuctionGridComponent from './AuctionGridComponent.vue';
 import CountdownComponent from './helpers/CountdownComponent.vue';
+import PriceComponent from './helpers/PriceComponent.vue';
 import AuctionDetailComponent from './AuctionDetailComponent.vue';
 
 export {
@@ -23,5 +24,6 @@ export {
     AuctionTableComponent,
     AuctionGridComponent,
     CountdownComponent,
+    PriceComponent,
     AuctionDetailComponent,
 };

@@ -63,7 +63,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "5bcae5e79792bb1a549b"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "41f897ea8b0c37274ee6"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1024,6 +1024,408 @@ function _typeof(obj) {
 
   return _typeof(obj);
 }
+
+/***/ }),
+
+/***/ "./node_modules/accounting/accounting.js":
+/*!***********************************************!*\
+  !*** ./node_modules/accounting/accounting.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*!
+ * accounting.js v0.4.1
+ * Copyright 2014 Open Exchange Rates
+ *
+ * Freely distributable under the MIT license.
+ * Portions of accounting.js are inspired or borrowed from underscore.js
+ *
+ * Full details and documentation:
+ * http://openexchangerates.github.io/accounting.js/
+ */
+
+(function(root, undefined) {
+
+	/* --- Setup --- */
+
+	// Create the local library object, to be exported or referenced globally later
+	var lib = {};
+
+	// Current version
+	lib.version = '0.4.1';
+
+
+	/* --- Exposed settings --- */
+
+	// The library's settings configuration object. Contains default parameters for
+	// currency and number formatting
+	lib.settings = {
+		currency: {
+			symbol : "$",		// default currency symbol is '$'
+			format : "%s%v",	// controls output: %s = symbol, %v = value (can be object, see docs)
+			decimal : ".",		// decimal point separator
+			thousand : ",",		// thousands separator
+			precision : 2,		// decimal places
+			grouping : 3		// digit grouping (not implemented yet)
+		},
+		number: {
+			precision : 0,		// default precision on numbers is 0
+			grouping : 3,		// digit grouping (not implemented yet)
+			thousand : ",",
+			decimal : "."
+		}
+	};
+
+
+	/* --- Internal Helper Methods --- */
+
+	// Store reference to possibly-available ECMAScript 5 methods for later
+	var nativeMap = Array.prototype.map,
+		nativeIsArray = Array.isArray,
+		toString = Object.prototype.toString;
+
+	/**
+	 * Tests whether supplied parameter is a string
+	 * from underscore.js
+	 */
+	function isString(obj) {
+		return !!(obj === '' || (obj && obj.charCodeAt && obj.substr));
+	}
+
+	/**
+	 * Tests whether supplied parameter is a string
+	 * from underscore.js, delegates to ECMA5's native Array.isArray
+	 */
+	function isArray(obj) {
+		return nativeIsArray ? nativeIsArray(obj) : toString.call(obj) === '[object Array]';
+	}
+
+	/**
+	 * Tests whether supplied parameter is a true object
+	 */
+	function isObject(obj) {
+		return obj && toString.call(obj) === '[object Object]';
+	}
+
+	/**
+	 * Extends an object with a defaults object, similar to underscore's _.defaults
+	 *
+	 * Used for abstracting parameter handling from API methods
+	 */
+	function defaults(object, defs) {
+		var key;
+		object = object || {};
+		defs = defs || {};
+		// Iterate over object non-prototype properties:
+		for (key in defs) {
+			if (defs.hasOwnProperty(key)) {
+				// Replace values with defaults only if undefined (allow empty/zero values):
+				if (object[key] == null) object[key] = defs[key];
+			}
+		}
+		return object;
+	}
+
+	/**
+	 * Implementation of `Array.map()` for iteration loops
+	 *
+	 * Returns a new Array as a result of calling `iterator` on each array value.
+	 * Defers to native Array.map if available
+	 */
+	function map(obj, iterator, context) {
+		var results = [], i, j;
+
+		if (!obj) return results;
+
+		// Use native .map method if it exists:
+		if (nativeMap && obj.map === nativeMap) return obj.map(iterator, context);
+
+		// Fallback for native .map:
+		for (i = 0, j = obj.length; i < j; i++ ) {
+			results[i] = iterator.call(context, obj[i], i, obj);
+		}
+		return results;
+	}
+
+	/**
+	 * Check and normalise the value of precision (must be positive integer)
+	 */
+	function checkPrecision(val, base) {
+		val = Math.round(Math.abs(val));
+		return isNaN(val)? base : val;
+	}
+
+
+	/**
+	 * Parses a format string or object and returns format obj for use in rendering
+	 *
+	 * `format` is either a string with the default (positive) format, or object
+	 * containing `pos` (required), `neg` and `zero` values (or a function returning
+	 * either a string or object)
+	 *
+	 * Either string or format.pos must contain "%v" (value) to be valid
+	 */
+	function checkCurrencyFormat(format) {
+		var defaults = lib.settings.currency.format;
+
+		// Allow function as format parameter (should return string or object):
+		if ( typeof format === "function" ) format = format();
+
+		// Format can be a string, in which case `value` ("%v") must be present:
+		if ( isString( format ) && format.match("%v") ) {
+
+			// Create and return positive, negative and zero formats:
+			return {
+				pos : format,
+				neg : format.replace("-", "").replace("%v", "-%v"),
+				zero : format
+			};
+
+		// If no format, or object is missing valid positive value, use defaults:
+		} else if ( !format || !format.pos || !format.pos.match("%v") ) {
+
+			// If defaults is a string, casts it to an object for faster checking next time:
+			return ( !isString( defaults ) ) ? defaults : lib.settings.currency.format = {
+				pos : defaults,
+				neg : defaults.replace("%v", "-%v"),
+				zero : defaults
+			};
+
+		}
+		// Otherwise, assume format was fine:
+		return format;
+	}
+
+
+	/* --- API Methods --- */
+
+	/**
+	 * Takes a string/array of strings, removes all formatting/cruft and returns the raw float value
+	 * Alias: `accounting.parse(string)`
+	 *
+	 * Decimal must be included in the regular expression to match floats (defaults to
+	 * accounting.settings.number.decimal), so if the number uses a non-standard decimal 
+	 * separator, provide it as the second argument.
+	 *
+	 * Also matches bracketed negatives (eg. "$ (1.99)" => -1.99)
+	 *
+	 * Doesn't throw any errors (`NaN`s become 0) but this may change in future
+	 */
+	var unformat = lib.unformat = lib.parse = function(value, decimal) {
+		// Recursively unformat arrays:
+		if (isArray(value)) {
+			return map(value, function(val) {
+				return unformat(val, decimal);
+			});
+		}
+
+		// Fails silently (need decent errors):
+		value = value || 0;
+
+		// Return the value as-is if it's already a number:
+		if (typeof value === "number") return value;
+
+		// Default decimal point comes from settings, but could be set to eg. "," in opts:
+		decimal = decimal || lib.settings.number.decimal;
+
+		 // Build regex to strip out everything except digits, decimal point and minus sign:
+		var regex = new RegExp("[^0-9-" + decimal + "]", ["g"]),
+			unformatted = parseFloat(
+				("" + value)
+				.replace(/\((.*)\)/, "-$1") // replace bracketed values with negatives
+				.replace(regex, '')         // strip out any cruft
+				.replace(decimal, '.')      // make sure decimal point is standard
+			);
+
+		// This will fail silently which may cause trouble, let's wait and see:
+		return !isNaN(unformatted) ? unformatted : 0;
+	};
+
+
+	/**
+	 * Implementation of toFixed() that treats floats more like decimals
+	 *
+	 * Fixes binary rounding issues (eg. (0.615).toFixed(2) === "0.61") that present
+	 * problems for accounting- and finance-related software.
+	 */
+	var toFixed = lib.toFixed = function(value, precision) {
+		precision = checkPrecision(precision, lib.settings.number.precision);
+		var power = Math.pow(10, precision);
+
+		// Multiply up by precision, round accurately, then divide and use native toFixed():
+		return (Math.round(lib.unformat(value) * power) / power).toFixed(precision);
+	};
+
+
+	/**
+	 * Format a number, with comma-separated thousands and custom precision/decimal places
+	 * Alias: `accounting.format()`
+	 *
+	 * Localise by overriding the precision and thousand / decimal separators
+	 * 2nd parameter `precision` can be an object matching `settings.number`
+	 */
+	var formatNumber = lib.formatNumber = lib.format = function(number, precision, thousand, decimal) {
+		// Resursively format arrays:
+		if (isArray(number)) {
+			return map(number, function(val) {
+				return formatNumber(val, precision, thousand, decimal);
+			});
+		}
+
+		// Clean up number:
+		number = unformat(number);
+
+		// Build options object from second param (if object) or all params, extending defaults:
+		var opts = defaults(
+				(isObject(precision) ? precision : {
+					precision : precision,
+					thousand : thousand,
+					decimal : decimal
+				}),
+				lib.settings.number
+			),
+
+			// Clean up precision
+			usePrecision = checkPrecision(opts.precision),
+
+			// Do some calc:
+			negative = number < 0 ? "-" : "",
+			base = parseInt(toFixed(Math.abs(number || 0), usePrecision), 10) + "",
+			mod = base.length > 3 ? base.length % 3 : 0;
+
+		// Format the number:
+		return negative + (mod ? base.substr(0, mod) + opts.thousand : "") + base.substr(mod).replace(/(\d{3})(?=\d)/g, "$1" + opts.thousand) + (usePrecision ? opts.decimal + toFixed(Math.abs(number), usePrecision).split('.')[1] : "");
+	};
+
+
+	/**
+	 * Format a number into currency
+	 *
+	 * Usage: accounting.formatMoney(number, symbol, precision, thousandsSep, decimalSep, format)
+	 * defaults: (0, "$", 2, ",", ".", "%s%v")
+	 *
+	 * Localise by overriding the symbol, precision, thousand / decimal separators and format
+	 * Second param can be an object matching `settings.currency` which is the easiest way.
+	 *
+	 * To do: tidy up the parameters
+	 */
+	var formatMoney = lib.formatMoney = function(number, symbol, precision, thousand, decimal, format) {
+		// Resursively format arrays:
+		if (isArray(number)) {
+			return map(number, function(val){
+				return formatMoney(val, symbol, precision, thousand, decimal, format);
+			});
+		}
+
+		// Clean up number:
+		number = unformat(number);
+
+		// Build options object from second param (if object) or all params, extending defaults:
+		var opts = defaults(
+				(isObject(symbol) ? symbol : {
+					symbol : symbol,
+					precision : precision,
+					thousand : thousand,
+					decimal : decimal,
+					format : format
+				}),
+				lib.settings.currency
+			),
+
+			// Check format (returns object with pos, neg and zero):
+			formats = checkCurrencyFormat(opts.format),
+
+			// Choose which format to use for this value:
+			useFormat = number > 0 ? formats.pos : number < 0 ? formats.neg : formats.zero;
+
+		// Return with currency symbol added:
+		return useFormat.replace('%s', opts.symbol).replace('%v', formatNumber(Math.abs(number), checkPrecision(opts.precision), opts.thousand, opts.decimal));
+	};
+
+
+	/**
+	 * Format a list of numbers into an accounting column, padding with whitespace
+	 * to line up currency symbols, thousand separators and decimals places
+	 *
+	 * List should be an array of numbers
+	 * Second parameter can be an object containing keys that match the params
+	 *
+	 * Returns array of accouting-formatted number strings of same length
+	 *
+	 * NB: `white-space:pre` CSS rule is required on the list container to prevent
+	 * browsers from collapsing the whitespace in the output strings.
+	 */
+	lib.formatColumn = function(list, symbol, precision, thousand, decimal, format) {
+		if (!list) return [];
+
+		// Build options object from second param (if object) or all params, extending defaults:
+		var opts = defaults(
+				(isObject(symbol) ? symbol : {
+					symbol : symbol,
+					precision : precision,
+					thousand : thousand,
+					decimal : decimal,
+					format : format
+				}),
+				lib.settings.currency
+			),
+
+			// Check format (returns object with pos, neg and zero), only need pos for now:
+			formats = checkCurrencyFormat(opts.format),
+
+			// Whether to pad at start of string or after currency symbol:
+			padAfterSymbol = formats.pos.indexOf("%s") < formats.pos.indexOf("%v") ? true : false,
+
+			// Store value for the length of the longest string in the column:
+			maxLength = 0,
+
+			// Format the list according to options, store the length of the longest string:
+			formatted = map(list, function(val, i) {
+				if (isArray(val)) {
+					// Recursively format columns if list is a multi-dimensional array:
+					return lib.formatColumn(val, opts);
+				} else {
+					// Clean up the value
+					val = unformat(val);
+
+					// Choose which format to use for this value (pos, neg or zero):
+					var useFormat = val > 0 ? formats.pos : val < 0 ? formats.neg : formats.zero,
+
+						// Format this value, push into formatted list and save the length:
+						fVal = useFormat.replace('%s', opts.symbol).replace('%v', formatNumber(Math.abs(val), checkPrecision(opts.precision), opts.thousand, opts.decimal));
+
+					if (fVal.length > maxLength) maxLength = fVal.length;
+					return fVal;
+				}
+			});
+
+		// Pad each number in the list and send back the column of numbers:
+		return map(formatted, function(val, i) {
+			// Only if this is a string (not a nested array, which would have already been padded):
+			if (isString(val) && val.length < maxLength) {
+				// Depending on symbol position, pad after symbol or at index 0:
+				return padAfterSymbol ? val.replace(opts.symbol, opts.symbol+(new Array(maxLength - val.length + 1).join(" "))) : (new Array(maxLength - val.length + 1).join(" ")) + val;
+			}
+			return val;
+		});
+	};
+
+
+	/* --- Module Definition --- */
+
+	// Export accounting for CommonJS. If being loaded as an AMD module, define it as such.
+	// Otherwise, just add `accounting` to the global object
+	if (true) {
+		if (typeof module !== 'undefined' && module.exports) {
+			exports = module.exports = lib;
+		}
+		exports.accounting = lib;
+	} else {}
+
+	// Root will be `window` in browser or `global` on the server:
+}(this));
+
 
 /***/ }),
 
@@ -2948,15 +3350,21 @@ CustomerDetailComponent = tslib__WEBPACK_IMPORTED_MODULE_6__["__decorate"]([Obje
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/inherits */ "./node_modules/@babel/runtime/helpers/builtin/es6/inherits.js");
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn.js");
-/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf.js");
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var vue_property_decorator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-property-decorator */ "./node_modules/vue-property-decorator/lib/vue-property-decorator.js");
-/* harmony import */ var vuex_class__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex-class */ "./node_modules/vuex-class/lib/index.js");
-/* harmony import */ var _BaseComponent_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./BaseComponent.vue */ "./src/components/BaseComponent.vue");
-/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/model */ "./src/model/index.ts");
+/* harmony import */ var core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es6.function.name */ "./node_modules/core-js/modules/es6.function.name.js");
+/* harmony import */ var core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_function_name__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/inherits */ "./node_modules/@babel/runtime/helpers/builtin/es6/inherits.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/createClass */ "./node_modules/@babel/runtime/helpers/builtin/es6/createClass.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf.js");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var vue_property_decorator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-property-decorator */ "./node_modules/vue-property-decorator/lib/vue-property-decorator.js");
+/* harmony import */ var vuex_class__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuex-class */ "./node_modules/vuex-class/lib/index.js");
+/* harmony import */ var _BaseComponent_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./BaseComponent.vue */ "./src/components/BaseComponent.vue");
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @/components */ "./src/components/index.ts");
+/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @/model */ "./src/model/index.ts");
+
+
 
 
 
@@ -2969,25 +3377,59 @@ var _a;
 
 
 
-var RecordGetter = Object(vuex_class__WEBPACK_IMPORTED_MODULE_6__["namespace"])('record', vuex_class__WEBPACK_IMPORTED_MODULE_6__["Getter"]);
+
+var RecordGetter = Object(vuex_class__WEBPACK_IMPORTED_MODULE_8__["namespace"])('record', vuex_class__WEBPACK_IMPORTED_MODULE_8__["Getter"]);
 
 var AuctionDetalComponent =
 /*#__PURE__*/
 function (_BaseComponent) {
   function AuctionDetalComponent() {
-    Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, AuctionDetalComponent);
+    var _this;
 
-    return Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(AuctionDetalComponent).apply(this, arguments));
+    Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, AuctionDetalComponent);
+
+    _this = Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__["default"])(this, Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__["default"])(AuctionDetalComponent).apply(this, arguments));
+    _this.expander = [true, true, true, true, true, true];
+    _this.expander1 = [true];
+    return _this;
   }
 
-  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_1__["default"])(AuctionDetalComponent, _BaseComponent);
+  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(AuctionDetalComponent, [{
+    key: "filePath",
+    value: function filePath(file) {
+      return "/".concat(file.path, "/").concat(file.recordId, "/images/").concat(file.name);
+    }
+  }, {
+    key: "currentPrice",
+    value: function currentPrice(record) {
+      return record.bids.length > 0 ? Math.max.apply(Math, record.bids.map(function (o) {
+        return o.price;
+      })) : record.startingPrice;
+    }
+  }, {
+    key: "numberOfBids",
+    value: function numberOfBids(bids) {
+      return bids === undefined ? 0 : bids.length;
+    }
+  }, {
+    key: "sellerInfo",
+    value: function sellerInfo(customer) {
+      return "".concat(customer.companyName);
+    }
+  }]);
+
+  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_2__["default"])(AuctionDetalComponent, _BaseComponent);
 
   return AuctionDetalComponent;
-}(_BaseComponent_vue__WEBPACK_IMPORTED_MODULE_7__["default"]);
+}(_BaseComponent_vue__WEBPACK_IMPORTED_MODULE_9__["default"]);
 
-tslib__WEBPACK_IMPORTED_MODULE_4__["__decorate"]([RecordGetter('getCurrent'), tslib__WEBPACK_IMPORTED_MODULE_4__["__metadata"]("design:type", typeof (_a = typeof _model__WEBPACK_IMPORTED_MODULE_8__["Record"] !== "undefined" && _model__WEBPACK_IMPORTED_MODULE_8__["Record"]) === "function" && _a || Object)], AuctionDetalComponent.prototype, "record", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_6__["__decorate"]([RecordGetter('getCurrent'), tslib__WEBPACK_IMPORTED_MODULE_6__["__metadata"]("design:type", typeof (_a = typeof _model__WEBPACK_IMPORTED_MODULE_11__["Record"] !== "undefined" && _model__WEBPACK_IMPORTED_MODULE_11__["Record"]) === "function" && _a || Object)], AuctionDetalComponent.prototype, "record", void 0);
 
-AuctionDetalComponent = tslib__WEBPACK_IMPORTED_MODULE_4__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_5__["Component"])({})], AuctionDetalComponent);
+AuctionDetalComponent = tslib__WEBPACK_IMPORTED_MODULE_6__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_7__["Component"])({
+  components: {
+    PriceComponent: _components__WEBPACK_IMPORTED_MODULE_10__["PriceComponent"]
+  }
+})], AuctionDetalComponent);
 /* harmony default export */ __webpack_exports__["default"] = (AuctionDetalComponent);
 
 /***/ }),
@@ -4110,6 +4552,70 @@ CountdownComponent = tslib__WEBPACK_IMPORTED_MODULE_5__["__decorate"]([Object(vu
 
 /***/ }),
 
+/***/ "./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib/index.js!./node_modules/ts-loader/index.js??ref--13-2!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/helpers/PriceComponent.vue?vue&type=script&lang=ts":
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-2!./node_modules/vue-loader/lib??vue-loader-options!./src/components/helpers/PriceComponent.vue?vue&type=script&lang=ts ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_es6_number_constructor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es6.number.constructor */ "./node_modules/core-js/modules/es6.number.constructor.js");
+/* harmony import */ var core_js_modules_es6_number_constructor__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_number_constructor__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/inherits */ "./node_modules/@babel/runtime/helpers/builtin/es6/inherits.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/createClass */ "./node_modules/@babel/runtime/helpers/builtin/es6/createClass.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/builtin/es6/possibleConstructorReturn.js");
+/* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/builtin/es6/getPrototypeOf.js");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var vue_property_decorator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-property-decorator */ "./node_modules/vue-property-decorator/lib/vue-property-decorator.js");
+/* harmony import */ var vuex_class__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuex-class */ "./node_modules/vuex-class/lib/index.js");
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @/helpers */ "./src/helpers.ts");
+
+
+
+
+
+
+
+
+
+
+var SettingsGetter = Object(vuex_class__WEBPACK_IMPORTED_MODULE_8__["namespace"])('settings', vuex_class__WEBPACK_IMPORTED_MODULE_8__["Getter"]);
+
+var CountdownComponent =
+/*#__PURE__*/
+function (_Vue) {
+  function CountdownComponent() {
+    Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, CountdownComponent);
+
+    return Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__["default"])(this, Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__["default"])(CountdownComponent).apply(this, arguments));
+  }
+
+  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_3__["default"])(CountdownComponent, [{
+    key: "formatPrice",
+    value: function formatPrice() {
+      return _helpers__WEBPACK_IMPORTED_MODULE_9__["default"].formatPrice(this.price, this.lang);
+    }
+  }]);
+
+  Object(c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_inherits__WEBPACK_IMPORTED_MODULE_2__["default"])(CountdownComponent, _Vue);
+
+  return CountdownComponent;
+}(vue_property_decorator__WEBPACK_IMPORTED_MODULE_7__["Vue"]);
+
+tslib__WEBPACK_IMPORTED_MODULE_6__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_7__["Prop"])({
+  default: 0
+}), tslib__WEBPACK_IMPORTED_MODULE_6__["__metadata"]("design:type", Number)], CountdownComponent.prototype, "price", void 0);
+
+tslib__WEBPACK_IMPORTED_MODULE_6__["__decorate"]([SettingsGetter('getLanguage'), tslib__WEBPACK_IMPORTED_MODULE_6__["__metadata"]("design:type", String)], CountdownComponent.prototype, "lang", void 0);
+
+CountdownComponent = tslib__WEBPACK_IMPORTED_MODULE_6__["__decorate"]([Object(vue_property_decorator__WEBPACK_IMPORTED_MODULE_7__["Component"])({})], CountdownComponent);
+/* harmony default export */ __webpack_exports__["default"] = (CountdownComponent);
+
+/***/ }),
+
 /***/ "./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib/index.js!./node_modules/ts-loader/index.js??ref--13-2!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/views/About.vue?vue&type=script&lang=ts":
 /*!******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-2!./node_modules/vue-loader/lib??vue-loader-options!./src/views/About.vue?vue&type=script&lang=ts ***!
@@ -5041,7 +5547,1555 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _vm.record
-    ? _c("v-container", [_c("h1", [_vm._v(_vm._s(_vm.record.name))])])
+    ? _c(
+        "v-container",
+        { attrs: { "grid-list-xs": "" } },
+        [
+          _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", lg6: "" } },
+                [
+                  _c(
+                    "v-container",
+                    { attrs: { "grid-list-xs": "" } },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { column: "", "fill-height": "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "", md12: "" } },
+                            [
+                              _c(
+                                "v-carousel",
+                                _vm._l(_vm.record.files, function(item, i) {
+                                  return _c("v-carousel-item", {
+                                    key: i,
+                                    attrs: { src: _vm.filePath(item) }
+                                  })
+                                })
+                              )
+                            ],
+                            1
+                          ),
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c(
+                                "v-container",
+                                { attrs: { "grid-list-xs": "" } },
+                                [
+                                  _c(
+                                    "v-layout",
+                                    {
+                                      attrs: { column: "", "fill-height": "" }
+                                    },
+                                    [
+                                      _c(
+                                        "v-flex",
+                                        { attrs: { xs12: "" } },
+                                        [
+                                          _c(
+                                            "v-expansion-panel",
+                                            { attrs: { expand: "" } },
+                                            [
+                                              _c(
+                                                "v-expansion-panel-content",
+                                                {
+                                                  attrs: {
+                                                    value: _vm.expander1
+                                                  }
+                                                },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      attrs: { slot: "header" },
+                                                      slot: "header"
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "h3",
+                                                        {
+                                                          staticClass:
+                                                            "headline"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            _vm._s(
+                                                              _vm.resx(
+                                                                "auctionDetailInformation"
+                                                              )
+                                                            )
+                                                          )
+                                                        ]
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-container",
+                                                    {
+                                                      staticClass:
+                                                        "grey lighten-3"
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "v-layout",
+                                                        {
+                                                          attrs: {
+                                                            row: "",
+                                                            wrap: ""
+                                                          }
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "h1",
+                                                                {
+                                                                  staticClass:
+                                                                    "display-3 font-weight-medium"
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    _vm._s(
+                                                                      _vm.record
+                                                                        .name
+                                                                    )
+                                                                  )
+                                                                ]
+                                                              )
+                                                            ]
+                                                          ),
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "v-layout",
+                                                                {
+                                                                  attrs: {
+                                                                    row: "",
+                                                                    "justify-end":
+                                                                      "",
+                                                                    "align-center":
+                                                                      ""
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _c(
+                                                                    "h1",
+                                                                    {
+                                                                      staticClass:
+                                                                        " red--text text--lighten-1 display-3 font-weight-bold"
+                                                                    },
+                                                                    [
+                                                                      _c(
+                                                                        "PriceComponent",
+                                                                        {
+                                                                          attrs: {
+                                                                            price: _vm.currentPrice(
+                                                                              _vm.record
+                                                                            )
+                                                                          }
+                                                                        }
+                                                                      )
+                                                                    ],
+                                                                    1
+                                                                  )
+                                                                ]
+                                                              )
+                                                            ],
+                                                            1
+                                                          )
+                                                        ],
+                                                        1
+                                                      ),
+                                                      _c(
+                                                        "v-layout",
+                                                        {
+                                                          attrs: {
+                                                            row: "",
+                                                            wrap: ""
+                                                          }
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                _vm._s(
+                                                                  _vm.resx(
+                                                                    "startingPrice"
+                                                                  )
+                                                                )
+                                                              )
+                                                            ]
+                                                          ),
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "v-layout",
+                                                                {
+                                                                  attrs: {
+                                                                    row: "",
+                                                                    "justify-end":
+                                                                      "",
+                                                                    "align-center":
+                                                                      ""
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _c(
+                                                                    "PriceComponent",
+                                                                    {
+                                                                      attrs: {
+                                                                        price:
+                                                                          _vm
+                                                                            .record
+                                                                            .startingPrice
+                                                                      }
+                                                                    }
+                                                                  )
+                                                                ],
+                                                                1
+                                                              )
+                                                            ],
+                                                            1
+                                                          )
+                                                        ],
+                                                        1
+                                                      ),
+                                                      _c(
+                                                        "v-layout",
+                                                        {
+                                                          attrs: {
+                                                            row: "",
+                                                            wrap: ""
+                                                          }
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                _vm._s(
+                                                                  _vm.resx(
+                                                                    "minimumBid"
+                                                                  )
+                                                                )
+                                                              )
+                                                            ]
+                                                          ),
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "v-layout",
+                                                                {
+                                                                  attrs: {
+                                                                    row: "",
+                                                                    "justify-end":
+                                                                      "",
+                                                                    "align-center":
+                                                                      ""
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _c(
+                                                                    "PriceComponent",
+                                                                    {
+                                                                      attrs: {
+                                                                        price:
+                                                                          _vm
+                                                                            .record
+                                                                            .minimumBid
+                                                                      }
+                                                                    }
+                                                                  )
+                                                                ],
+                                                                1
+                                                              )
+                                                            ],
+                                                            1
+                                                          )
+                                                        ],
+                                                        1
+                                                      ),
+                                                      _c(
+                                                        "v-layout",
+                                                        {
+                                                          attrs: {
+                                                            row: "",
+                                                            wrap: ""
+                                                          }
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                _vm._s(
+                                                                  _vm.resx(
+                                                                    "numberOfBids"
+                                                                  )
+                                                                )
+                                                              )
+                                                            ]
+                                                          ),
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n                                                        " +
+                                                                  _vm._s(
+                                                                    _vm.numberOfBids(
+                                                                      _vm.record
+                                                                        .bids
+                                                                    )
+                                                                  ) +
+                                                                  "\n                                                    "
+                                                              )
+                                                            ]
+                                                          )
+                                                        ],
+                                                        1
+                                                      ),
+                                                      _c(
+                                                        "v-layout",
+                                                        {
+                                                          attrs: {
+                                                            row: "",
+                                                            wrap: ""
+                                                          }
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                _vm._s(
+                                                                  _vm.resx(
+                                                                    "beginningOfTheAuction"
+                                                                  )
+                                                                )
+                                                              )
+                                                            ]
+                                                          ),
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                _vm._s(
+                                                                  _vm._f(
+                                                                    "moment"
+                                                                  )(
+                                                                    _vm.record
+                                                                      .validFrom,
+                                                                    "DD.MM.YYYY HH:mm"
+                                                                  )
+                                                                )
+                                                              )
+                                                            ]
+                                                          )
+                                                        ],
+                                                        1
+                                                      ),
+                                                      _c(
+                                                        "v-layout",
+                                                        {
+                                                          attrs: {
+                                                            row: "",
+                                                            wrap: ""
+                                                          }
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                _vm._s(
+                                                                  _vm.resx(
+                                                                    "endOfAuction"
+                                                                  )
+                                                                )
+                                                              )
+                                                            ]
+                                                          ),
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                _vm._s(
+                                                                  _vm._f(
+                                                                    "moment"
+                                                                  )(
+                                                                    _vm.record
+                                                                      .validTo,
+                                                                    "DD.MM.YYYY HH:mm"
+                                                                  )
+                                                                )
+                                                              )
+                                                            ]
+                                                          )
+                                                        ],
+                                                        1
+                                                      ),
+                                                      _c(
+                                                        "v-layout",
+                                                        {
+                                                          attrs: {
+                                                            row: "",
+                                                            wrap: ""
+                                                          }
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                _vm._s(
+                                                                  _vm.resx(
+                                                                    "contactToAppointment"
+                                                                  )
+                                                                )
+                                                              )
+                                                            ]
+                                                          ),
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                _vm._s(
+                                                                  _vm.record
+                                                                    .contactToAppointment
+                                                                )
+                                                              )
+                                                            ]
+                                                          )
+                                                        ],
+                                                        1
+                                                      ),
+                                                      _c(
+                                                        "v-layout",
+                                                        {
+                                                          attrs: {
+                                                            row: "",
+                                                            wrap: ""
+                                                          }
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                _vm._s(
+                                                                  _vm.resx(
+                                                                    "seller"
+                                                                  )
+                                                                )
+                                                              )
+                                                            ]
+                                                          ),
+                                                          _c(
+                                                            "v-flex",
+                                                            {
+                                                              attrs: { xs6: "" }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                _vm._s(
+                                                                  _vm.sellerInfo(
+                                                                    _vm.record
+                                                                      .customer
+                                                                  )
+                                                                )
+                                                              )
+                                                            ]
+                                                          )
+                                                        ],
+                                                        1
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", lg6: "" } },
+                [
+                  _c(
+                    "v-container",
+                    { attrs: { "grid-list-xs": "" } },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { column: "", "fill-height": "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c(
+                                "v-expansion-panel",
+                                { attrs: { expand: "" } },
+                                [
+                                  _c(
+                                    "v-expansion-panel-content",
+                                    { attrs: { value: _vm.expander } },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          attrs: { slot: "header" },
+                                          slot: "header"
+                                        },
+                                        [
+                                          _c(
+                                            "h3",
+                                            { staticClass: "headline" },
+                                            [
+                                              _vm._v(
+                                                _vm._s(
+                                                  _vm.resx("carInformation")
+                                                )
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      ),
+                                      _c(
+                                        "v-container",
+                                        { staticClass: "grey lighten-3" },
+                                        [
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                "offset-xs1": ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "dateOfFirstRegistration"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm._f("moment")(
+                                                            _vm.record
+                                                              .dateOfFirstRegistration,
+                                                            "YYYY"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx("doors")
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.record.doors)
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx("mileAge")
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record.mileage
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx("power")
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.record.power)
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.resx("fuel"))
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.record.fuel)
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx("color")
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record.colors
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "transmission"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .transmission
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "numberOfSeets"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .numberOfSeets
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.resx("axle"))
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.record.axle)
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx("euroNorm")
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record.euroNorm
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "auditControlIsProvidedBy"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .registrationCheck
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "vehicleVinNumber"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.record.vin)
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "technicalViewOfTheVehicle"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm._f("moment")(
+                                                            _vm.record.stk,
+                                                            "DD.MM.YYYY"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _c(
+                                    "v-expansion-panel-content",
+                                    { attrs: { value: _vm.expander } },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          attrs: { slot: "header" },
+                                          slot: "header"
+                                        },
+                                        [
+                                          _c(
+                                            "h3",
+                                            { staticClass: "headline" },
+                                            [
+                                              _vm._v(
+                                                _vm._s(_vm.resx("equipment"))
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      ),
+                                      _c(
+                                        "v-container",
+                                        { staticClass: "grey lighten-3" },
+                                        [
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                "offset-xs1": ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs12: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record.equipment
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _c(
+                                    "v-expansion-panel-content",
+                                    { attrs: { value: _vm.expander } },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          attrs: { slot: "header" },
+                                          slot: "header"
+                                        },
+                                        [
+                                          _c(
+                                            "h3",
+                                            { staticClass: "headline" },
+                                            [_vm._v(_vm._s(_vm.resx("state")))]
+                                          )
+                                        ]
+                                      ),
+                                      _c(
+                                        "v-container",
+                                        { staticClass: "grey lighten-3" },
+                                        [
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                "offset-xs1": ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs12: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(_vm.record.state)
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _c(
+                                    "v-expansion-panel-content",
+                                    { attrs: { value: _vm.expander } },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          attrs: { slot: "header" },
+                                          slot: "header"
+                                        },
+                                        [
+                                          _c(
+                                            "h3",
+                                            { staticClass: "headline" },
+                                            [
+                                              _vm._v(
+                                                _vm._s(
+                                                  _vm.resx("specification")
+                                                )
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      ),
+                                      _c(
+                                        "v-container",
+                                        { staticClass: "grey lighten-3" },
+                                        [
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                "offset-xs1": ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx("dimensions")
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record.dimensions
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "maximumWeight"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .maximumWeight
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "operationWeight"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .operationWeight
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "maximumWeightOfRide"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .maximumWeightOfRide
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "mostTechnicallyWeightOfRide"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .mostTechnicallyAcceptableWeight
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.resx(
+                                                            "mostTechnicallyAcceptableWeight"
+                                                          )
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs6: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .mostTechnicallyAcceptableWeight
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _c(
+                                    "v-expansion-panel-content",
+                                    { attrs: { value: _vm.expander } },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          attrs: { slot: "header" },
+                                          slot: "header"
+                                        },
+                                        [
+                                          _c(
+                                            "h3",
+                                            { staticClass: "headline" },
+                                            [
+                                              _vm._v(
+                                                _vm._s(_vm.resx("defects"))
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      ),
+                                      _c(
+                                        "v-container",
+                                        { staticClass: "grey lighten-3" },
+                                        [
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                "offset-xs1": ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs12: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record.defects
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _c(
+                                    "v-expansion-panel-content",
+                                    { attrs: { value: _vm.expander } },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          attrs: { slot: "header" },
+                                          slot: "header"
+                                        },
+                                        [
+                                          _c(
+                                            "h3",
+                                            { staticClass: "headline" },
+                                            [
+                                              _vm._v(
+                                                _vm._s(
+                                                  _vm.resx("moreDescription")
+                                                )
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      ),
+                                      _c(
+                                        "v-container",
+                                        { staticClass: "grey lighten-3" },
+                                        [
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                "offset-xs1": ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-layout",
+                                                {
+                                                  attrs: { row: "", wrap: "" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-flex",
+                                                    { attrs: { xs12: "" } },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.record
+                                                            .moreDescription
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
     : _vm._e()
 }
 var staticRenderFns = []
@@ -6369,6 +8423,32 @@ var render = function() {
   return _c("span", {
     attrs: { classs: "count-down", id: _vm.countDownSelector() }
   })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/cache-loader/dist/cjs.js?{\"cacheDirectory\":\"c:\\\\Work\\\\solutions-git\\\\github\\\\simpleAuctionWebApi\\\\SA.Web\\\\node_modules\\\\.cache\\\\vue-loader\",\"cacheIdentifier\":\"c09953a0-vue-loader-template\"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/helpers/PriceComponent.vue?vue&type=template&id=1dc5de7b":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"c://Work//solutions-git//github//simpleAuctionWebApi//SA.Web//node_modules//.cache//vue-loader","cacheIdentifier":"c09953a0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/helpers/PriceComponent.vue?vue&type=template&id=1dc5de7b ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.price && _vm.lang
+    ? _c("span", [_vm._v("\n    " + _vm._s(_vm.formatPrice()) + "\n")])
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -17219,6 +19299,162 @@ function toComment(sourceMap) {
 
 /***/ }),
 
+/***/ "./node_modules/currency-formatter/currencies.json":
+/*!*********************************************************!*\
+  !*** ./node_modules/currency-formatter/currencies.json ***!
+  \*********************************************************/
+/*! exports provided: AED, AFN, ALL, AMD, ANG, AOA, ARS, AUD, AWG, AZN, BAM, BBD, BDT, BGN, BHD, BIF, BMD, BND, BOB, BRL, BSD, BTC, BTN, BWP, BYR, BZD, CAD, CDF, CHF, CLP, CNY, COP, CRC, CUC, CUP, CVE, CZK, DJF, DKK, DOP, DZD, EGP, ERN, ETB, EUR, FJD, FKP, GBP, GEL, GHS, GIP, GMD, GNF, GTQ, GYD, HKD, HNL, HRK, HTG, HUF, IDR, ILS, INR, IQD, IRR, ISK, JMD, JOD, JPY, KES, KGS, KHR, KMF, KPW, KRW, KWD, KYD, KZT, LAK, LBP, LKR, LRD, LSL, LYD, MAD, MDL, MGA, MKD, MMK, MNT, MOP, MRO, MTL, MUR, MVR, MWK, MXN, MYR, MZN, NAD, NGN, NIO, NOK, NPR, NZD, OMR, PAB, PEN, PGK, PHP, PKR, PLN, PYG, QAR, RON, RSD, RUB, RWF, SAR, SBD, SCR, SDD, SDG, SEK, SGD, SHP, SLL, SOS, SRD, STD, SVC, SYP, SZL, THB, TJS, TMT, TND, TOP, TRY, TTD, TVD, TWD, TZS, UAH, UGX, USD, UYU, UZS, VEB, VEF, VND, VUV, WST, XAF, XCD, XBT, XOF, XPF, YER, ZAR, ZMW, WON, default */
+/***/ (function(module) {
+
+module.exports = {"AED":{"code":"AED","symbol":"د.إ.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"AFN":{"code":"AFN","symbol":"؋","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"ALL":{"code":"ALL","symbol":"Lek","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"AMD":{"code":"AMD","symbol":"֏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"ANG":{"code":"ANG","symbol":"ƒ","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"AOA":{"code":"AOA","symbol":"Kz","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"ARS":{"code":"ARS","symbol":"$","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"AUD":{"code":"AUD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"AWG":{"code":"AWG","symbol":"ƒ","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"AZN":{"code":"AZN","symbol":"₼","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BAM":{"code":"BAM","symbol":"КМ","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BBD":{"code":"BBD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"BDT":{"code":"BDT","symbol":"৳","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":0},"BGN":{"code":"BGN","symbol":"лв.","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BHD":{"code":"BHD","symbol":"د.ب.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":3},"BIF":{"code":"BIF","symbol":"FBu","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"BMD":{"code":"BMD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"BND":{"code":"BND","symbol":"$","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"BOB":{"code":"BOB","symbol":"Bs","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BRL":{"code":"BRL","symbol":"R$","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BSD":{"code":"BSD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"BTC":{"code":"BTC","symbol":"Ƀ","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":8},"BTN":{"code":"BTN","symbol":"Nu.","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":1},"BWP":{"code":"BWP","symbol":"P","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"BYR":{"code":"BYR","symbol":"р.","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"BZD":{"code":"BZD","symbol":"BZ$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CAD":{"code":"CAD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CDF":{"code":"CDF","symbol":"FC","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CHF":{"code":"CHF","symbol":"CHF","thousandsSeparator":"'","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"CLP":{"code":"CLP","symbol":"$","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"CNY":{"code":"CNY","symbol":"¥","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"COP":{"code":"COP","symbol":"$","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"CRC":{"code":"CRC","symbol":"₡","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CUC":{"code":"CUC","symbol":"CUC","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CUP":{"code":"CUP","symbol":"$MN","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CVE":{"code":"CVE","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"CZK":{"code":"CZK","symbol":"Kč","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"DJF":{"code":"DJF","symbol":"Fdj","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"DKK":{"code":"DKK","symbol":"kr.","thousandsSeparator":"","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"DOP":{"code":"DOP","symbol":"RD$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"DZD":{"code":"DZD","symbol":"د.ج.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"EGP":{"code":"EGP","symbol":"ج.م.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"ERN":{"code":"ERN","symbol":"Nfk","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"ETB":{"code":"ETB","symbol":"ETB","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"EUR":{"code":"EUR","symbol":"€","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"FJD":{"code":"FJD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"FKP":{"code":"FKP","symbol":"£","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GBP":{"code":"GBP","symbol":"£","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GEL":{"code":"GEL","symbol":"Lari","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"GHS":{"code":"GHS","symbol":"₵","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GIP":{"code":"GIP","symbol":"£","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GMD":{"code":"GMD","symbol":"D","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GNF":{"code":"GNF","symbol":"FG","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"GTQ":{"code":"GTQ","symbol":"Q","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"GYD":{"code":"GYD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"HKD":{"code":"HKD","symbol":"HK$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"HNL":{"code":"HNL","symbol":"L.","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"HRK":{"code":"HRK","symbol":"kn","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"HTG":{"code":"HTG","symbol":"G","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"HUF":{"code":"HUF","symbol":"Ft","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"IDR":{"code":"IDR","symbol":"Rp","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"ILS":{"code":"ILS","symbol":"₪","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"INR":{"code":"INR","symbol":"₹","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"IQD":{"code":"IQD","symbol":"د.ع.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"IRR":{"code":"IRR","symbol":"﷼","thousandsSeparator":",","decimalSeparator":"/","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"ISK":{"code":"ISK","symbol":"kr.","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":0},"JMD":{"code":"JMD","symbol":"J$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"JOD":{"code":"JOD","symbol":"د.ا.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":3},"JPY":{"code":"JPY","symbol":"¥","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"KES":{"code":"KES","symbol":"KSh","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"KGS":{"code":"KGS","symbol":"сом","thousandsSeparator":" ","decimalSeparator":"-","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"KHR":{"code":"KHR","symbol":"៛","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"KMF":{"code":"KMF","symbol":"CF","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"KPW":{"code":"KPW","symbol":"₩","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"KRW":{"code":"KRW","symbol":"₩","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"KWD":{"code":"KWD","symbol":"د.ك.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":3},"KYD":{"code":"KYD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"KZT":{"code":"KZT","symbol":"₸","thousandsSeparator":" ","decimalSeparator":"-","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"LAK":{"code":"LAK","symbol":"₭","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"LBP":{"code":"LBP","symbol":"ل.ل.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"LKR":{"code":"LKR","symbol":"₨","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":0},"LRD":{"code":"LRD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"LSL":{"code":"LSL","symbol":"M","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"LYD":{"code":"LYD","symbol":"د.ل.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":3},"MAD":{"code":"MAD","symbol":"د.م.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"MDL":{"code":"MDL","symbol":"lei","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"MGA":{"code":"MGA","symbol":"Ar","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"MKD":{"code":"MKD","symbol":"ден.","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"MMK":{"code":"MMK","symbol":"K","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MNT":{"code":"MNT","symbol":"₮","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MOP":{"code":"MOP","symbol":"MOP$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MRO":{"code":"MRO","symbol":"UM","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MTL":{"code":"MTL","symbol":"₤","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MUR":{"code":"MUR","symbol":"₨","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MVR":{"code":"MVR","symbol":"MVR","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":1},"MWK":{"code":"MWK","symbol":"MK","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MXN":{"code":"MXN","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MYR":{"code":"MYR","symbol":"RM","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"MZN":{"code":"MZN","symbol":"MT","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"NAD":{"code":"NAD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"NGN":{"code":"NGN","symbol":"₦","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"NIO":{"code":"NIO","symbol":"C$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"NOK":{"code":"NOK","symbol":"kr","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"NPR":{"code":"NPR","symbol":"₨","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"NZD":{"code":"NZD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"OMR":{"code":"OMR","symbol":"﷼","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":3},"PAB":{"code":"PAB","symbol":"B/.","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"PEN":{"code":"PEN","symbol":"S/.","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"PGK":{"code":"PGK","symbol":"K","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"PHP":{"code":"PHP","symbol":"₱","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"PKR":{"code":"PKR","symbol":"₨","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"PLN":{"code":"PLN","symbol":"zł","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"PYG":{"code":"PYG","symbol":"₲","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"QAR":{"code":"QAR","symbol":"﷼","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"RON":{"code":"RON","symbol":"lei","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"RSD":{"code":"RSD","symbol":"Дин.","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"RUB":{"code":"RUB","symbol":"₽","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"RWF":{"code":"RWF","symbol":"RWF","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"SAR":{"code":"SAR","symbol":"﷼","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"SBD":{"code":"SBD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SCR":{"code":"SCR","symbol":"₨","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SDD":{"code":"SDD","symbol":"LSd","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SDG":{"code":"SDG","symbol":"£‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SEK":{"code":"SEK","symbol":"kr","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"SGD":{"code":"SGD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SHP":{"code":"SHP","symbol":"£","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SLL":{"code":"SLL","symbol":"Le","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SOS":{"code":"SOS","symbol":"S","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SRD":{"code":"SRD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"STD":{"code":"STD","symbol":"Db","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SVC":{"code":"SVC","symbol":"₡","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"SYP":{"code":"SYP","symbol":"£","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"SZL":{"code":"SZL","symbol":"E","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"THB":{"code":"THB","symbol":"฿","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"TJS":{"code":"TJS","symbol":"TJS","thousandsSeparator":" ","decimalSeparator":";","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"TMT":{"code":"TMT","symbol":"m","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"TND":{"code":"TND","symbol":"د.ت.‏","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":3},"TOP":{"code":"TOP","symbol":"T$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"TRY":{"code":"TRY","symbol":"TL","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"TTD":{"code":"TTD","symbol":"TT$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"TVD":{"code":"TVD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"TWD":{"code":"TWD","symbol":"NT$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"TZS":{"code":"TZS","symbol":"TSh","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"UAH":{"code":"UAH","symbol":"₴","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"UGX":{"code":"UGX","symbol":"USh","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"USD":{"code":"USD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"UYU":{"code":"UYU","symbol":"$U","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"UZS":{"code":"UZS","symbol":"сўм","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"VEB":{"code":"VEB","symbol":"Bs.","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"VEF":{"code":"VEF","symbol":"Bs. F.","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"VND":{"code":"VND","symbol":"₫","thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":1},"VUV":{"code":"VUV","symbol":"VT","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":0},"WST":{"code":"WST","symbol":"WS$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"XAF":{"code":"XAF","symbol":"F","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"XCD":{"code":"XCD","symbol":"$","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"XBT":{"code":"XBT","symbol":"Ƀ","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"XOF":{"code":"XOF","symbol":"F","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"XPF":{"code":"XPF","symbol":"F","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"YER":{"code":"YER","symbol":"﷼","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"ZAR":{"code":"ZAR","symbol":"R","thousandsSeparator":" ","decimalSeparator":",","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"ZMW":{"code":"ZMW","symbol":"ZK","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2},"WON":{"code":"WON","symbol":"₩","thousandsSeparator":",","decimalSeparator":".","symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"decimalDigits":2}};
+
+/***/ }),
+
+/***/ "./node_modules/currency-formatter/index.js":
+/*!**************************************************!*\
+  !*** ./node_modules/currency-formatter/index.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var accounting = __webpack_require__(/*! accounting */ "./node_modules/accounting/accounting.js")
+var assign = __webpack_require__(/*! object-assign */ "./node_modules/object-assign/index.js")
+var localeCurrency = __webpack_require__(/*! locale-currency */ "./node_modules/locale-currency/index.js")
+var currencies = __webpack_require__(/*! ./currencies.json */ "./node_modules/currency-formatter/currencies.json")
+var localeFormats = __webpack_require__(/*! ./localeFormats.json */ "./node_modules/currency-formatter/localeFormats.json")
+
+var defaultCurrency = {
+  symbol: '',
+  thousandsSeparator: ',',
+  decimalSeparator: '.',
+  symbolOnLeft: true,
+  spaceBetweenAmountAndSymbol: false,
+  decimalDigits: 2
+}
+
+var defaultLocaleFormat = {}
+
+var formatMapping = [
+  {
+    symbolOnLeft: true,
+    spaceBetweenAmountAndSymbol: false,
+    format: {
+      pos: '%s%v',
+      neg: '-%s%v',
+      zero: '%s%v'
+    }
+  },
+  {
+    symbolOnLeft: true,
+    spaceBetweenAmountAndSymbol: true,
+    format: {
+      pos: '%s %v',
+      neg: '-%s %v',
+      zero: '%s %v'
+    }
+  },
+  {
+    symbolOnLeft: false,
+    spaceBetweenAmountAndSymbol: false,
+    format: {
+      pos: '%v%s',
+      neg: '-%v%s',
+      zero: '%v%s'
+    }
+  },
+  {
+    symbolOnLeft: false,
+    spaceBetweenAmountAndSymbol: true,
+    format: {
+      pos: '%v %s',
+      neg: '-%v %s',
+      zero: '%v %s'
+    }
+  }
+]
+
+function format(value, options) {
+  var code = options.code || (options.locale && localeCurrency.getCurrency(options.locale))
+  var localeMatch = /^([a-z]+)([_-]([a-z]+))?$/i.exec(options.locale) || []
+  var language = localeMatch[1]
+  var region = localeMatch[3]
+  var localeFormat = assign({}, defaultLocaleFormat,
+                            localeFormats[language] || {},
+                            localeFormats[language + '-' + region] || {})
+  var currency = assign({}, defaultCurrency, findCurrency(code), localeFormat)
+  
+  var symbolOnLeft = currency.symbolOnLeft
+  var spaceBetweenAmountAndSymbol = currency.spaceBetweenAmountAndSymbol
+
+  var format = formatMapping.filter(function(f) {
+    return f.symbolOnLeft == symbolOnLeft && f.spaceBetweenAmountAndSymbol == spaceBetweenAmountAndSymbol
+  })[0].format
+
+  return accounting.formatMoney(value, {
+    symbol: isUndefined(options.symbol)
+              ? currency.symbol
+              : options.symbol,
+
+    decimal: isUndefined(options.decimal)
+              ? currency.decimalSeparator
+              : options.decimal,
+
+    thousand: isUndefined(options.thousand)
+              ? currency.thousandsSeparator
+              : options.thousand,
+
+    precision: typeof options.precision === 'number'
+              ? options.precision
+              : currency.decimalDigits,
+
+    format: ['string', 'object'].indexOf(typeof options.format) > -1
+              ? options.format
+              : format
+  })
+}
+
+function findCurrency (currencyCode) {
+  return currencies[currencyCode]
+}
+
+function isUndefined (val) {
+  return typeof val === 'undefined'
+}
+
+function unformat(value, options) {
+  var code = options.code || (options.locale && localeCurrency.getCurrency(options.locale))
+  var localeFormat = localeFormats[options.locale] || defaultLocaleFormat
+  var currency = assign({}, defaultCurrency, findCurrency(code), localeFormat)
+  var decimal = isUndefined(options.decimal) ? currency.decimalSeparator : options.decimal
+  return accounting.unformat(value, decimal)
+}
+
+module.exports = {
+  defaultCurrency: defaultCurrency,
+  get currencies() {
+    // In favor of backwards compatibility, the currencies map is converted to an array here
+    return Object.keys(currencies).map(function(key) {
+      return currencies[key]
+    })
+  },
+  findCurrency: findCurrency,
+  format: format,
+  unformat: unformat
+}
+
+/***/ }),
+
+/***/ "./node_modules/currency-formatter/localeFormats.json":
+/*!************************************************************!*\
+  !*** ./node_modules/currency-formatter/localeFormats.json ***!
+  \************************************************************/
+/*! exports provided: de, el, en-IE, es, it, nl, default */
+/***/ (function(module) {
+
+module.exports = {"de":{"thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"el":{"symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"thousandsSeparator":".","decimalSeparator":",","decimalDigits":2},"en-IE":{"symbolOnLeft":true,"thousandsSeparator":",","decimalSeparator":".","spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"es":{"thousandsSeparator":".","decimalSeparator":",","symbolOnLeft":false,"spaceBetweenAmountAndSymbol":true,"decimalDigits":2},"it":{"symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"thousandsSeparator":".","decimalSeparator":",","decimalDigits":2},"nl":{"symbolOnLeft":true,"spaceBetweenAmountAndSymbol":false,"thousandsSeparator":".","decimalSeparator":",","decimalDigits":2}};
+
+/***/ }),
+
 /***/ "./node_modules/inherits/inherits_browser.js":
 /*!***************************************************!*\
   !*** ./node_modules/inherits/inherits_browser.js ***!
@@ -17282,6 +19518,311 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/locale-currency/index.js":
+/*!***********************************************!*\
+  !*** ./node_modules/locale-currency/index.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = __webpack_require__(/*! ./map */ "./node_modules/locale-currency/map.js");
+
+var getCountryCode = function(localeString) {
+    var components = localeString.split("_");
+    if (components.length == 2) {
+        return components.pop();
+    }
+    components = localeString.split("-");
+    if (components.length == 2) {
+        return components.pop();
+    }
+    return localeString;
+}
+
+exports.getCurrency = function(locale) {
+    var countryCode = getCountryCode(locale).toUpperCase();
+    if (countryCode in map) {
+        return map[countryCode];
+    }
+    return null;
+}
+
+exports.getLocales = function(currencyCode) {
+    currencyCode = currencyCode.toUpperCase();
+    var locales = [];
+    for (countryCode in map) {
+        if (map[countryCode] === currencyCode) {
+            locales.push(countryCode);
+        }
+    }
+    return locales;
+}
+
+/***/ }),
+
+/***/ "./node_modules/locale-currency/map.js":
+/*!*********************************************!*\
+  !*** ./node_modules/locale-currency/map.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// Generated using ShowCurrencies.java
+var map = {
+AD: 'EUR',
+AE: 'AED',
+AF: 'AFN',
+AG: 'XCD',
+AI: 'XCD',
+AL: 'ALL',
+AM: 'AMD',
+AN: 'ANG',
+AO: 'AOA',
+AR: 'ARS',
+AS: 'USD',
+AT: 'EUR',
+AU: 'AUD',
+AW: 'AWG',
+AX: 'EUR',
+AZ: 'AZN',
+BA: 'BAM',
+BB: 'BBD',
+BD: 'BDT',
+BE: 'EUR',
+BF: 'XOF',
+BG: 'BGN',
+BH: 'BHD',
+BI: 'BIF',
+BJ: 'XOF',
+BL: 'EUR',
+BM: 'BMD',
+BN: 'BND',
+BO: 'BOB',
+BQ: 'USD',
+BR: 'BRL',
+BS: 'BSD',
+BT: 'BTN',
+BV: 'NOK',
+BW: 'BWP',
+BY: 'BYR',
+BZ: 'BZD',
+CA: 'CAD',
+CC: 'AUD',
+CD: 'CDF',
+CF: 'XAF',
+CG: 'XAF',
+CH: 'CHF',
+CI: 'XOF',
+CK: 'NZD',
+CL: 'CLP',
+CM: 'XAF',
+CN: 'CNY',
+CO: 'COP',
+CR: 'CRC',
+CU: 'CUP',
+CV: 'CVE',
+CW: 'ANG',
+CX: 'AUD',
+CY: 'EUR',
+CZ: 'CZK',
+DE: 'EUR',
+DJ: 'DJF',
+DK: 'DKK',
+DM: 'XCD',
+DO: 'DOP',
+DZ: 'DZD',
+EC: 'USD',
+EE: 'EUR',
+EG: 'EGP',
+EH: 'MAD',
+ER: 'ERN',
+ES: 'EUR',
+ET: 'ETB',
+FI: 'EUR',
+FJ: 'FJD',
+FK: 'FKP',
+FM: 'USD',
+FO: 'DKK',
+FR: 'EUR',
+GA: 'XAF',
+GB: 'GBP',
+GD: 'XCD',
+GE: 'GEL',
+GF: 'EUR',
+GG: 'GBP',
+GH: 'GHS',
+GI: 'GIP',
+GL: 'DKK',
+GM: 'GMD',
+GN: 'GNF',
+GP: 'EUR',
+GQ: 'XAF',
+GR: 'EUR',
+GS: 'GBP',
+GT: 'GTQ',
+GU: 'USD',
+GW: 'XOF',
+GY: 'GYD',
+HK: 'HKD',
+HM: 'AUD',
+HN: 'HNL',
+HR: 'HRK',
+HT: 'HTG',
+HU: 'HUF',
+ID: 'IDR',
+IE: 'EUR',
+IL: 'ILS',
+IM: 'GBP',
+IN: 'INR',
+IO: 'USD',
+IQ: 'IQD',
+IR: 'IRR',
+IS: 'ISK',
+IT: 'EUR',
+JE: 'GBP',
+JM: 'JMD',
+JO: 'JOD',
+JP: 'JPY',
+KE: 'KES',
+KG: 'KGS',
+KH: 'KHR',
+KI: 'AUD',
+KM: 'KMF',
+KN: 'XCD',
+KP: 'KPW',
+KR: 'KRW',
+KW: 'KWD',
+KY: 'KYD',
+KZ: 'KZT',
+LA: 'LAK',
+LB: 'LBP',
+LC: 'XCD',
+LI: 'CHF',
+LK: 'LKR',
+LR: 'LRD',
+LS: 'LSL',
+LT: 'LTL',
+LU: 'EUR',
+LV: 'LVL',
+LY: 'LYD',
+MA: 'MAD',
+MC: 'EUR',
+MD: 'MDL',
+ME: 'EUR',
+MF: 'EUR',
+MG: 'MGA',
+MH: 'USD',
+MK: 'MKD',
+ML: 'XOF',
+MM: 'MMK',
+MN: 'MNT',
+MO: 'MOP',
+MP: 'USD',
+MQ: 'EUR',
+MR: 'MRO',
+MS: 'XCD',
+MT: 'EUR',
+MU: 'MUR',
+MV: 'MVR',
+MW: 'MWK',
+MX: 'MXN',
+MY: 'MYR',
+MZ: 'MZN',
+NA: 'NAD',
+NC: 'XPF',
+NE: 'XOF',
+NF: 'AUD',
+NG: 'NGN',
+NI: 'NIO',
+NL: 'EUR',
+NO: 'NOK',
+NP: 'NPR',
+NR: 'AUD',
+NU: 'NZD',
+NZ: 'NZD',
+OM: 'OMR',
+PA: 'PAB',
+PE: 'PEN',
+PF: 'XPF',
+PG: 'PGK',
+PH: 'PHP',
+PK: 'PKR',
+PL: 'PLN',
+PM: 'EUR',
+PN: 'NZD',
+PR: 'USD',
+PS: 'ILS',
+PT: 'EUR',
+PW: 'USD',
+PY: 'PYG',
+QA: 'QAR',
+RE: 'EUR',
+RO: 'RON',
+RS: 'RSD',
+RU: 'RUB',
+RW: 'RWF',
+SA: 'SAR',
+SB: 'SBD',
+SC: 'SCR',
+SD: 'SDG',
+SE: 'SEK',
+SG: 'SGD',
+SH: 'SHP',
+SI: 'EUR',
+SJ: 'NOK',
+SK: 'EUR',
+SL: 'SLL',
+SM: 'EUR',
+SN: 'XOF',
+SO: 'SOS',
+SR: 'SRD',
+ST: 'STD',
+SV: 'SVC',
+SX: 'ANG',
+SY: 'SYP',
+SZ: 'SZL',
+TC: 'USD',
+TD: 'XAF',
+TF: 'EUR',
+TG: 'XOF',
+TH: 'THB',
+TJ: 'TJS',
+TK: 'NZD',
+TL: 'USD',
+TM: 'TMT',
+TN: 'TND',
+TO: 'TOP',
+TR: 'TRY',
+TT: 'TTD',
+TV: 'AUD',
+TW: 'TWD',
+TZ: 'TZS',
+UA: 'UAH',
+UG: 'UGX',
+UM: 'USD',
+US: 'USD',
+UY: 'UYU',
+UZ: 'UZS',
+VA: 'EUR',
+VC: 'XCD',
+VE: 'VEF',
+VG: 'USD',
+VI: 'USD',
+VN: 'VND',
+VU: 'VUV',
+WF: 'XPF',
+WS: 'WST',
+YE: 'YER',
+YT: 'EUR',
+ZA: 'ZAR',
+ZM: 'ZMK',
+ZW: 'ZWL'
+};
+
+module.exports = map;
 
 /***/ }),
 
@@ -19297,6 +21838,108 @@ exports.umask = exports.dlopen =
 exports.uptime = exports.memoryUsage = 
 exports.uvCounters = function() {};
 exports.features = {};
+
+
+/***/ }),
+
+/***/ "./node_modules/object-assign/index.js":
+/*!*********************************************!*\
+  !*** ./node_modules/object-assign/index.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+
+/* eslint-disable no-unused-vars */
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function toObject(val) {
+	if (val === null || val === undefined) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+function shouldUseNative() {
+	try {
+		if (!Object.assign) {
+			return false;
+		}
+
+		// Detect buggy property enumeration order in older V8 versions.
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+		test1[5] = 'de';
+		if (Object.getOwnPropertyNames(test1)[0] === '5') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test2 = {};
+		for (var i = 0; i < 10; i++) {
+			test2['_' + String.fromCharCode(i)] = i;
+		}
+		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+			return test2[n];
+		});
+		if (order2.join('') !== '0123456789') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test3 = {};
+		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+			test3[letter] = letter;
+		});
+		if (Object.keys(Object.assign({}, test3)).join('') !==
+				'abcdefghijklmnopqrst') {
+			return false;
+		}
+
+		return true;
+	} catch (err) {
+		// We don't expect any of the above to throw, but better to be safe.
+		return false;
+	}
+}
+
+module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+	var from;
+	var to = toObject(target);
+	var symbols;
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = Object(arguments[s]);
+
+		for (var key in from) {
+			if (hasOwnProperty.call(from, key)) {
+				to[key] = from[key];
+			}
+		}
+
+		if (getOwnPropertySymbols) {
+			symbols = getOwnPropertySymbols(from);
+			for (var i = 0; i < symbols.length; i++) {
+				if (propIsEnumerable.call(from, symbols[i])) {
+					to[symbols[i]] = from[symbols[i]];
+				}
+			}
+		}
+	}
+
+	return to;
+};
 
 
 /***/ }),
@@ -62359,11 +65002,98 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/components/helpers/PriceComponent.vue":
+/*!***************************************************!*\
+  !*** ./src/components/helpers/PriceComponent.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PriceComponent_vue_vue_type_template_id_1dc5de7b__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PriceComponent.vue?vue&type=template&id=1dc5de7b */ "./src/components/helpers/PriceComponent.vue?vue&type=template&id=1dc5de7b");
+/* harmony import */ var _PriceComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PriceComponent.vue?vue&type=script&lang=ts */ "./src/components/helpers/PriceComponent.vue?vue&type=script&lang=ts");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PriceComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PriceComponent_vue_vue_type_template_id_1dc5de7b__WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PriceComponent_vue_vue_type_template_id_1dc5de7b__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (true) {
+  var api = __webpack_require__(/*! ./node_modules/vue-hot-reload-api/dist/index.js */ "./node_modules/vue-hot-reload-api/dist/index.js")
+  api.install(__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"))
+  if (api.compatible) {
+    module.hot.accept()
+    if (!module.hot.data) {
+      api.createRecord('1dc5de7b', component.options)
+    } else {
+      api.reload('1dc5de7b', component.options)
+    }
+    module.hot.accept(/*! ./PriceComponent.vue?vue&type=template&id=1dc5de7b */ "./src/components/helpers/PriceComponent.vue?vue&type=template&id=1dc5de7b", function(__WEBPACK_OUTDATED_DEPENDENCIES__) { /* harmony import */ _PriceComponent_vue_vue_type_template_id_1dc5de7b__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PriceComponent.vue?vue&type=template&id=1dc5de7b */ "./src/components/helpers/PriceComponent.vue?vue&type=template&id=1dc5de7b");
+(function () {
+      api.rerender('1dc5de7b', {
+        render: _PriceComponent_vue_vue_type_template_id_1dc5de7b__WEBPACK_IMPORTED_MODULE_0__["render"],
+        staticRenderFns: _PriceComponent_vue_vue_type_template_id_1dc5de7b__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]
+      })
+    })(__WEBPACK_OUTDATED_DEPENDENCIES__); })
+  }
+}
+component.options.__file = "src\\components\\helpers\\PriceComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./src/components/helpers/PriceComponent.vue?vue&type=script&lang=ts":
+/*!***************************************************************************!*\
+  !*** ./src/components/helpers/PriceComponent.vue?vue&type=script&lang=ts ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_cache_loader_dist_cjs_js_ref_13_0_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_13_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PriceComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/cache-loader/dist/cjs.js??ref--13-0!../../../node_modules/babel-loader/lib!../../../node_modules/ts-loader??ref--13-2!../../../node_modules/vue-loader/lib??vue-loader-options!./PriceComponent.vue?vue&type=script&lang=ts */ "./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib/index.js!./node_modules/ts-loader/index.js??ref--13-2!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/helpers/PriceComponent.vue?vue&type=script&lang=ts");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_cache_loader_dist_cjs_js_ref_13_0_node_modules_babel_loader_lib_index_js_node_modules_ts_loader_index_js_ref_13_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PriceComponent_vue_vue_type_script_lang_ts__WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./src/components/helpers/PriceComponent.vue?vue&type=template&id=1dc5de7b":
+/*!*********************************************************************************!*\
+  !*** ./src/components/helpers/PriceComponent.vue?vue&type=template&id=1dc5de7b ***!
+  \*********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _cache_loader_cacheDirectory_c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_cache_vue_loader_cacheIdentifier_c09953a0_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PriceComponent_vue_vue_type_template_id_1dc5de7b__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!cache-loader?{"cacheDirectory":"c://Work//solutions-git//github//simpleAuctionWebApi//SA.Web//node_modules//.cache//vue-loader","cacheIdentifier":"c09953a0-vue-loader-template"}!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../../node_modules/vue-loader/lib??vue-loader-options!./PriceComponent.vue?vue&type=template&id=1dc5de7b */ "./node_modules/cache-loader/dist/cjs.js?{\"cacheDirectory\":\"c:\\\\Work\\\\solutions-git\\\\github\\\\simpleAuctionWebApi\\\\SA.Web\\\\node_modules\\\\.cache\\\\vue-loader\",\"cacheIdentifier\":\"c09953a0-vue-loader-template\"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/components/helpers/PriceComponent.vue?vue&type=template&id=1dc5de7b");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _cache_loader_cacheDirectory_c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_cache_vue_loader_cacheIdentifier_c09953a0_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PriceComponent_vue_vue_type_template_id_1dc5de7b__WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _cache_loader_cacheDirectory_c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_cache_vue_loader_cacheIdentifier_c09953a0_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PriceComponent_vue_vue_type_template_id_1dc5de7b__WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./src/components/index.ts":
 /*!*********************************!*\
   !*** ./src/components/index.ts ***!
   \*********************************/
-/*! exports provided: LoginFormComponent, UserDetailComponent, CustomerDetailComponent, LanguageComponent, RecordComponent, MessageComponent, AddressComponent, AuctionSummaryComponent, AuctionTableComponent, AuctionGridComponent, CountdownComponent, AuctionDetailComponent */
+/*! exports provided: LoginFormComponent, UserDetailComponent, CustomerDetailComponent, LanguageComponent, RecordComponent, MessageComponent, AddressComponent, AuctionSummaryComponent, AuctionTableComponent, AuctionGridComponent, CountdownComponent, PriceComponent, AuctionDetailComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -62401,8 +65131,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_CountdownComponent_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./helpers/CountdownComponent.vue */ "./src/components/helpers/CountdownComponent.vue");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CountdownComponent", function() { return _helpers_CountdownComponent_vue__WEBPACK_IMPORTED_MODULE_10__["default"]; });
 
-/* harmony import */ var _AuctionDetailComponent_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./AuctionDetailComponent.vue */ "./src/components/AuctionDetailComponent.vue");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AuctionDetailComponent", function() { return _AuctionDetailComponent_vue__WEBPACK_IMPORTED_MODULE_11__["default"]; });
+/* harmony import */ var _helpers_PriceComponent_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./helpers/PriceComponent.vue */ "./src/components/helpers/PriceComponent.vue");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PriceComponent", function() { return _helpers_PriceComponent_vue__WEBPACK_IMPORTED_MODULE_11__["default"]; });
+
+/* harmony import */ var _AuctionDetailComponent_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./AuctionDetailComponent.vue */ "./src/components/AuctionDetailComponent.vue");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AuctionDetailComponent", function() { return _AuctionDetailComponent_vue__WEBPACK_IMPORTED_MODULE_12__["default"]; });
+
 
 
 
@@ -62432,6 +65166,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Helpers; });
 /* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
 /* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/createClass */ "./node_modules/@babel/runtime/helpers/builtin/es6/createClass.js");
+/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es6.promise */ "./node_modules/core-js/modules/es6.promise.js");
+/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var currency_formatter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! currency-formatter */ "./node_modules/currency-formatter/index.js");
+/* harmony import */ var currency_formatter__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(currency_formatter__WEBPACK_IMPORTED_MODULE_3__);
+
+
 
 
 
@@ -62460,6 +65200,38 @@ function () {
       var result = distance > 0 ? "".concat(days, "d ").concat(hours, "h ").concat(minutes, "m ").concat(seconds, "s") : 'endOfAcution';
       return result;
     }
+    /**
+     * Format price
+     * @param price price which is going to be formatted
+     */
+
+  }, {
+    key: "formatPrice",
+    value: function formatPrice(price, language) {
+      var config = {
+        cs: {
+          locale: 'cs-CZ',
+          precision: 0
+        },
+        en: {
+          locale: 'en-Gb',
+          precision: 0
+        },
+        de: {
+          locale: 'de-DE',
+          precision: 0
+        },
+        ru: {
+          locale: 'ru-RU',
+          precision: 0
+        },
+        sk: {
+          locale: 'sk-Sk',
+          precision: 0
+        }
+      };
+      return currency_formatter__WEBPACK_IMPORTED_MODULE_3___default.a.format(price, config[language]);
+    }
   }]);
 
   return Helpers;
@@ -62481,6 +65253,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Translator", function() { return Translator; });
 /* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
 /* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/createClass */ "./node_modules/@babel/runtime/helpers/builtin/es6/createClass.js");
+/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es6.promise */ "./node_modules/core-js/modules/es6.promise.js");
+/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 var Translator =
@@ -62529,29 +65304,43 @@ Translator.cs = {
   action: 'Akce',
   active: 'Aktivní',
   auctions: 'Aukce',
+  auctionDetailInformation: 'Informace o aukci',
   auctionHall: 'Aukční síň',
+  auditControlIsProvidedBy: 'Evidenční kontrolu zajišťuje',
   actualPrice: 'Aktuální cena',
+  axle: 'Konfigurace nápravy',
+  beginningOfTheAuction: 'Začátek aukce',
   bids: 'Příhozy',
   birthNumber: 'Rodné číslo',
   cancel: 'Zrušit',
+  carInformation: 'Informace o vozidle',
   city: 'Město',
   close: 'Zavřít',
+  color: 'Barva',
   companyLegalNumber: 'DIČ',
   companyNumber: 'IČO',
   contact: 'Kontakt',
+  contactToAppointment: 'Kontaktní osoba',
   country: 'Země',
   currentPrice: 'Cena',
   customer: 'Zákazník',
   customerDetail: 'Detail zákazníka',
+  dateOfFirstRegistration: 'Datum první registrace',
   dealer: 'Prodávající',
+  defects: 'Závady',
   detailOfAuction: 'Detail aukce',
+  dimensions: 'Celkové rozměry (délka / šířka / výška)',
+  doors: 'Dveře',
+  equipment: 'Vybavení',
   email: 'Email',
   end: 'Konec',
-  endOfAuction: 'Konec aukce za',
+  endOfAuction: 'Konec aukce',
+  euroNorm: 'Euronorma',
   faq: 'Otázky a odpovědi',
   feeExpirationDate: 'Datum vypršení poplatku',
   firstName: 'Jméno',
   forDealers: 'Pro prodejce',
+  fuel: 'Palivo',
   grid: 'Mříž',
   home: 'Domů',
   intoFavorites: 'Do oblíbených',
@@ -62561,33 +65350,49 @@ Translator.cs = {
   loadingData: 'Nahrávám',
   login: 'Přihlásit se',
   logout: 'Odhlásit',
+  maximumWeight: 'Nejvyšší povolená hmotnost',
+  maximumWeightOfRide: 'Nejvyšší technicky přípustná hmotnost jízdní soupravy',
+  mileAge: 'Najeto',
   minimumBid: 'Minimální příhoz',
+  moreDescription: 'Další informace',
+  mostTechnicallyWeightOfRide: 'Nejvyšší technicky přípustná hmotnost',
+  mostTechnicallyAcceptableWeight: 'Největší povolená hmotnost jízdní soupravy',
   name: 'Název',
   news: 'Novinky',
   numberOfBids: 'Počet příhozů',
+  numberOfSeets: 'Počet sedadel',
   ok: 'OK',
+  operationWeight: 'Provozní hmotnost',
   password: 'Heslo',
   phoneNumber: 'Telefonní číslo',
   postCode: 'PSČ',
+  power: 'Výkon',
   protectionPersonalData: 'Ochrana osobních údajů',
   requiredFields: 'Povinné  pole',
+  seller: 'Prodejce',
   sendingNews: 'Zasílat novinky',
   share: 'Sdílet',
+  specification: 'Technické údaje',
   state: 'Stav',
+  startingPrice: 'Vyvolávací cena',
   street: 'Ulice',
   submit: 'Odeslat',
   table: 'Tabulka',
+  technicalViewOfTheVehicle: 'STK',
   terms: 'Podmínky',
   termsAndConditions: 'Obchodní podmínky',
   titleAfter: 'Titul za',
   titleBefore: 'Titul před',
+  transmission: 'Řazení',
   user: 'Uživatel',
   userLoggedInSuccessfully: 'Úspěšně přihlášen.',
   userLoggedOutSuccessfully: 'Úspěšně odhlášen.',
   userName: 'Uživatelské jméno',
   userNotAuthenticated: 'Špatné jméno nebo heslo!',
   validation_min_chars: 'Minimum znaků {0}',
-  webPageUrl: 'URL webových stránek'
+  vehicleVinNumber: 'VIN vozidla',
+  webPageUrl: 'URL webových stránek',
+  yearOfManufacture: 'Rok výroby'
 };
 Translator.en = {
   about: 'About',
@@ -62595,29 +65400,43 @@ Translator.en = {
   active: 'Active',
   action: 'Action',
   auctions: 'Auctions',
+  auctionDetailInformation: 'Detailed auction information',
   auctionHall: 'Auction hall',
+  auditControlIsProvidedBy: 'Audit control is provided by',
   actualPrice: 'Current price',
+  axle: 'Axle',
+  beginningOfTheAuction: 'Beginning of the auction',
   bids: 'Bids',
   birthNumber: 'Birth number',
   cancel: 'Cancel',
+  carInformation: 'Vehicle information',
   city: 'City',
   close: 'Close',
+  color: 'Color',
   companyLegalNumber: 'Company legal number',
   companyNumber: 'Company number',
   contact: 'Contact',
+  contactToAppointment: 'Contact person',
   country: 'Country',
   currentPrice: 'Price',
   customer: 'Customer',
   customerDetail: 'Customer\'s detail',
+  dateOfFirstRegistration: 'Date of first registration',
   dealer: 'Dealer',
+  defects: 'Defets',
   detailOfAuction: 'Detail of auction',
+  dimensions: 'Overall dimensions (length / width / height)',
+  doors: 'Doors',
+  equipment: 'Equipment',
   email: 'Email',
   end: 'End',
-  endOfAuction: 'End of auction for',
+  endOfAuction: 'End of auction',
+  euroNorm: 'Euronorm',
   faq: 'FAQ',
   feeExpirationDate: 'Fee expiration date',
   firstName: 'First name',
   forDealers: 'For dealers',
+  fuel: 'Fuel',
   grid: 'Grid',
   home: 'Home',
   intoFavorites: 'To favorites',
@@ -62627,33 +65446,49 @@ Translator.en = {
   loadingData: 'Loading',
   login: 'Login',
   logout: 'Logout',
+  maximumWeight: 'Maximum allowable weight',
+  maximumWeightOfRide: 'Technically permissible maximum mass of the combination',
+  mileAge: 'Mileage',
   minimumBid: 'Minimum bid',
+  moreDescription: 'More information',
+  mostTechnicallyWeightOfRide: 'Technically permissible maximum weight',
+  mostTechnicallyAcceptableWeight: 'The maximum permitted weight of the combination',
   name: 'Name',
   news: 'News',
   numberOfBids: 'Number of bids',
+  numberOfSeets: 'Number of seets',
   ok: 'OK',
+  operationWeight: 'Operating weight',
   password: 'Password',
   phoneNumber: 'Phone number',
   postCode: 'Post code',
+  power: 'Power',
   protectionPersonalData: 'Protection of personal data',
   requiredFields: 'Required fields',
+  seller: 'Seller',
   sendingNews: 'Sending news',
   share: 'Share',
+  specification: 'Specifications',
   state: 'State',
+  startingPrice: 'Starting price',
   street: 'Street',
   submit: 'Submit',
   table: 'Table',
+  technicalViewOfTheVehicle: 'Technical view of the vehicle',
   terms: 'Terms',
   termsAndConditions: 'Terms and conditions',
   titleAfter: 'Prefix',
   titleBefore: 'Postfix',
+  transmission: 'Transmission',
   user: 'User',
   userLoggedInSuccessfully: 'Successfully logged in.',
   userLoggedOutSuccessfully: 'Logged out successfully.',
   userName: 'User name',
   userNotAuthenticated: 'Wrong user name or password!',
   validation_min_chars: 'At least {0} characters',
-  webPageUrl: 'Web page URL'
+  vehicleVinNumber: 'Vehicle VIN',
+  webPageUrl: 'Web page URL',
+  yearOfManufacture: 'Year of manufacture'
 };
 Translator.sk = {};
 Translator.de = {};
@@ -62811,37 +65646,34 @@ var MessageStatusEnum;
 /*!****************************!*\
   !*** ./src/model/index.ts ***!
   \****************************/
-/*! exports provided: Address, Bid, Country, Customer, File, FileShort, Record, User, MessageStatusEnum */
+/*! exports provided: Address, Bid, Country, Customer, File, Record, User, MessageStatusEnum */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _model_Customer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/model/Customer */ "./src/model/Customer.ts");
-/* harmony import */ var _model_Customer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_model_Customer__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Customer", function() { return _model_Customer__WEBPACK_IMPORTED_MODULE_0___default.a; });
-/* harmony import */ var _model_User__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/model/User */ "./src/model/User.ts");
-/* harmony import */ var _model_User__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_model_User__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "User", function() { return _model_User__WEBPACK_IMPORTED_MODULE_1___default.a; });
-/* harmony import */ var _model_File__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/model/File */ "./src/model/File.ts");
-/* harmony import */ var _model_File__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_model_File__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "File", function() { return _model_File__WEBPACK_IMPORTED_MODULE_2__["File"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FileShort", function() { return _model_File__WEBPACK_IMPORTED_MODULE_2__["FileShort"]; });
-
-/* harmony import */ var _model_Country__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/model/Country */ "./src/model/Country.ts");
-/* harmony import */ var _model_Country__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_model_Country__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Country", function() { return _model_Country__WEBPACK_IMPORTED_MODULE_3___default.a; });
-/* harmony import */ var _model_Record__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/model/Record */ "./src/model/Record.ts");
-/* harmony import */ var _model_Record__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_model_Record__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Record", function() { return _model_Record__WEBPACK_IMPORTED_MODULE_4___default.a; });
-/* harmony import */ var _model_Bid__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/model/Bid */ "./src/model/Bid.ts");
-/* harmony import */ var _model_Bid__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_model_Bid__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Bid", function() { return _model_Bid__WEBPACK_IMPORTED_MODULE_5___default.a; });
-/* harmony import */ var _model_Address__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/model/Address */ "./src/model/Address.ts");
-/* harmony import */ var _model_Address__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_model_Address__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Address", function() { return _model_Address__WEBPACK_IMPORTED_MODULE_6___default.a; });
-/* harmony import */ var _model_MessageStatusEnum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @/model/MessageStatusEnum */ "./src/model/MessageStatusEnum.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MessageStatusEnum", function() { return _model_MessageStatusEnum__WEBPACK_IMPORTED_MODULE_7__["default"]; });
+/* harmony import */ var _Customer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Customer */ "./src/model/Customer.ts");
+/* harmony import */ var _Customer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_Customer__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Customer", function() { return _Customer__WEBPACK_IMPORTED_MODULE_0___default.a; });
+/* harmony import */ var _User__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./User */ "./src/model/User.ts");
+/* harmony import */ var _User__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_User__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "User", function() { return _User__WEBPACK_IMPORTED_MODULE_1___default.a; });
+/* harmony import */ var _File__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./File */ "./src/model/File.ts");
+/* harmony import */ var _File__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_File__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "File", function() { return _File__WEBPACK_IMPORTED_MODULE_2___default.a; });
+/* harmony import */ var _Country__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Country */ "./src/model/Country.ts");
+/* harmony import */ var _Country__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_Country__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Country", function() { return _Country__WEBPACK_IMPORTED_MODULE_3___default.a; });
+/* harmony import */ var _Record__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Record */ "./src/model/Record.ts");
+/* harmony import */ var _Record__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_Record__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Record", function() { return _Record__WEBPACK_IMPORTED_MODULE_4___default.a; });
+/* harmony import */ var _Bid__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Bid */ "./src/model/Bid.ts");
+/* harmony import */ var _Bid__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_Bid__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Bid", function() { return _Bid__WEBPACK_IMPORTED_MODULE_5___default.a; });
+/* harmony import */ var _Address__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Address */ "./src/model/Address.ts");
+/* harmony import */ var _Address__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_Address__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "Address", function() { return _Address__WEBPACK_IMPORTED_MODULE_6___default.a; });
+/* harmony import */ var _MessageStatusEnum__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./MessageStatusEnum */ "./src/model/MessageStatusEnum.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MessageStatusEnum", function() { return _MessageStatusEnum__WEBPACK_IMPORTED_MODULE_7__["default"]; });
 
 
 
@@ -62858,6 +65690,17 @@ __webpack_require__.r(__webpack_exports__);
 /***/ "./src/poco/AuthResponse.ts":
 /*!**********************************!*\
   !*** ./src/poco/AuthResponse.ts ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ "./src/poco/FileShortDto.ts":
+/*!**********************************!*\
+  !*** ./src/poco/FileShortDto.ts ***!
   \**********************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
@@ -62903,23 +65746,27 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************!*\
   !*** ./src/poco/index.ts ***!
   \***************************/
-/*! exports provided: AuthResponse, UserShortInfo, MessageDto, LoginDto */
+/*! exports provided: AuthResponse, UserShortInfo, MessageDto, LoginDto, FileShortDto */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _poco_AuthResponse__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/poco/AuthResponse */ "./src/poco/AuthResponse.ts");
-/* harmony import */ var _poco_AuthResponse__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_poco_AuthResponse__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "AuthResponse", function() { return _poco_AuthResponse__WEBPACK_IMPORTED_MODULE_0___default.a; });
-/* harmony import */ var _poco_UserShortInfo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/poco/UserShortInfo */ "./src/poco/UserShortInfo.ts");
-/* harmony import */ var _poco_UserShortInfo__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_poco_UserShortInfo__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "UserShortInfo", function() { return _poco_UserShortInfo__WEBPACK_IMPORTED_MODULE_1___default.a; });
-/* harmony import */ var _poco_MessageDto__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/poco/MessageDto */ "./src/poco/MessageDto.ts");
-/* harmony import */ var _poco_MessageDto__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_poco_MessageDto__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "MessageDto", function() { return _poco_MessageDto__WEBPACK_IMPORTED_MODULE_2___default.a; });
-/* harmony import */ var _poco_LoginDto__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/poco/LoginDto */ "./src/poco/LoginDto.ts");
-/* harmony import */ var _poco_LoginDto__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_poco_LoginDto__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "LoginDto", function() { return _poco_LoginDto__WEBPACK_IMPORTED_MODULE_3___default.a; });
+/* harmony import */ var _AuthResponse__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AuthResponse */ "./src/poco/AuthResponse.ts");
+/* harmony import */ var _AuthResponse__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_AuthResponse__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "AuthResponse", function() { return _AuthResponse__WEBPACK_IMPORTED_MODULE_0___default.a; });
+/* harmony import */ var _UserShortInfo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UserShortInfo */ "./src/poco/UserShortInfo.ts");
+/* harmony import */ var _UserShortInfo__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_UserShortInfo__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "UserShortInfo", function() { return _UserShortInfo__WEBPACK_IMPORTED_MODULE_1___default.a; });
+/* harmony import */ var _MessageDto__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MessageDto */ "./src/poco/MessageDto.ts");
+/* harmony import */ var _MessageDto__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_MessageDto__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "MessageDto", function() { return _MessageDto__WEBPACK_IMPORTED_MODULE_2___default.a; });
+/* harmony import */ var _LoginDto__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./LoginDto */ "./src/poco/LoginDto.ts");
+/* harmony import */ var _LoginDto__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_LoginDto__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "LoginDto", function() { return _LoginDto__WEBPACK_IMPORTED_MODULE_3___default.a; });
+/* harmony import */ var _FileShortDto__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./FileShortDto */ "./src/poco/FileShortDto.ts");
+/* harmony import */ var _FileShortDto__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_FileShortDto__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "FileShortDto", function() { return _FileShortDto__WEBPACK_IMPORTED_MODULE_4___default.a; });
+
 
 
 
@@ -62957,18 +65804,21 @@ if (false) {}
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var _views__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/views */ "./src/views/index.ts");
-/* harmony import */ var _store_modules_auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/store/modules/auth */ "./src/store/modules/auth/index.ts");
+/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es6.promise */ "./node_modules/core-js/modules/es6.promise.js");
+/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var _views__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/views */ "./src/views/index.ts");
+/* harmony import */ var _store_modules_auth__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/store/modules/auth */ "./src/store/modules/auth/index.ts");
 
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
+
+vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
 
 var authenticated = function authenticated(to, from, next) {
-  if (_store_modules_auth__WEBPACK_IMPORTED_MODULE_3__["state"].isAuthenticated) {
+  if (_store_modules_auth__WEBPACK_IMPORTED_MODULE_4__["state"].isAuthenticated) {
     next();
     return;
   }
@@ -62976,53 +65826,53 @@ var authenticated = function authenticated(to, from, next) {
   next('/');
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
+/* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
   mode: 'history',
   routes: [{
     path: '/about',
     name: 'about',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["About"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["About"]
   }, {
     path: '/auctions',
     name: 'auctions',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["Auction"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["Auction"]
   }, {
     path: '/contact',
     name: 'contact',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["Contact"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["Contact"]
   }, {
     path: '/customer',
     name: 'customer',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["Customer"],
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["Customer"],
     beforeEnter: authenticated
   }, {
     path: '/faq',
     name: 'faq',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["Faq"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["Faq"]
   }, {
     path: '/forDealers',
     name: 'forDealres',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["ForDealers"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["ForDealers"]
   }, {
     path: '/',
     name: 'home',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["Home"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["Home"]
   }, {
     path: '/news',
     name: 'news',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["News"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["News"]
   }, {
     path: '/protectionPersonalData',
     name: 'protectionPersonalData',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["ProtectionPersonalData"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["ProtectionPersonalData"]
   }, {
     path: '/termsAndConditions',
     name: 'termsAndConditions',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["TermsAndConditions"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["TermsAndConditions"]
   }, {
     path: '/auctionDetail',
     name: 'auctionDetail',
-    component: _views__WEBPACK_IMPORTED_MODULE_2__["AuctionDetail"]
+    component: _views__WEBPACK_IMPORTED_MODULE_3__["AuctionDetail"]
   }]
 }));
 
@@ -63050,7 +65900,7 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_1_
 var vuexLocal = new vuex_persist__WEBPACK_IMPORTED_MODULE_2___default.a({
   storage: window.localStorage,
   supportCircular: true,
-  modules: ['auth', 'settings'],
+  modules: ['auth', 'settings', 'record'],
   key: 'simple_auction'
 }); // create store with RootState
 
@@ -64112,6 +66962,14 @@ var getters = {
    */
   getDataViewType: function getDataViewType(state) {
     return state.tableView;
+  },
+
+  /**
+   * Language
+   * @param state Settings state
+   */
+  getLanguage: function getLanguage(state) {
+    return state.language;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (getters);
@@ -64172,7 +67030,7 @@ var mutations = {
     state.language = 'cs';
     state.resource = res;
     state.countries = undefined;
-    state.apiUrl = 'http://localhost:58131/api';
+    state.apiUrl = 'http://localhost:5000/api';
     state.tableView = true;
   },
 

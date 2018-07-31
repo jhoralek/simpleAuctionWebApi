@@ -8,14 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
+using SA.Application.Customer;
 using SA.Application.Records;
 using SA.Application.Security;
 using SA.Core.Model;
 using SA.Core.Security;
 using SA.EntityFramework.EntityFramework;
 using SA.EntityFramework.EntityFramework.Repository;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace SA.Api
@@ -77,12 +76,17 @@ namespace SA.Api
 
             services.AddSingleton<ISecurityService, SecurityService>();
             services.AddSingleton<IRecordService, RecordService>();
-
+                
             Mapper.Initialize(cfg => {
                 cfg.CreateMap<Record, RecordTableDto>()
-                    .ForMember(dto => dto.CurrentPrice, dto => dto.MapFrom(x => x.Bids.Any() ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().Price : x.StartingPrice))
+                    .ForMember(dto => dto.CurrentPrice, dto => dto.MapFrom(x => x.Bids.Any() 
+                        ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().Price 
+                        : x.StartingPrice))
                     .ForMember(dto => dto.NumberOfBids, dto => dto.MapFrom(x => x.Bids.Count()));
+                cfg.CreateMap<Record, RecordDetailDto>();
                 cfg.CreateMap<File, FileSimpleDto>();
+                cfg.CreateMap<Bid, BidSimpleDto>();
+                cfg.CreateMap<Customer, CustomerSimpleDto>();
             });
         }
 

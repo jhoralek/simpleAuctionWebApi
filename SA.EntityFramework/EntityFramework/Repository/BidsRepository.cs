@@ -80,8 +80,11 @@ namespace SA.EntityFramework.EntityFramework.Repository
                 : GetAllBidInternal())
             .ToListAsync();
 
-        public Task<Bid> GetOneAsync(Expression<Func<Bid, bool>> query)
-            => GetAllBidInternal().FirstOrDefaultAsync(query);
+        public async Task<TResult> GetOneAsync<TResult>(Expression<Func<Bid, bool>> query)
+            where TResult : class
+            => await GetAllBidInternal().Where(query)
+                    .ProjectTo<TResult>()
+                    .FirstOrDefaultAsync();
 
         public async Task<IEnumerable<Bid>> GetAllSimpleAsync(Expression<Func<Bid, bool>> query = null)
            => await(query != null
@@ -89,7 +92,8 @@ namespace SA.EntityFramework.EntityFramework.Repository
                         : GetAllInternal())
                     .ToListAsync();
 
-        public async Task<IEnumerable<TResult>> GetAllProjectToAsync<TResult>(Expression<Func<Bid, bool>> query = null) where TResult : class
+        public async Task<IEnumerable<TResult>> GetAllProjectToAsync<TResult>(Expression<Func<Bid, bool>> query = null) 
+            where TResult : class
             => await GetAllBidInternal().Where(query).ProjectTo<TResult>().ToListAsync();
     }
 }

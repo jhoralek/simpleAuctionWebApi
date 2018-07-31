@@ -7,12 +7,16 @@ namespace SA.Web
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateWebHostBuilder(args).Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+        public static IWebHost CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseKestrel()
                 .UseWebRoot("wwwroot")
-                .UseStartup<Startup>();
+                .UseUrls("http://*:5000")
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .Build();
     }
 }

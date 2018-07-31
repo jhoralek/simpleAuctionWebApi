@@ -1,5 +1,5 @@
 import { User, Record } from '@/model';
-interface File {
+export default interface File {
     user: User;
     record: Record;
     path: string;
@@ -7,16 +7,3 @@ interface File {
     created?: Date;
     id?: number;
 }
-
-interface FileShort {
-    id?: number;
-    name: string;
-    path: string;
-    userId: number;
-    recordId: number;
-}
-
-export {
-    File,
-    FileShort,
-};

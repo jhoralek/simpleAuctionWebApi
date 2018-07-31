@@ -72,8 +72,11 @@ namespace SA.EntityFramework.EntityFramework.Repository
         private IQueryable<Address> GetAllAddressInternal()
             => GetAllInternal().Include(x => x.Country);
 
-        public Task<Address> GetOneAsync(Expression<Func<Address, bool>> query)
-            => GetAllAddressInternal().FirstOrDefaultAsync(query);
+        public async Task<TResult> GetOneAsync<TResult>(Expression<Func<Address, bool>> query)
+            where TResult : class
+            => await GetAllAddressInternal().Where(query)
+                    .ProjectTo<TResult>()
+                    .FirstOrDefaultAsync();
 
         public async Task<IEnumerable<Address>> GetAllSimpleAsync(Expression<Func<Address, bool>> query = null)
             => await GetAllAsync(query);

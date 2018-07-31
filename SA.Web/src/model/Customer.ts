@@ -14,5 +14,6 @@ export default interface Customer {
     webPageUrl?: string;
     companyNumber?: string;
     companyLegalNumber?: string;
+    companyName?: string;
     id?: number;
 }

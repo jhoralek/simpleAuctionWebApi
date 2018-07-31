@@ -62,7 +62,7 @@
 import { Component, Prop } from 'vue-property-decorator';
 import { Action, namespace } from 'vuex-class';
 
-import { Record, FileShort } from '@/model';
+import { Record } from '@/model';
 import BaseComponent from './BaseComponent.vue';
 import CountdownComponent from './helpers/CountdownComponent.vue';
 

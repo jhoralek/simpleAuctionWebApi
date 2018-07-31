@@ -1,3 +1,5 @@
+import currencyFormatter from 'currency-formatter';
+import { Dictionary } from '@/store/types';
 export default class Helpers  {
     /**
      * Time count down
@@ -17,5 +19,36 @@ export default class Helpers  {
             ? `${days}d ${hours}h ${minutes}m ${seconds}s`
             : 'endOfAcution';
         return result;
+    }
+
+    /**
+     * Format price
+     * @param price price which is going to be formatted
+     */
+    public static formatPrice(price: number, language: string): string {
+        const config: Dictionary<any> =  {
+            cs: {
+                locale: 'cs-CZ',
+                precision: 0,
+            },
+            en: {
+                locale: 'en-Gb',
+                precision: 0,
+            },
+            de: {
+                locale: 'de-DE',
+                precision: 0,
+            },
+            ru: {
+                locale: 'ru-RU',
+                precision: 0,
+            },
+            sk: {
+                locale: 'sk-Sk',
+                precision: 0,
+            },
+        };
+
+        return currencyFormatter.format(price, config[language]);
     }
 }
