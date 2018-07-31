@@ -1,10 +1,12 @@
-﻿using System;
+﻿using SA.Application.Customer;
+using System;
 using System.Collections.Generic;
 
 namespace SA.Application.Records
 {
     public class RecordDetailDto
-    {      
+    {   
+        public virtual int Id { get; set; }
         public virtual string Name { get; set; }     
         public virtual bool IsActive { get; set; }
         public virtual string Colors { get; set; }
@@ -39,6 +41,8 @@ namespace SA.Application.Records
         public virtual string MaximumWeightOfRide { get; set; }
         public virtual int UserId { get; set; }
         public virtual int CustomerId { get; set; }
+        public virtual string Place { get; set; }
+        public virtual CustomerSimpleDto Customer { get; set; }
         public virtual ICollection<FileSimpleDto> Files { get; set; } = new List<FileSimpleDto>();
         public virtual ICollection<BidSimpleDto> Bids { get; set; } = new List<BidSimpleDto>();
     }

@@ -33,6 +33,13 @@ const getters: GetterTree<SettingsState, RootState> = {
     getDataViewType(state) {
         return state.tableView;
     },
+    /**
+     * Language
+     * @param state Settings state
+     */
+    getLanguage(state) {
+        return state.language;
+    },
 };
 
 export default getters;

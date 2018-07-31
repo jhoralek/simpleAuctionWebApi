@@ -10,9 +10,10 @@ using System;
 namespace SA.EntityFramework.Migrations
 {
     [DbContext(typeof(SaDbContext))]
-    partial class SaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180726163440_Customer_Records_Add_Columns")]
+    partial class Customer_Records_Add_Columns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

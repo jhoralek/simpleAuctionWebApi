@@ -15,7 +15,7 @@ namespace SA.Api
             WebHost.CreateDefaultBuilder(args)
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseUrls("http://*:5000")
+                .UseUrls("http://*:58131")
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();

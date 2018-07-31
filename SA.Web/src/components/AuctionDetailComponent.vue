@@ -14,24 +14,68 @@
                             </v-carousel>
                         </v-flex>
                         <v-flex xs12>
-                            <v-card>
-                                <v-card-text class="px-0">
-                                    <v-flex xs12 offset-xs1>
-                                        TODO: tady bude informace o cene, prihozech, tlacitko na prihodit, doba kdy bude konec
-                                    </v-flex>
-                                </v-card-text>
-                            </v-card>
-                        </v-flex>
-                        <v-flex xs12>
-                            <v-container>
-                                <v-layout row wrap>
-                                    <v-flex xs6>
-                                        <h1 class="display-3 font-weight-medium">{{ record.name }}</h1>
-                                    </v-flex>
-                                    <v-flex xs6 justify-end align-center>
-                                        <h1 class=" red--text text--lighten-1 display-3 font-weight-bold">
-                                            {{ currentPrice(record) }}
-                                        </h1>
+                            <v-container grid-list-xs>
+                                <v-layout column fill-height>
+                                    <v-flex xs12>
+                                        <v-expansion-panel expand>
+                                            <v-expansion-panel-content :value="expander1">
+                                                <div slot="header">
+                                                    <h3 class="headline">{{ resx('auctionDetailInformation') }}</h3>
+                                                </div>
+                                                <v-container class="grey lighten-3">
+                                                    <v-layout row wrap>
+                                                        <v-flex xs6>
+                                                            <h1 class="display-3 font-weight-medium">{{ record.name }}</h1>
+                                                        </v-flex>
+                                                        <v-flex xs6>
+                                                            <v-layout row justify-end align-center>
+                                                                <h1 class=" red--text text--lighten-1 display-3 font-weight-bold">
+                                                                    <PriceComponent :price="currentPrice(record)" />
+                                                                </h1>
+                                                            </v-layout>
+                                                        </v-flex>
+                                                    </v-layout>
+                                                    <v-layout row wrap>
+                                                        <v-flex xs6>{{ resx('startingPrice') }}</v-flex>
+                                                        <v-flex xs6>
+                                                            <v-layout row justify-end align-center>
+                                                                <PriceComponent :price="record.startingPrice" />
+                                                            </v-layout>
+                                                        </v-flex>
+                                                    </v-layout>
+                                                    <v-layout row wrap>
+                                                        <v-flex xs6>{{ resx('minimumBid') }}</v-flex>
+                                                        <v-flex xs6>
+                                                            <v-layout row justify-end align-center>
+                                                                <PriceComponent :price="record.minimumBid" />
+                                                            </v-layout>
+                                                        </v-flex>
+                                                    </v-layout>
+                                                    <v-layout row wrap>
+                                                        <v-flex xs6>{{ resx('numberOfBids') }}</v-flex>
+                                                        <v-flex xs6>
+                                                            {{ numberOfBids(record.bids) }}
+                                                        </v-flex>
+                                                    </v-layout>
+                                                    <v-layout row wrap>
+                                                        <v-flex xs6>{{ resx('beginningOfTheAuction') }}</v-flex>
+                                                        <v-flex xs6>{{ record.validFrom | moment('DD.MM.YYYY HH:mm') }}</v-flex>
+                                                    </v-layout>
+                                                    <v-layout row wrap>
+                                                        <v-flex xs6>{{ resx('endOfAuction') }}</v-flex>
+                                                        <v-flex xs6>{{ record.validTo | moment('DD.MM.YYYY HH:mm') }}</v-flex>
+                                                    </v-layout>
+                                                    <v-layout row wrap>
+                                                        <v-flex xs6>{{ resx('contactToAppointment') }}</v-flex>
+                                                        <v-flex xs6>{{ record.contactToAppointment }}</v-flex>
+                                                    </v-layout>
+                                                    <v-layout row wrap>
+                                                        <v-flex xs6>{{ resx('seller') }}</v-flex>
+                                                        <v-flex xs6>{{ sellerInfo(record.customer) }}</v-flex>
+                                                    </v-layout>
+                                                </v-container>
+                                            </v-expansion-panel-content>
+                                        </v-expansion-panel>
                                     </v-flex>
                                 </v-layout>
                             </v-container>
@@ -44,7 +88,7 @@
                     <v-layout column fill-height>
                         <v-flex xs12 >
                             <v-expansion-panel expand>
-                                <v-expansion-panel-content :value="espander">
+                                <v-expansion-panel-content :value="expander">
                                     <div slot="header">
                                         <h3 class="headline">{{ resx('carInformation') }}</h3>
                                     </div>
@@ -105,7 +149,7 @@
                                         </v-flex>
                                     </v-container>
                                 </v-expansion-panel-content>
-                                <v-expansion-panel-content :value="espander">
+                                <v-expansion-panel-content :value="expander">
                                     <div slot="header">
                                         <h3 class="headline">{{ resx('equipment') }}</h3>
                                     </div>
@@ -117,7 +161,7 @@
                                         </v-flex>
                                     </v-container>
                                 </v-expansion-panel-content>
-                                <v-expansion-panel-content :value="espander">
+                                <v-expansion-panel-content :value="expander">
                                     <div slot="header">
                                         <h3 class="headline">{{ resx('state') }}</h3>
                                     </div>
@@ -129,7 +173,7 @@
                                         </v-flex>
                                     </v-container>
                                 </v-expansion-panel-content>
-                                <v-expansion-panel-content :value="espander">
+                                <v-expansion-panel-content :value="expander">
                                     <div slot="header">
                                         <h3 class="headline">{{ resx('specification') }}</h3>
                                     </div>
@@ -162,7 +206,7 @@
                                         </v-flex>
                                     </v-container>
                                 </v-expansion-panel-content>
-                                <v-expansion-panel-content :value="espander">
+                                <v-expansion-panel-content :value="expander">
                                     <div slot="header">
                                         <h3 class="headline">{{ resx('defects') }}</h3>
                                     </div>
@@ -174,7 +218,7 @@
                                         </v-flex>
                                     </v-container>
                                 </v-expansion-panel-content>
-                                <v-expansion-panel-content :value="espander">
+                                <v-expansion-panel-content :value="expander">
                                     <div slot="header">
                                         <h3 class="headline">{{ resx('moreDescription') }}</h3>
                                     </div>
@@ -198,30 +242,45 @@
 <<script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
 import { Getter, namespace } from 'vuex-class';
-import BaseComponent from './BaseComponent.vue';
 
-import { Record } from '@/model';
+import BaseComponent from './BaseComponent.vue';
+import { PriceComponent } from '@/components';
+import {
+    Record,
+    Bid,
+    Customer,
+} from '@/model';
 import { FileShortDto } from '@/poco';
 
 const RecordGetter = namespace('record', Getter);
 
-@Component({})
+@Component({
+    components: {
+        PriceComponent,
+    },
+})
 export default class AuctionDetalComponent extends BaseComponent {
     @RecordGetter('getCurrent') public record: Record;
 
-    private espander1: boolean[] = [true];
-    private espander: boolean[] = [true, true, true, true, true, true];
+    private expander: boolean[] = [true, true, true, true, true, true];
+    private expander1: boolean[] = [true];
 
     private filePath(file: FileShortDto): string {
         return `/${file.path}/${file.recordId}/images/${file.name}`;
     }
 
-    private currentPrice(record: Record): string {
-        const price = record.bids.length > 0
+    private currentPrice(record: Record): number {
+        return record.bids.length > 0
             ? Math.max.apply(Math, record.bids.map((o) => o.price))
             : record.startingPrice;
+    }
 
-        return `${price}`;
+    private numberOfBids(bids: Bid[]): number {
+        return bids === undefined ? 0 : bids.length;
+    }
+
+    private sellerInfo(customer: Customer): string {
+        return `${customer.companyName}`;
     }
 }
 

@@ -147,6 +147,11 @@ namespace SA.Core.Model
         [MySqlCollation("utf8_general_ci")]
         public virtual string MaximumWeightOfRide { get; set; }
 
+        [MaxLength(100)]
+        [MySqlCharset("utf8")]
+        [MySqlCollation("utf8_general_ci")]
+        public virtual string Place { get; set; }
+
         [Required]
         public virtual int UserId { get; set; }
 
