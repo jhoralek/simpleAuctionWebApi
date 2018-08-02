@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SA.Application.Account;
 using SA.Application.Security;
 using System.Threading.Tasks;
 
-namespace SA.Api.Controllers
+namespace SA.WebApi.Controllers
 {
     [Route("api/Accounts")]
-    [EnableCors("SA")]
     public class AccountsController : Controller
     {
         private readonly ISecurityService _securityService;
@@ -20,6 +18,6 @@ namespace SA.Api.Controllers
         [HttpPost]
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginUserDto loginForm)
-            => Json(await _securityService.Login(loginForm));        
+            => Json(await _securityService.Login(loginForm));
     }
 }

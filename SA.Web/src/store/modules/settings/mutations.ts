@@ -11,6 +11,7 @@ const mutations: MutationTree<SettingsState> = {
         state.language = 'cs';
         state.resource = res;
         state.countries = undefined;
+        // state.apiUrl = 'http://185.75.136.145:8081/api';
         state.apiUrl = 'http://localhost:5000/api';
         state.tableView = true;
     },

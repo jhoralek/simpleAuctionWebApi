@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SA.Application.Account;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
-using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -26,11 +26,11 @@ namespace SA.Application.Security
         public async Task<AuthResponse> Login(LoginUserDto user)
         {
             var hashPassword = GetMD5HashData(user.Password);
-            var persistedUser = _userRepository.GetAllInternal()
-                .Where(u => u.UserName == user.UserName
-                    && u.Password == hashPassword)
-                .FirstOrDefault();
-
+            var persistedUser = await _userRepository.GetOneAsync<UserShortInfoDto>(x =>
+                x.UserName == user.UserName &&
+                x.Password == x.Password &&
+                x.IsActive);
+            
             if (persistedUser == null)
             {
                 return new AuthResponse { Error = "UserNotAuthenticated" };
@@ -48,7 +48,7 @@ namespace SA.Application.Security
 
             persistedUser.Token = $"{token.TokenType} {token.AccessToken}";
 
-            await _userRepository.UpdateAsync(persistedUser.Id, persistedUser);
+            await _userRepository.UpdateAsync(Mapper.Map<User>(persistedUser));
 
             return new AuthResponse
             {
@@ -102,7 +102,6 @@ namespace SA.Application.Security
                 returnValue.Append(hashData[i].ToString());
             }
             return returnValue.ToString();
-
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SA.Core.Model;
 using System;
@@ -17,41 +18,45 @@ namespace SA.EntityFramework.EntityFramework.Repository
             _context = context;
         }
 
-        public async Task AddAsync(Country item)
+        public async Task<Country> AddAsync(Country item)
         {
             item.Created = DateTime.Now;
-            await _context.Countries.AddAsync(item);
+            var added = await _context.Countries.AddAsync(item);
             await _context.SaveChangesAsync();
+            return added.Entity;
         }
 
-        public async Task<IEnumerable<Country>> FindAsync(string key)
-            => await GetAllAsync(x => x.Name.StartsWith(key));
-
-        public async Task<IEnumerable<Country>> GetAll()
-            => await GetAllInternal().ToListAsync();
-
-        public async Task<Country> GetByIdAsync(int id)
-            => await GetAllInternal()
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-        public async Task RemoveAsync(int id)
+        public async Task<Country> RemoveAsync(int id)
         {
-            var itemToDelte = await GetAllInternal()
+            var itemToDelte = await _context.Countries
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToDelte != null)
             {
-                _context.Remove(itemToDelte);
+                var deleted = _context.Countries.Remove(itemToDelte);
                 await _context.SaveChangesAsync();
+                return deleted.Entity;
             }
+            return null;
         }
 
-        public IQueryable<Country> GetAllInternal()
-            => _context.Countries.AsQueryable();
+        public async Task<Country> UpdateAsync(Country item)
+        {
+            var itemToUpdate = await _context.Countries
+                .FirstOrDefaultAsync(x => x.Id == item.Id);
+
+            if (itemToUpdate != null)
+            {
+                Mapper.Map(item, itemToUpdate);
+                await _context.SaveChangesAsync();
+                return itemToUpdate;
+            }
+            return null;
+        }
 
         public async Task UpdateAsync(int id, Country item)
         {
-            var itemToUpdate = await GetAllInternal()
+            var itemToUpdate = await _context.Countries
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToUpdate != null)
@@ -63,23 +68,27 @@ namespace SA.EntityFramework.EntityFramework.Repository
             }
         }
 
-        public async Task<IEnumerable<Country>> GetAllAsync(Expression<Func<Country, bool>> query = null)
-            => await
-                (query != null
-                    ? GetAllInternal().Where(query)
-                    : GetAllInternal())
-                .ToListAsync();
+        public async Task<IEnumerable<TResult>> GetAllAsync<TResult, TOrder>(
+            Expression<Func<Country, bool>> query = null,
+            Expression<Func<Country, TOrder>> order = null)
+                where TResult : class
+        {
+            var request = query != null
+                ? _context.Countries.Where(query)
+                : _context.Countries;
+
+            request = order != null
+                ? request.OrderBy(order)
+                : request;
+
+            return await request.ProjectTo<TResult>().ToListAsync();
+        }
 
         public async Task<TResult> GetOneAsync<TResult>(Expression<Func<Country, bool>> query)
             where TResult : class
-            => await GetAllInternal().Where(query)
+            => await _context.Countries.Where(query)
                     .ProjectTo<TResult>()
                     .FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<Country>> GetAllSimpleAsync(Expression<Func<Country, bool>> query = null)
-           => await GetAllAsync(query);
-
-        public async Task<IEnumerable<TResult>> GetAllProjectToAsync<TResult>(Expression<Func<Country, bool>> query = null) where TResult : class
-            => await GetAllInternal().Where(query).ProjectTo<TResult>().ToListAsync();
     }
 }

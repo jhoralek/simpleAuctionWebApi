@@ -1,4 +1,5 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SA.Core.Model;
 using System;
@@ -17,53 +18,66 @@ namespace SA.EntityFramework.EntityFramework.Repository
             _context = context;
         }
 
-        public async Task AddAsync(Bid item)
+        public async Task<Bid> AddAsync(Bid item)
         {
             item.Created = DateTime.Now;
-            await _context.Bids.AddAsync(item);
+            var added = await _context.Bids.AddAsync(item);
             await _context.SaveChangesAsync();
+            return added.Entity;
         }
 
-        public async Task<IEnumerable<Bid>> FindAsync(string key)
-            => await GetAllAsync(x => x.Equals(key));
-
-        public async Task<Bid> GetByIdAsync(int id)
-            => await GetAllBidInternal()
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-        public async Task RemoveAsync(int id)
+        public async Task<Bid> RemoveAsync(int id)
         {
-            var itemToDelte = await GetAllInternal()
+            var itemToDelte = await _context.Bids
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToDelte != null)
             {
-                _context.Remove(itemToDelte);
+                var deleted = _context.Bids.Remove(itemToDelte);
                 await _context.SaveChangesAsync();
+                return deleted.Entity;
             }
+            return null;
         }
 
-        /// <summary>
-        /// It is not possible edit
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public async Task UpdateAsync(int id, Bid item)
+        public async Task<Bid> UpdateAsync(Bid item)
         {
-            Bid itemToUpdate = null;
+            var itemToUpdate = await _context.Bids
+                .FirstOrDefaultAsync(x => x.Id == item.Id);
 
             if (itemToUpdate != null)
             {
+                Mapper.Map(item, itemToUpdate);
                 await _context.SaveChangesAsync();
+                return itemToUpdate;
             }
+            return null;
         }
 
-        public IQueryable<Bid> GetAllInternal()
-            => _context.Bids.AsQueryable();
+        public async Task<IEnumerable<TResult>> GetAllAsync<TResult, TOrder>(
+            Expression<Func<Bid, bool>> query = null,
+            Expression<Func<Bid, TOrder>> order = null)
+        where TResult : class
+        {
+            var request = query != null
+                ? GetAllBidInternal().Where(query)
+                : GetAllBidInternal();
+
+            request = order != null
+                ? request.OrderBy(order)
+                : request;
+
+            return await request.ProjectTo<TResult>().ToListAsync();
+        }
+
+        public async Task<TResult> GetOneAsync<TResult>(Expression<Func<Bid, bool>> query)
+            where TResult : class
+            => await GetAllBidInternal().Where(query)
+                    .ProjectTo<TResult>()
+                    .FirstOrDefaultAsync();
 
         private IQueryable<Bid> GetAllBidInternal()
-            => GetAllInternal()
+            => _context.Bids
                 .Include(x => x.Record)
                 .Include(x => x.Record.Customer)
                 .Include(x => x.Record.Customer.Address)
@@ -72,28 +86,5 @@ namespace SA.EntityFramework.EntityFramework.Repository
                 .Include(x => x.User.Customer)
                 .Include(x => x.User.Customer.Address)
                 .Include(x => x.User.Customer.Address.Country);
-
-        public async Task<IEnumerable<Bid>> GetAllAsync(Expression<Func<Bid, bool>> query = null)
-        => await
-            (query != null
-                ? GetAllBidInternal().Where(query)
-                : GetAllBidInternal())
-            .ToListAsync();
-
-        public async Task<TResult> GetOneAsync<TResult>(Expression<Func<Bid, bool>> query)
-            where TResult : class
-            => await GetAllBidInternal().Where(query)
-                    .ProjectTo<TResult>()
-                    .FirstOrDefaultAsync();
-
-        public async Task<IEnumerable<Bid>> GetAllSimpleAsync(Expression<Func<Bid, bool>> query = null)
-           => await(query != null
-                        ? GetAllInternal().Where(query)
-                        : GetAllInternal())
-                    .ToListAsync();
-
-        public async Task<IEnumerable<TResult>> GetAllProjectToAsync<TResult>(Expression<Func<Bid, bool>> query = null) 
-            where TResult : class
-            => await GetAllBidInternal().Where(query).ProjectTo<TResult>().ToListAsync();
     }
 }

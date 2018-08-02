@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
+using SA.Application.Account;
+using SA.Application.Country;
 using SA.Application.Customer;
 using SA.Application.Records;
 using SA.Application.Security;
@@ -49,7 +51,7 @@ namespace SA.Web
                 options.AddPolicy("read:messages", policy => policy.Requirements.Add(new HasScopeRequirement("read:messages", domain)));
             });
 
-            var controllerAssembly = Assembly.Load(new AssemblyName("SA.Api"));
+            var controllerAssembly = Assembly.Load(new AssemblyName("SA.WebApi"));
 
             services.AddMvc()
                 .AddApplicationPart(controllerAssembly).AddControllersAsServices()
@@ -57,7 +59,7 @@ namespace SA.Web
                 .AddJsonOptions(a => a.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects)
                 .AddJsonOptions(a => a.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            services.AddDbContext<SaDbContext>(options => options.UseMySQL(_configuration["ConnectionString:Sa"]), ServiceLifetime.Singleton);
+            services.AddDbContext<SaDbContext>(options => options.UseMySQL(_configuration["ConnectionString:Prod"]), ServiceLifetime.Singleton);
 
             services.AddSingleton<IEntityRepository<Country>, CountriesRepository>();
             services.AddSingleton<IEntityRepository<Address>, AddressesRepository>();
@@ -70,7 +72,6 @@ namespace SA.Web
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
             services.AddSingleton<ISecurityService, SecurityService>();
-            services.AddSingleton<IRecordService, RecordService>();
 
             Mapper.Initialize(cfg => {
                 cfg.CreateMap<Record, RecordTableDto>()
@@ -79,9 +80,24 @@ namespace SA.Web
                         : x.StartingPrice))
                     .ForMember(dto => dto.NumberOfBids, dto => dto.MapFrom(x => x.Bids.Count()));
                 cfg.CreateMap<Record, RecordDetailDto>();
+                cfg.CreateMap<Record, RecordMinimumDto>()
+                    .ForMember(dto => dto.CurrentPrice, dto => dto.MapFrom(x => x.Bids.Any()
+                        ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().Price
+                        : x.StartingPrice));
+
                 cfg.CreateMap<File, FileSimpleDto>();
+
                 cfg.CreateMap<Bid, BidSimpleDto>();
+
                 cfg.CreateMap<Customer, CustomerSimpleDto>();
+
+                cfg.CreateMap<User, UserShortInfoDto>();
+
+                cfg.CreateMap<Country, CountryLookupDto>();
+                cfg.CreateMap<Country, CountryDto>();
+
+                // reverse mapping
+                cfg.CreateMap<UserShortInfoDto, User>();
             });
         }
 

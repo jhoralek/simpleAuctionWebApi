@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SA.EntityFramework.EntityFramework.Repository;
 
-namespace SA.Api.Controllers
+namespace SA.WebApi.Controllers
 {
     public class BaseController<T> : Controller
     {

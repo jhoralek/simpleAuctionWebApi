@@ -1,4 +1,5 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SA.Core.Model;
 using System;
@@ -17,68 +18,67 @@ namespace SA.EntityFramework.EntityFramework.Repository
             _context = context;
         }
 
-        public async Task AddAsync(File item)
+        public async Task<File> AddAsync(File item)
         {
             item.Created = DateTime.Now;
-            await _context.Files.AddAsync(item);
+            var added = await _context.Files.AddAsync(item);
             await _context.SaveChangesAsync();
+            return added.Entity;
         }
 
-        public async Task<IEnumerable<File>> FindAsync(string key)
-            => await GetAllAsync(x => x.Name.StartsWith(key));
-
-        public async Task<File> GetByIdAsync(int id)
-            => await GetAllInternal()
-                .Include(x => x.Record)
-                .Include(x => x.User)
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-        public async Task RemoveAsync(int id)
+        public async Task<File> RemoveAsync(int id)
         {
-            var itemToDelte = await GetAllInternal()
+            var itemToDelte = await _context.Files
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToDelte != null)
             {
-                _context.Remove(itemToDelte);
+                var deleted = _context.Files.Remove(itemToDelte);
                 await _context.SaveChangesAsync();
+                return deleted.Entity;
             }
+            return null;
         }
 
-        public IQueryable<File> GetAllInternal()
-            => _context.Files.AsQueryable();
-
-        public async Task UpdateAsync(int id, File item)
+        public async Task<File> UpdateAsync(File item)
         {
-            var itemToUpdate = await GetAllInternal()
-                .FirstOrDefaultAsync(x => x.Id == id);
+            var itemToUpdate = await _context.Files
+                .FirstOrDefaultAsync(x => x.Id == item.Id);
 
             if (itemToUpdate != null)
             {
-                itemToUpdate.Name = item.Name;
-                itemToUpdate.Path = item.Path;
-                itemToUpdate.RecordId = item.RecordId;
+                Mapper.Map(item, itemToUpdate);
                 await _context.SaveChangesAsync();
+                return itemToUpdate;
             }
+            return null;
         }
 
-        public async Task<IEnumerable<File>> GetAllAsync(Expression<Func<File, bool>> query = null)
-            => await
-                (query != null
-                    ? GetAllInternal().Where(query)
-                    : GetAllInternal())
-                .ToListAsync();
+        public async Task<IEnumerable<TResult>> GetAllAsync<TResult, TOrder>(
+            Expression<Func<File, bool>> query = null,
+            Expression<Func<File, TOrder>> order = null)
+                where TResult : class
+        {
+            var request = query != null
+                ? GetIncludedAll().Where(query)
+                : GetIncludedAll();
+
+            request = order != null
+                ? request.OrderBy(order)
+                : request;
+
+            return await request.ProjectTo<TResult>().ToListAsync();
+        }
 
         public async Task<TResult> GetOneAsync<TResult>(Expression<Func<File, bool>> query)
             where TResult : class
-            => await GetAllInternal().Where(query)
+            => await GetIncludedAll().Where(query)
                     .ProjectTo<TResult>()
                     .FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<File>> GetAllSimpleAsync(Expression<Func<File, bool>> query = null)
-           => await GetAllAsync(query);
-
-        public async Task<IEnumerable<TResult>> GetAllProjectToAsync<TResult>(Expression<Func<File, bool>> query = null) where TResult : class
-            => await GetAllInternal().Where(query).ProjectTo<TResult>().ToListAsync();
+        private IQueryable<File> GetIncludedAll()
+            => _context.Files
+                .Include(x => x.User)
+                .Include(x => x.Record);
     }
 }

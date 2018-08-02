@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using SA.Application.Country;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SA.Api.Controllers
+namespace SA.WebApi.Controllers
 {
     [Route("api/Settings")]
-    [EnableCors("SA")]
     public class SettingsController : Controller
     {
         private readonly IEntityRepository<Country> _countryRepositiory;
@@ -23,8 +22,10 @@ namespace SA.Api.Controllers
         [Route("Countries")]
         public async Task<IActionResult> Countries(string lang)
         {
-            var dict = new Dictionary<string, IEnumerable<Country>>();
-            var languages = await _countryRepositiory.GetAllAsync(x => x.Language == lang);
+            var dict = new Dictionary<string, IEnumerable<CountryDto>>();
+            var languages = await _countryRepositiory
+                .GetAllAsync<CountryDto, string>(x => 
+                    x.Language == lang, x => x.Name);
 
             dict.Add(lang, languages);
 

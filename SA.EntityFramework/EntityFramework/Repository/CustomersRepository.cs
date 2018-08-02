@@ -1,4 +1,5 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SA.Core.Model;
 using System;
@@ -17,69 +18,57 @@ namespace SA.EntityFramework.EntityFramework.Repository
             _context = context;
         }
 
-        public async Task AddAsync(Customer item)
+        public async Task<Customer> AddAsync(Customer item)
         {
             item.Created = DateTime.Now;
-            await _context.Customers.AddAsync(item);
+            var added = await _context.Customers.AddAsync(item);
             await _context.SaveChangesAsync();
+            return added.Entity;
         }
 
-        public async Task<IEnumerable<Customer>> FindAsync(string key)
-            => await GetAllAsync(x => x.Email.StartsWith(key));
-
-        public async Task<Customer> GetByIdAsync(int id)
-            => await GetCustomersInternal()
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-        public async Task RemoveAsync(int id)
+        public async Task<Customer> RemoveAsync(int id)
         {
-            var itemToDelte = await GetAllInternal()
+            var itemToDelte = await _context.Customers
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToDelte != null)
             {
-                _context.Remove(itemToDelte);
+                var deleted = _context.Remove(itemToDelte);
                 await _context.SaveChangesAsync();
+                return deleted.Entity;
             }
+            return null;
         }
 
-        public async Task UpdateAsync(int id, Customer item)
+        public async Task<Customer> UpdateAsync(Customer item)
         {
-            var itemToUpdate = await GetAllInternal()
-                .FirstOrDefaultAsync(x => x.Id == id);
+            var itemToUpdate = await _context.Customers
+                .FirstOrDefaultAsync(x => x.Id == item.Id);
 
             if (itemToUpdate != null)
             {
-                itemToUpdate.FirstName = item.FirstName;
-                itemToUpdate.LastName = item.LastName;
-                itemToUpdate.BirthNumber = item.BirthNumber;
-                itemToUpdate.TitleBefore = item.TitleBefore;
-                itemToUpdate.TitleAfter = item.TitleAfter;
-                itemToUpdate.CompanyLegalNumer = item.CompanyLegalNumer;
-                itemToUpdate.CompanyNumber = item.CompanyNumber;
-                itemToUpdate.PhoneNumber = item.PhoneNumber;
-                itemToUpdate.WebPageUrl = item.WebPageUrl;
-                itemToUpdate.AddressId = item.AddressId;
-
+                Mapper.Map(item, itemToUpdate);
                 await _context.SaveChangesAsync();
+                return itemToUpdate;
             }
+            return null;
         }
 
-        public IQueryable<Customer> GetAllInternal()
-            => _context.Customers.AsQueryable();
+        public async Task<IEnumerable<TResult>> GetAllAsync<TResult, TOrder>(
+            Expression<Func<Customer, bool>> query = null,
+            Expression<Func<Customer, TOrder>> order = null)
+                where TResult : class
+        {
+            var request = query != null
+                ? GetCustomersInternal().Where(query)
+                : GetCustomersInternal();
 
-        private IQueryable<Customer> GetCustomersInternal()
-            => GetAllInternal()
-                .Include(x => x.Address)
-                .Include(x => x.Address.Country)
-                .Include(x => x.Records);
+            request = order != null
+                ? request.OrderBy(order)
+                : request;
 
-        public async Task<IEnumerable<Customer>> GetAllAsync(Expression<Func<Customer, bool>> query = null)
-            => await
-                (query != null
-                    ? GetCustomersInternal().Where(query)
-                    : GetCustomersInternal())
-                .ToListAsync();
+            return await request.ProjectTo<TResult>().ToListAsync();
+        }
 
         public async Task<TResult> GetOneAsync<TResult>(Expression<Func<Customer, bool>> query)
             where TResult : class
@@ -87,13 +76,10 @@ namespace SA.EntityFramework.EntityFramework.Repository
                     .ProjectTo<TResult>()
                     .FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<Customer>> GetAllSimpleAsync(Expression<Func<Customer, bool>> query = null)
-           => await (query != null
-                        ? GetAllInternal().Where(query)
-                        : GetAllInternal())
-                    .ToListAsync();
-
-        public async Task<IEnumerable<TResult>> GetAllProjectToAsync<TResult>(Expression<Func<Customer, bool>> query = null) where TResult : class
-            => await GetCustomersInternal().Where(query).ProjectTo<TResult>().ToListAsync();
+        private IQueryable<Customer> GetCustomersInternal()
+            => _context.Customers
+                .Include(x => x.Address)
+                .Include(x => x.Address.Country)
+                .Include(x => x.Records);
     }
 }
