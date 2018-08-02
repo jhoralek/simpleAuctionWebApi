@@ -15,122 +15,72 @@ namespace SA.EntityFramework.EntityFramework.Repository
         private readonly SaDbContext _context;
         public RecordsRepository(SaDbContext context)
         {
-            _context = context;            
+            _context = context;
         }
 
-        public async Task AddAsync(Record item)
+        public async Task<Record> AddAsync(Record item)
         {
             item.Created = DateTime.Now;
-            await _context.Records.AddAsync(item);
+            var added = await _context.Records.AddAsync(item);
             await _context.SaveChangesAsync();
+            return added.Entity;
         }
 
-        public async Task<IEnumerable<Record>> FindAsync(string key)
-            => await GetAllAsync(x => x.Name.StartsWith(key));
-
-        public async Task<Record> GetByIdAsync(int id)
-            => await GetRecordsInternal()
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-        public async Task RemoveAsync(int id)
+        public async Task<Record> RemoveAsync(int id)
         {
-            var itemToDelte = await GetAllInternal()
+            var itemToDelte = await _context.Records
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToDelte != null)
             {
-                _context.Remove(itemToDelte);
+                var deleted = _context.Records.Remove(itemToDelte);
                 await _context.SaveChangesAsync();
+                return deleted.Entity;
             }
+            return null;
         }
 
-        public async Task UpdateAsync(int id, Record item)
+        public async Task<Record> UpdateAsync(Record item)
         {
-            var itemToUpdate = await GetAllInternal()
-                .FirstOrDefaultAsync(x => x.Id == id);
+            var itemToUpdate = await _context.Records
+                .FirstOrDefaultAsync(x => x.Id == item.Id);
 
             if (itemToUpdate != null)
             {
-                itemToUpdate.Name = item.Name;
-                itemToUpdate.MinimumBid = item.MinimumBid;
-                itemToUpdate.IsActive = item.IsActive;
-                itemToUpdate.Axle = item.Axle;
-                itemToUpdate.Body = item.Body;
-                itemToUpdate.Colors = item.Colors;
-                itemToUpdate.ContactToAppointment = item.ContactToAppointment;
-                itemToUpdate.CustomerId = item.CustomerId;
-                itemToUpdate.DateOfFirstRegistration = item.DateOfFirstRegistration;
-                itemToUpdate.Defects = item.Defects;
-                itemToUpdate.Dimensions = item.Dimensions;
-                itemToUpdate.Doors = item.Doors;
-                itemToUpdate.EngineCapacity = item.EngineCapacity;
-                itemToUpdate.Equipment = item.Equipment;
-                itemToUpdate.EuroNorm = item.EuroNorm;
-                itemToUpdate.Fuel = item.Fuel;
-                itemToUpdate.MaximumWeight = item.MaximumWeight;
-                itemToUpdate.MaximumWeightOfRide = item.MaximumWeightOfRide;
-                itemToUpdate.Mileage = item.Mileage;
-                itemToUpdate.MoreDescription = item.MoreDescription;
-                itemToUpdate.MostTechnicallyAcceptableWeight = item.MostTechnicallyAcceptableWeight;
-                itemToUpdate.MostTechnicallyWeightOfRide = item.MostTechnicallyWeightOfRide;
-                itemToUpdate.NumberOfSeets = item.NumberOfSeets;
-                itemToUpdate.OperationWeight = item.OperationWeight;
-                itemToUpdate.Power = item.Power;
-                itemToUpdate.RegistrationCheck = item.RegistrationCheck;
-                itemToUpdate.StartingPrice = item.StartingPrice;
-                itemToUpdate.State = item.State;
-                itemToUpdate.Stk = item.Stk;
-                itemToUpdate.ValidFrom = item.ValidFrom;
-                itemToUpdate.ValidTo = item.ValidTo;
-                itemToUpdate.Vin = item.Vin;
-
+                Mapper.Map(item, itemToUpdate);
                 await _context.SaveChangesAsync();
+                return itemToUpdate;
             }
+            return null;
         }
 
-        public IQueryable<Record> GetAllInternal()
-            => _context.Records.AsQueryable();
+        public async Task<IEnumerable<TResult>> GetAllAsync<TResult, TOrder>(
+            Expression<Func<Record, bool>> query = null,
+            Expression<Func<Record, TOrder>> order = null)
+                where TResult : class
+        {
+            var request = query != null
+                ? GetIncludedAll().Where(query)
+                : GetIncludedAll();
 
-        private IQueryable<Record> GetRecordsInternal()
-            => GetAllInternal()
+            request = order != null
+                ? request.OrderBy(order)
+                : request;
+
+            return await request.ProjectTo<TResult>().ToListAsync();
+        }
+
+        public async Task<TResult> GetOneAsync<TResult>(Expression<Func<Record, bool>> query)
+            where TResult : class
+            => await GetIncludedAll().Where(query)
+                    .ProjectTo<TResult>()
+                    .FirstOrDefaultAsync();
+
+        private IQueryable<Record> GetIncludedAll()
+            => _context.Records
                 .Include(x => x.User)
                 .Include(x => x.Customer)
                 .Include(x => x.Bids)
                 .Include(x => x.Files);
-
-        public async Task<IEnumerable<Record>> GetAllAsync(Expression<Func<Record, bool>> query = null)
-            => await
-                (query != null
-                    ? GetRecordsInternal().Where(query)
-                    : GetRecordsInternal())
-                .ToListAsync();
-
-        public async Task<TResult> GetOneAsync<TResult>(Expression<Func<Record, bool>> query)
-            where TResult : class
-            => await GetRecordsInternal().Where(query)
-                    .ProjectTo<TResult>()
-                    .FirstOrDefaultAsync();
-
-        public async Task<IEnumerable<Record>> GetAllSimpleAsync(Expression<Func<Record, bool>> query = null)
-           => await (query != null
-                        ? GetAllInternal().Where(query)
-                        : GetAllInternal())
-                    .ToListAsync();
-
-        public async Task<IEnumerable<TResult>> GetAllProjectToAsync<TResult>(Expression<Func<Record, bool>> query = null)
-            where TResult : class
-        {
-            try
-            {
-                var items = GetAllInternal().Where(query);
-                var maped = items.ProjectTo<TResult>();
-                var result = await maped.ToListAsync();
-                return result;
-            }catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-            return null;
-        }
     }
 }

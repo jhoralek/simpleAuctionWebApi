@@ -1,4 +1,5 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SA.Core.Model;
 using System;
@@ -17,72 +18,66 @@ namespace SA.EntityFramework.EntityFramework.Repository
             _context = context;
         }
 
-        public async Task AddAsync(Address item)
+        public async Task<Address> AddAsync(Address item)
         {
             item.Created = DateTime.Now;
-            await _context.Addresses.AddAsync(item);
+            var added = await _context.Addresses.AddAsync(item);
             await _context.SaveChangesAsync();
+            return added.Entity;
         }
 
-        public async Task<IEnumerable<Address>> FindAsync(string key)
-            => await GetAllAsync(x => x.Street.StartsWith(key));
-
-        public async Task<Address> GetByIdAsync(int id)
-            => await GetAllAddressInternal()
+        public async Task<Address> RemoveAsync(int id)
+        {
+            var itemToDelte = await _context.Addresses
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-        public async Task RemoveAsync(int id)
-        {
-            var itemToDelete = await GetAllInternal()
-                    .FirstOrDefaultAsync(x => x.Id == id);
-
-            if (itemToDelete != null)
+            if (itemToDelte != null)
             {
-                _context.Remove(itemToDelete);
+                var deleted = _context.Addresses.Remove(itemToDelte);
                 await _context.SaveChangesAsync();
+                return deleted.Entity;
             }
+            return null;
         }
 
-        public async Task UpdateAsync(int id, Address item)
+        public async Task<Address> UpdateAsync(Address item)
         {
-            var itemToUpdate = await GetAllInternal()
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            var itemToUpdate = await _context.Addresses
+                .FirstOrDefaultAsync(x => x.Id == item.Id);
 
             if (itemToUpdate != null)
             {
-                itemToUpdate.Street = item.Street;
-                itemToUpdate.City = item.City;
-                itemToUpdate.PostCode = item.PostCode;
-                itemToUpdate.CountryId = item.CountryId;
-
+                Mapper.Map(item, itemToUpdate);
                 await _context.SaveChangesAsync();
+                return itemToUpdate;
             }
+            return null;
         }
 
-        public IQueryable<Address> GetAllInternal()
-            => _context.Addresses.AsQueryable();
+        public async Task<IEnumerable<TResult>> GetAllAsync<TResult, TOrder>(
+            Expression<Func<Address, bool>> query = null,
+            Expression<Func<Address, TOrder>> order = null)
+                where TResult : class
+        {
+            var request = query != null
+                ? GetIncludeAll().Where(query)
+                : GetIncludeAll();
 
-        public async Task<IEnumerable<Address>> GetAllAsync(Expression<Func<Address, bool>> query = null)
-        => await 
-            (query != null 
-                ? GetAllAddressInternal().Where(query)
-                : GetAllAddressInternal())
-            .ToListAsync();
+            request = order != null
+                ? request.OrderBy(order)
+                : request;
 
-        private IQueryable<Address> GetAllAddressInternal()
-            => GetAllInternal().Include(x => x.Country);
+            return await request.ProjectTo<TResult>().ToListAsync();
+        }
 
         public async Task<TResult> GetOneAsync<TResult>(Expression<Func<Address, bool>> query)
             where TResult : class
-            => await GetAllAddressInternal().Where(query)
+            => await GetIncludeAll().Where(query)
                     .ProjectTo<TResult>()
                     .FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<Address>> GetAllSimpleAsync(Expression<Func<Address, bool>> query = null)
-            => await GetAllAsync(query);
+        private IQueryable<Address> GetIncludeAll()
+            => _context.Addresses.Include(x => x.Country);
 
-        public async Task<IEnumerable<TResult>> GetAllProjectToAsync<TResult>(Expression<Func<Address, bool>> query = null) where TResult : class
-            => await GetAllAddressInternal().Where(query).ProjectTo<TResult>().ToListAsync();
-            
     }
 }

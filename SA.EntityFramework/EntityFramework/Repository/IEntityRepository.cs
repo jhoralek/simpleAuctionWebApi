@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 
@@ -8,17 +7,14 @@ namespace SA.EntityFramework.EntityFramework.Repository
 {
     public interface IEntityRepository<T>
     {
-        Task AddAsync(T item);
-        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> query = null);
-        Task<IEnumerable<T>> GetAllSimpleAsync(Expression<Func<T, bool>> query = null);
+        Task<T> AddAsync(T item);
+        Task<T> RemoveAsync(int id);
+        Task<T> UpdateAsync(T item);
+        Task<IEnumerable<TResult>> GetAllAsync<TResult, TOrder>(
+            Expression<Func<T, bool>> query = null,
+            Expression<Func<T, TOrder>> order = null)
+                where TResult : class;
         Task<TResult> GetOneAsync<TResult>(Expression<Func<T, bool>> query)
-            where TResult : class;
-        Task<IEnumerable<T>> FindAsync(string key);
-        Task<T> GetByIdAsync(int id);
-        Task RemoveAsync(int id);
-        Task UpdateAsync(int id, T item);
-        IQueryable<T> GetAllInternal();
-        Task<IEnumerable<TResult>> GetAllProjectToAsync<TResult>(Expression<Func<T, bool>> query = null)
             where TResult : class;
     }
 }

@@ -5,7 +5,7 @@ namespace SA.EntityFramework.EntityFramework
 {
     public class SaDbContext : DbContext
     {
-        public SaDbContext() { }
+        public SaDbContext(): base() { }
 
         public SaDbContext(DbContextOptions<SaDbContext> options) : base(options) { }
 

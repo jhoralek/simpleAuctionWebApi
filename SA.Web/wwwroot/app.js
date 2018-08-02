@@ -63,7 +63,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "41f897ea8b0c37274ee6"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "03ba0c53addd1f379117"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -5274,73 +5274,421 @@ var render = function() {
             "v-app",
             [
               _c(
-                "v-toolbar",
+                "nav",
                 [
-                  _c("v-toolbar-title", [
-                    _vm._v(_vm._s(_vm.resx("auctionHall")))
-                  ]),
-                  _c("v-spacer"),
                   _c(
-                    "v-toolbar-items",
+                    "v-toolbar",
                     { staticClass: "hidden-sm-and-down" },
                     [
-                      _c("v-btn", { attrs: { flat: "", to: "/" } }, [
-                        _vm._v(_vm._s(_vm.resx("home")))
-                      ]),
-                      _c("v-btn", { attrs: { flat: "", to: "/news" } }, [
-                        _vm._v(_vm._s(_vm.resx("news")))
-                      ]),
-                      _c("v-btn", { attrs: { flat: "", to: "/forDealers" } }, [
-                        _vm._v(_vm._s(_vm.resx("forDealers")))
-                      ]),
-                      _c("v-btn", { attrs: { flat: "", to: "/auctions" } }, [
-                        _vm._v(_vm._s(_vm.resx("auctions")))
-                      ]),
-                      _c("v-btn", { attrs: { flat: "", to: "/about" } }, [
-                        _vm._v(_vm._s(_vm.resx("about")))
-                      ]),
-                      _c("v-btn", { attrs: { flat: "", to: "/faq" } }, [
-                        _vm._v(_vm._s(_vm.resx("faq")))
-                      ]),
-                      _c("v-btn", { attrs: { flat: "", to: "/contact" } }, [
-                        _vm._v(_vm._s(_vm.resx("contact")))
-                      ]),
                       _c(
-                        "v-menu",
-                        { attrs: { "offset-y": "" } },
+                        "v-toolbar-title",
                         [
                           _c(
+                            "router-link",
+                            { staticClass: "nav-item", attrs: { to: "/" } },
+                            [_vm._v(_vm._s(_vm.resx("auctionHall")))]
+                          )
+                        ],
+                        1
+                      ),
+                      _c("v-spacer"),
+                      _c(
+                        "v-toolbar-items",
+                        [
+                          _c("v-btn", { attrs: { flat: "", to: "/" } }, [
+                            _vm._v(_vm._s(_vm.resx("home")))
+                          ]),
+                          _c("v-btn", { attrs: { flat: "", to: "/news" } }, [
+                            _vm._v(_vm._s(_vm.resx("news")))
+                          ]),
+                          _c(
                             "v-btn",
-                            {
-                              attrs: { slot: "activator", flat: "" },
-                              slot: "activator"
-                            },
-                            [_vm._v(_vm._s(_vm.resx("terms")))]
+                            { attrs: { flat: "", to: "/forDealers" } },
+                            [_vm._v(_vm._s(_vm.resx("forDealers")))]
                           ),
                           _c(
-                            "v-list",
+                            "v-btn",
+                            { attrs: { flat: "", to: "/auctions" } },
+                            [_vm._v(_vm._s(_vm.resx("auctions")))]
+                          ),
+                          _c("v-btn", { attrs: { flat: "", to: "/about" } }, [
+                            _vm._v(_vm._s(_vm.resx("about")))
+                          ]),
+                          _c("v-btn", { attrs: { flat: "", to: "/faq" } }, [
+                            _vm._v(_vm._s(_vm.resx("faq")))
+                          ]),
+                          _c("v-btn", { attrs: { flat: "", to: "/contact" } }, [
+                            _vm._v(_vm._s(_vm.resx("contact")))
+                          ]),
+                          _c(
+                            "v-menu",
+                            { attrs: { "offset-y": "" } },
                             [
                               _c(
-                                "v-list-tile",
-                                { attrs: { to: "/termsAndConditions" } },
+                                "v-btn",
+                                {
+                                  attrs: { slot: "activator", flat: "" },
+                                  slot: "activator"
+                                },
+                                [_vm._v(_vm._s(_vm.resx("terms")))]
+                              ),
+                              _c(
+                                "v-list",
                                 [
-                                  _c("v-list-tile-title", [
-                                    _vm._v(
-                                      _vm._s(_vm.resx("termsAndConditions"))
-                                    )
-                                  ])
+                                  _c(
+                                    "v-list-tile",
+                                    { attrs: { to: "/termsAndConditions" } },
+                                    [
+                                      _c("v-list-tile-title", [
+                                        _vm._v(
+                                          _vm._s(_vm.resx("termsAndConditions"))
+                                        )
+                                      ])
+                                    ],
+                                    1
+                                  ),
+                                  _c(
+                                    "v-list-tile",
+                                    {
+                                      attrs: { to: "/protectionPersonalData" }
+                                    },
+                                    [
+                                      _c("v-list-tile-title", [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.resx("protectionPersonalData")
+                                          )
+                                        )
+                                      ])
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm.auth.isAuthenticated
+                            ? _c(
+                                "v-btn",
+                                { attrs: { flat: "", to: "/customer" } },
+                                [_vm._v(_vm._s(_vm.resx("customerDetail")))]
+                              )
+                            : _vm._e(),
+                          _c(
+                            "div",
+                            { staticClass: "toolbar__items menu__activator" },
+                            [_c("LoginFormComponent")],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _c("LanguageComponent")
+                    ],
+                    1
+                  ),
+                  _c(
+                    "div",
+                    { staticClass: "hidden-md-and-up" },
+                    [
+                      _c(
+                        "v-expansion-panel",
+                        [
+                          _c(
+                            "v-expansion-panel-content",
+                            [
+                              _c(
+                                "div",
+                                { attrs: { slot: "header" }, slot: "header" },
+                                [
+                                  _c(
+                                    "router-link",
+                                    {
+                                      staticClass:
+                                        "nav-item btn btn--flat btn--router",
+                                      attrs: { to: "/" }
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(_vm.resx("auctionHall")) +
+                                          "\n              "
+                                      )
+                                    ]
+                                  )
                                 ],
                                 1
                               ),
                               _c(
-                                "v-list-tile",
-                                { attrs: { to: "/protectionPersonalData" } },
+                                "v-card",
                                 [
-                                  _c("v-list-tile-title", [
-                                    _vm._v(
-                                      _vm._s(_vm.resx("protectionPersonalData"))
-                                    )
-                                  ])
+                                  _c(
+                                    "v-flex",
+                                    {
+                                      attrs: {
+                                        "justify-start": "",
+                                        "offset-xs1": ""
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "router-link",
+                                        {
+                                          staticClass:
+                                            "nav-item btn btn--flat btn--router",
+                                          staticStyle: {
+                                            "justify-content": "left"
+                                          },
+                                          attrs: { to: "/news" }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(_vm.resx("news")) +
+                                              "\n                "
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _c(
+                                "v-card",
+                                [
+                                  _c(
+                                    "v-flex",
+                                    {
+                                      attrs: {
+                                        "justify-start": "",
+                                        "offset-xs1": ""
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "router-link",
+                                        {
+                                          staticClass:
+                                            "nav-item btn btn--flat btn--router",
+                                          staticStyle: {
+                                            "justify-content": "left"
+                                          },
+                                          attrs: { to: "/forDealers" }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(_vm.resx("forDealers")) +
+                                              "\n                "
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _c(
+                                "v-card",
+                                [
+                                  _c(
+                                    "v-flex",
+                                    {
+                                      attrs: {
+                                        "justify-start": "",
+                                        "offset-xs1": ""
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "v-layout",
+                                        { attrs: { row: "" } },
+                                        [
+                                          _c(
+                                            "router-link",
+                                            {
+                                              staticClass:
+                                                "nav-item btn btn--flat btn--router",
+                                              staticStyle: {
+                                                "justify-content": "left"
+                                              },
+                                              attrs: { to: "/auctions" }
+                                            },
+                                            [
+                                              _vm._v(
+                                                _vm._s(_vm.resx("auctions")) +
+                                                  "\n                  "
+                                              )
+                                            ]
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _c(
+                                "v-card",
+                                [
+                                  _c(
+                                    "v-flex",
+                                    {
+                                      attrs: {
+                                        "justify-start": "",
+                                        "offset-xs1": ""
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "router-link",
+                                        {
+                                          staticClass:
+                                            "nav-item btn btn--flat btn--router",
+                                          staticStyle: {
+                                            "justify-content": "left"
+                                          },
+                                          attrs: { to: "/about" }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(_vm.resx("about")) +
+                                              "\n                "
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _c(
+                                "v-card",
+                                [
+                                  _c(
+                                    "v-flex",
+                                    {
+                                      attrs: {
+                                        "justify-start": "",
+                                        "offset-xs1": ""
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "router-link",
+                                        {
+                                          staticClass:
+                                            "nav-item btn btn--flat text-xs-left",
+                                          staticStyle: {
+                                            "justify-content": "left"
+                                          },
+                                          attrs: { to: "/faq" }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(_vm.resx("faq")) +
+                                              "\n                "
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _c(
+                                "v-card",
+                                [
+                                  _c(
+                                    "v-flex",
+                                    {
+                                      attrs: {
+                                        "justify-start": "",
+                                        "offset-xs1": ""
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "router-link",
+                                        {
+                                          staticClass:
+                                            "nav-item btn btn--flat text-xs-left",
+                                          staticStyle: {
+                                            "justify-content": "left"
+                                          },
+                                          attrs: { to: "/contact" }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(_vm.resx("contact")) +
+                                              "\n                "
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm.auth.isAuthenticated
+                                ? _c(
+                                    "v-card",
+                                    [
+                                      _c(
+                                        "v-flex",
+                                        {
+                                          attrs: {
+                                            "justify-start": "",
+                                            "offset-xs1": ""
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "router-link",
+                                            {
+                                              staticClass:
+                                                "nav-item btn btn--flat btn--router",
+                                              staticStyle: {
+                                                "justify-content": "left"
+                                              },
+                                              attrs: { to: "/customer" }
+                                            },
+                                            [
+                                              _vm._v(
+                                                _vm._s(
+                                                  _vm.resx("customerDetail")
+                                                ) + "\n                "
+                                              )
+                                            ]
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                : _vm._e(),
+                              _c(
+                                "v-card",
+                                [
+                                  _c(
+                                    "v-flex",
+                                    {
+                                      attrs: {
+                                        "justify-start": "",
+                                        "offset-sm1": ""
+                                      }
+                                    },
+                                    [_c("LoginFormComponent")],
+                                    1
+                                  )
                                 ],
                                 1
                               )
@@ -5349,24 +5697,10 @@ var render = function() {
                           )
                         ],
                         1
-                      ),
-                      _vm.auth.isAuthenticated
-                        ? _c(
-                            "v-btn",
-                            { attrs: { flat: "", to: "/customer" } },
-                            [_vm._v(_vm._s(_vm.resx("customerDetail")))]
-                          )
-                        : _vm._e(),
-                      _c(
-                        "div",
-                        { staticClass: "toolbar__items menu__activator" },
-                        [_c("LoginFormComponent")],
-                        1
                       )
                     ],
                     1
-                  ),
-                  _c("LanguageComponent")
+                  )
                 ],
                 1
               ),
@@ -65166,11 +65500,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Helpers; });
 /* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
 /* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/createClass */ "./node_modules/@babel/runtime/helpers/builtin/es6/createClass.js");
-/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es6.promise */ "./node_modules/core-js/modules/es6.promise.js");
-/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var currency_formatter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! currency-formatter */ "./node_modules/currency-formatter/index.js");
-/* harmony import */ var currency_formatter__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(currency_formatter__WEBPACK_IMPORTED_MODULE_3__);
-
+/* harmony import */ var currency_formatter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! currency-formatter */ "./node_modules/currency-formatter/index.js");
+/* harmony import */ var currency_formatter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(currency_formatter__WEBPACK_IMPORTED_MODULE_2__);
 
 
 
@@ -65230,7 +65561,7 @@ function () {
           precision: 0
         }
       };
-      return currency_formatter__WEBPACK_IMPORTED_MODULE_3___default.a.format(price, config[language]);
+      return currency_formatter__WEBPACK_IMPORTED_MODULE_2___default.a.format(price, config[language]);
     }
   }]);
 
@@ -65253,9 +65584,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Translator", function() { return Translator; });
 /* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/es6/classCallCheck.js");
 /* harmony import */ var c_Work_solutions_git_github_simpleAuctionWebApi_SA_Web_node_modules_babel_runtime_helpers_builtin_es6_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/builtin/es6/createClass */ "./node_modules/@babel/runtime/helpers/builtin/es6/createClass.js");
-/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es6.promise */ "./node_modules/core-js/modules/es6.promise.js");
-/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_2__);
-
 
 
 var Translator =
@@ -65784,9 +66112,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var register_service_worker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! register-service-worker */ "./node_modules/register-service-worker/index.js");
-/* harmony import */ var util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! util */ "./node_modules/util/util.js");
-/* harmony import */ var util__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(util__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es6.promise */ "./node_modules/core-js/modules/es6.promise.js");
+/* harmony import */ var core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_promise__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var register_service_worker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! register-service-worker */ "./node_modules/register-service-worker/index.js");
+/* harmony import */ var util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! util */ "./node_modules/util/util.js");
+/* harmony import */ var util__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(util__WEBPACK_IMPORTED_MODULE_2__);
+
+
 /* eslint-disable no-console */
 
 
@@ -67029,7 +67361,8 @@ var mutations = {
   SETTINGS_INITIAL_STATE: function SETTINGS_INITIAL_STATE(state, res) {
     state.language = 'cs';
     state.resource = res;
-    state.countries = undefined;
+    state.countries = undefined; // state.apiUrl = 'http://185.75.136.145:8081/api';
+
     state.apiUrl = 'http://localhost:5000/api';
     state.tableView = true;
   },
