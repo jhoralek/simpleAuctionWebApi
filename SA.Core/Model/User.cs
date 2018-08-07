@@ -1,4 +1,5 @@
 ﻿using MySql.Data.EntityFrameworkCore.DataAnnotations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -27,7 +28,7 @@ namespace SA.Core.Model
 
         [Required]
         [DefaultValue(false)]
-        public virtual bool IsAgreeementToTerms { get; set; }
+        public virtual bool IsAgreementToTerms { get; set; }
 
         [Required]
         [DefaultValue(false)]

@@ -1,5 +1,5 @@
 <template>
-  <div class="aution-table" v-if="records">
+  <div class="auction-table" v-if="records">
       <v-data-table
         :headers="headers"
         :items="records"
@@ -20,7 +20,7 @@
             </td>
             <td>
                 <v-chip color="red lighten-1" text-color="white">
-                    <CountdownComponent
+                    <countdown-component
                         :id="recordIdToString(props.item)"
                         :date="props.item.validTo" />
                 </v-chip>

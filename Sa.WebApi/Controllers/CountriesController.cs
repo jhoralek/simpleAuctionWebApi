@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SA.Application.Country;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
 
@@ -15,6 +16,6 @@ namespace SA.WebApi.Controllers
         [Authorize("read:messages")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
-            => Json(await _repository.GetAllAsync<Country, string>(order: x => x.Name));
+            => Json(await _repository.GetAllAsync<CountryDto, string>(order: x => x.Name));
     }
 }

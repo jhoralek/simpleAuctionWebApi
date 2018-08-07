@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SA.Application.Account;
+using SA.Application.Customer;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
 using System.Net.Http;
@@ -15,20 +16,23 @@ namespace SA.Application.Security
     {
         private readonly IConfiguration _configuration;
         private readonly IEntityRepository<User> _userRepository;
+        private readonly IEntityRepository<Core.Model.Customer> _customerRepository;
 
         public SecurityService(IConfiguration configuration,
-            IEntityRepository<User> userRepository)
+            IEntityRepository<User> userRepository,
+            IEntityRepository<Core.Model.Customer> customerRepository)
         {
             _configuration = configuration;
             _userRepository = userRepository;
+            _customerRepository = customerRepository;
         }
 
         public async Task<AuthResponse> Login(LoginUserDto user)
         {
             var hashPassword = GetMD5HashData(user.Password);
-            var persistedUser = await _userRepository.GetOneAsync<UserShortInfoDto>(x =>
+            var persistedUser = await _userRepository.GetOneAsync<UserDto>(x =>
                 x.UserName == user.UserName &&
-                x.Password == x.Password &&
+                x.Password == hashPassword &&
                 x.IsActive);
             
             if (persistedUser == null)
@@ -48,13 +52,15 @@ namespace SA.Application.Security
 
             persistedUser.Token = $"{token.TokenType} {token.AccessToken}";
 
-            await _userRepository.UpdateAsync(Mapper.Map<User>(persistedUser));
+            var loggedIn = await _userRepository.UpdateAsync(Mapper.Map<User>(persistedUser));
+            var customer = await _customerRepository.GetOneAsync<CustomerSimpleDto>(x => x.Id == loggedIn.CustomerId);
 
             return new AuthResponse
             {
-                Token = persistedUser.Token,
-                UserName = persistedUser.UserName,
-                Language = persistedUser.Language,
+                Token = loggedIn.Token,
+                UserName = loggedIn.UserName,
+                Language = loggedIn.Language,
+                IsDealer = customer.IsDealer,
             };
         }
 
@@ -92,7 +98,7 @@ namespace SA.Application.Security
             }
         }
 
-        private string GetMD5HashData(string data)
+        public string GetMD5HashData(string data)
         {
             var md5 = MD5.Create();
             var hashData = md5.ComputeHash(Encoding.Default.GetBytes(data));

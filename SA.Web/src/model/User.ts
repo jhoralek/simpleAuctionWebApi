@@ -8,7 +8,9 @@ export default interface User {
         isAgreementToTerms: boolean;
         sendingNews: boolean;
         customer: Customer;
+        customerId: number;
         id?: number;
         token: string;
         language: string;
+        created: Date;
 }

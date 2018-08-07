@@ -3,4 +3,5 @@ export default interface AuthResponse {
     token: string;
     langauge: string;
     error: string;
+    isDealer: boolean;
 }

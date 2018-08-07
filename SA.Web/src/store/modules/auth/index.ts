@@ -10,6 +10,7 @@ export const state: AuthState = {
     token: undefined,
     language: undefined,
     isAuthenticated: false,
+    isDealer: false,
     error: false,
     errorMessage: undefined,
 };

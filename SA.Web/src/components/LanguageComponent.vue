@@ -23,6 +23,7 @@ import { Action, namespace } from 'vuex-class';
 import { SettingsState } from '@/store/types';
 import { Translator } from '@/lang';
 import BaseComponent from '@/components/BaseComponent.vue';
+import Validation from '@/validation';
 
 const SettingsAction = namespace('settings', Action);
 
@@ -44,6 +45,13 @@ export default class LanguageComponent extends BaseComponent {
 
     public selectLang(key: string) {
         this.change(key);
+
+        const attributes = Validation.loadValidationAttributes(this.settings.currentForm, key);
+
+        if (attributes) {
+            this.$validator.localize(key, attributes);
+        }
+        this.$validator.localize(key);
     }
 }
 

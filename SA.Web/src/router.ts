@@ -12,6 +12,7 @@ import {
   TermsAndConditions,
   Auction,
   AuctionDetail,
+  UserAdministration,
 } from '@/views';
 
 import { state } from '@/store/modules/auth';
@@ -20,6 +21,14 @@ Vue.use(Router);
 
 const authenticated = (to, from, next) => {
   if (state.isAuthenticated) {
+    next();
+    return;
+  }
+  next('/');
+};
+
+const adminAuthenticated = (to, from, next) => {
+  if (state.isAuthenticated && state.isDealer) {
     next();
     return;
   }
@@ -49,6 +58,12 @@ export default new Router({
       name: 'customer',
       component: Customer,
       beforeEnter: authenticated,
+    },
+    {
+      path: '/usersAdministration',
+      name: 'usersAdministration',
+      component: UserAdministration,
+      beforeEnter: adminAuthenticated,
     },
     {
       path: '/faq',

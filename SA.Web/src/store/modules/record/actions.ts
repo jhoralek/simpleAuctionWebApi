@@ -44,7 +44,8 @@ const actions: ActionTree<RecordState, RootState> = {
                             state: MessageStatusEnum.Error,
                             message: error,
                         },
-                    });
+                    },
+                    { root: true});
                     return resolve(false);
                 });
         });
@@ -68,7 +69,8 @@ const actions: ActionTree<RecordState, RootState> = {
                             state: MessageStatusEnum.Error,
                             message: error,
                         },
-                    });
+                    },
+                    { root: true});
                     return resolve(false);
                 });
         });

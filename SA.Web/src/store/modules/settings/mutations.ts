@@ -14,6 +14,7 @@ const mutations: MutationTree<SettingsState> = {
         // state.apiUrl = 'http://185.75.136.145:8081/api';
         state.apiUrl = 'http://localhost:5000/api';
         state.tableView = true;
+        state.currentForm = '';
     },
     /**
      * Change language
@@ -44,6 +45,10 @@ const mutations: MutationTree<SettingsState> = {
      */
     SETTINGS_CHAGE_DATA_VIEW(state, tableView) {
         state.tableView = tableView;
+    },
+
+    SETTINGS_CHANGE_FORM_VIEW(state, formView) {
+        state.currentForm = formView;
     },
 };
 

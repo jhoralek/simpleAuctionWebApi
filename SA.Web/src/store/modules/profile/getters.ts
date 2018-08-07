@@ -51,6 +51,13 @@ const getters: GetterTree<ProfileState, RootState> = {
         return state.user !== undefined
             && state.user.customer !== undefined;
     },
+    /**
+     * List of users
+     * @param state Store state with users
+     */
+    getList(state): User[] {
+        return state.list;
+    },
 };
 
 export default getters;

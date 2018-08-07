@@ -16,6 +16,7 @@ using SA.Core.Model;
 using SA.Core.Security;
 using SA.EntityFramework.EntityFramework;
 using SA.EntityFramework.EntityFramework.Repository;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -34,6 +35,7 @@ namespace SA.Web
         public void ConfigureServices(IServiceCollection services)
         {
             string domain = $"https://{_configuration["Auth0:Domain"]}/";
+            services.AddMvc();
 
             services.AddAuthentication(options =>
             {
@@ -49,17 +51,18 @@ namespace SA.Web
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("read:messages", policy => policy.Requirements.Add(new HasScopeRequirement("read:messages", domain)));
+                options.AddPolicy("admin", policy => policy.Requirements.Add(new HasScopeRequirement("admin", domain)));
             });
 
-            var controllerAssembly = Assembly.Load(new AssemblyName("SA.WebApi"));
+            var connectionString = _configuration["ConnectionString:Dev"];
+            services.AddDbContext<SaDbContext>(options => options.UseMySQL(connectionString), ServiceLifetime.Singleton);
 
+            var controllerAssembly = Assembly.Load(new AssemblyName("SA.WebApi"));
             services.AddMvc()
                 .AddApplicationPart(controllerAssembly).AddControllersAsServices()
                 .AddJsonOptions(a => a.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
                 .AddJsonOptions(a => a.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects)
                 .AddJsonOptions(a => a.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
-            services.AddDbContext<SaDbContext>(options => options.UseMySQL(_configuration["ConnectionString:Prod"]), ServiceLifetime.Singleton);
 
             services.AddSingleton<IEntityRepository<Country>, CountriesRepository>();
             services.AddSingleton<IEntityRepository<Address>, AddressesRepository>();
@@ -73,7 +76,8 @@ namespace SA.Web
 
             services.AddSingleton<ISecurityService, SecurityService>();
 
-            Mapper.Initialize(cfg => {
+            Mapper.Initialize(cfg =>
+            {
                 cfg.CreateMap<Record, RecordTableDto>()
                     .ForMember(dto => dto.CurrentPrice, dto => dto.MapFrom(x => x.Bids.Any()
                         ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().Price
@@ -91,13 +95,23 @@ namespace SA.Web
 
                 cfg.CreateMap<Customer, CustomerSimpleDto>();
 
-                cfg.CreateMap<User, UserShortInfoDto>();
+                cfg.CreateMap<User, UserDto>();
+                cfg.CreateMap<User, UserSimpleDto>()
+                    .ForMember(dto => dto.IsFeePayed, dto => dto.MapFrom(x => x.Customer.IsFeePayed))
+                    .ForMember(dto => dto.PhoneNumber, dto => dto.MapFrom(x => x.Customer.PhoneNumber))
+                    .ForMember(dto => dto.Email, dto => dto.MapFrom(x => x.Customer.Email));
 
                 cfg.CreateMap<Country, CountryLookupDto>();
                 cfg.CreateMap<Country, CountryDto>();
+                cfg.CreateMap<Country, Country>();
 
                 // reverse mapping
-                cfg.CreateMap<UserShortInfoDto, User>();
+                cfg.CreateMap<UserDto, User>();
+                cfg.CreateMap<UserSimpleDto, User>();
+
+                // update mapping
+                cfg.CreateMap<User, User>();
+                cfg.CreateMap<Customer, Customer>();
             });
         }
 
@@ -113,6 +127,21 @@ namespace SA.Web
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
+            app.UseAuthentication();
+
+            using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                try
+                {
+                    var context = scope.ServiceProvider.GetRequiredService<SaDbContext>();
+                    context.Database.Migrate();
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

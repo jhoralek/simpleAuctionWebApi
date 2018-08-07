@@ -25,7 +25,8 @@ namespace SA.WebApi.Controllers
             var dict = new Dictionary<string, IEnumerable<CountryDto>>();
             var languages = await _countryRepositiory
                 .GetAllAsync<CountryDto, string>(x => 
-                    x.Language == lang, x => x.Name);
+                    x.Language == lang, 
+                    x => x.Name);
 
             dict.Add(lang, languages);
 

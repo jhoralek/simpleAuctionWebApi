@@ -10,7 +10,7 @@
         <v-text-field
           v-model="address.postCode"
           :label="labelPostCode" />
-         <v-select
+        <v-select
           v-model="address.country"
           item-value="id"
           item-text="name"

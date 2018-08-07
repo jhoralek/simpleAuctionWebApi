@@ -48,7 +48,9 @@ namespace SA.Core.Model
         [DefaultValue(false)]
         public virtual bool IsDealer { get; set; }
 
-        public virtual DateTime? FeeExspiration { get; set; }
+        [Required]
+        [DefaultValue(false)]
+        public virtual bool IsFeePayed { get; set; }
 
         [Url]
         [MySqlCharset("utf8")]

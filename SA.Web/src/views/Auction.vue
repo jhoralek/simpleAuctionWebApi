@@ -18,8 +18,8 @@
             <v-layout mb-5 row wrap>
               <v-flex xs12>
                 <v-container pa-0 fluid grid-list-md>
-                  <AuctionTableComponent :records="records" v-if="getViewType" />
-                  <AuctionGridComponent :records="records" v-if="getViewType === false" />
+                  <auction-table-component :records="records" v-if="getViewType" />
+                  <auction-grid-component :records="records" v-if="getViewType === false" />
                 </v-container>
               </v-flex>
             </v-layout>

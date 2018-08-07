@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SA.Application.Country
+﻿namespace SA.Application.Country
 {
     public class CountryDto
     {

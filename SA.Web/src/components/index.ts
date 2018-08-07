@@ -11,6 +11,7 @@ import AuctionGridComponent from './AuctionGridComponent.vue';
 import CountdownComponent from './helpers/CountdownComponent.vue';
 import PriceComponent from './helpers/PriceComponent.vue';
 import AuctionDetailComponent from './AuctionDetailComponent.vue';
+import RegistrationComponent from './User/RegistrationComponent.vue';
 
 export {
     LoginFormComponent,
@@ -26,4 +27,5 @@ export {
     CountdownComponent,
     PriceComponent,
     AuctionDetailComponent,
+    RegistrationComponent,
 };

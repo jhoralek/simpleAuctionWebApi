@@ -9,6 +9,7 @@ import ProtectionPersonalData from './ProtectionPersonalData.vue';
 import TermsAndConditions from './TermsAndConditions.vue';
 import Auction from './Auction.vue';
 import AuctionDetail from './AuctionDetail.vue';
+import UserAdministration from './admin/UserAdministration.vue';
 
 export {
     About,
@@ -22,4 +23,5 @@ export {
     ProtectionPersonalData,
     TermsAndConditions,
     AuctionDetail,
+    UserAdministration,
 };
