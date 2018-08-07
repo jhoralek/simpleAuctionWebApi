@@ -14,6 +14,7 @@ const mutations: MutationTree<AuthState> = {
         state.userName = undefined;
         state.error = false;
         state.errorMessage = undefined;
+        state.isDealer = false;
     },
     /**
      * Mutate state of login
@@ -27,6 +28,7 @@ const mutations: MutationTree<AuthState> = {
         state.isAuthenticated = user.error === null;
         state.error = user.error !== null;
         state.errorMessage = user.error;
+        state.isDealer = user.isDealer;
     },
     /**
      * Logout user

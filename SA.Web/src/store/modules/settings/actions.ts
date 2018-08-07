@@ -12,7 +12,8 @@ import {
     SETTINGS_INITIAL_STATE,
     SETTINGS_CHANGE_LANG,
     SETTINGS_LOAD_COUNTRIES,
-    SETTINGS_CHAGE_DATA_VIEW,
+    SETTINGS_CHANGE_DATA_VIEW,
+    SETTINGS_CHANGE_FORM_VIEW,
 } from '@/store/mutation-types';
 
 import { Translator } from '@/lang';
@@ -80,7 +81,16 @@ const actions: ActionTree<SettingsState, RootState> = {
      * @param tableView new value for data view type
      */
     changeDataViewType({commit}, tableView: boolean): void {
-        commit(SETTINGS_CHAGE_DATA_VIEW, tableView);
+        commit(SETTINGS_CHANGE_DATA_VIEW, tableView);
+    },
+
+    /**
+     * Change form view name
+     * @param param0 state with commit
+     * @param formView form name
+     */
+    changeFormView({commit}, formView: string): void {
+        commit(SETTINGS_CHANGE_FORM_VIEW, formView);
     },
 };
 

@@ -9,6 +9,7 @@ import mutations from '@/store/modules/profile/mutations';
 // or I can create more profiles
 export const state: ProfileState = {
     user: undefined,
+    list: [],
     error: false,
 };
 

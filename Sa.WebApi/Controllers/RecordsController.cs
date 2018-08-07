@@ -45,12 +45,16 @@ namespace SA.WebApi.Controllers
         [Authorize("read:messages")]
         [HttpGet("{id}")]
         [Route("allActiveWithUsersBids")]
-        public ActionResult AllActiveWithUsersBids(int id)
-            => Json(_repository.GetAllAsync<RecordMinimumDto, DateTime>(x =>
-                    x.Bids.Any() &&
-                    x.UserId == id &&
-                    x.ValidTo >= DateTime.Now &&
-                    x.IsActive,
-               x => x.ValidTo));
+        public async Task<IActionResult> AllActiveWithUsersBids(int id)
+        {
+            var now = DateTime.Now;
+            var result = await _repository.GetAllAsync<RecordMinimumDto, DateTime>(x =>
+                    x.Bids.Any(y => y.UserId == id) &&
+                    x.IsActive &&
+                    x.ValidTo >= now,
+               x => x.ValidTo);
+
+            return Json(result);
+        }
     }
 }

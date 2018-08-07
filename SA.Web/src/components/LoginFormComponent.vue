@@ -57,7 +57,7 @@ import { State, Action, namespace } from 'vuex-class';
 
 import { AuthState, ProfileState } from '@/store/types';
 import { log } from 'util';
-import BaseComponent from '@/components/BaseComponent.vue';
+import FormBaseComponent from '@/components/FormBaseComponent.vue';
 import { AuthResponse, UserShortInfo } from '@/poco';
 import { profile } from '@/store/modules';
 
@@ -66,12 +66,13 @@ const AuthAction = namespace('auth', Action);
 const ProfileAction = namespace('profile', Action);
 
 @Component({})
-export default class LoginFormComponent extends BaseComponent {
+export default class LoginFormComponent extends FormBaseComponent {
     @State('auth') public  auth: AuthState;
     @State('profile') public profile: ProfileState;
 
     @ProfileAction('loadByUserNameAndToken') public user: any;
     @SettingsAction('changeLanguage') public langChange: any;
+    @SettingsAction('changeFormView') public changeFormView: any;
     @AuthAction('loginUser') public login: any;
     @AuthAction('logoutUser') public logoutUser: any;
 

@@ -5,9 +5,9 @@ namespace SA.EntityFramework.EntityFramework
 {
     public class SaDbContext : DbContext
     {
-        public SaDbContext(): base() { }
+        public SaDbContext(){}
 
-        public SaDbContext(DbContextOptions<SaDbContext> options) : base(options) { }
+        public SaDbContext(DbContextOptions<SaDbContext> options) : base(options) {}
 
         public DbSet<Address> Addresses { get; set; }
 

@@ -7,7 +7,7 @@ import mutations from '@/store/modules/record/mutations';
 
 export const state: RecordState = {
     current: undefined,
-    records: undefined,
+    records: [],
     error: false,
 };
 

@@ -9,7 +9,6 @@ import {
 import {
     AuthResponse,
     LoginDto,
-    MessageDto,
  } from '@/poco';
 
 import { MessageStatusEnum } from '@/model';

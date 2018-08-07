@@ -10,7 +10,9 @@ const getters: GetterTree<SettingsState, RootState> = {
     getTranslate(state) {
         // first character of the key must be lower case
         return (key: string) =>
-            state.resource[`${key.charAt(0).toLowerCase()}${key.slice(1)}`];
+            state.resource[`${key.charAt(0).toLowerCase()}${key.slice(1)}`] === undefined
+                ? `Translate {{ ${key} }}`
+                : state.resource[`${key.charAt(0).toLowerCase()}${key.slice(1)}`];
     },
     /**
      * Get available list of countries

@@ -7,7 +7,8 @@ export default interface Customer {
     email: string;
     isDealer: boolean;
     address: Address;
-    feeExpiration?: Date;
+    addressId: number;
+    isFeePayed: boolean;
     birthNumber?: string;
     titleBefore?: string;
     titleAfter?: string;
@@ -16,4 +17,5 @@ export default interface Customer {
     companyLegalNumber?: string;
     companyName?: string;
     id?: number;
+    created: Date;
 }

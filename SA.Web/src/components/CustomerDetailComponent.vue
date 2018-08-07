@@ -45,33 +45,10 @@
           <v-text-field :label="labelDealer" disabled />
         </v-layout>
         <v-flex>
-          <v-dialog
-            ref="dialog"
-            disabled
-            v-model="modal"
-            :return-value.sync="customer.feeExpiration"
-            persistent
-            lazy
-            full-width
-            width="290px"
-          >
-            <v-text-field
-              slot="activator"
-              v-model="date"
+          <v-switch
+              v-model="customer.isFeePayed"
               :label="lableFeeExpiration"
-              prepend-icon="event"
-              disabled
-            ></v-text-field>
-            <v-date-picker
-              v-model="date"
-              scrollable
-              readonly
-              :locale="datePickerLocale">
-              <v-spacer></v-spacer>
-              <v-btn flat color="primary" @click="modal = false">{{ resx('cancel') }}</v-btn>
-              <v-btn flat color="primary" @click="$refs.dialog.save(date)">{{ resx('ok') }}</v-btn>
-            </v-date-picker>
-          </v-dialog>
+              disabled />
         </v-flex>
       </v-form>
     </v-container>
@@ -97,15 +74,6 @@ export default class CustomerDetailComponent extends BaseComponent {
   }
   set modal(value: boolean) {
     this.dateModal = value;
-  }
-
-  get date(): string {
-    const date = new Date(this.customer.feeExpiration);
-    return `${date.getUTCFullYear()}-${date.getMonth()}-${date.getDate()}`;
-  }
-
-  set date(value: string) {
-    this.customer.feeExpiration = new Date(value);
   }
 
   get labelFirstName(): string {
@@ -153,7 +121,7 @@ export default class CustomerDetailComponent extends BaseComponent {
   }
 
   get lableFeeExpiration(): string {
-    return this.settings.resource.feeExpirationDate;
+    return this.settings.resource.feePayed;
   }
 
   get datePickerLocale(): string {

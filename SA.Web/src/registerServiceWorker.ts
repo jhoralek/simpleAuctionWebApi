@@ -4,7 +4,7 @@ import { register } from 'register-service-worker';
 import { log } from 'util';
 
 if (process.env.NODE_ENV === 'production') {
-    register(`${process.env.NODE_ENV}/service-worker.js`, {
+    register(`production/service-worker.js`, {
         ready() {
             log(
                 'App is being served from cache by a service worker.\n' +

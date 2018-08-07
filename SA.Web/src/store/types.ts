@@ -21,6 +21,7 @@ export interface RootState {
  */
 export interface ProfileState {
     user?: User;
+    list: User[];
     error: boolean;
 }
 /**
@@ -31,6 +32,7 @@ export interface AuthState {
     token: string;
     language: string;
     isAuthenticated: boolean;
+    isDealer: boolean;
     error: boolean;
     errorMessage: string;
 }
@@ -43,6 +45,7 @@ export interface SettingsState {
     countries: Dictionary<Country[]>;
     apiUrl: string;
     tableView: boolean;
+    currentForm: string;
 }
 /**
  * Record state

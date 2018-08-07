@@ -21,9 +21,16 @@ namespace SA.EntityFramework.EntityFramework.Repository
         public async Task<User> AddAsync(User item)
         {
             item.Created = DateTime.Now;
-            var added = await _context.Users.AddAsync(item);
-            await _context.SaveChangesAsync();
-            return added.Entity;
+            try
+            {
+                var added = await _context.Users.AddAsync(item);
+                await _context.SaveChangesAsync();
+                return added.Entity;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public async Task<User> RemoveAsync(int id)

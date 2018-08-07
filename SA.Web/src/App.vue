@@ -27,12 +27,23 @@
                 </v-list-tile>
               </v-list>
             </v-menu>
-            <v-btn flat v-if="auth.isAuthenticated" to="/customer">{{ resx('customerDetail') }}</v-btn>
+            <v-menu offset-y v-if="auth.isAuthenticated && auth.isDealer">
+              <v-btn slot="activator" flat>{{ resx('administration') }}</v-btn>
+              <v-list>
+                <v-list-tile to="/customer">
+                  <v-list-tile-title>{{ resx('customerDetail') }}</v-list-tile-title>
+                </v-list-tile>
+                <v-list-tile to="/usersAdministration">
+                  <v-list-tile-title>{{ resx('usersAdministration')}}</v-list-tile-title>
+                </v-list-tile>
+              </v-list>
+            </v-menu>
+            <v-btn flat v-if="auth.isAuthenticated && !auth.isDealer" to="/customer">{{ resx('customerDetail') }}</v-btn>
             <div class="toolbar__items menu__activator">
-              <LoginFormComponent />
+              <login-form-component />
             </div>
           </v-toolbar-items>
-          <LanguageComponent />
+          <language-component />
         </v-toolbar>
         <div class="hidden-md-and-up">
           <v-expansion-panel>
@@ -99,6 +110,15 @@
                   </router-link>
                 </v-flex>
               </v-card>
+              <v-card v-if="auth.isAuthenticated && auth.isDealer">
+                <v-flex justify-start offset-xs1>
+                  <router-link
+                    class="nav-item btn btn--flat btn--router"
+                    style="justify-content: left"
+                    to="/usersAdministration">{{ resx('usersAdministration') }}
+                  </router-link>
+                </v-flex>
+              </v-card>
               <v-card v-if="auth.isAuthenticated">
                 <v-flex justify-start offset-xs1>
                   <router-link
@@ -110,7 +130,7 @@
               </v-card>
               <v-card>
                 <v-flex justify-start offset-sm1>
-                    <LoginFormComponent />
+                    <login-form-component />
                 </v-flex>
               </v-card>
             </v-expansion-panel-content>
@@ -132,7 +152,7 @@
             </v-flex>
           </v-layout>
         </v-footer>
-        <MessageComponent />
+        <message-component />
       </v-content>
     </v-app>
   </div>

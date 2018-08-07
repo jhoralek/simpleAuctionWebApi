@@ -5,5 +5,6 @@ export default interface Address {
     city: string;
     postCode: string;
     country: Country;
+    countryId: number;
     id?: number;
 }

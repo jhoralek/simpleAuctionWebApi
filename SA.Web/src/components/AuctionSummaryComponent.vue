@@ -3,7 +3,7 @@
         <v-progress-linear v-if="isLoading" :indeterminate="isLoading"></v-progress-linear>
         <v-data-table
             :headers="headers"
-            :items="records"
+            :items="record.records"
             :pagination.sync="pagination"
             hide-actions
             class="elevation-1">
@@ -33,17 +33,17 @@
 import { Component, Prop } from 'vue-property-decorator';
 import { State, Action, Getter, namespace } from 'vuex-class';
 
+import { RecordState } from '@/store/types';
 import { Record } from '@/model';
 import BaseComponent from './BaseComponent.vue';
 import { log } from 'util';
 
-const RecordGetter = namespace('record', Getter);
 const RecordAction = namespace('record', Action);
 
 @Component({})
 export default class AuctionSummaryComponent extends BaseComponent {
     @Prop({default: undefined}) public userId: number;
-    @RecordGetter('getRecords') public records: Record[];
+    @State('record') public record: RecordState;
     @RecordAction('getAllActiveWithUsersBids') public loadRecords: any;
 
     public pagination: any = {
@@ -77,8 +77,8 @@ export default class AuctionSummaryComponent extends BaseComponent {
 
         this.loadRecords(this.userId).then((response) => {
             if (response) {
-                this.pagination.totalItems = this.records.length;
-                this.$emit('amount', this.records.length);
+                this.pagination.totalItems = this.record.records.length;
+                this.$emit('amount', this.record.records.length);
             }
             this.isLoading = false;
         });
