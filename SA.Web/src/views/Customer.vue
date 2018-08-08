@@ -1,48 +1,48 @@
 <template>
   <div class="customer">
-    <v-container fluid>
-      <v-progress-linear v-if="isLoading" :indeterminate="isLoading"></v-progress-linear>
-      <h1>{{ resx('customerDetail') }}</h1>
-      <v-layout row v-if="isLoading === false">
-          <v-flex xs6 order-lg2>
-            <v-card tile flat>
-              <v-card-text>
-                <v-expansion-panel>
-                  <v-expansion-panel-content>
-                    <div slot="header"><h2>{{ resx('user') }}: {{ profile.user.userName }}</h2></div>
-                    <UserDetailComponent :user="profile.user" />
-                  </v-expansion-panel-content>
-                  <v-expansion-panel>
-                    <v-expansion-panel-content>
-                      <div slot="header">
-                        <v-badge color="red">
-                          <span slot="badge">{{ amount }}</span>
-                          <h2>{{ resx('auctions') }}</h2>
-                        </v-badge>
+    <v-progress-linear v-if="isLoading" :indeterminate="isLoading"></v-progress-linear>
+    <v-container grid-list-md v-if="profile.user">
+      <v-layout row wrap>
+        <v-flex xs12 md6>
+          <h1 class="display-1 primary--text">{{ resx('customerDetail') }}</h1>
+        </v-flex>
+        <v-flex xs12 md6 fill-height align-center v-if="profile.user.customer">
+          <h2 class="green--text darken-3" v-if="profile.user.customer.isFeePayed">{{ resx('feePayed') }}</h2>
+          <h2 class="red--text darken-4" v-else>{{ resx('feeNotPayed' )}}</h2>
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap v-if="isLoading === false">
+          <v-flex xs12 md6>
+            <v-expansion-panel>
+              <v-expansion-panel-content>
+                <div slot="header"><h2>{{ resx('user') }}: {{ profile.user.userName }}</h2></div>
+                <user-detail-component :user="profile.user" />
+              </v-expansion-panel-content>
+              <v-expansion-panel>
+                <v-expansion-panel-content>
+                  <div slot="header">
+                    <v-badge color="red">
+                      <span slot="badge">{{ amount }}</span>
+                      <h2>{{ resx('auctions') }}</h2>
+                    </v-badge>
 
-                      </div>
-                      <AuctionSummaryComponent @amount="amount = $event" :user-id="profile.user.id" />
-                    </v-expansion-panel-content>
-                  </v-expansion-panel>
-                </v-expansion-panel>
-              </v-card-text>
-            </v-card>
+                  </div>
+                  <auction-summary-component @amount="amount = $event" :user-id="profile.user.id" />
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panel>
           </v-flex>
-          <v-flex xs6>
-            <v-card tile flat>
-              <v-card-text>
-                <v-expansion-panel>
-                  <v-expansion-panel-content>
-                    <div slot="header"><h2>{{ resx('customer') }}: {{ customersFullName }}</h2></div>
-                    <CustomerDetailComponent :customer="profile.user.customer" />
-                  </v-expansion-panel-content>
-                  <v-expansion-panel-content>
-                    <div slot="header"><h2>{{ resx('address') }}</h2></div>
-                    <AddressComponent :address="getCustomersAddress" />
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-card-text>
-            </v-card>
+          <v-flex xs12 md6>
+            <v-expansion-panel>
+              <v-expansion-panel-content>
+                <div slot="header"><h2>{{ resx('customer') }}: {{ customersFullName }}</h2></div>
+                <customer-detail-component :customer="profile.user.customer" />
+              </v-expansion-panel-content>
+              <v-expansion-panel-content>
+                <div slot="header"><h2>{{ resx('address') }}</h2></div>
+                <address-component :address="getCustomersAddress" />
+              </v-expansion-panel-content>
+            </v-expansion-panel>
           </v-flex>
         </v-layout>
     </v-container>

@@ -214,9 +214,12 @@ export default class App extends Vue {
    * and restore auth when is available
    */
   public mounted() {
+    const element = this.$el.parentElement.getElementsByClassName('api')[0];
+    const apiUrl = element.getAttribute('data-bind');
     this.isLoading = true;
     this.initMessage().then((response) => {
-      this.initSettings().then((settings) => {
+      this.initSettings(apiUrl).then((settings) => {
+        element.remove();
         this.initProfile().then((x) => {
           if (this.auth.isAuthenticated) {
               this.setLang(this.profile.user.language);

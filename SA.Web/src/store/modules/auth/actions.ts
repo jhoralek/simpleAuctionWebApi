@@ -17,6 +17,7 @@ import {
     AUTH_LOGIN_USER,
     AUTH_LOGOUT_USER,
     AUTH_INITIAL_STATE,
+    AUTH_SET_LANGUAGE,
 } from '@/store/mutation-types';
 
 const actions: ActionTree<AuthState, RootState> = {
@@ -91,6 +92,9 @@ const actions: ActionTree<AuthState, RootState> = {
      */
     initialState({commit}): void {
         commit(AUTH_INITIAL_STATE);
+    },
+    setLanguage({commit}, language: string): void {
+        commit(AUTH_SET_LANGUAGE, language);
     },
 };
 

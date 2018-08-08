@@ -1,7 +1,7 @@
 <template>
   <div class="auction">
     <v-progress-linear v-if="isLoading && records === undefined" :indeterminate="isLoading"></v-progress-linear>
-    <v-container v-if="records">
+    <v-container grid-list-md v-if="records">
       <v-layout>
         <v-flex xs12>
           <section grid-list-md class="page-head">

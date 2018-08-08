@@ -3,18 +3,16 @@
     <v-container grid-list-md>
       <v-layout row wrap>
         <v-flex xs12>
-          <h1>{{ resx('home') }}</h1>
+          <h1 class="display-1 primary--text">{{ resx('home') }}</h1>
         </v-flex>
       </v-layout>
       <v-layout row wrap>
-        <v-flex xs12>
-          {{ resx('registration') }}
-        </v-flex>
         <v-flex xs12 sm12 md6>
           Tady bude obrázek
         </v-flex>
         <v-flex xs12 sm12 md6>
-          <registration-component />
+          <registration-component v-if="showRegistrationForm" />
+          <v-btn color="success" v-else @click.native="showRegistrationForm = true">{{ resx('registration') }}</v-btn>
         </v-flex>
       </V-layout>
     </v-container>
@@ -37,6 +35,8 @@ const ProfileAction = namespace('profile', Action);
 })
 export default class Home extends BaseView {
   @ProfileAction('initialState') private init: any;
+
+  private showRegistrationForm: boolean = false;
   private mounted() {
     this.init();
   }

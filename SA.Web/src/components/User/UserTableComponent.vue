@@ -112,7 +112,7 @@ export default class UserTableComponent extends BaseComponent {
     @Prop({default: []}) private users: UserSimpleDto[];
     @Prop({default: true}) private loading: boolean;
     @ProfileAction('setCurrentUser') private setUser: any;
-    @ProfileAction('updateUser') private updateUser: any;
+    @ProfileAction('updateUserAdmin') private updateUser: any;
 
     private actionInProgress: boolean = false;
     private dialog: boolean = false;

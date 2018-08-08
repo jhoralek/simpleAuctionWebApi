@@ -30,7 +30,7 @@ namespace SA.Application.Security
         public async Task<AuthResponse> Login(LoginUserDto user)
         {
             var hashPassword = GetMD5HashData(user.Password);
-            var persistedUser = await _userRepository.GetOneAsync<UserDto>(x =>
+            var persistedUser = await _userRepository.GetOneAsync<User>(x =>
                 x.UserName == user.UserName &&
                 x.Password == hashPassword &&
                 x.IsActive);
@@ -52,7 +52,7 @@ namespace SA.Application.Security
 
             persistedUser.Token = $"{token.TokenType} {token.AccessToken}";
 
-            var loggedIn = await _userRepository.UpdateAsync(Mapper.Map<User>(persistedUser));
+            var loggedIn = await _userRepository.UpdateAsync(persistedUser);
             var customer = await _customerRepository.GetOneAsync<CustomerSimpleDto>(x => x.Id == loggedIn.CustomerId);
 
             return new AuthResponse

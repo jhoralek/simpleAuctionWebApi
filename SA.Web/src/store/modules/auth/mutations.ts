@@ -42,6 +42,10 @@ const mutations: MutationTree<AuthState> = {
         state.error = false;
         state.errorMessage = undefined;
     },
+    AUTH_SET_LANGUAGE(state, language: string) {
+        state.language = language;
+        state.error = language !== undefined;
+    },
 };
 
 export default mutations;

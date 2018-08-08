@@ -1,7 +1,7 @@
 <template>
     <div class="news">
-        <v-container fluid>
-            <h1>{{ resx('news') }}</h1>
+        <v-container grid-list-md>
+            <h1 class="display-1 primary--text">{{ resx('news') }}</h1>
         </v-container>
     </div>
 </template>

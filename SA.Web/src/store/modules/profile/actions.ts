@@ -129,7 +129,7 @@ const actions: ActionTree<ProfileState, RootState> = {
                     mod: 'Profile',
                     message: {
                         state: MessageStatusEnum.Error,
-                        message: error,
+                            message: error,
                     },
                 },
                 { root: true });
@@ -137,7 +137,7 @@ const actions: ActionTree<ProfileState, RootState> = {
             });
         });
     },
-    updateUser({commit, rootState, dispatch}, user: UserSimpleDto): Promise<boolean> {
+    updateUserAdmin({commit, rootState, dispatch}, user: UserSimpleDto): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
             const { auth } = rootState;
             return axios.post(`${rootState.settings.apiUrl}/users/updateUserAdmin`, user,
@@ -190,6 +190,98 @@ const actions: ActionTree<ProfileState, RootState> = {
                 { root: true });
                 return resolve(false);
             });
+        });
+    },
+    updateAddress({rootState, dispatch}, address: Address): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            const { auth } = rootState;
+            return axios.put(`${rootState.settings.apiUrl}/addresses`, address,
+                { headers: { authorization: auth.token }})
+            .then((response) => {
+                dispatch('message/change', {
+                    mod: 'Profile',
+                    message: {
+                        state: MessageStatusEnum.Success,
+                        message: 'updatedSuccessfully',
+                    },
+                },
+                { root: true });
+                return resolve(response.data !== undefined);
+            })
+            .catch((error) => {
+                dispatch('message/change', {
+                    mod: 'Profile',
+                    message: {
+                        state: MessageStatusEnum.Error,
+                        message: error,
+                    },
+                },
+                { root: true });
+                return resolve(false);
+            });
+        });
+    },
+    userUpdate({rootState, dispatch}, user: User): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            const { auth } = rootState;
+            return axios.put(`${rootState.settings.apiUrl}/users`, user,
+                { headers: { authorization: auth.token }})
+            .then((response) => {
+                if (rootState.auth.language !== user.language) {
+                    dispatch('auth/setLanguage', user.language, { root: true });
+                    dispatch('settings/changeLanguage', user.language, { root: true });
+                }
+                dispatch('message/change', {
+                    mod: 'Profile',
+                    message: {
+                        state: MessageStatusEnum.Success,
+                        message: 'updatedSuccessfully',
+                    },
+                },
+                { root: true });
+                return resolve(response.data !== undefined);
+            })
+            .catch((error) => {
+                dispatch('message/change', {
+                    mod: 'Profile',
+                    message: {
+                        state: MessageStatusEnum.Error,
+                        message: error,
+                    },
+                },
+                { root: true });
+                return resolve(false);
+            });
+        });
+    },
+    updateCustomer({rootState, dispatch}, customer: Customer): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            const { auth } = rootState;
+            return axios.put(`${rootState.settings.apiUrl}/customers`, customer,
+                { headers: { authorization: auth.token }})
+            .then((response) => {
+                dispatch('message/change', {
+                    mod: 'Profile',
+                    message: {
+                        state: MessageStatusEnum.Success,
+                        message: 'updatedSuccessfully',
+                    },
+                },
+                { root: true });
+                return resolve(response.data !== undefined);
+            })
+            .catch((error) => {
+                dispatch('message/change', {
+                    mod: 'Profile',
+                    message: {
+                        state: MessageStatusEnum.Error,
+                        message: error,
+                    },
+                },
+                { root: true });
+                return resolve(false);
+            });
+            return resolve(true);
         });
     },
 };

@@ -1,12 +1,23 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using SA.Web.Models;
 
 namespace SA.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index() => View();
+        private readonly IConfiguration _configuration;
+
+        public HomeController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+        public IActionResult Index()
+        {
+            ViewData["ApiUrl"] = _configuration["ApiUrl:Url"];
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
