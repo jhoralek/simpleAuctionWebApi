@@ -16,7 +16,6 @@ using SA.Core.Model;
 using SA.Core.Security;
 using SA.EntityFramework.EntityFramework;
 using SA.EntityFramework.EntityFramework.Repository;
-using System;
 using System.Linq;
 using System.Reflection;
 
@@ -54,7 +53,7 @@ namespace SA.Web
                 options.AddPolicy("admin", policy => policy.Requirements.Add(new HasScopeRequirement("admin", domain)));
             });
 
-            var connectionString = _configuration["ConnectionString:Dev"];
+            var connectionString = _configuration["ConnectionString:CS"];
             services.AddDbContext<SaDbContext>(options => options.UseMySQL(connectionString), ServiceLifetime.Singleton);
 
             var controllerAssembly = Assembly.Load(new AssemblyName("SA.WebApi"));
@@ -112,6 +111,8 @@ namespace SA.Web
                 // update mapping
                 cfg.CreateMap<User, User>();
                 cfg.CreateMap<Customer, Customer>();
+                cfg.CreateMap<Address, Address>()
+                    .ForMember(dto => dto.Country, dto => dto.Ignore());
             });
         }
 
@@ -129,18 +130,18 @@ namespace SA.Web
             app.UseStaticFiles();
             app.UseAuthentication();
 
-            using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                try
-                {
-                    var context = scope.ServiceProvider.GetRequiredService<SaDbContext>();
-                    context.Database.Migrate();
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
-            }
+            //using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            //{
+            //    try
+            //    {
+            //        var context = scope.ServiceProvider.GetRequiredService<SaDbContext>();
+            //        context.Database.Migrate();
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        throw e;
+            //    }
+            //}
 
             app.UseMvc(routes =>
             {

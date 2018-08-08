@@ -23,11 +23,11 @@ const actions: ActionTree<SettingsState, RootState> = {
      * Initial state of Settings object
      * @param param - commit
      */
-    initialState({ state, commit, rootState, dispatch }): Promise<boolean> {
+    initialState({ state, commit, rootState, dispatch }, apiUrl: string): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
-            if (!state.language) {
+            if (!state.language || state.apiUrl !== apiUrl) {
                 const res: Dictionary<string> = Translator.setResource('');
-                commit(SETTINGS_INITIAL_STATE, res);
+                commit(SETTINGS_INITIAL_STATE, { res, apiUrl });
                 dispatch('loadCountries').then((countries) => {
                     return resolve(true);
                 })

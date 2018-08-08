@@ -7,4 +7,5 @@ export default interface Address {
     country: Country;
     countryId: number;
     id?: number;
+    created: Date;
 }

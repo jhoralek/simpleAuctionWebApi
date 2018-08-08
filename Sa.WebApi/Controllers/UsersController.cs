@@ -64,5 +64,16 @@ namespace SA.WebApi.Controllers
             await _customerRepository.UpdateAsync(pCustomer);
             return Json(true);
         }
+
+        [HttpPut]
+        [Authorize("read:messages")]
+        public async Task<IActionResult> Update([FromBody] User user)
+        {
+            if (user == null && user.Id <= 0)
+            {
+                return BadRequest();
+            }
+            return Json(await _repository.UpdateAsync(user));
+        }
     }
 }

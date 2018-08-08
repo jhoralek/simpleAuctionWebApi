@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
+using System.Threading.Tasks;
 
 namespace SA.WebApi.Controllers
 {
@@ -8,6 +10,17 @@ namespace SA.WebApi.Controllers
     public class AddressesController : BaseController<Address>
     {
         public AddressesController(IEntityRepository<Address> repository)
-            : base(repository) { }        
+            : base(repository) { }
+
+        [Authorize("read:messages")]
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] Address address)
+        {
+            if (address == null && address.Id <= 0)
+            {
+                return BadRequest();
+            }
+            return Json(await _repository.UpdateAsync(address));
+        }
     }
 }

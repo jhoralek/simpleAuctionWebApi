@@ -5,12 +5,7 @@ import { Dictionary } from '@/store/types';
 export default class Validation {
     public static loadValidationAttributes(formName: string, language: string): any {
         const resource = Translator.setResource(language);
-
-        switch (formName) {
-            case 'registration':
-                return this.rgistrationForm(resource);
-        }
-        return undefined;
+        return this.rgistrationForm(resource);
     }
 
     private static rgistrationForm(resource: Dictionary<string>): any {
@@ -35,6 +30,7 @@ export default class Validation {
                 countryId: `"${resource.country}"`,
                 postCode: `"${resource.postCode}"`,
                 street: `"${resource.street}"`,
+                language: `"${resource.language}"`,
             },
         };
     }

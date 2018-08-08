@@ -1,7 +1,7 @@
 <template>
     <div class="protectionPersonalData">
-        <v-container fluid>
-            <h1>{{ resx('protectionPersonalData') }}</h1>
+        <v-container grid-list-md>
+            <h1 class="display-1 primary--text">{{ resx('protectionPersonalData') }}</h1>
         </v-container>
     </div>
 </template>

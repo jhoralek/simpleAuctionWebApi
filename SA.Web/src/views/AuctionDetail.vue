@@ -1,6 +1,6 @@
 <template>
   <div class="auction-detail">
-      <AuctionDetailComponent />
+      <auction-detail-component />
   </div>
 </template>
 

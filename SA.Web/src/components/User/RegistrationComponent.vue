@@ -209,9 +209,9 @@
                 </v-flex>
             </v-layout>
         </v-container>
-        <v-btn v-if="state > 1 && state < 4" @click="previous">&lt;&lt; {{ resx('back') }}</v-btn>
-        <v-btn v-if="state !== 3 && state < 4" @click="next">{{ resx('next') }} >></v-btn>
-        <v-btn  v-if="state === 3" @click="submit">{{ resx('submit') }}</v-btn>
+        <v-btn v-if="state > 1 && state < 4" flat color="info" @click="previous">&lt;&lt; {{ resx('back') }}</v-btn>
+        <v-btn v-if="state !== 3 && state < 4" flat color="info" @click="next">{{ resx('next') }} >></v-btn>
+        <v-btn v-if="state === 3" flat color="success" @click="submit">{{ resx('submit') }}</v-btn>
     </div>
 </template>
 
@@ -257,6 +257,7 @@ export default class RegistrationComponent extends FormBaseComponent {
     } as Customer;
     private newAddress: Address = {
         street: undefined,
+        created: new Date(),
     } as Address;
 
     private state: number = 1;
