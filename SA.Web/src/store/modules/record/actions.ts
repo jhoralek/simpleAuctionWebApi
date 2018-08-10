@@ -11,7 +11,9 @@ import {
     RECORD_INITIAL_STATE,
     RECORD_CHANGE_LIST_STATE,
     RECORD_CHANGE_CURRENT_STATE,
+    RECORD_INITIAL_CURRENT,
 } from '@/store/mutation-types';
+import { RecordTableDto } from '@/poco';
 
 const actions: ActionTree<RecordState, RootState> = {
     /**
@@ -21,6 +23,12 @@ const actions: ActionTree<RecordState, RootState> = {
     initialState({ commit }): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
             commit(RECORD_INITIAL_STATE);
+            return resolve(true);
+        });
+    },
+    initialCurrent({commit}): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            commit(RECORD_INITIAL_CURRENT);
             return resolve(true);
         });
     },
@@ -97,7 +105,8 @@ const actions: ActionTree<RecordState, RootState> = {
                             state: MessageStatusEnum.Error,
                             message: error,
                         },
-                    });
+                    },
+                    { root: true});
                 });
         });
     },
@@ -120,8 +129,51 @@ const actions: ActionTree<RecordState, RootState> = {
                             state: MessageStatusEnum.Error,
                             message: error,
                         },
-                    });
+                    },
+                    { root: true});
                 });
+        });
+    },
+    getAllForAdmin({commit, rootState, dispatch}): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.get(`${rootState.settings.apiUrl}/records/getAllForAdmin`,
+                { headers: { authorization: rootState.auth.token } })
+            .then((response) => {
+                commit(RECORD_CHANGE_LIST_STATE, response.data as RecordTableDto[]);
+                return resolve(true);
+            })
+            .catch((error) => {
+                dispatch('message/change', {
+                    mod: 'Record',
+                    message: {
+                        state: MessageStatusEnum.Error,
+                        message: error,
+                    },
+                },
+                { root: true});
+            });
+        });
+    },
+    createRecord({commit, rootState, dispatch}, record: Record): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.post(`${rootState.settings.apiUrl}/records/create`, record,
+                { headers: { authorization: rootState.auth.token } })
+            .then((response) => {
+                commit(RECORD_CHANGE_CURRENT_STATE, response.data as Record);
+                dispatch('record/getAllForAdmin', {}, { root: true});
+                return resolve(true);
+            })
+            .catch((error) => {
+                dispatch('message/change', {
+                    mod: 'Record',
+                    message: {
+                        state: MessageStatusEnum.Error,
+                        message: error,
+                    },
+                },
+                { root: true});
+                return resolve(false);
+            });
         });
     },
 };

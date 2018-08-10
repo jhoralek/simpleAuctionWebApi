@@ -43,7 +43,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
         public async Task<Address> UpdateAsync(Address item)
         {
             var itemToUpdate = await _context.Addresses
-                .FirstOrDefaultAsync(x => x.Id == item.Id);
+                    .FirstOrDefaultAsync(x => x.Id == item.Id);
 
             if (itemToUpdate != null)
             {

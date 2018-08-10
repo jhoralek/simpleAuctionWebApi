@@ -164,8 +164,8 @@
                     <v-text-field
                         v-model="newAddress.street"
                         v-validate="'required|max:30'"
-                        :error-messages="errors.collect('street')"
-                        data-vv-name="street"
+                        :error-messages="errors.collect('stret')"
+                        data-vv-name="stret"
                         :label="labelStreet" />
                 </v-flex>
             </v-layout>
@@ -209,9 +209,27 @@
                 </v-flex>
             </v-layout>
         </v-container>
-        <v-btn v-if="state > 1 && state < 4" flat color="info" @click="previous">&lt;&lt; {{ resx('back') }}</v-btn>
-        <v-btn v-if="state !== 3 && state < 4" flat color="info" @click="next">{{ resx('next') }} >></v-btn>
-        <v-btn v-if="state === 3" flat color="success" @click="submit">{{ resx('submit') }}</v-btn>
+        <v-btn
+            v-if="state > 1 && state < 4"
+            flat color="info"
+            @click="previous">
+            <v-icon left dark>keyboard_arrow_left</v-icon>
+            {{ resx('back') }}
+        </v-btn>
+        <v-btn
+            v-if="state !== 3 && state < 4"
+            flat color="info"
+            @click="next">
+            {{ resx('next') }}
+            <v-icon left dark>keyboard_arrow_right</v-icon>
+        </v-btn>
+        <v-btn
+            v-if="state === 3"
+            flat color="success"
+            @click="submit">
+            <v-icon left dark>done_outline</v-icon>
+            {{ resx('submit') }}
+        </v-btn>
     </div>
 </template>
 

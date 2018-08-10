@@ -1,4 +1,4 @@
-export default interface FileShortDto {
+export default interface FileSimpleDto {
     id?: number;
     name: string;
     path: string;

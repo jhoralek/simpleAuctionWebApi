@@ -13,6 +13,7 @@ import {
   Auction,
   AuctionDetail,
   UserAdministration,
+  AuctionAdministration,
 } from '@/views';
 
 import { state } from '@/store/modules/auth';
@@ -63,6 +64,12 @@ export default new Router({
       path: '/usersAdministration',
       name: 'usersAdministration',
       component: UserAdministration,
+      beforeEnter: adminAuthenticated,
+    },
+    {
+      path: '/auctionsAdministration',
+      name: 'auctionsAdministration',
+      component: AuctionAdministration,
       beforeEnter: adminAuthenticated,
     },
     {

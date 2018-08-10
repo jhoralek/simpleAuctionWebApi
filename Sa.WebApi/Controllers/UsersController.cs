@@ -74,6 +74,6 @@ namespace SA.WebApi.Controllers
                 return BadRequest();
             }
             return Json(await _repository.UpdateAsync(user));
-        }
+        }        
     }
 }

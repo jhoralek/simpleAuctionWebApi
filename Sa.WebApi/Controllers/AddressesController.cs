@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
@@ -16,11 +17,13 @@ namespace SA.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] Address address)
         {
-            if (address == null && address.Id <= 0)
+            var item = await _repository.GetOneAsync<Address>(x => x.Id == address.Id);
+            if (address == null && address.Id <= 0 && item == null)
             {
                 return BadRequest();
             }
-            return Json(await _repository.UpdateAsync(address));
+            Mapper.Map(address, item);
+            return Json(await _repository.UpdateAsync(item));
         }
     }
 }

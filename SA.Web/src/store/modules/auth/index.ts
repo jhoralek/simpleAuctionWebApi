@@ -6,6 +6,8 @@ import actions from '@/store/modules/auth/actions';
 import mutations from '@/store/modules/auth/mutations';
 
 export const state: AuthState = {
+    userId: undefined,
+    customerId: undefined,
     userName: undefined,
     token: undefined,
     language: undefined,

@@ -1,15 +1,19 @@
 import AuthResponse from './AuthResponse';
-import FileShortDto from './FileShortDto';
+import AuthUser from './AuthUser';
+import FileSimpleDto from './FileSimpleDto';
 import LoginDto from './LoginDto';
 import MessageDto from './MessageDto';
+import RecordTableDto from './RecordTableDto';
 import UserShortInfo from './UserShortInfo';
 import UserSimpleDto from './UserSimpleDto';
 
 export {
     AuthResponse,
-    FileShortDto,
+    AuthUser,
+    FileSimpleDto,
     LoginDto,
     MessageDto,
+    RecordTableDto,
     UserShortInfo,
     UserSimpleDto,
 };

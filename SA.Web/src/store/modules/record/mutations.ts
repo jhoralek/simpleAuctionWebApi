@@ -12,6 +12,12 @@ const mutations: MutationTree<RecordState> = {
         state.records = [];
         state.error = false;
     },
+    RECORD_INITIAL_CURRENT(state) {
+        state.error = false;
+        state.current = {
+            isActive: false,
+        } as Record;
+    },
     /**
      * Change current record state
      * @param state - Record state

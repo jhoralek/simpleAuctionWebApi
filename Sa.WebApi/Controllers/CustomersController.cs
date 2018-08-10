@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SA.Application.Customer;
@@ -22,11 +23,13 @@ namespace SA.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] Customer customer)
         {
-            if (customer == null && customer.Id <= 0)
+            var item = await _repository.GetOneAsync<Customer>(x => x.Id == customer.Id);
+            if (customer == null && customer.Id <= 0 && item == null)
             {
                 return BadRequest();
             }
-            return Json(await _repository.UpdateAsync(customer));
+            Mapper.Map(customer, item);
+            return Json(await _repository.UpdateAsync(item));
         }
     }
 }

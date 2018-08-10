@@ -116,7 +116,7 @@
                                             </v-layout>
                                             <v-layout row wrap>
                                                 <v-flex xs6>{{ resx('color') }}</v-flex>
-                                                <v-flex xs6>{{ record.colors }}</v-flex>
+                                                <v-flex xs6>{{ record.color }}</v-flex>
                                             </v-layout>
                                             <v-layout row wrap>
                                                 <v-flex xs6>{{ resx('transmission') }}</v-flex>
@@ -250,7 +250,7 @@ import {
     Bid,
     Customer,
 } from '@/model';
-import { FileShortDto } from '@/poco';
+import { FileSimpleDto } from '@/poco';
 
 const RecordGetter = namespace('record', Getter);
 
@@ -265,7 +265,7 @@ export default class AuctionDetalComponent extends BaseComponent {
     private expander: boolean[] = [true, true, true, true, true, true];
     private expander1: boolean[] = [true];
 
-    private filePath(file: FileShortDto): string {
+    private filePath(file: FileSimpleDto): string {
         return `/${file.path}/${file.recordId}/images/${file.name}`;
     }
 

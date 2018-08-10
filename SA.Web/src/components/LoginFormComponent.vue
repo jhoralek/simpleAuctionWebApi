@@ -128,13 +128,13 @@ export default class LoginFormComponent extends FormBaseComponent {
 </script>
 
 <style>
-.login-dialog-container {
+/* .login-dialog-container {
     height: 100%;
 }
 
 .login-dialog-container div {
     vertical-align: middle;
     height: 100%;
-}
+} */
 
 </style>

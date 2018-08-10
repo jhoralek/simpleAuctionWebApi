@@ -10,6 +10,7 @@ import TermsAndConditions from './TermsAndConditions.vue';
 import Auction from './Auction.vue';
 import AuctionDetail from './AuctionDetail.vue';
 import UserAdministration from './admin/UserAdministration.vue';
+import AuctionAdministration from './admin/AuctionAdministration.vue';
 
 export {
     About,
@@ -24,4 +25,5 @@ export {
     TermsAndConditions,
     AuctionDetail,
     UserAdministration,
+    AuctionAdministration,
 };

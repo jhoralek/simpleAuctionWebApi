@@ -49,8 +49,8 @@ namespace SA.Core.Model
 
         public virtual Customer Customer { get; set; }
 
-        public virtual ICollection<Record> Records { get; set; } = new List<Record>();
+        public virtual List<Record> Records { get; set; } = new List<Record>();
 
-        public virtual ICollection<Bid> Bids { get; set; } = new List<Bid>();
+        public virtual List<Bid> Bids { get; set; } = new List<Bid>();
     }
 }
