@@ -42,8 +42,8 @@
               </v-list>
             </v-menu>
             <v-btn flat v-if="auth.isAuthenticated && !auth.isDealer" to="/customer">{{ resx('customerDetail') }}</v-btn>
-            <div class="toolbar__items menu__activator">
-              <login-form-component />
+            <div class="fill-height align-content-center">
+              <login-form-component/>
             </div>
           </v-toolbar-items>
           <language-component />
@@ -128,6 +128,15 @@
                     class="nav-item btn btn--flat btn--router"
                     style="justify-content: left"
                     to="/customer">{{ resx('customerDetail') }}
+                  </router-link>
+                </v-flex>
+              </v-card>
+              <v-card v-if="auth.isAuthenticated">
+                <v-flex justify-start offset-xs1>
+                  <router-link
+                    class="nav-item btn btn--flat btn--router"
+                    style="justify-content: left"
+                    to="/auctionsAdministration">{{ resx('auctionsAdministration') }}
                   </router-link>
                 </v-flex>
               </v-card>

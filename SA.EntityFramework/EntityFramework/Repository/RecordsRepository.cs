@@ -7,15 +7,22 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace SA.EntityFramework.EntityFramework.Repository
 {
     public class RecordsRepository : IEntityRepository<Record>
     {
         private readonly SaDbContext _context;
-        public RecordsRepository(SaDbContext context)
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        public RecordsRepository(
+            SaDbContext context,            
+            IHostingEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public async Task<Record> AddAsync(Record item)
@@ -23,6 +30,25 @@ namespace SA.EntityFramework.EntityFramework.Repository
             item.Created = DateTime.Now;
             var added = await _context.Records.AddAsync(item);
             await _context.SaveChangesAsync();
+
+            if (added.Entity.Files.Any())
+            {
+                var root = _hostingEnvironment.WebRootPath;
+                foreach (var file in added.Entity.Files)
+                {
+                    var tempFullPath = Path.Combine(root, $"tempFiles/{file.Name}");
+                    var targetPath = Path.Combine(root, $"{file.Path}/{file.RecordId}/images/");
+                    var destFullPath = Path.Combine(targetPath, file.Name);
+
+                    if (!Directory.Exists(targetPath))
+                    {
+                        Directory.CreateDirectory(targetPath);
+                    }
+
+                    System.IO.File.Copy(tempFullPath, destFullPath, true);
+                }
+            }
+
             return added.Entity;
         }
 

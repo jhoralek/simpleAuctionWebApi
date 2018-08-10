@@ -62,9 +62,8 @@ namespace SA.WebApi.Controllers
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> Create([FromBody] Record record)
-        {            
-            return Json(await _repository.AddAsync(record));
-        }
+            => Json(await _repository.AddAsync(record));
+        
 
         [Authorize("admin")]
         [HttpGet]

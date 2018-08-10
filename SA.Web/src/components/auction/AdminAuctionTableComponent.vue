@@ -1,6 +1,6 @@
 <template>
   <div class="admin-auciton-table">
-    <v-container grid-list-md v-if="formActive">
+    <v-container  grid-list-xs pa-0 v-if="formActive">
       <v-layout row wrap>
         <v-flex xs7>
           <h1 v-if="record.current && record.current.id !== undefined">{{ resx('edit') }}: {{ record.current.name }}</h1>
@@ -8,7 +8,7 @@
         </v-flex>
         <v-flex xs5 justify-end>
           <span v-if="state < 5">{{ state }}/4</span>
-          <v-btn @click="formActive = false" dark>{{ resx('back') }}</v-btn>
+          <v-btn @click="backToList" dark>{{ resx('back') }}</v-btn>
         </v-flex>
       </v-layout>
       <v-layout row wrap>
@@ -316,7 +316,22 @@
             <v-container grid-list-md>
               <v-layout row wrap>
                 <v-flex xs12>
-                  Obrazky TODO
+                  <file-upload-component
+                    :name="'auction'"
+                    :title="labelUploadImages"
+                    @files="newFiles($event)" />
+                </v-flex>
+              </v-layout>
+              <v-layout row wrap v-if="record.current.files">
+                <v-flex
+                  v-for="image in record.current.files"
+                  :key="image.name"
+                  xs12 md3 >
+                  <v-card>
+                    <v-card-media
+                      :src="tempImagePath(image)"
+                      height="150px" />
+                  </v-card>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -350,7 +365,7 @@
         </v-flex>
       </v-layout>
     </v-container>
-    <v-container grid-list-md v-else>
+    <v-container  grid-list-xs pa-0 v-else>
       <v-layout row wrap>
         <v-flex xs12>
           <v-toolbar flat color="white">
@@ -409,7 +424,8 @@ import { State, Action, namespace } from 'vuex-class';
 import BaseComponent from '../BaseComponent.vue';
 import PriceComponent from '@/components/helpers/PriceComponent.vue';
 import DatePickerComponent from '@/components/helpers/DatePickerComponent.vue';
-import { RecordTableDto, AuthUser } from '@/poco';
+import FileUploadComponent from '@/components/helpers/FileUploadComponent.vue';
+import { RecordTableDto, AuthUser, FileSimpleDto } from '@/poco';
 import { Record } from '@/model';
 import { RecordState, AuthState } from '@/store/types';
 
@@ -419,6 +435,7 @@ const RecordAction = namespace('record', Action);
   components: {
     PriceComponent,
     DatePickerComponent,
+    FileUploadComponent,
   },
 })
 export default class AdminAuctionTableComponent extends BaseComponent {
@@ -431,6 +448,7 @@ export default class AdminAuctionTableComponent extends BaseComponent {
   @RecordAction('initialCurrent') private initCurrent: any;
   @RecordAction('getDetail') private getDetail: any;
   @RecordAction('createRecord') private create: any;
+  @RecordAction('setCurrent') private setCurrent: any;
 
   private state: number = 1;
   private formActive: boolean = false;
@@ -492,6 +510,10 @@ export default class AdminAuctionTableComponent extends BaseComponent {
             value: 'action' });
         this.newRecord.userId = this.auth.userId;
         this.newRecord.customerId = this.auth.customerId;
+  }
+
+  get labelUploadImages(): string {
+    return this.settings.resource.uploadImages;
   }
 
   get labelName(): string {
@@ -626,6 +648,19 @@ export default class AdminAuctionTableComponent extends BaseComponent {
       return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage);
   }
 
+  private tempImagePath(file: FileSimpleDto): string {
+    return `/tempFiles/${file.name}`;
+  }
+
+  private backToList(): void {
+    this.initCurrent().then((response) => {
+      this.state = 1;
+      this.formActive = false;
+      this.newRecord = this.record.current;
+    });
+
+  }
+
   private edit(item: RecordTableDto): void {
     if (item.id > 0) {
       this.getDetail(item.id).then((response) => {
@@ -637,6 +672,19 @@ export default class AdminAuctionTableComponent extends BaseComponent {
   private newAuction() {
     this.initCurrent().then((response) => {
       this.formActive = response as boolean;
+    });
+  }
+
+  private newFiles(files: FileSimpleDto[]): void {
+    this.initCurrent().then((response) => {
+      if (response) {
+        this.newRecord.files = files.map((file) => {
+          file.path = 'auction';
+          file.userId = this.auth.userId;
+          return file;
+        });
+        this.setCurrent(this.newRecord);
+      }
     });
   }
 
@@ -662,7 +710,7 @@ export default class AdminAuctionTableComponent extends BaseComponent {
         if (response) {
           this.create(this.newRecord).then((respRecord) => {
             if (respRecord) {
-              this.formActive = false;
+              this.backToList();
             }
           });
         }

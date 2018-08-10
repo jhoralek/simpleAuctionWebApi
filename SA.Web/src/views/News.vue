@@ -1,6 +1,6 @@
 <template>
     <div class="news">
-        <v-container grid-list-md>
+        <v-container grid-list-xs pa-2>
             <h1 class="display-1 primary--text">{{ resx('news') }}</h1>
         </v-container>
     </div>

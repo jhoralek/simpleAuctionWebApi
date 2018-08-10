@@ -160,7 +160,16 @@ const actions: ActionTree<RecordState, RootState> = {
                 { headers: { authorization: rootState.auth.token } })
             .then((response) => {
                 commit(RECORD_CHANGE_CURRENT_STATE, response.data as Record);
-                dispatch('record/getAllForAdmin', {}, { root: true});
+                dispatch('message/change', {
+                    mod: 'Profile',
+                    message: {
+                        state: MessageStatusEnum.Success,
+                        message: 'createdSuccessfully',
+                    },
+                },
+                { root: true });
+                dispatch('record/getAllForAdmin', {}, { root: true });
+                dispatch('record/initialCurrent', {}, { root: true });
                 return resolve(true);
             })
             .catch((error) => {
@@ -174,6 +183,32 @@ const actions: ActionTree<RecordState, RootState> = {
                 { root: true});
                 return resolve(false);
             });
+        });
+    },
+    uploadFiles({commit, rootState, dispatch}, formData: any): Promise<File[]> {
+        return new Promise<File[]>((resolve) => {
+            return axios.post(`${rootState.settings.apiUrl}/files/uploadFiles`, formData,
+                { headers: { authorization: rootState.auth.token } })
+            .then((response) => {
+                return resolve(response.data as File[]);
+            })
+            .catch((error) => {
+                dispatch('message/change', {
+                    mod: 'Record',
+                    message: {
+                        state: MessageStatusEnum.Error,
+                        message: error,
+                    },
+                },
+                { root: true});
+                return resolve(undefined);
+            });
+        });
+    },
+    setCurrent({commit}, record: Record): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            commit(RECORD_CHANGE_CURRENT_STATE, record);
+            return resolve(true);
         });
     },
 };

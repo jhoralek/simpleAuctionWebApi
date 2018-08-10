@@ -1,7 +1,7 @@
 <template>
   <div class="user-form">
     <v-progress-linear v-if="isLoading" indeterminate></v-progress-linear>
-    <v-container grid-list-md>
+    <v-container  grid-list-md>
       <v-form lazy-validation ref="user" v-if="user">
         <v-layout row wrap>
           <v-flex xs12>

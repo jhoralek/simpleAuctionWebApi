@@ -1,6 +1,6 @@
 <template>
   <div class="homePage">
-    <v-container grid-list-md>
+    <v-container grid-list-xs pa-2>
       <v-layout row wrap>
         <v-flex xs12>
           <h1 class="display-1 primary--text">{{ resx('home') }}</h1>

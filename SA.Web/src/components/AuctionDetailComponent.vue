@@ -1,8 +1,8 @@
 <template>
-    <v-container grid-list-xs v-if="record">
+    <v-container  grid-list-xs pa-0 v-if="record">
         <v-layout row wrap>
             <v-flex xs12 lg6>
-                <v-container grid-list-xs>
+                <v-container  grid-list-xs pa-0>
                     <v-layout column fill-height>
                         <v-flex xs12 md12>
                             <v-carousel>
@@ -14,7 +14,7 @@
                             </v-carousel>
                         </v-flex>
                         <v-flex xs12>
-                            <v-container grid-list-xs>
+                            <v-container  grid-list-xs pa-0>
                                 <v-layout column fill-height>
                                     <v-flex xs12>
                                         <v-expansion-panel expand>
@@ -84,7 +84,7 @@
                 </v-container>
             </v-flex>
             <v-flex xs12 lg6>
-                <v-container grid-list-xs>
+                <v-container  grid-list-xs pa-0>
                     <v-layout column fill-height>
                         <v-flex xs12 >
                             <v-expansion-panel expand>
@@ -266,7 +266,7 @@ export default class AuctionDetalComponent extends BaseComponent {
     private expander1: boolean[] = [true];
 
     private filePath(file: FileSimpleDto): string {
-        return `/${file.path}/${file.recordId}/images/${file.name}`;
+        return `${this.settings.apiUrl.replace('/api', '')}/${file.path}/${file.recordId}/images/${file.name}`;
     }
 
     private currentPrice(record: Record): number {

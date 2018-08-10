@@ -1,6 +1,6 @@
 <template>
     <div class="protectionPersonalData">
-        <v-container grid-list-md>
+        <v-container grid-list-xs pa-2>
             <h1 class="display-1 primary--text">{{ resx('protectionPersonalData') }}</h1>
         </v-container>
     </div>
