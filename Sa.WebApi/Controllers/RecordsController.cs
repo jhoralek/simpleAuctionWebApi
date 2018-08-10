@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SA.Application.Records;
@@ -13,16 +14,16 @@ namespace SA.WebApi.Controllers
     [Route("api/Records")]
     public class RecordsController : BaseController<Record>
     {
-        public RecordsController(IEntityRepository<Record> repository) 
-            : base(repository){}
+        public RecordsController(IEntityRepository<Record> repository)
+            : base(repository) { }
 
         [HttpGet]
         [Route("getAllForList")]
         public async Task<IActionResult> GetAllForList()
             => Json(await _repository
-                .GetAllAsync<RecordTableDto, string>(x => 
-                    x.IsActive && 
-                    x.ValidTo >= DateTime.Now, 
+                .GetAllAsync<RecordTableDto, string>(x =>
+                    x.IsActive &&
+                    x.ValidTo >= DateTime.Now,
                 x => x.Name));
 
         [Route("getById")]
@@ -56,5 +57,21 @@ namespace SA.WebApi.Controllers
 
             return Json(result);
         }
+
+        [Authorize("admin")]
+        [HttpPost]
+        [Route("create")]
+        public async Task<IActionResult> Create([FromBody] Record record)
+        {            
+            return Json(await _repository.AddAsync(record));
+        }
+
+        [Authorize("admin")]
+        [HttpGet]
+        [Route("getAllForAdmin")]
+        public async Task<IActionResult> GetAllForAdmin()
+            => Json(await _repository
+                    .GetAllAsync<RecordTableDto, bool>(order: y =>
+                        y.IsActive));
     }
 }

@@ -1,9 +1,9 @@
 <template>
-  <div class="usersAdministration">
+  <div class="user-administration">
     <v-container grid-list-md>
       <v-layout row wrap>
         <v-flex xs12>
-          <h1>{{ resx('usersAdministration') }}</h1>
+          <h1 class="display-1 primary--text">{{ resx('usersAdministration') }}</h1>
         </v-flex>
       </v-layout>
       <v-layout row wrap>

@@ -1,21 +1,24 @@
 import { FuelEnum } from '@/model/FuelEnum';
-import { User, Bid } from '@/model';
-import { FileShortDto } from '@/poco';
+import { User, Bid, Customer } from '@/model';
+import { FileSimpleDto } from '@/poco';
 
 export default interface Record {
     isActive: boolean;
     name: string;
-    colors?: string[];
+    color?: string;
     mileage: string;
     engineCapacity?: string;
     body?: string; // karoserie
     power?: string;
-    fuel: FuelEnum;
+    fuel: string;
     transmission: string;
     axle: string; // náprava 4x4
     registrationCheck: string;
     contactToAppointment: string;
-    dealer: User; // user who creates this record (can be only dealer)
+    user: User; // user who creates this record (can be only dealer)
+    userId: number;
+    customer: Customer;
+    customerId: number;
     minimumBid: number;
     startingPrice: number;
     validFrom: Date;
@@ -28,15 +31,15 @@ export default interface Record {
     numberOfSeets?: number;
     euroNorm?: string;
     doors?: number;
-    dateOfFirstRegistration?: Date;
-    stk?: Date;
+    dateOfFirstRegistration: Date;
+    stk: Date;
     dimensions?: string; // celkove rozmery
-    operationgWeight?: string; // provozni hmotnost
+    operationWeight?: string; // provozni hmotnost
     mostTechnicallyAcceptableWeight?: string; // nejvetsi technicka pripustna hmotnost
     maximumWeight?: string; // maximalni povolena hmotnost
-    mostTechnicallyWeighOfRide?: string; // nejvetsi technicky pripustna hmotnost jizdni soupravy
+    mostTechnicallyWeightOfRide?: string; // nejvetsi technicky pripustna hmotnost jizdni soupravy
     maximumWeightOfRide?: string; // nejvetsi povolena hmotnost jizdni soupravy
-    files?: FileShortDto[];
+    files?: FileSimpleDto[];
     bids?: Bid[];
     id?: number;
     currentPrice: number;

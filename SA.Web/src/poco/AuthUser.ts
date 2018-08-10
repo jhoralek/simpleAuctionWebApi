@@ -1,8 +1,7 @@
-export default interface AuthResponse {
-    userId: number;
+export default interface AuthUser {
     userName: string;
     token: string;
     langauge: string;
-    error: string;
     isDealer: boolean;
+    isAuthenticated: boolean;
 }

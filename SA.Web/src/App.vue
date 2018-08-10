@@ -36,6 +36,9 @@
                 <v-list-tile to="/usersAdministration">
                   <v-list-tile-title>{{ resx('usersAdministration')}}</v-list-tile-title>
                 </v-list-tile>
+                <v-list-tile to="/auctionsAdministration">
+                  <v-list-tile-title>{{ resx('auctionsAdministration')}}</v-list-tile-title>
+                </v-list-tile>
               </v-list>
             </v-menu>
             <v-btn flat v-if="auth.isAuthenticated && !auth.isDealer" to="/customer">{{ resx('customerDetail') }}</v-btn>

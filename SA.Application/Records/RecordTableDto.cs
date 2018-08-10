@@ -13,6 +13,7 @@ namespace SA.Application.Records
         public virtual DateTime ValidTo { get; set; }
         public virtual decimal MinimumBid { get; set; }
         public virtual decimal CurrentPrice { get; set; }
+        public virtual decimal StartingPrice { get; set; }
         public virtual int NumberOfBids { get; set; }
         public virtual string State { get; set; }
         public virtual ICollection<FileSimpleDto> Files { get; set; } = new List<FileSimpleDto>();        

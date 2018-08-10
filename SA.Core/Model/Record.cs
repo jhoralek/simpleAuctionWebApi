@@ -22,7 +22,7 @@ namespace SA.Core.Model
         [MaxLength(200)]
         [MySqlCharset("utf8")]
         [MySqlCollation("utf8_general_ci")]
-        public virtual string Colors { get; set; }
+        public virtual string Color { get; set; }
 
         [MaxLength(50)]
         [MySqlCharset("utf8")]

@@ -28,6 +28,8 @@ export interface ProfileState {
  * Used for authentication
  */
 export interface AuthState {
+    userId: number;
+    customerId: number;
     userName: string;
     token: string;
     language: string;

@@ -57,6 +57,8 @@ namespace SA.Application.Security
 
             return new AuthResponse
             {
+                UserId = loggedIn.Id,
+                CustomerId = loggedIn.CustomerId,
                 Token = loggedIn.Token,
                 UserName = loggedIn.UserName,
                 Language = loggedIn.Language,
