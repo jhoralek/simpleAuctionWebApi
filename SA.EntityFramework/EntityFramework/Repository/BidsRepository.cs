@@ -79,9 +79,6 @@ namespace SA.EntityFramework.EntityFramework.Repository
         private IQueryable<Bid> GetAllBidInternal()
             => _context.Bids
                 .Include(x => x.Record)
-                .Include(x => x.Record.Customer)
-                .Include(x => x.Record.Customer.Address)
-                .Include(x => x.Record.Customer.Address.Country)
                 .Include(x => x.User)
                 .Include(x => x.User.Customer)
                 .Include(x => x.User.Customer.Address)

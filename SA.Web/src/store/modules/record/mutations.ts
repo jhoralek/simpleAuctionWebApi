@@ -1,6 +1,7 @@
 import { MutationTree } from 'vuex';
 import { RecordState } from '@/store/types';
 import { Record } from '@/model';
+import { FileSimpleDto } from '@/poco';
 
 const mutations: MutationTree<RecordState> = {
     /**
@@ -16,6 +17,7 @@ const mutations: MutationTree<RecordState> = {
         state.error = false;
         state.current = {
             isActive: false,
+            files: [],
         } as Record;
     },
     /**
@@ -26,6 +28,19 @@ const mutations: MutationTree<RecordState> = {
     RECORD_CHANGE_CURRENT_STATE(state, record: Record) {
         state.error = false;
         state.current = record;
+
+        if (record.validFrom !== null) {
+            state.current.validFrom = new Date(record.validFrom);
+        }
+        if (record.validTo !== null) {
+            state.current.validTo = new Date(record.validTo);
+        }
+        if (record.dateOfFirstRegistration !== null) {
+            state.current.dateOfFirstRegistration = new Date(record.dateOfFirstRegistration);
+        }
+        if (record.stk !== null) {
+            state.current.stk = new Date(record.stk);
+        }
     },
     /**
      * Change list of records
@@ -35,6 +50,19 @@ const mutations: MutationTree<RecordState> = {
     RECORD_CHANGE_LIST_STATE(state, records: Record[]) {
         state.error = false;
         state.records = records;
+    },
+    RECORD_DELETE_RECORD_FROM_LIST(state, record: Record) {
+        state.error = false;
+        state.records = state.records
+            .filter((item) => item.id !== record.id);
+    },
+    RECORD_SET_CURRENT_FILES(state, files: FileSimpleDto[]) {
+        state.error = false;
+        state.current.files = files;
+    },
+    RECORD_SET_CURRENT_USER_ID(state, userId: number) {
+        state.error = false;
+        state.current.userId = userId;
     },
 };
 

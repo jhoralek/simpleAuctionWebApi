@@ -79,7 +79,6 @@ namespace SA.EntityFramework.EntityFramework.Repository
         private IQueryable<Customer> GetCustomersInternal()
             => _context.Customers
                 .Include(x => x.Address)
-                .Include(x => x.Address.Country)
-                .Include(x => x.Records);
+                .Include(x => x.Address.Country);
     }
 }

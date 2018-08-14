@@ -9,7 +9,6 @@ const mutations: MutationTree<AuthState> = {
      */
     AUTH_INITIAL_STATE(state) {
         state.userId = undefined;
-        state.customerId = undefined;
         state.isAuthenticated = false;
         state.token = undefined;
         state.language = undefined;
@@ -25,7 +24,6 @@ const mutations: MutationTree<AuthState> = {
      */
     AUTH_LOGIN_USER(state, { user }) {
         state.userId = user.userId;
-        state.customerId = user.customerId;
         state.userName = user.userName;
         state.token  = user.token;
         state.language = user.language;
@@ -40,7 +38,6 @@ const mutations: MutationTree<AuthState> = {
      */
     AUTH_LOGOUT_USER(state) {
         state.userId = undefined;
-        state.customerId = undefined;
         state.isAuthenticated = false;
         state.token = undefined;
         state.language = undefined;

@@ -11,11 +11,13 @@ import Auction from './Auction.vue';
 import AuctionDetail from './AuctionDetail.vue';
 import UserAdministration from './admin/UserAdministration.vue';
 import AuctionAdministration from './admin/AuctionAdministration.vue';
+import Cookies from './Cookies.vue';
 
 export {
     About,
     Auction,
     Contact,
+    Cookies,
     Customer,
     Home,
     Faq,

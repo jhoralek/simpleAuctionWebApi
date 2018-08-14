@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -31,16 +30,16 @@ namespace SA.WebApi.Controllers
         public async Task<IActionResult> GetById(int id)
             => Json(await _repository.GetOneAsync<RecordDetailDto>(x => x.Id == id));
 
-        [Authorize("read:messages")]
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Record item)
+        [Authorize("admin")]
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] Record record)
         {
-            if (item == null)
+            var persistedItem = await _repository.GetOneAsync<Record>(x => x.Id == record.Id);
+            if (record == null && persistedItem == null)
             {
                 return BadRequest();
             }
-            await _repository.UpdateAsync(item);
-            return NoContent();
+            return Json(await _repository.UpdateAsync(record));            
         }
 
         [Authorize("read:messages")]
@@ -72,5 +71,11 @@ namespace SA.WebApi.Controllers
             => Json(await _repository
                     .GetAllAsync<RecordTableDto, bool>(order: y =>
                         y.IsActive));
+
+        [Authorize("admin")]
+        [HttpDelete("{id}")]
+        [Route("delete")]
+        public async Task<IActionResult> Delete(int id)
+            => Json(await _repository.RemoveAsync(id));
     }
 }

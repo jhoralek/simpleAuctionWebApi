@@ -12,8 +12,11 @@ import {
     RECORD_CHANGE_LIST_STATE,
     RECORD_CHANGE_CURRENT_STATE,
     RECORD_INITIAL_CURRENT,
+    RECORD_DELETE_RECORD_FROM_LIST,
+    RECORD_SET_CURRENT_FILES,
+    RECORD_SET_CURRENT_USER_ID,
 } from '@/store/mutation-types';
-import { RecordTableDto } from '@/poco';
+import { RecordTableDto, FileSimpleDto } from '@/poco';
 
 const actions: ActionTree<RecordState, RootState> = {
     /**
@@ -161,7 +164,7 @@ const actions: ActionTree<RecordState, RootState> = {
             .then((response) => {
                 commit(RECORD_CHANGE_CURRENT_STATE, response.data as Record);
                 dispatch('message/change', {
-                    mod: 'Profile',
+                    mod: 'Record',
                     message: {
                         state: MessageStatusEnum.Success,
                         message: 'createdSuccessfully',
@@ -209,6 +212,84 @@ const actions: ActionTree<RecordState, RootState> = {
         return new Promise<boolean>((resolve) => {
             commit(RECORD_CHANGE_CURRENT_STATE, record);
             return resolve(true);
+        });
+    },
+    setCurrentUserId({commit}, userId: number): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            commit(RECORD_SET_CURRENT_USER_ID, userId);
+        });
+    },
+    setFiles({commit}, files: FileSimpleDto[]): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            commit(RECORD_SET_CURRENT_FILES, files);
+            return resolve(true);
+        });
+    },
+    updateRecord({rootState, dispatch}, record: Record): Promise<boolean> {
+        return new Promise<boolean> ((resolve) => {
+            return axios.put(`${rootState.settings.apiUrl}/records`, record,
+                { headers: { authorization: rootState.auth.token } })
+            .then((response) => {
+                dispatch('message/change', {
+                    mod: 'Record',
+                    message: {
+                        state: MessageStatusEnum.Success,
+                        message: 'updatedSuccessfully',
+                    },
+                },
+                { root: true });
+                dispatch('record/getAllForAdmin', {}, { root: true });
+                dispatch('record/initialCurrent', {}, { root: true });
+                return resolve(true);
+            })
+            .catch((error) => {
+                dispatch('message/change', {
+                    mod: 'Record',
+                    message: {
+                        state: MessageStatusEnum.Error,
+                        message: error,
+                    },
+                },
+                { root: true});
+                return resolve(undefined);
+            });
+        });
+    },
+    deleteRecord({commit, rootState, dispatch}, recordId: number): Promise<boolean> {
+        return new Promise<boolean> ((resolve) => {
+            return axios.delete(`${rootState.settings.apiUrl}/records/delete`,
+                {
+                    params: {
+                        id: recordId,
+                    },
+                    headers: {
+                        authorization: rootState.auth.token,
+                    },
+                })
+            .then((response) => {
+                commit(RECORD_DELETE_RECORD_FROM_LIST, response.data as Record);
+                commit(RECORD_INITIAL_CURRENT);
+                dispatch('message/change', {
+                    mod: 'Record',
+                    message: {
+                        state: MessageStatusEnum.Success,
+                        message: 'deleteSuccessfully',
+                    },
+                },
+                { root: true });
+                return resolve(true);
+            })
+            .catch((error) => {
+                dispatch('message/change', {
+                    mod: 'Record',
+                    message: {
+                        state: MessageStatusEnum.Error,
+                        message: error,
+                    },
+                },
+                { root: true});
+                return resolve(false);
+            });
         });
     },
 };

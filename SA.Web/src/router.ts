@@ -14,6 +14,7 @@ import {
   AuctionDetail,
   UserAdministration,
   AuctionAdministration,
+  Cookies,
 } from '@/views';
 
 import { state } from '@/store/modules/auth';
@@ -106,6 +107,11 @@ export default new Router({
       path: '/auctionDetail',
       name: 'auctionDetail',
       component: AuctionDetail,
+    },
+    {
+      path: '/cookies',
+      name: 'cookies',
+      component: Cookies,
     },
   ],
 });

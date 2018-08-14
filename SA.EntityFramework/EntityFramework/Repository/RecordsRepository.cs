@@ -58,8 +58,20 @@ namespace SA.EntityFramework.EntityFramework.Repository
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToDelte != null)
-            {
-                var deleted = _context.Records.Remove(itemToDelte);
+            {                                
+                var deleted = _context.Records.Remove(itemToDelte);                
+                var root = _hostingEnvironment.WebRootPath;
+                
+                if (itemToDelte.Files.Any())
+                {
+                    var item = itemToDelte.Files.FirstOrDefault();
+                    var dirPath = Path.Combine(root, $"{item.Path}/{item.RecordId}");
+                    if (Directory.Exists(dirPath))
+                    {
+                        Directory.Delete(dirPath, true);
+                    }
+                }
+
                 await _context.SaveChangesAsync();
                 return deleted.Entity;
             }
@@ -73,7 +85,42 @@ namespace SA.EntityFramework.EntityFramework.Repository
 
             if (itemToUpdate != null)
             {
+                var filesForDelete = new List<Core.Model.File>();
+                var filesForAdding = new List<Core.Model.File>();
+                foreach (var file in itemToUpdate.Files)
+                {
+                    if (!item.Files.Select(x => x.Name).Contains(file.Name))
+                    {
+                        filesForDelete.Add(file);
+                    }
+                }
+
+                foreach(var file in item.Files)
+                {
+                    if (!itemToUpdate.Files.Select(x => x.Name).Contains(file.Name))
+                    {
+                        filesForAdding.Add(file);
+                    }
+                }
+
                 Mapper.Map(item, itemToUpdate);
+
+                if (filesForDelete.Any())
+                {
+                    foreach(var file in filesForDelete)
+                    {
+                        itemToUpdate.Files.Remove(file);
+                    }
+                }
+
+                if (filesForAdding.Any())
+                {
+                    foreach(var file in filesForAdding)
+                    {
+                        itemToUpdate.Files.Add(file);
+                    }
+                }
+
                 await _context.SaveChangesAsync();
                 return itemToUpdate;
             }
@@ -105,7 +152,6 @@ namespace SA.EntityFramework.EntityFramework.Repository
         private IQueryable<Record> GetIncludedAll()
             => _context.Records
                 .Include(x => x.User)
-                .Include(x => x.Customer)
                 .Include(x => x.Bids)
                 .Include(x => x.Files);
     }

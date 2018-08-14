@@ -69,10 +69,10 @@
                                                         <v-flex xs6>{{ resx('contactToAppointment') }}</v-flex>
                                                         <v-flex xs6>{{ record.contactToAppointment }}</v-flex>
                                                     </v-layout>
-                                                    <v-layout row wrap>
+                                                    <!-- <v-layout row wrap>
                                                         <v-flex xs6>{{ resx('seller') }}</v-flex>
-                                                        <v-flex xs6>{{ sellerInfo(record.customer) }}</v-flex>
-                                                    </v-layout>
+                                                        <v-flex xs6>{{ sellerInfo(record.user) }}</v-flex>
+                                                    </v-layout> -->
                                                 </v-container>
                                             </v-expansion-panel-content>
                                         </v-expansion-panel>
@@ -248,7 +248,7 @@ import { PriceComponent } from '@/components';
 import {
     Record,
     Bid,
-    Customer,
+    User,
 } from '@/model';
 import { FileSimpleDto } from '@/poco';
 
@@ -279,8 +279,8 @@ export default class AuctionDetalComponent extends BaseComponent {
         return bids === undefined ? 0 : bids.length;
     }
 
-    private sellerInfo(customer: Customer): string {
-        return `${customer.companyName}`;
+    private sellerInfo(user: User): string {
+        return `${user.customer.companyName}`;
     }
 }
 

@@ -1,5 +1,10 @@
 <template>
   <div class="admin-auciton-table">
+     <question-dialog-component
+            :header="questionWarning"
+            :question="questionMessage"
+            :dialog="questionDialog"
+            @result="deleteRecord($event)" />
     <v-container  grid-list-xs pa-0 v-if="formActive">
       <v-layout row wrap>
         <v-flex xs7>
@@ -18,7 +23,7 @@
               <v-layout row wrap>
                 <v-flex xs12 md4>
                   <v-text-field
-                    v-model="newRecord.name"
+                    v-model="record.current.name"
                     v-validate="'required|max:100|min:5'"
                     :error-messages="errors.collect('name')"
                     data-vv-name="name"
@@ -27,7 +32,7 @@
                 </v-flex>
                 <v-flex xs12 md4>
                   <v-text-field
-                    v-model="newRecord.startingPrice"
+                    v-model="record.current.startingPrice"
                     v-validate="'required|numeric'"
                     :error-messages="errors.collect('startingPrice')"
                     data-vv-name="startingPrice"
@@ -36,7 +41,7 @@
                 </v-flex>
                 <v-flex xs12 md4>
                   <v-text-field
-                    v-model="newRecord.minimumBid"
+                    v-model="record.current.minimumBid"
                     v-validate="'required|numeric'"
                     :error-messages="errors.collect('minimumBid')"
                     data-vv-name="minimumBid"
@@ -47,23 +52,23 @@
               <v-layout row wrap>
                 <v-flex xs12 md4>
                   <date-picker-component
-                    :date="newRecord.validFrom"
+                    :date="record.current.validFrom"
                     name="validFrom"
                     :validation="{required: true }"
                     :label="labelValidFrom"
-                    @date="newRecord.validFrom = $event"/>
+                    @date="record.current.validFrom = $event"/>
                 </v-flex>
                 <v-flex xs12 md4>
                   <date-picker-component
-                    :date="newRecord.validTo"
+                    :date="record.current.validTo"
                     name="validTo"
                     :validation="{required: true }"
                     :label="labelValidTo"
-                    @date="newRecord.validTo = $event" />
+                    @date="record.current.validTo = $event" />
                 </v-flex>
                 <v-flex xs12 md4>
                   <v-text-field
-                    v-model="newRecord.mileage"
+                    v-model="record.current.mileage"
                     v-validate="'numeric'"
                     :error-messages="errors.collect('mileAge')"
                     data-vv-name="mileAge"
@@ -74,12 +79,12 @@
               <v-layout row wrap>
                 <v-flex xs12 md4>
                   <v-switch
-                    v-model="newRecord.isActive"
+                    v-model="record.current.isActive"
                     :label="labelIsActive" />
                 </v-flex>
                 <v-flex xs12 md4>
                   <v-text-field
-                    v-model="newRecord.color"
+                    v-model="record.current.color"
                     v-validate="'max:30'"
                     :error-messages="errors.collect('color')"
                     data-vv-name="color"
@@ -88,7 +93,7 @@
                 </v-flex>
                 <v-flex xs12 md4>
                   <v-text-field
-                    v-model="newRecord.fuel"
+                    v-model="record.current.fuel"
                     v-validate="'max:10'"
                     :error-messages="errors.collect('fuel')"
                     data-vv-name="fuel"
@@ -103,7 +108,7 @@
               <v-layout row wrap>
                 <v-flex xs12 md2>
                   <v-text-field
-                    v-model="newRecord.engineCapacity"
+                    v-model="record.current.engineCapacity"
                     v-validate="'max:45'"
                     :error-messages="errors.collect('engineCapacity')"
                     data-vv-name="engineCapacity"
@@ -112,7 +117,7 @@
                 </v-flex>
                 <v-flex xs12 md2>
                   <v-text-field
-                    v-model="newRecord.power"
+                    v-model="record.current.power"
                     v-validate="'max:45'"
                     :error-messages="errors.collect('power')"
                     data-vv-name="power"
@@ -121,7 +126,7 @@
                 </v-flex>
                 <v-flex xs12 md2>
                   <v-text-field
-                    v-model="newRecord.doors"
+                    v-model="record.current.doors"
                     v-validate="'numeric'"
                     :error-messages="errors.collect('dors')"
                     data-vv-name="dors"
@@ -130,7 +135,7 @@
                 </v-flex>
                 <v-flex xs12 md2>
                   <v-text-field
-                    v-model="newRecord.numberOfSeets"
+                    v-model="record.current.numberOfSeets"
                     v-validate="'numeric'"
                     :error-messages="errors.collect('numberOfSeets')"
                     data-vv-name="numberOfSeets"
@@ -139,7 +144,7 @@
                 </v-flex>
                 <v-flex xs12 md2>
                   <v-text-field
-                    v-model="newRecord.axle"
+                    v-model="record.current.axle"
                     v-validate="'max:45'"
                     :error-messages="errors.collect('axle')"
                     data-vv-name="axle"
@@ -148,7 +153,7 @@
                 </v-flex>
                 <v-flex xs12 md2>
                   <v-text-field
-                    v-model="newRecord.euroNorm"
+                    v-model="record.current.euroNorm"
                     v-validate="'max:10'"
                     :error-messages="errors.collect('euroNorm')"
                     data-vv-name="euroNorm"
@@ -159,7 +164,7 @@
               <v-layout row wrap>
                 <v-flex xs12 md3>
                   <v-text-field
-                    v-model="newRecord.vin"
+                    v-model="record.current.vin"
                     v-validate="'max:45'"
                     :error-messages="errors.collect('vin')"
                     data-vv-name="vin"
@@ -168,7 +173,7 @@
                 </v-flex>
                 <v-flex xs12 md3>
                   <v-text-field
-                    v-model="newRecord.contactToAppointment"
+                    v-model="record.current.contactToAppointment"
                     v-validate="'max:100'"
                     :error-messages="errors.collect('contactToAppointment')"
                     data-vv-name="contactToAppointment"
@@ -177,7 +182,7 @@
                 </v-flex>
                 <v-flex xs12 md3>
                   <v-text-field
-                    v-model="newRecord.transmission"
+                    v-model="record.current.transmission"
                     v-validate="'max:45'"
                     :error-messages="errors.collect('transmission')"
                     data-vv-name="transmission"
@@ -186,7 +191,7 @@
                 </v-flex>
                 <v-flex xs12 md3>
                   <v-text-field
-                    v-model="newRecord.registrationCheck"
+                    v-model="record.current.registrationCheck"
                     v-validate="'max:100'"
                     :error-messages="errors.collect('registrationCheck')"
                     data-vv-name="registrationCheck"
@@ -197,7 +202,7 @@
               <v-layout row wrap>
                 <v-flex xs12 md4>
                   <v-text-field
-                    v-model="newRecord.state"
+                    v-model="record.current.state"
                     v-validate="'max:100'"
                     :error-messages="errors.collect('state')"
                     data-vv-name="state"
@@ -206,19 +211,19 @@
                 </v-flex>
                 <v-flex xs12 md4>
                   <date-picker-component
-                    :date="newRecord.stk"
+                    :date="record.current.stk"
                     name="stk"
                     :validation="{}"
                     :label="labelStk"
-                    @date="newRecord.stk = $event"/>
+                    @date="record.current.stk = $event"/>
                 </v-flex>
                 <v-flex xs12 md4>
                   <date-picker-component
-                    :date="newRecord.dateOfFirstRegistration"
+                    :date="record.current.dateOfFirstRegistration"
                     name="dateOfFirstRegistration"
                     :validation="{}"
                     :label="labelDateOfFirstRegistration"
-                    @date="newRecord.dateOfFirstRegistration = $event" />
+                    @date="record.current.dateOfFirstRegistration = $event" />
                 </v-flex>
               </v-layout>
             </v-container>
@@ -228,7 +233,7 @@
               <v-layout row wrap>
                 <v-flex xs12 md4>
                   <v-text-field
-                    v-model="newRecord.operationWeight"
+                    v-model="record.current.operationWeight"
                     v-validate="'max:100'"
                     :error-messages="errors.collect('operationWeight')"
                     data-vv-name="operationWeight"
@@ -237,7 +242,7 @@
                 </v-flex>
                 <v-flex xs12 md4>
                   <v-text-field
-                    v-model="newRecord.maximumWeight"
+                    v-model="record.current.maximumWeight"
                     v-validate="'max:100'"
                     :error-messages="errors.collect('maximumWeight')"
                     data-vv-name="maximumWeight"
@@ -246,7 +251,7 @@
                 </v-flex>
                 <v-flex xs12 md4>
                   <v-text-field
-                    v-model="newRecord.maximumWeightOfRide"
+                    v-model="record.current.maximumWeightOfRide"
                     v-validate="'max:100'"
                     :error-messages="errors.collect('maximumWeightOfRide')"
                     data-vv-name="maximumWeightOfRide"
@@ -257,7 +262,7 @@
               <v-layout row wrap>
                 <v-flex xs12 md4>
                   <v-text-field
-                    v-model="newRecord.dimensions"
+                    v-model="record.current.dimensions"
                     v-validate="'max:100'"
                     :error-messages="errors.collect('dimensions')"
                     data-vv-name="dimensions"
@@ -266,7 +271,7 @@
                 </v-flex>
                 <v-flex xs12 md4>
                   <v-text-field
-                    v-model="newRecord.mostTechnicallyWeightOfRide"
+                    v-model="record.current.mostTechnicallyWeightOfRide"
                     v-validate="'max:100'"
                     :error-messages="errors.collect('mostTechnicallyWeightOfRide')"
                     data-vv-name="mostTechnicallyWeightOfRide"
@@ -275,7 +280,7 @@
                 </v-flex>
                 <v-flex xs12 md4>
                   <v-text-field
-                    v-model="newRecord.mostTechnicallyAcceptableWeight"
+                    v-model="record.current.mostTechnicallyAcceptableWeight"
                     v-validate="'max:100'"
                     :error-messages="errors.collect('mostTechnicallyAcceptableWeight')"
                     data-vv-name="mostTechnicallyAcceptableWeight"
@@ -286,7 +291,7 @@
               <v-layout row wrap>
                 <v-flex xs12 md4>
                   <v-textarea
-                    v-model="newRecord.equipment"
+                    v-model="record.current.equipment"
                     v-validate="'max:250'"
                     :error-messages="errors.collect('equipment')"
                     :label="labelEquipment"
@@ -294,7 +299,7 @@
                 </v-flex>
                 <v-flex xs12 md4>
                   <v-textarea
-                    v-model="newRecord.defects"
+                    v-model="record.current.defects"
                     v-validate="'max:250'"
                     :error-messages="errors.collect('defects')"
                     :label="labelDefects"
@@ -302,7 +307,7 @@
                 </v-flex>
                 <v-flex xs12 md4>
                   <v-textarea
-                    v-model="newRecord.moreDescription"
+                    v-model="record.current.moreDescription"
                     v-validate="'max:250'"
                     :error-messages="errors.collect('moreDescription')"
                     data-vv-name="moreDescription"
@@ -322,7 +327,7 @@
                     @files="newFiles($event)" />
                 </v-flex>
               </v-layout>
-              <v-layout row wrap v-if="record.current.files">
+              <v-layout row wrap>
                 <v-flex
                   v-for="image in record.current.files"
                   :key="image.name"
@@ -372,6 +377,7 @@
             <v-spacer></v-spacer>
             <v-btn color="primary" dark class="mb-2" @click="newAuction">{{ resx('new') }}</v-btn>
           </v-toolbar>
+          <v-progress-linear v-if="editLoading" color="blue" indeterminate></v-progress-linear>
           <v-data-table
             :headers="headers"
             :items="auctions"
@@ -397,13 +403,13 @@
                       @click="edit(props.item)">
                       edit
                   </v-icon>
-                  <!-- <v-icon
+                  <v-icon
                       style="cursor: pointer"
                       small
                       class="mr-2"
-                      @click="delete(props.item)">
+                      @click="wantToDeleteRecord(props.item)">
                       delete
-                  </v-icon> -->
+                  </v-icon>
               </td>
             </template>
           </v-data-table>
@@ -425,8 +431,9 @@ import BaseComponent from '../BaseComponent.vue';
 import PriceComponent from '@/components/helpers/PriceComponent.vue';
 import DatePickerComponent from '@/components/helpers/DatePickerComponent.vue';
 import FileUploadComponent from '@/components/helpers/FileUploadComponent.vue';
+import QuestionDialogComponent from '@/components/helpers/QuestionDialogComponent.vue';
 import { RecordTableDto, AuthUser, FileSimpleDto } from '@/poco';
-import { Record } from '@/model';
+import { Record, File } from '@/model';
 import { RecordState, AuthState } from '@/store/types';
 
 const RecordAction = namespace('record', Action);
@@ -436,6 +443,7 @@ const RecordAction = namespace('record', Action);
     PriceComponent,
     DatePickerComponent,
     FileUploadComponent,
+    QuestionDialogComponent,
   },
 })
 export default class AdminAuctionTableComponent extends BaseComponent {
@@ -448,8 +456,15 @@ export default class AdminAuctionTableComponent extends BaseComponent {
   @RecordAction('initialCurrent') private initCurrent: any;
   @RecordAction('getDetail') private getDetail: any;
   @RecordAction('createRecord') private create: any;
-  @RecordAction('setCurrent') private setCurrent: any;
 
+  @RecordAction('deleteRecord') private delete: any;
+  @RecordAction('updateRecord') private updateRecord: any;
+  @RecordAction('setFiles') private setFiles: any;
+  @RecordAction('setCurrentUserId') private setCurrentUserId: any;
+
+  private editLoading: boolean = false;
+  private questionDialog: boolean = false;
+  private objectToDelete: RecordTableDto = undefined;
   private state: number = 1;
   private formActive: boolean = false;
   private headers: any[] = [];
@@ -457,10 +472,6 @@ export default class AdminAuctionTableComponent extends BaseComponent {
       rowsPerPage: 10,
       totalItems: 0,
   };
-  private newRecord: Record = {
-      isActive: false,
-      dateOfFirstRegistration: null,
-  } as Record;
 
   private mounted() {
         this.headers.push({
@@ -508,8 +519,15 @@ export default class AdminAuctionTableComponent extends BaseComponent {
             align: 'center',
             sortable: true,
             value: 'action' });
-        this.newRecord.userId = this.auth.userId;
-        this.newRecord.customerId = this.auth.customerId;
+        this.setCurrentUserId(this.auth.userId);
+  }
+
+  get questionWarning(): string {
+    return this.settings.resource.warning;
+  }
+
+  get questionMessage(): string {
+    return this.settings.resource.messageDeleteItem;
   }
 
   get labelUploadImages(): string {
@@ -656,36 +674,60 @@ export default class AdminAuctionTableComponent extends BaseComponent {
     this.initCurrent().then((response) => {
       this.state = 1;
       this.formActive = false;
-      this.newRecord = this.record.current;
     });
 
   }
 
   private edit(item: RecordTableDto): void {
     if (item.id > 0) {
+      this.editLoading = true;
       this.getDetail(item.id).then((response) => {
         this.formActive = response as boolean;
+        this.editLoading = false;
       });
+    }
+  }
+
+  private wantToDeleteRecord(item: RecordTableDto): void {
+    this.questionDialog = true;
+    this.objectToDelete = item;
+  }
+
+  private deleteRecord(decision: boolean): void {
+    if (this.objectToDelete.id > 0 && decision) {
+      this.delete(this.objectToDelete.id).then((response) => {
+        if (response) {
+          this.questionDialog = false;
+        }
+      });
+    } else {
+      this.questionDialog = false;
+      this.objectToDelete = undefined;
     }
   }
 
   private newAuction() {
     this.initCurrent().then((response) => {
       this.formActive = response as boolean;
+      this.setCurrentUserId(this.auth.userId);
     });
   }
 
-  private newFiles(files: FileSimpleDto[]): void {
-    this.initCurrent().then((response) => {
-      if (response) {
-        this.newRecord.files = files.map((file) => {
-          file.path = 'auction';
-          file.userId = this.auth.userId;
-          return file;
-        });
-        this.setCurrent(this.newRecord);
-      }
-    });
+  private newFiles(files: File[]): void {
+      this.setFiles(files.map((file) => {
+          const item: File = {
+            path: 'auction',
+            userId: this.auth.userId,
+            recordId: this.record.current.id,
+            created: new Date(file.created),
+            user: null,
+            record: null,
+            name: file.name,
+            id: file.id,
+          } as File;
+
+          return item;
+        }));
   }
 
   private back(): void {
@@ -708,11 +750,20 @@ export default class AdminAuctionTableComponent extends BaseComponent {
     if (this.state === 4) {
       this.$validator.validateAll().then((response) => {
         if (response) {
-          this.create(this.newRecord).then((respRecord) => {
-            if (respRecord) {
-              this.backToList();
-            }
-          });
+          if (this.record.current.id === undefined ||
+              this.record.current.id <= 0) {
+              this.create(this.record.current).then((respRecord) => {
+                if (respRecord) {
+                  this.backToList();
+                }
+              });
+          } else {
+            this.updateRecord(this.record.current).then((respRecord) => {
+              if (respRecord) {
+                this.backToList();
+              }
+            });
+          }
         }
       });
     }

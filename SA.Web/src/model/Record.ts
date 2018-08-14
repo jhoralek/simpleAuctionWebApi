@@ -17,8 +17,6 @@ export default interface Record {
     contactToAppointment: string;
     user: User; // user who creates this record (can be only dealer)
     userId: number;
-    customer: Customer;
-    customerId: number;
     minimumBid: number;
     startingPrice: number;
     validFrom: Date;
@@ -43,5 +41,4 @@ export default interface Record {
     bids?: Bid[];
     id?: number;
     currentPrice: number;
-    numberOfBids: number;
 }

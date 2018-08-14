@@ -73,7 +73,5 @@ namespace SA.Core.Model
         public virtual int AddressId { get; set; }
 
         public virtual Address Address { get; set; }
-
-        public virtual ICollection<Record> Records { get; set; } = new List<Record>();
     }
 }
