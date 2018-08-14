@@ -1,7 +1,7 @@
 <template>
   <div class="customer">
     <v-progress-linear v-if="isLoading" :indeterminate="isLoading"></v-progress-linear>
-    <v-container grid-list-md v-if="profile.user">
+    <v-container grid-list-xs pa-2 v-if="profile.user">
       <v-layout row wrap>
         <v-flex xs12 md6>
           <h1 class="display-1 primary--text">{{ resx('customerDetail') }}</h1>

@@ -7,7 +7,7 @@
             <span class="headline">{{ resx('user') }}: {{ profile.user.userName }}</span>
           </v-card-title>
           <v-card-text>
-            <v-container grid-list-md>
+            <v-container  grid-list-xs pa-0>
               <v-layout wrap>
                 <v-flex xs12 md6>
                     <v-switch
@@ -30,7 +30,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-container grid-list-md>
+      <v-container  grid-list-xs pa-0>
           <v-layout row wrap>
               <v-flex xs12>
                 <v-data-table

@@ -7,7 +7,6 @@ import mutations from '@/store/modules/auth/mutations';
 
 export const state: AuthState = {
     userId: undefined,
-    customerId: undefined,
     userName: undefined,
     token: undefined,
     language: undefined,

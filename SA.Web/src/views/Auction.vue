@@ -1,10 +1,10 @@
 <template>
   <div class="auction">
     <v-progress-linear v-if="isLoading && records === undefined" :indeterminate="isLoading"></v-progress-linear>
-    <v-container grid-list-md v-if="records">
+    <v-container pa-2 grid-list-xs>
       <v-layout>
         <v-flex xs12>
-          <section grid-list-md class="page-head">
+          <section grid-list-xs pa-0 class="page-head">
             <v-flex xs8 md6>
               <h1 class="display-1 primary--text">{{ resx('auctions') }}</h1>
             </v-flex>
@@ -17,7 +17,7 @@
           <section>
             <v-layout mb-5 row wrap>
               <v-flex xs12>
-                <v-container pa-0 fluid grid-list-md>
+                <v-container pa-0 grid-list-xs>
                   <auction-table-component :records="records" v-if="getViewType" />
                   <auction-grid-component :records="records" v-if="getViewType === false" />
                 </v-container>

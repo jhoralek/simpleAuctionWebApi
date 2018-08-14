@@ -108,14 +108,14 @@ namespace SA.Web
                 cfg.CreateMap<UserDto, User>();
                 cfg.CreateMap<UserSimpleDto, User>();
                 cfg.CreateMap<RecordDetailDto, Record>()
-                    .ForMember(x => x.User, x => x.Ignore())
-                    .ForMember(x => x.Customer, x => x.Ignore());
+                    .ForMember(x => x.User, x => x.Ignore());
 
                 // update mapping
                 cfg.CreateMap<User, User>();
                 cfg.CreateMap<Record, Record>()
                     .ForMember(x => x.User, x => x.Ignore())
-                    .ForMember(x => x.Customer, x => x.Ignore());
+                    .ForMember(x => x.Files, x => x.Ignore())
+                    .ForMember(x => x.Bids, x => x.Ignore());
                 cfg.CreateMap<Customer, Customer>();
                 cfg.CreateMap<Address, Address>()
                     .ForMember(dto => dto.Country, dto => dto.Ignore());

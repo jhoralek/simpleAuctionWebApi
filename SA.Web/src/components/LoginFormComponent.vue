@@ -1,16 +1,16 @@
 <template>
-    <div class="loginForm">
+    <div class="loginForm fill-height">
         <div v-if="!auth.isAuthenticated">
             <v-dialog class="login-dialog-container" v-model="openedModal" persistent max-width="500px">
-                <v-btn class="login-button" slot="activator" flat>{{ resx('login') }}</v-btn>
-                <v-card>
+                <v-btn class="login-button align-center" slot="activator" flat>{{ resx('login') }}</v-btn>
+                <v-card v-if="openedModal">
                     <v-progress-linear v-if="isLoging" :indeterminate="isLoging"></v-progress-linear>
                     <v-form lazy-validation>
                         <v-card-title>
                             <span class="headline">{{ resx('login') }}</span>
                         </v-card-title>
                         <v-card-text>
-                            <v-container grid-list-md>
+                            <v-container  grid-list-xs pa-0>
                                     <v-layout wrap>
                                         <v-flex xs12 sm12 md12>
                                             <v-text-field
@@ -52,7 +52,7 @@
 
 <script lang="ts">
 
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { State, Action, namespace } from 'vuex-class';
 
 import { AuthState, ProfileState } from '@/store/types';
@@ -128,13 +128,15 @@ export default class LoginFormComponent extends FormBaseComponent {
 </script>
 
 <style>
-/* .login-dialog-container {
-    height: 100%;
+
+.loginForm {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
 }
 
-.login-dialog-container div {
-    vertical-align: middle;
+.loginForm div {
     height: 100%;
-} */
+}
 
 </style>

@@ -42,8 +42,8 @@
               </v-list>
             </v-menu>
             <v-btn flat v-if="auth.isAuthenticated && !auth.isDealer" to="/customer">{{ resx('customerDetail') }}</v-btn>
-            <div class="toolbar__items menu__activator">
-              <login-form-component />
+            <div class="fill-height align-content-center">
+              <login-form-component/>
             </div>
           </v-toolbar-items>
           <language-component />
@@ -131,6 +131,15 @@
                   </router-link>
                 </v-flex>
               </v-card>
+              <v-card v-if="auth.isAuthenticated">
+                <v-flex justify-start offset-xs1>
+                  <router-link
+                    class="nav-item btn btn--flat btn--router"
+                    style="justify-content: left"
+                    to="/auctionsAdministration">{{ resx('auctionsAdministration') }}
+                  </router-link>
+                </v-flex>
+              </v-card>
               <v-card>
                 <v-flex justify-start offset-sm1>
                     <login-form-component />
@@ -157,12 +166,22 @@
         </v-footer>
         <message-component />
       </v-content>
+      <cookie-consent>
+        <template slot="message">
+          <span>{{ resx('cookieConsent') }}</span>
+          <router-link class="cookie-consent-link" to="/cookies">{{ resx('showDetails') }}</router-link>
+        </template>
+        <template slot="button">
+          <v-btn white>{{ resx('agree') }}</v-btn>
+        </template>
+      </cookie-consent>
     </v-app>
   </div>
 </template>
 
 <script lang="ts">
 
+import CookieConsent from 'vue-cookieconsent-component';
 import { Component, Vue } from 'vue-property-decorator';
 import { State, Action, Getter, namespace } from 'vuex-class';
 
@@ -193,6 +212,7 @@ const MessageAction = namespace('message', Action);
     LoginFormComponent,
     LanguageComponent,
     MessageComponent,
+    CookieConsent,
   },
 })
 export default class App extends Vue {
@@ -238,7 +258,46 @@ export default class App extends Vue {
 </script>
 
 <style>
+
 .login-form-button:before {
   height: 100%;
 }
+
+/* cookie consent */
+
+.cookie-consent {
+  position: fixed;
+  z-index: 9999;
+  width: 100%;
+  padding: 1rem 0;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+
+  background: #ced4da;
+
+  cursor: pointer;
+  color: #fff;
+  background: #757575;
+}
+
+.cookie-consent {
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.cookie-consent-link {
+  color: #fff;
+  padding-left: 5px;
+}
+
+.cookie-consent-transition {
+  transition: transform .75s;
+  transition-timing-function: cubic-bezier(.75,0,0,1);
+  transform: translateY(100%);
+}
+
 </style>

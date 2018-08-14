@@ -29,7 +29,6 @@ export interface ProfileState {
  */
 export interface AuthState {
     userId: number;
-    customerId: number;
     userName: string;
     token: string;
     language: string;

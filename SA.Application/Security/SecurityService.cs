@@ -51,18 +51,15 @@ namespace SA.Application.Security
             }
 
             persistedUser.Token = $"{token.TokenType} {token.AccessToken}";
-
-            var loggedIn = await _userRepository.UpdateAsync(persistedUser);
-            var customer = await _customerRepository.GetOneAsync<CustomerSimpleDto>(x => x.Id == loggedIn.CustomerId);
+            await _userRepository.UpdateAsync(persistedUser);
 
             return new AuthResponse
             {
-                UserId = loggedIn.Id,
-                CustomerId = loggedIn.CustomerId,
-                Token = loggedIn.Token,
-                UserName = loggedIn.UserName,
-                Language = loggedIn.Language,
-                IsDealer = customer.IsDealer,
+                UserId = persistedUser.Id,
+                Token = persistedUser.Token,
+                UserName = persistedUser.UserName,
+                Language = persistedUser.Language,
+                IsDealer = persistedUser.Customer.IsDealer,
             };
         }
 
