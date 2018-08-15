@@ -46,7 +46,7 @@ namespace SA.WebApi.Controllers
                 Entity = bid,
             };
 
-            npm var now = DateTime.Now;
+            var now = DateTime.Now;
             if (bid == null && bid.RecordId <= 0)
             {
                 response.Code = "bidBadRequest";
