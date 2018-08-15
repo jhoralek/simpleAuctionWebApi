@@ -23,15 +23,32 @@
                                                     <h3 class="headline">{{ resx('auctionDetailInformation') }}</h3>
                                                 </div>
                                                 <v-container class="grey lighten-3">
-                                                    <v-layout row wrap>
+                                                    <v-layout row wrap v-if="!currentUser.isFeePayed">
                                                         <v-flex xs6>
-                                                            <h1 class="display-3 font-weight-medium">{{ record.name }}</h1>
+                                                            <h1 class="display-1 font-weight-medium">{{ record.name }}</h1>
                                                         </v-flex>
                                                         <v-flex xs6>
                                                             <v-layout row justify-end align-center>
-                                                                <h1 class=" red--text text--lighten-1 display-3 font-weight-bold">
-                                                                    <PriceComponent :price="currentPrice(record)" />
+                                                                <h1 class=" red--text text--lighten-1 display-1 font-weight-bold">
+                                                                    <PriceComponent :price="record.currentPrice" />
                                                                 </h1>
+                                                            </v-layout>
+                                                        </v-flex>
+                                                    </v-layout>
+                                                    <v-layout row wrap v-if="currentUser.isFeePayed">
+                                                        <v-flex xs6>
+                                                            <h3 class="font-weight-bold">{{ record.name }}</h3>
+                                                        </v-flex>
+                                                        <v-flex xs6>
+                                                            <v-layout row  justify-end align-center>
+                                                                <h3 class="red--text text--lighten-1 font-weight-bold">
+                                                                    <PriceComponent :price="record.currentPrice" />
+                                                                </h3>
+                                                            </v-layout>
+                                                        </v-flex>
+                                                        <v-flex xs12>
+                                                            <v-layout row justify-end align-center>
+                                                                <bid-component :bid="record.minimumBid" />
                                                             </v-layout>
                                                         </v-flex>
                                                     </v-layout>
@@ -54,7 +71,7 @@
                                                     <v-layout row wrap>
                                                         <v-flex xs6>{{ resx('numberOfBids') }}</v-flex>
                                                         <v-flex xs6>
-                                                            {{ numberOfBids(record.bids) }}
+                                                            {{ record.numberOfBids }}
                                                         </v-flex>
                                                     </v-layout>
                                                     <v-layout row wrap>
@@ -244,39 +261,32 @@ import { Component, Prop } from 'vue-property-decorator';
 import { Getter, namespace } from 'vuex-class';
 
 import BaseComponent from './BaseComponent.vue';
-import { PriceComponent } from '@/components';
+import { PriceComponent, BidComponent } from '@/components';
 import {
     Record,
     Bid,
     User,
 } from '@/model';
-import { FileSimpleDto } from '@/poco';
+import { FileSimpleDto, AuthUser } from '@/poco';
 
 const RecordGetter = namespace('record', Getter);
+const AuthGetter = namespace('auth', Getter);
 
 @Component({
     components: {
         PriceComponent,
+        BidComponent,
     },
 })
 export default class AuctionDetalComponent extends BaseComponent {
     @RecordGetter('getCurrent') public record: Record;
+    @AuthGetter('getCurrentLoggedUser') public currentUser: AuthUser;
 
     private expander: boolean[] = [true, true, true, true, true, true];
     private expander1: boolean[] = [true];
 
     private filePath(file: FileSimpleDto): string {
         return `${this.settings.apiUrl.replace('/api', '')}/${file.path}/${file.recordId}/images/${file.name}`;
-    }
-
-    private currentPrice(record: Record): number {
-        return record.bids.length > 0
-            ? Math.max.apply(Math, record.bids.map((o) => o.price))
-            : record.startingPrice;
-    }
-
-    private numberOfBids(bids: Bid[]): number {
-        return bids === undefined ? 0 : bids.length;
     }
 
     private sellerInfo(user: User): string {

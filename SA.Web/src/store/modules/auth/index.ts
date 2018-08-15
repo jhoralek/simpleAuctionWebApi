@@ -12,6 +12,7 @@ export const state: AuthState = {
     language: undefined,
     isAuthenticated: false,
     isDealer: false,
+    isFeePayed: false,
     error: false,
     errorMessage: undefined,
 };

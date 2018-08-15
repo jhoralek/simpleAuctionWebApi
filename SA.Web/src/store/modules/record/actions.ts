@@ -5,7 +5,7 @@ import {
     RecordState,
 } from '@/store/types';
 
-import { Record, MessageStatusEnum } from '@/model';
+import { Record, MessageStatusEnum, Bid } from '@/model';
 
 import {
     RECORD_INITIAL_STATE,
@@ -16,7 +16,11 @@ import {
     RECORD_SET_CURRENT_FILES,
     RECORD_SET_CURRENT_USER_ID,
 } from '@/store/mutation-types';
-import { RecordTableDto, FileSimpleDto } from '@/poco';
+import {
+    RecordTableDto,
+    FileSimpleDto,
+    ResponseMessage,
+} from '@/poco';
 
 const actions: ActionTree<RecordState, RootState> = {
     /**
@@ -278,6 +282,38 @@ const actions: ActionTree<RecordState, RootState> = {
                 },
                 { root: true });
                 return resolve(true);
+            })
+            .catch((error) => {
+                dispatch('message/change', {
+                    mod: 'Record',
+                    message: {
+                        state: MessageStatusEnum.Error,
+                        message: error,
+                    },
+                },
+                { root: true});
+                return resolve(false);
+            });
+        });
+    },
+    addBid({rootState, dispatch}, bid: Bid): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.post(`${rootState.settings.apiUrl}/bids/create`, bid,
+                { headers: { authorization: rootState.auth.token }})
+            .then((resp1) => {
+                const response = resp1.data as ResponseMessage<Bid>;
+                dispatch('record/getDetail', bid.recordId, { root: true}).then((resp2) => {
+                    dispatch('message/change', {
+                        mod: 'Record',
+                        message: {
+                            state: response.status,
+                            message: response.code,
+                        },
+                    },
+                    { root: true});
+                    return resolve(true);
+                });
+
             })
             .catch((error) => {
                 dispatch('message/change', {

@@ -41,6 +41,8 @@ namespace SA.Application.Records
         public virtual string MaximumWeightOfRide { get; set; }
         public virtual int UserId { get; set; }
         public virtual string Place { get; set; }
+        public virtual decimal CurrentPrice { get; set; }
+        public virtual int NumberOfBids { get; set; }
         public virtual ICollection<FileSimpleDto> Files { get; set; } = new List<FileSimpleDto>();
         public virtual ICollection<BidSimpleDto> Bids { get; set; } = new List<BidSimpleDto>();
     }

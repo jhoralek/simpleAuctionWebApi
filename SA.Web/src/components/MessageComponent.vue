@@ -42,7 +42,7 @@ export default class MessageComponent extends BaseComponent {
         case MessageStatusEnum.Success:
             return 'green darken-3';
         case MessageStatusEnum.Warning:
-            return 'yellow darkent-4';
+            return 'amber darken-3';
         case MessageStatusEnum.Error:
             return 'red darken-4';
         default: // menas other

@@ -60,6 +60,7 @@ namespace SA.Application.Security
                 UserName = persistedUser.UserName,
                 Language = persistedUser.Language,
                 IsDealer = persistedUser.Customer.IsDealer,
+                IsFeePayed = persistedUser.Customer.IsFeePayed,
             };
         }
 

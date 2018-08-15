@@ -16,6 +16,7 @@ const mutations: MutationTree<AuthState> = {
         state.error = false;
         state.errorMessage = undefined;
         state.isDealer = false;
+        state.isFeePayed = false;
     },
     /**
      * Mutate state of login
@@ -31,6 +32,7 @@ const mutations: MutationTree<AuthState> = {
         state.error = user.error !== null;
         state.errorMessage = user.error;
         state.isDealer = user.isDealer;
+        state.isFeePayed = user.isFeePayed;
     },
     /**
      * Logout user
@@ -44,6 +46,7 @@ const mutations: MutationTree<AuthState> = {
         state.userName = undefined;
         state.error = false;
         state.errorMessage = undefined;
+        state.isFeePayed = false;
     },
     AUTH_SET_LANGUAGE(state, language: string) {
         state.language = language;

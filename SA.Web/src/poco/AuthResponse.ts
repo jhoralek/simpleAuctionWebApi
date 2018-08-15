@@ -5,4 +5,5 @@ export default interface AuthResponse {
     langauge: string;
     error: string;
     isDealer: boolean;
+    isFeePayed: boolean;
 }

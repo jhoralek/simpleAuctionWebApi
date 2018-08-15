@@ -61,6 +61,7 @@ export default class Validation {
                 defects: `"${resource.defects}"`,
                 moreDescription: `"${resource.moreDescription}"`,
                 dateOfFirstRegistration: `"${resource.dateOfFirstRegistration}"`,
+                bid: `"${resource.bid}"`,
             },
         };
     }

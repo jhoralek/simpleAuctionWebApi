@@ -82,7 +82,11 @@ namespace SA.Web
                         ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().Price
                         : x.StartingPrice))
                     .ForMember(dto => dto.NumberOfBids, dto => dto.MapFrom(x => x.Bids.Count()));
-                cfg.CreateMap<Record, RecordDetailDto>();
+                cfg.CreateMap<Record, RecordDetailDto>()
+                    .ForMember(dto => dto.CurrentPrice, dto => dto.MapFrom(x => x.Bids.Any()
+                        ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().Price
+                        : x.StartingPrice))
+                    .ForMember(dto => dto.NumberOfBids, dto => dto.MapFrom(x => x.Bids.Count()));
                 cfg.CreateMap<Record, RecordMinimumDto>()
                     .ForMember(dto => dto.CurrentPrice, dto => dto.MapFrom(x => x.Bids.Any()
                         ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().Price
@@ -109,6 +113,8 @@ namespace SA.Web
                 cfg.CreateMap<UserSimpleDto, User>();
                 cfg.CreateMap<RecordDetailDto, Record>()
                     .ForMember(x => x.User, x => x.Ignore());
+                cfg.CreateMap<RecordTableDto, Record>()
+                    .ForMember(x => x.Files, x => x.Ignore());
 
                 // update mapping
                 cfg.CreateMap<User, User>();
