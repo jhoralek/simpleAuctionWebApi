@@ -46,9 +46,7 @@ namespace SA.WebApi.Controllers
         [Route("getAllUsersForAdmin")]
         public async Task<IActionResult> GetAllUsersForAdmin()
             => Json(await _repository
-                .GetAllAsync<UserSimpleDto, bool>(u =>
-                    !u.Customer.IsDealer,
-                u => u.IsActive));
+                .GetAllAsync<UserSimpleDto, bool>(order: u => u.IsActive));
 
         [HttpPost]
         [Route("updateUserAdmin")]

@@ -34,6 +34,7 @@ export interface AuthState {
     language: string;
     isAuthenticated: boolean;
     isDealer: boolean;
+    isFeePayed: boolean;
     error: boolean;
     errorMessage: string;
 }

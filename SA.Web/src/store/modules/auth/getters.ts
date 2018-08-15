@@ -11,6 +11,8 @@ const getters: GetterTree<AuthState, RootState> = {
             isAuthenticated: state.isAuthenticated,
             token: state.token,
             langauge: state.language,
+            isFeePayed: state.isFeePayed,
+            userId: state.userId,
         } as AuthUser;
     },
 };

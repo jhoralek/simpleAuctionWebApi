@@ -4,4 +4,6 @@ export default interface AuthUser {
     langauge: string;
     isDealer: boolean;
     isAuthenticated: boolean;
+    isFeePayed: boolean;
+    userId: number;
 }

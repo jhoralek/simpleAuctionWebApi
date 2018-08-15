@@ -8,6 +8,7 @@
         public string Language { get; set; }
         public bool IsDealer { get; set; }
         public string Error { get; set; }
+        public bool IsFeePayed { get; set; }
 
     }
 }
