@@ -5,8 +5,8 @@ import {
     ProfileState,
 } from '@/store/types';
 
-import { User, MessageStatusEnum, Customer, Address } from '@/model';
-import { UserShortInfo, UserSimpleDto } from '@/poco';
+import { User, MessageStatusEnum, Customer, Address, GdprRecord } from '@/model';
+import { UserShortInfo, UserSimpleDto, GdprRecordTableDto } from '@/poco';
 
 import {
     USER_INITIAL_STATE,
@@ -282,6 +282,52 @@ const actions: ActionTree<ProfileState, RootState> = {
                 return resolve(false);
             });
             return resolve(true);
+        });
+    },
+    createGdprRequest({rootState, dispatch}, request: GdprRecord): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.post(`${rootState.settings.apiUrl}/gdprRecords/create`, request)
+                .then((response) => {
+                    dispatch('message/change', {
+                        mod: 'Profile',
+                        message: {
+                            state: MessageStatusEnum.Success,
+                            message: 'gdprSendSuccessfully',
+                        },
+                    },
+                    { root: true });
+                    return resolve(response.data !== undefined);
+                })
+                .catch((error) => {
+                    dispatch('message/change', {
+                        mod: 'Profile',
+                        message: {
+                            state: MessageStatusEnum.Error,
+                            message: error,
+                        },
+                    },
+                    { root: true });
+                    return resolve(false);
+                });
+        });
+    },
+    getAllGdprRecordsForAdmin({rootState, dispatch}): Promise<GdprRecordTableDto> {
+        return axios.get(`${rootState.settings.apiUrl}/gdprRecords/getAllGdprRecordsAdmin`,
+            { headers: { authorization: rootState.auth.token }})
+        .then((response) => {
+            const { data } = response;
+            return data as GdprRecordTableDto[];
+        })
+        .catch((error) => {
+            dispatch('message/change', {
+                mod: 'Profile',
+                message: {
+                    state: MessageStatusEnum.Error,
+                    message: error,
+                },
+            },
+            { root: true });
+            return null;
         });
     },
 };

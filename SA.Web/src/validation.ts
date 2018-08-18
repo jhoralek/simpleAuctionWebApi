@@ -62,6 +62,7 @@ export default class Validation {
                 moreDescription: `"${resource.moreDescription}"`,
                 dateOfFirstRegistration: `"${resource.dateOfFirstRegistration}"`,
                 bid: `"${resource.bid}"`,
+                applicationType: `"${resource.applicationType}"`,
             },
         };
     }

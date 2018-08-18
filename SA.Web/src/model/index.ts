@@ -6,6 +6,8 @@ import Record from './Record';
 import Bid from './Bid';
 import Address from './Address';
 import MessageStatusEnum from './MessageStatusEnum';
+import { GdprApplicationType } from './GdprApplicationType';
+import GdprRecord from './GdprRecord';
 
 export {
     Address,
@@ -16,4 +18,6 @@ export {
     Record,
     User,
     MessageStatusEnum,
+    GdprApplicationType,
+    GdprRecord,
 };

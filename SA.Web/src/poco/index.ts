@@ -1,6 +1,8 @@
 import AuthResponse from './AuthResponse';
 import AuthUser from './AuthUser';
 import FileSimpleDto from './FileSimpleDto';
+import GdprRecordDto from './GdprRecordDto';
+import GdprRecordTableDto from './GdprRecordTableDto';
 import LoginDto from './LoginDto';
 import MessageDto from './MessageDto';
 import RecordTableDto from './RecordTableDto';
@@ -12,6 +14,8 @@ export {
     AuthResponse,
     AuthUser,
     FileSimpleDto,
+    GdprRecordDto,
+    GdprRecordTableDto,
     LoginDto,
     MessageDto,
     RecordTableDto,

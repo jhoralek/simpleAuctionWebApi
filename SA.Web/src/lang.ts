@@ -38,6 +38,7 @@ export class Translator {
         administration: 'Administrace',
         agree: 'Souhlasím',
         agreementToTerms: 'Souhlasím s obchodními podmínkami',
+        applicationType: 'Typ žádosti',
         auctionDetailInformation: 'Informace o aukci',
         auctionHall: 'Aukční síň',
         auctions: 'Aukce',
@@ -65,6 +66,7 @@ export class Translator {
         cookieConsent: `Web společnosti Jera Trading s.r.o. používá k poskytování služeb, personalizaci reklam a analýze
         návštěvnosti soubory cookie. Používáním tohoto webu s tím souhlasíte.`,
         cookies: 'Cookies',
+        correctionPersonalInformation: 'Oprava osobních údajů',
         country: 'Země',
         created: 'Vytvořen',
         createdSuccessfully: 'Zánam úspěšně vytvořen.',
@@ -75,6 +77,7 @@ export class Translator {
         dealer: 'Prodávající',
         defects: 'Závady',
         deleteSuccessfully: 'Záznam byl smazán',
+        deletingPersonalInformation: 'Smazání osobních údajů',
         detailOfAuction: 'Detail aukce',
         dimensions: 'Celkové rozměry (délka / šířka / výška)',
         doors: 'Dveře',
@@ -93,6 +96,19 @@ export class Translator {
         forDealers: 'Pro prodejce',
         format: 'Formát',
         fuel: 'Palivo',
+        fullName: 'Celé jméno',
+        gdpr: 'GDPR',
+        gdprAdministration: 'Administrace GDPR',
+        gdprAnnouncment: `Pro Vaši co nejpřesnější identifikaci prosím uvádějte údaje, které jste používali při naší
+        společné komunikaci, ve smluvních vztazích a podobně. Pokud nám Vámi uvedené informace neumožní ověřit, že
+        opravdu jednáme se subjektem údajů, jehož údaje zpracováváme, jsme oprávněni od Vás vyžadovat další doplňující
+        údaje. Při nedostatku informací potřebných k ověření vaší totožnosti, nemůže být Vaše žádost řádně vyřízena.
+        Prosím berte na vědomí, že za opakované nebo zjevně neodůvodněné žádosti, můžeme požadovat úhradu
+        administrativních nákladů, případně máme právo odmítnout konat. Jakákoliv komunikace po obdržení Vámi zaslaného
+        formuláře bude probíhat elektronicky. Odpovědi na Vaše žádosti očekávejte v zákonem stanovených lhůtách v
+        e-mailových schránkách, jejichž adresy jste uvedli ve formuláři.`,
+        gdprSendSuccessfully: 'Gdpr byl úspěšně odeslán.',
+        gdprThanks: 'Děkujeme za odeslání formuláře. Váš tým Jera trading s.r.o.',
         grid: 'Mříž',
         home: 'Domů',
         intoFavorites: 'Do oblíbených',
@@ -113,6 +129,7 @@ export class Translator {
         name: 'Název',
         next: 'Další',
         new: 'Nový',
+        newObjection: 'Vznesení námitky',
         news: 'Novinky',
         numberOfBids: 'Počet příhozů',
         numberOfSeets: 'Počet sedadel',
@@ -123,13 +140,19 @@ export class Translator {
         phoneNumber: 'Telefonní číslo',
         postCode: 'PSČ',
         power: 'Výkon',
+        processed: 'Zpracováno',
         protectionPersonalData: 'Ochrana osobních údajů',
         question: 'Otázka',
         registration: 'Registrace',
         registrationCheck: 'Kontrolní registrace je prováděna',
+        registrationAnnouncement: `Údaje, které jste uvedli v registraci považujeme za správné a úplně.
+        Přihlašovací jméno a heslo si pečlivě uschovejte. Neposkytujte je žádné třetí osobě, a to ani na vyžádání.
+        Předejdete tak možnému úniku Vašich osobních údajů. Naše společnost nenese odpovědnost za porušení výše
+        uvedené povinnosti.`,
         registrationSent: 'Registrace úspěšně odeslána!',
         requiredFields: 'Povinné  pole',
         repeatPassword: 'Opakovat heslo',
+        reportPersonalInformation: 'Výpis osobních údajů',
         seller: 'Prodejce',
         sendingNews: 'Zasílat novinky',
         share: 'Sdílet',
@@ -172,11 +195,12 @@ export class Translator {
     private static en: Dictionary<string> = {
         about: 'About',
         address: 'Address',
+        action: 'Action',
         active: 'Active',
         administration: 'Administration',
         agree: 'Agree',
         agreementToTerms: 'Agree with terms and conditions',
-        action: 'Action',
+        applicationType: 'Application type',
         auctionDetailInformation: 'Detailed auction information',
         auctionHall: 'Auction hall',
         auctions: 'Auctions',
@@ -203,6 +227,7 @@ export class Translator {
         contactToAppointment: 'Contact person',
         cookieConsent: 'Jera Trading s.r.o. website uses cookies to ensure you get the best experience on our website.',
         cookies: 'Cookies',
+        correctionPersonalInformation: 'Correction of personal information',
         country: 'Country',
         created: 'Created',
         createdSuccessfully: 'Record created successfully',
@@ -213,6 +238,7 @@ export class Translator {
         dealer: 'Dealer',
         defects: 'Defets',
         deleteSuccessfully: 'Record deleted successfully',
+        deletingPersonalInformation: 'Deleting of personal information',
         detailOfAuction: 'Detail of auction',
         dimensions: 'Overall dimensions (length / width / height)',
         doors: 'Doors',
@@ -231,6 +257,20 @@ export class Translator {
         forDealers: 'For dealers',
         format: 'Format',
         fuel: 'Fuel',
+        fullName: 'Full name',
+        gdpr: 'GDPR',
+        gdprAdministration: 'GDPR administration',
+        gdprAnnouncment: `
+        For your most accurate identification, please provide the data you used in our shared communication,
+        in contractual relations and the like. If the information provided does not allow us to verify that
+        we are really dealing with the data subject whose We process the data, we are entitled to request
+        additional information from you. Insufficient information to verify your identity, your request can
+        not be properly processed. Please note that for repeated or manifestly unjustified requests, we may
+        request payment of administrative costs, or we have the right to refuse to act. Any communication
+        upon receipt by you the form will be sent electronically. You can expect the answers to your requests
+        within the statutory deadlines in mailboxes whose addresses are listed on the form.`,
+        gdprSendSuccessfully: 'Gdpr form sent successfully.',
+        gdprThanks: 'Thank you for sending a form. Your team Jera trading s.r.o.',
         grid: 'Grid',
         home: 'Home',
         intoFavorites: 'To favorites',
@@ -251,6 +291,7 @@ export class Translator {
         name: 'Name',
         next: 'Next',
         new: 'New',
+        newObjection: 'New objection',
         news: 'News',
         numberOfBids: 'Number of bids',
         numberOfSeets: 'Number of seets',
@@ -260,13 +301,20 @@ export class Translator {
         phoneNumber: 'Phone number',
         postCode: 'Post code',
         power: 'Power',
+        processed: 'Processed',
         protectionPersonalData: 'Protection of personal data',
         question: 'Question',
         registration: 'Registration',
         registrationCheck: 'Registration check is done by',
+        registrationAnnouncement: `
+        The data you provided in the registration is correct and complete. Please remember to
+        keep your username and password. Do not provide them to any third party, even on request.
+        This will prevent your personal data from being leaked. Our company is not responsible for
+        the violation above obligations.`,
         registrationSent: 'Registration sucessfully sent!',
         requiredFields: 'Required fields',
         repeatPassword: 'Repeat password',
+        reportPersonalInformation: 'Report of personal information',
         seller: 'Seller',
         sendingNews: 'Sending news',
         share: 'Share',

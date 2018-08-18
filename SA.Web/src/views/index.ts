@@ -11,7 +11,9 @@ import Auction from './Auction.vue';
 import AuctionDetail from './AuctionDetail.vue';
 import UserAdministration from './admin/UserAdministration.vue';
 import AuctionAdministration from './admin/AuctionAdministration.vue';
+import GdprAdministration from './admin/GdprAdministration.vue';
 import Cookies from './Cookies.vue';
+import Gdpr from './Gdpr.vue';
 
 export {
     About,
@@ -19,6 +21,7 @@ export {
     Contact,
     Cookies,
     Customer,
+    Gdpr,
     Home,
     Faq,
     ForDealers,
@@ -28,4 +31,5 @@ export {
     AuctionDetail,
     UserAdministration,
     AuctionAdministration,
+    GdprAdministration,
 };

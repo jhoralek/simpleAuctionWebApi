@@ -247,9 +247,6 @@ import {
     Address,
 } from '@/model';
 
-import { Translator } from '@/lang';
-import {log} from 'util';
-
 const ProfileAction = namespace('profile', Action);
 const SettingsGetter = namespace('settings', Getter);
 

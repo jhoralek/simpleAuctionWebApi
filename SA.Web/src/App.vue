@@ -25,6 +25,9 @@
                 <v-list-tile to="/protectionPersonalData">
                   <v-list-tile-title>{{ resx('protectionPersonalData') }}</v-list-tile-title>
                 </v-list-tile>
+                <v-list-tile to="/gdpr">
+                  <v-list-tile-title>{{ resx('gdpr') }}</v-list-tile-title>
+                </v-list-tile>
               </v-list>
             </v-menu>
             <v-menu offset-y v-if="auth.isAuthenticated && auth.isDealer">
@@ -38,6 +41,9 @@
                 </v-list-tile>
                 <v-list-tile to="/auctionsAdministration">
                   <v-list-tile-title>{{ resx('auctionsAdministration')}}</v-list-tile-title>
+                </v-list-tile>
+                <v-list-tile to="/gdprAdministration">
+                  <v-list-tile-title>{{ resx('gdprAdministration')}}</v-list-tile-title>
                 </v-list-tile>
               </v-list>
             </v-menu>
@@ -137,6 +143,15 @@
                     class="nav-item btn btn--flat btn--router"
                     style="justify-content: left"
                     to="/auctionsAdministration">{{ resx('auctionsAdministration') }}
+                  </router-link>
+                </v-flex>
+              </v-card>
+              <v-card v-if="auth.isAuthenticated">
+                <v-flex justify-start offset-xs1>
+                  <router-link
+                    class="nav-item btn btn--flat btn--router"
+                    style="justify-content: left"
+                    to="/gdprAdministration">{{ resx('gdprAdministration') }}
                   </router-link>
                 </v-flex>
               </v-card>
