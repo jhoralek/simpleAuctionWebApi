@@ -70,6 +70,7 @@ namespace SA.Web
             services.AddSingleton<IEntityRepository<Bid>, BidsRepository>();
             services.AddSingleton<IEntityRepository<File>, FilesRepository>();
             services.AddSingleton<IEntityRepository<Record>, RecordsRepository>();
+            services.AddSingleton<IEntityRepository<GdprRecord>, GdprRecordsRepository>();
 
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
@@ -107,6 +108,10 @@ namespace SA.Web
                 cfg.CreateMap<Country, CountryLookupDto>();
                 cfg.CreateMap<Country, CountryDto>();
                 cfg.CreateMap<Country, Country>();
+
+                cfg.CreateMap<GdprRecord, GdprRecordTableDto>()
+                    .ForMember(dto => dto.FullName, dto => dto.MapFrom(x => $"{x.FirstName} {x.LastName}"));
+                cfg.CreateMap<GdprRecord, GdprRecordDto>();
 
                 // reverse mapping
                 cfg.CreateMap<UserDto, User>();

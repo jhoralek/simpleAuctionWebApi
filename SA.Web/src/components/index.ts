@@ -13,6 +13,7 @@ import PriceComponent from './helpers/PriceComponent.vue';
 import BidComponent from './helpers/BidComponent.vue';
 import AuctionDetailComponent from './AuctionDetailComponent.vue';
 import RegistrationComponent from './User/RegistrationComponent.vue';
+import GdprFormComponent from './User/GdprFormComponent.vue';
 
 export {
     LoginFormComponent,
@@ -30,5 +31,6 @@ export {
     AuctionDetailComponent,
     RegistrationComponent,
     BidComponent,
+    GdprFormComponent,
 };
 

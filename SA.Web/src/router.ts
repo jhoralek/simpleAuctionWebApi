@@ -15,6 +15,8 @@ import {
   UserAdministration,
   AuctionAdministration,
   Cookies,
+  Gdpr,
+  GdprAdministration,
 } from '@/views';
 
 import { state } from '@/store/modules/auth';
@@ -74,6 +76,12 @@ export default new Router({
       beforeEnter: adminAuthenticated,
     },
     {
+      path: '/gdprAdministration',
+      name: 'gdprAdministration',
+      component: GdprAdministration,
+      beforeEnter: adminAuthenticated,
+    },
+    {
       path: '/faq',
       name: 'faq',
       component: Faq,
@@ -112,6 +120,11 @@ export default new Router({
       path: '/cookies',
       name: 'cookies',
       component: Cookies,
+    },
+    {
+      path: '/gdpr',
+      name: 'gdpr',
+      component: Gdpr,
     },
   ],
 });
