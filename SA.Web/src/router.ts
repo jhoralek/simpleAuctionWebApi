@@ -17,6 +17,7 @@ import {
   Cookies,
   Gdpr,
   GdprAdministration,
+  Registration,
 } from '@/views';
 
 import { state } from '@/store/modules/auth';
@@ -125,6 +126,11 @@ export default new Router({
       path: '/gdpr',
       name: 'gdpr',
       component: Gdpr,
+    },
+    {
+      path: '/registration',
+      name: 'registration',
+      component: Registration,
     },
   ],
 });

@@ -2,7 +2,7 @@
     <div class="loginForm fill-height">
         <div v-if="!auth.isAuthenticated">
             <v-dialog class="login-dialog-container" v-model="openedModal" persistent max-width="500px">
-                <v-btn class="login-button align-center" slot="activator" flat>{{ resx('login') }}</v-btn>
+                <v-btn class="login-button" slot="activator" flat><div class="btn-text">{{ resx('login') }}</div></v-btn>
                 <v-card v-if="openedModal">
                     <v-progress-linear v-if="isLoging" :indeterminate="isLoging"></v-progress-linear>
                     <v-form lazy-validation>
@@ -45,7 +45,7 @@
 
         </div>
         <div v-if="auth.isAuthenticated">
-            <v-btn class="logout-button" flat @click="logout">{{ resx('logout') }}</v-btn>
+            <v-btn class="logout-button" flat @click="logout"><div class="btn-text">{{ resx('logout') }}</div></v-btn>
         </div>
     </div>
 </template>
