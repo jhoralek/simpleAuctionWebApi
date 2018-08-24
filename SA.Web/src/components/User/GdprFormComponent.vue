@@ -1,5 +1,5 @@
 <template>
-    <div class="gdprForm">
+    <div class="gdpr-form">
         <v-form lazy-validation ref="step" v-if="countries && newGdprRecord && !sent">
             <v-layout row wrap>
                 <v-flex xs12>
@@ -147,9 +147,8 @@
             <v-layout row wrap>
             <v-flex xs12>
                 <v-btn
-                    flat color="success"
+                    color="black"
                     @click="submit">
-                    <v-icon left dark>done_outline</v-icon>
                     {{ resx('submit') }}
                 </v-btn>
             </v-flex>
@@ -157,7 +156,7 @@
         </v-form>
         <v-layout row wrap v-if="sent">
             <v-flex xs12 justify-center align-center>
-                {{ resx('gdprThanks') }}
+                <h2>{{ resx('gdprThanks') }}</h2>
             </v-flex>
         </v-layout>
     </div>
@@ -271,3 +270,35 @@ export default class GdprFromComponent extends FormBaseComponent {
 }
 
 </script>
+
+<style>
+
+.gdpr-form p {
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 2.06;
+  letter-spacing: 0.5px;
+  text-align: justify;
+  padding-right: 10%;
+  padding-bottom: 10px;
+}
+
+.gdpr-form h2 {
+  font-size: 25px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.15;
+  letter-spacing: 0.3px;
+  text-align: left;
+  color: #1a1a2e;
+}
+
+.gdpr-form .v-btn {
+    color: white !important;
+    border-radius: 5px !important;
+}
+
+</style>

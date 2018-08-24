@@ -345,24 +345,22 @@
               <v-flex xs12>
                 <v-btn
                   v-if="state > 1 && state <= 4"
-                  flat
-                  color="info"
+                  color="black"
                   @click="back">
                   <v-icon left dark>keyboard_arrow_left</v-icon>
                   {{ resx('back') }}
                 </v-btn>
                 <v-btn
                   v-if="state >= 1 && state < 4"
-                  flat color="info"
+                  color="black"
                   @click="next">
                   {{ resx('next') }}
                   <v-icon left dark>keyboard_arrow_right</v-icon>
                 </v-btn>
                 <v-btn
                   v-if="state === 4"
-                  flat color="success"
+                  color="black"
                   @click="submit">
-                    <v-icon left dark>done</v-icon>
                     {{ resx('submit') }}
                 </v-btn>
               </v-flex>
@@ -373,10 +371,11 @@
     <v-container  grid-list-xs pa-0 v-else>
       <v-layout row wrap>
         <v-flex xs12>
-          <v-toolbar flat color="white">
-            <v-spacer></v-spacer>
-            <v-btn color="primary" dark class="mb-2" @click="newAuction">{{ resx('new') }}</v-btn>
-          </v-toolbar>
+          <v-layout>
+            <v-flex xs12 class="text-xs-right">
+              <v-btn color="black" dark class="mb-2" @click="newAuction">{{ resx('new') }}</v-btn>
+            </v-flex>
+          </v-layout>
           <v-progress-linear v-if="editLoading" color="blue" indeterminate></v-progress-linear>
           <v-data-table
             :headers="headers"
@@ -424,7 +423,7 @@
 
 <script lang="ts">
 
-import { Component, Prop } from 'vue-property-decorator';
+import { Component, Prop, Watch } from 'vue-property-decorator';
 import { State, Action, namespace } from 'vuex-class';
 
 import BaseComponent from '../BaseComponent.vue';
@@ -473,6 +472,12 @@ export default class AdminAuctionTableComponent extends BaseComponent {
       totalItems: 0,
   };
 
+  @Watch('auctions') private changeUsers(auctions) {
+      if (auctions !== undefined && auctions.length > 0) {
+          this.pagination.totalItems = auctions.length;
+      }
+  }
+
   private mounted() {
         this.headers.push({
             text: this.settings.resource.name,
@@ -519,7 +524,6 @@ export default class AdminAuctionTableComponent extends BaseComponent {
             align: 'center',
             sortable: true,
             value: 'action' });
-        this.setCurrentUserId(this.auth.userId);
   }
 
   get questionWarning(): string {
@@ -771,3 +775,25 @@ export default class AdminAuctionTableComponent extends BaseComponent {
 }
 
 </script>
+
+<style>
+
+.admin-auciton-table .elevation-1 {
+    -webkit-box-shadow: 0 0px 0px 0px rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0) !important;
+    box-shadow: 0 0px 0px 0px rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0)!important;
+}
+
+.admin-auciton-table .v-pagination .v-pagination__item--active {
+    background-color: #546E7A !important;
+}
+
+.admin-auciton-table .v-btn {
+    color: white !important;
+    border-radius: 5px !important;
+}
+
+.admin-auction-table .v-toolbar {
+  height: 10px !important;
+}
+
+</style>

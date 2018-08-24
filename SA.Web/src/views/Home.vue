@@ -10,6 +10,11 @@
         <home-component />
       </v-flex>
     </v-layout>
+    <v-layout row wrap>
+      <v-flex xs12>
+        <actual-random-component />
+      </v-flex>
+    </v-layout>
     <v-container grid-list-md class="registration-container">
       <v-layout row wrap>
         <v-flex xs12>
@@ -30,7 +35,12 @@ import { State, Action, namespace } from 'vuex-class';
 import Component from 'vue-class-component';
 
 import BaseView from './BaseView.vue';
-import { RegistrationComponent, HomeComponent } from '@/components';
+import {
+  RegistrationComponent,
+  HomeComponent,
+  ActualRandomComponent,
+} from '@/components';
+
 import { SettingsState } from '@/store/types';
 
 const ProfileAction = namespace('profile', Action);
@@ -39,6 +49,7 @@ const ProfileAction = namespace('profile', Action);
   components: {
     RegistrationComponent,
     HomeComponent,
+    ActualRandomComponent,
   },
 })
 export default class Home extends BaseView {

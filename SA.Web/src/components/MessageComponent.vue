@@ -40,7 +40,7 @@ export default class MessageComponent extends BaseComponent {
     get messageColor() {
         switch (this.innerMessage.state) {
         case MessageStatusEnum.Success:
-            return 'green darken-3';
+            return 'blue-grey darken-1';
         case MessageStatusEnum.Warning:
             return 'amber darken-3';
         case MessageStatusEnum.Error:

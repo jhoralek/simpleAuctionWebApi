@@ -37,7 +37,8 @@ namespace SA.EntityFramework.EntityFramework.Repository
 
         public async Task<IEnumerable<TResult>> GetAllAsync<TResult, TOrder>(
             Expression<Func<GdprRecord, bool>> query = null,
-            Expression<Func<GdprRecord, TOrder>> order = null)
+            Expression<Func<GdprRecord, TOrder>> order = null,
+            int? take = null)
             where TResult : class
         {
             var request = query != null

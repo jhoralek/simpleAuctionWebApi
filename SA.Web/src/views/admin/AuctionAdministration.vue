@@ -3,7 +3,7 @@
     <v-container grid-list-xs pa-2>
       <v-layout row wrap>
         <v-flex xs12>
-          <h1 class="display-1 primary--text">{{ resx('auctionsAdministration') }}</h1>
+          <h1>{{ resx('auctionsAdministration') }}</h1>
         </v-flex>
       </v-layout>
       <v-layout row wrap>
@@ -48,3 +48,20 @@ export default class AuctionAdministration extends BaseView {
 }
 
 </script>
+
+<style>
+
+.record-administration h1 {
+  font-family: Roboto;
+  font-size: 35px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #000000;
+  padding-bottom: 30px;
+  padding-top: 30px;
+}
+
+</style>

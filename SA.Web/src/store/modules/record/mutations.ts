@@ -1,7 +1,7 @@
 import { MutationTree } from 'vuex';
 import { RecordState } from '@/store/types';
 import { Record } from '@/model';
-import { FileSimpleDto } from '@/poco';
+import { FileSimpleDto, RecordTableDto, BidDto } from '@/poco';
 
 const mutations: MutationTree<RecordState> = {
     /**
@@ -47,7 +47,7 @@ const mutations: MutationTree<RecordState> = {
      * @param state - Record state
      * @param records - list of records
      */
-    RECORD_CHANGE_LIST_STATE(state, records: Record[]) {
+    RECORD_CHANGE_LIST_STATE(state, records: RecordTableDto[]) {
         state.error = false;
         state.records = records;
     },
@@ -63,6 +63,10 @@ const mutations: MutationTree<RecordState> = {
     RECORD_SET_CURRENT_USER_ID(state, userId: number) {
         state.error = false;
         state.current.userId = userId;
+    },
+    RECORD_CHANGE_BIDS_TO_CURRENT(state, bids: BidDto[]) {
+        state.error = false;
+        state.current.bids = bids as BidDto[];
     },
 };
 

@@ -3,7 +3,7 @@
     <v-container grid-list-xs pa-2>
       <v-layout row wrap>
         <v-flex xs12>
-          <h1 class="display-1 primary--text">{{ resx('usersAdministration') }}</h1>
+          <h1>{{ resx('usersAdministration') }}</h1>
         </v-flex>
       </v-layout>
       <v-layout row wrap>
@@ -47,3 +47,25 @@ export default class UserAdministration extends BaseView {
 }
 
 </script>
+
+<style>
+
+.user-administration h1 {
+  font-family: Roboto;
+  font-size: 35px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #000000;
+  padding-bottom: 30px;
+  padding-top: 30px;
+}
+
+.user-administration .elevation-1 {
+    -webkit-box-shadow: 0 0px 0px 0px rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0) !important;
+    box-shadow: 0 0px 0px 0px rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0)!important;
+}
+
+</style>

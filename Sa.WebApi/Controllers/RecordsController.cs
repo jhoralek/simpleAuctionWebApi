@@ -27,8 +27,19 @@ namespace SA.WebApi.Controllers
         [Route("getById")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
-            => Json(await _repository.GetOneAsync<RecordDetailDto>(x => x.Id == id));
+        {
+            var item = await _repository.GetOneAsync<RecordDetailDto>(x => x.Id == id);
 
+            if (item != null)
+            {
+                if (item.Bids.Any())
+                {
+                    item.Bids = item.Bids.OrderByDescending(x => x.Price).Take(3).ToList();
+                }
+            }
+
+            return Json(item);
+        }
         [Authorize("admin")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] Record record)
@@ -38,7 +49,7 @@ namespace SA.WebApi.Controllers
             {
                 return BadRequest();
             }
-            return Json(await _repository.UpdateAsync(record));            
+            return Json(await _repository.UpdateAsync(record));
         }
 
         [Authorize("read:messages")]
@@ -61,7 +72,7 @@ namespace SA.WebApi.Controllers
         [Route("create")]
         public async Task<IActionResult> Create([FromBody] Record record)
             => Json(await _repository.AddAsync(record));
-        
+
 
         [Authorize("admin")]
         [HttpGet]
@@ -76,5 +87,33 @@ namespace SA.WebApi.Controllers
         [Route("delete")]
         public async Task<IActionResult> Delete(int id)
             => Json(await _repository.RemoveAsync(id));
+
+        [HttpGet]
+        [Route("actualRandom")]
+        public async Task<IActionResult> ActualRandom()
+        {
+            var today = DateTime.Now.Date;
+
+            var items = await _repository
+                .GetAllAsync<RecordDetailDto, int>(
+                    x =>
+                        x.IsActive
+                        && x.ValidFrom <= today
+                        && x.ValidTo >= today,
+                    x => x.Id,
+                    1);
+
+            var item = items.FirstOrDefault();
+
+            if (item != null)
+            {
+                if (item.Bids.Any())
+                {
+                    item.Bids = item.Bids.OrderByDescending(x => x.Price).Take(3).ToList();
+                }
+            }
+
+            return Json(item);
+        }
     }
 }

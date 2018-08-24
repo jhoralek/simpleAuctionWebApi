@@ -12,7 +12,8 @@ namespace SA.EntityFramework.EntityFramework.Repository
         Task<T> UpdateAsync(T item);
         Task<IEnumerable<TResult>> GetAllAsync<TResult, TOrder>(
             Expression<Func<T, bool>> query = null,
-            Expression<Func<T, TOrder>> order = null)
+            Expression<Func<T, TOrder>> order = null,
+            int? take = null)
                 where TResult : class;
         Task<TResult> GetOneAsync<TResult>(Expression<Func<T, bool>> query)
             where TResult : class;

@@ -16,6 +16,8 @@ namespace SA.Application.Records
         public virtual decimal StartingPrice { get; set; }
         public virtual int NumberOfBids { get; set; }
         public virtual string State { get; set; }
-        public virtual ICollection<FileSimpleDto> Files { get; set; } = new List<FileSimpleDto>();        
+        public virtual ICollection<FileSimpleDto> Files { get; set; } = new List<FileSimpleDto>();       
+        public virtual int? RegistrationYear { get; set; }
+        public virtual string Fuel { get; set; }
     }
 }

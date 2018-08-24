@@ -47,7 +47,7 @@
 
 <script lang="ts">
 
-import { Component, Prop } from 'vue-property-decorator';
+import { Component, Prop, Watch } from 'vue-property-decorator';
 import { State, Action, namespace } from 'vuex-class';
 
 import { GdprRecordTableDto } from '@/poco';
@@ -68,6 +68,12 @@ export default class GdprTableComponent extends BaseComponent {
         rowsPerPage: 10,
         totalItems: 0,
     };
+
+    @Watch('gdprRecords') private changeUsers(gdprRecords) {
+        if (gdprRecords !== undefined && gdprRecords.length > 0) {
+            this.pagination.totalItems = gdprRecords.length;
+        }
+    }
 
     private mounted() {
         this.headers.push({
@@ -136,3 +142,16 @@ export default class GdprTableComponent extends BaseComponent {
 }
 
 </script>
+
+<style>
+
+.gdpr-admministration-table .elevation-1 {
+    -webkit-box-shadow: 0 0px 0px 0px rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0) !important;
+    box-shadow: 0 0px 0px 0px rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0)!important;
+}
+
+.gdpr-admministration-table .v-pagination .v-pagination__item--active {
+    background-color: #546E7A !important;
+}
+
+</style>

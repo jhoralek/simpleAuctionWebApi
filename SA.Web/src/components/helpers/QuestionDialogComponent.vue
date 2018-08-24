@@ -1,6 +1,6 @@
 <template>
-    <v-dialog class="question-dialog" v-model="dialog" persistent max-width="400px">
-        <v-form>
+    <v-dialog v-model="dialog" persistent max-width="400px">
+        <v-form class="question-dialog">
             <v-card>
                 <v-progress-linear v-if="progress" indeterminate></v-progress-linear>
                 <v-card-title class="headline grey lighten-2">
@@ -12,8 +12,8 @@
                 <v-card-actions>
                     <v-container>
                         <v-layout row wrap justify-end align-center>
-                            <v-btn flat color="info" @click="cancel">{{ resx('cancel') }}</v-btn>
-                            <v-btn flat color="success" @click="submit">{{ resx('submit' )}}</v-btn>
+                            <v-btn color="black" :disabled="progress" @click="cancel">{{ resx('cancel') }}</v-btn>
+                            <v-btn color="black" :disabled="progress" @click="submit">{{ resx('submit' )}}</v-btn>
                         </v-layout>
                     </v-container>
                 </v-card-actions>
@@ -54,3 +54,12 @@ export default class QuestionDialogComponent extends BaseComponent {
 }
 
 </script>
+
+<style>
+
+.question-dialog .v-btn {
+    color: white !important;
+    border-radius: 5px !important;
+}
+
+</style>

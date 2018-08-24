@@ -9,6 +9,7 @@ import RecordTableDto from './RecordTableDto';
 import ResponseMessage from './ResponseMessage';
 import UserShortInfo from './UserShortInfo';
 import UserSimpleDto from './UserSimpleDto';
+import BidDto from './BidDto';
 
 export {
     AuthResponse,
@@ -22,4 +23,5 @@ export {
     ResponseMessage,
     UserShortInfo,
     UserSimpleDto,
+    BidDto,
 };

@@ -4,11 +4,11 @@
     <v-container grid-list-xs pa-2 v-if="profile.user">
       <v-layout row wrap>
         <v-flex xs12 md6>
-          <h1 class="display-1 primary--text">{{ resx('customerDetail') }}</h1>
+          <h1>{{ resx('customerDetail') }}</h1>
         </v-flex>
-        <v-flex xs12 md6 fill-height align-center v-if="profile.user.customer">
-          <h2 class="green--text darken-3" v-if="profile.user.customer.isFeePayed">{{ resx('feePayed') }}</h2>
-          <h2 class="red--text darken-4" v-else>{{ resx('feeNotPayed' )}}</h2>
+        <v-flex xs12 md6 v-if="profile.user.customer">
+          <h1 class="green--text darken-3" v-if="profile.user.customer.isFeePayed">{{ resx('feePayed') }}</h1>
+          <h1 class="red--text darken-4" v-else>{{ resx('feeNotPayed' )}}</h1>
         </v-flex>
       </v-layout>
       <v-layout row wrap v-if="isLoading === false">
@@ -96,3 +96,20 @@ export default class Customer extends BaseView {
 }
 
 </script>
+
+<style>
+
+.customer h1 {
+  font-family: Roboto;
+  font-size: 35px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #000000;
+  padding-bottom: 30px;
+  padding-top: 30px;
+}
+
+</style>

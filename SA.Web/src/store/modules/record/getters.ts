@@ -5,6 +5,7 @@ import {
 } from '@/store/types';
 
 import { Record } from '@/model';
+import { RecordTableDto, BidDto } from '@/poco';
 
 const getters: GetterTree<RecordState, RootState> = {
     /**
@@ -26,9 +27,13 @@ const getters: GetterTree<RecordState, RootState> = {
      *
      * @param state
      */
-    getRecords(state): Record[] {
+    getRecords(state): RecordTableDto[] {
         const { records } = !state.error && state;
         return records;
+    },
+    getBids(state): BidDto[] {
+        const { bids } = !state.error && state.current;
+        return bids;
     },
 };
 

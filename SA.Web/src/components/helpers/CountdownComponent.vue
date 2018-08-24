@@ -1,5 +1,5 @@
 <template>
-    <span classs="count-down" :id="countDownSelector()"></span>
+    <div classs="count-down" :id="countDownSelector()"></div>
 </template>
 
 <script lang="ts">

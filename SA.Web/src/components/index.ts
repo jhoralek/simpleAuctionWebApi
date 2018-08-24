@@ -15,6 +15,8 @@ import AuctionDetailComponent from './AuctionDetailComponent.vue';
 import RegistrationComponent from './User/RegistrationComponent.vue';
 import GdprFormComponent from './User/GdprFormComponent.vue';
 import HomeComponent from './views/HomeComponent.vue';
+import ActualRandomComponent from './views/ActualRandomComponent.vue';
+import QuestionDialogComponent from './helpers/QuestionDialogComponent.vue';
 
 export {
     LoginFormComponent,
@@ -34,5 +36,7 @@ export {
     BidComponent,
     GdprFormComponent,
     HomeComponent,
+    ActualRandomComponent,
+    QuestionDialogComponent,
 };
 

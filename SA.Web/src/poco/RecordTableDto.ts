@@ -11,4 +11,6 @@ export default interface RecordTableDto {
     numberOfBids: number;
     state: string;
     files: FileSimpleDto[];
+    fuel: string;
+    registrationYear: number;
 }
