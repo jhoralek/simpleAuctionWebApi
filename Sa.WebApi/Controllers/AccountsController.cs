@@ -19,13 +19,5 @@ namespace SA.WebApi.Controllers
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginUserDto loginForm)
             => Json(await _securityService.Login(loginForm));
-
-        //[HttpGet]
-        //[Route("ConfirmRegistration")]
-        //public async Task<IActionResult> ConfirmRegistration(string token)
-        //{
-
-        //    return RedirectToPage()
-        //}
     }
 }

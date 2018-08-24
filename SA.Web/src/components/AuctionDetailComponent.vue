@@ -48,7 +48,7 @@
                                                         </v-flex>
                                                         <v-flex xs12>
                                                             <v-layout row justify-end align-center>
-                                                                <bid-component :bid="record.minimumBid" />
+                                                                <bid-component :bid="minimumBid" />
                                                             </v-layout>
                                                         </v-flex>
                                                     </v-layout>
@@ -86,10 +86,6 @@
                                                         <v-flex xs6>{{ resx('contactToAppointment') }}</v-flex>
                                                         <v-flex xs6>{{ record.contactToAppointment }}</v-flex>
                                                     </v-layout>
-                                                    <!-- <v-layout row wrap>
-                                                        <v-flex xs6>{{ resx('seller') }}</v-flex>
-                                                        <v-flex xs6>{{ sellerInfo(record.user) }}</v-flex>
-                                                    </v-layout> -->
                                                 </v-container>
                                             </v-expansion-panel-content>
                                         </v-expansion-panel>
@@ -258,7 +254,7 @@
 
 <<script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
-import { Getter, namespace } from 'vuex-class';
+import { Getter, Action, namespace } from 'vuex-class';
 
 import BaseComponent from './BaseComponent.vue';
 import { PriceComponent, BidComponent } from '@/components';
@@ -267,10 +263,11 @@ import {
     Bid,
     User,
 } from '@/model';
-import { FileSimpleDto, AuthUser } from '@/poco';
+import { FileSimpleDto, AuthUser, RecordTableDto } from '@/poco';
 
 const RecordGetter = namespace('record', Getter);
 const AuthGetter = namespace('auth', Getter);
+const RecordAction = namespace('record', Action);
 
 @Component({
     components: {
@@ -279,11 +276,16 @@ const AuthGetter = namespace('auth', Getter);
     },
 })
 export default class AuctionDetalComponent extends BaseComponent {
-    @RecordGetter('getCurrent') public record: Record;
-    @AuthGetter('getCurrentLoggedUser') public currentUser: AuthUser;
+    @RecordGetter('getCurrent') private record: Record;
+    @RecordAction('getDetail') private detail: any;
+    @AuthGetter('getCurrentLoggedUser') private currentUser: AuthUser;
 
     private expander: boolean[] = [true, true, true, true, true, true];
     private expander1: boolean[] = [true];
+
+    private mounted() {
+        this.detail(this.record.id);
+    }
 
     private filePath(file: FileSimpleDto): string {
         return `${this.settings.apiUrl.replace('/api', '')}/${file.path}/${file.recordId}/images/${file.name}`;
@@ -291,6 +293,10 @@ export default class AuctionDetalComponent extends BaseComponent {
 
     private sellerInfo(user: User): string {
         return `${user.customer.companyName}`;
+    }
+
+    get minimumBid(): number {
+        return this.record.currentPrice + this.record.minimumBid;
     }
 }
 

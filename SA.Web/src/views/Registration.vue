@@ -1,33 +1,34 @@
 <template>
-    <div class="gdpr">
+    <div class="registration">
         <v-layout row wrap>
-            <v-flex xs12 md6 class="logo-container">
-                <div class="rectangle"></div>
-                <img :src="logo" class="home-page-logo" />
-            </v-flex>
-            <v-flex xs12 md6 class="registration-container">
-                <h2 class="header">{{ resx('gdpr') }}</h2>
-                <gdpr-form-component />
-            </v-flex>
-      </v-layout>
+      <v-flex xs12 md6 class="logo-container">
+        <div class="rectangle">
+        </div>
+        <img :src="logo" class="home-page-logo" />
+      </v-flex>
+      <v-flex xs12 md6 class="registration-container">
+        <h2 class="header">{{ resx('registration') }}</h2>
+        <registration-component />
+      </v-flex>
+    </v-layout>
     </div>
 </template>
 
 <script lang="ts">
 
+import BaseView from './BaseView.vue';
 import Component from 'vue-class-component';
 import { State} from 'vuex-class';
 
 import { SettingsState } from '@/store/types';
-import BaseView from './BaseView.vue';
-import { GdprFormComponent } from '@/components';
+import { RegistrationComponent } from '@/components';
 
 @Component({
-    components: {
-        GdprFormComponent,
-    },
+  components: {
+    RegistrationComponent,
+  },
 })
-export default class Gdpr extends BaseView {
+export default class Registration extends BaseView {
     @State('settings') private settings: SettingsState;
 
     get logo(): string {
@@ -60,15 +61,14 @@ export default class Gdpr extends BaseView {
 }
 
 h2.header {
- font-family: Roboto;
- font-size: 35px;
- font-weight: 500;
- font-style: normal;
- font-stretch: normal;
- letter-spacing: 0px;
- text-align: left;
- color: #000000;
- padding-bottom: 20px !important;
+  font-size: 46px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.15;
+  letter-spacing: 0.3px;
+  text-align: left;
+  color: #1a1a2e;
 }
 
 .registration-container {

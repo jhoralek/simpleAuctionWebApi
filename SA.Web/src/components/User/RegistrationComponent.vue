@@ -211,21 +211,21 @@
         </v-container>
         <v-btn
             v-if="state > 1 && state < 4"
-            flat color="info"
+            color="black"
             @click="previous">
             <v-icon left dark>keyboard_arrow_left</v-icon>
             {{ resx('back') }}
         </v-btn>
         <v-btn
             v-if="state !== 3 && state < 4"
-            flat color="info"
+            color="black"
             @click="next">
             {{ resx('next') }}
             <v-icon left dark>keyboard_arrow_right</v-icon>
         </v-btn>
         <v-btn
             v-if="state === 3"
-            flat color="success"
+            color="black"
             @click="submit">
             <v-icon left dark>done_outline</v-icon>
             {{ resx('submit') }}
@@ -431,3 +431,12 @@ export default class RegistrationComponent extends FormBaseComponent {
 }
 
 </script>
+
+<style>
+
+.registration .v-btn {
+    color: white !important;
+    border-radius: 5px !important;
+}
+
+</style>

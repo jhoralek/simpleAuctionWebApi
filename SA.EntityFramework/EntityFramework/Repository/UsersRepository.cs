@@ -60,7 +60,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
                 itemToUpdate.SendingNews = item.SendingNews;
                 itemToUpdate.Token = item.Token;
                 itemToUpdate.Password = item.Password;
-                itemToUpdate.Language = item.Language;                
+                itemToUpdate.Language = item.Language;
                 _context.Entry(itemToUpdate).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
                 return itemToUpdate;
@@ -70,7 +70,8 @@ namespace SA.EntityFramework.EntityFramework.Repository
 
         public async Task<IEnumerable<TResult>> GetAllAsync<TResult, TOrder>(
             Expression<Func<User, bool>> query = null,
-            Expression<Func<User, TOrder>> order = null)
+            Expression<Func<User, TOrder>> order = null,
+            int? take = null)
                 where TResult : class
         {
             var request = query != null

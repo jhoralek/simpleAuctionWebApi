@@ -1,6 +1,6 @@
 import { FuelEnum } from '@/model/FuelEnum';
 import { User, Bid, Customer } from '@/model';
-import { FileSimpleDto } from '@/poco';
+import { FileSimpleDto, BidDto } from '@/poco';
 
 export default interface Record {
     isActive: boolean;
@@ -38,7 +38,7 @@ export default interface Record {
     mostTechnicallyWeightOfRide?: string; // nejvetsi technicky pripustna hmotnost jizdni soupravy
     maximumWeightOfRide?: string; // nejvetsi povolena hmotnost jizdni soupravy
     files?: FileSimpleDto[];
-    bids?: Bid[];
+    bids?: BidDto[];
     id?: number;
     currentPrice: number;
 }

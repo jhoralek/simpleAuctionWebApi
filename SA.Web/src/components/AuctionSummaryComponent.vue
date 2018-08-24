@@ -3,7 +3,7 @@
         <v-progress-linear v-if="isLoading" :indeterminate="isLoading"></v-progress-linear>
         <v-data-table
             :headers="headers"
-            :items="record.records"
+            :items="records"
             :pagination.sync="pagination"
             hide-actions
             class="elevation-1">
@@ -30,30 +30,36 @@
 
 <script lang="ts">
 
-import { Component, Prop } from 'vue-property-decorator';
-import { State, Action, Getter, namespace } from 'vuex-class';
+import { Component, Prop, Watch } from 'vue-property-decorator';
+import { Action, Getter, namespace } from 'vuex-class';
 
-import { RecordState } from '@/store/types';
-import { Record } from '@/model';
 import BaseComponent from './BaseComponent.vue';
-import { log } from 'util';
+import { RecordTableDto } from '@/poco';
 
 const RecordAction = namespace('record', Action);
+const RecordGetter = namespace('record', Getter);
 
 @Component({})
 export default class AuctionSummaryComponent extends BaseComponent {
     @Prop({default: undefined}) public userId: number;
-    @State('record') public record: RecordState;
     @RecordAction('getAllActiveWithUsersBids') public loadRecords: any;
+    @RecordGetter('getRecords') public records: RecordTableDto[];
+    @RecordAction('getDetail') public loadRecord: any;
 
     public pagination: any = {
-        rowsPerPage: 4,
+        rowsPerPage: 5,
         totalItems: 0,
     };
     private isLoading: boolean = true;
     private headers: any[] = [];
 
-    public mounted() {
+    @Watch('records') private changeUsers(records) {
+        if (records !== undefined && records.length > 0) {
+            this.pagination.totalItems = records.length;
+        }
+    }
+
+    private mounted() {
         this.headers.push({
             text: this.settings.resource.name,
             align: 'left',
@@ -77,8 +83,8 @@ export default class AuctionSummaryComponent extends BaseComponent {
 
         this.loadRecords(this.userId).then((response) => {
             if (response) {
-                this.pagination.totalItems = this.record.records.length;
-                this.$emit('amount', this.record.records.length);
+                this.pagination.totalItems = this.records.length;
+                this.$emit('amount', this.records.length);
             }
             this.isLoading = false;
         });
@@ -93,9 +99,29 @@ export default class AuctionSummaryComponent extends BaseComponent {
         return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage);
     }
 
-    private goToDetal(item: Record): void {
-        log(`${item.name}`);
+    private goToDetal(item: RecordTableDto): void {
+        this.isLoading = true;
+        this.loadRecord(item.id).then((response) => {
+            const result = response as boolean;
+            this.isLoading = false;
+            if (result) {
+                this.$router.push({ name: 'auctionDetail' });
+            }
+        });
     }
 }
 
 </script>
+
+<style>
+
+.auction-summary-table .elevation-1 {
+    -webkit-box-shadow: 0 0px 0px 0px rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0) !important;
+    box-shadow: 0 0px 0px 0px rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0)!important;
+}
+
+.auction-summary-table .v-pagination .v-pagination__item--active {
+    background-color: #546E7A !important;
+}
+
+</style>

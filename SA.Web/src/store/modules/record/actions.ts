@@ -15,11 +15,13 @@ import {
     RECORD_DELETE_RECORD_FROM_LIST,
     RECORD_SET_CURRENT_FILES,
     RECORD_SET_CURRENT_USER_ID,
+    RECORD_CHANGE_BIDS_TO_CURRENT,
 } from '@/store/mutation-types';
 import {
     RecordTableDto,
     FileSimpleDto,
     ResponseMessage,
+    BidDto,
 } from '@/poco';
 
 const actions: ActionTree<RecordState, RootState> = {
@@ -47,7 +49,7 @@ const actions: ActionTree<RecordState, RootState> = {
             return axios.get(
                 `${rootState.settings.apiUrl}/records/getAllForList`)
                 .then((response) => {
-                    const records: Record[] = response.data as Record[];
+                    const records: RecordTableDto[] = response.data as RecordTableDto[];
 
                     commit(RECORD_CHANGE_LIST_STATE, records);
                     return resolve(true);
@@ -75,6 +77,47 @@ const actions: ActionTree<RecordState, RootState> = {
                 .then((response) => {
                     const record: Record = response.data as Record;
                     commit(RECORD_CHANGE_CURRENT_STATE, record);
+                    return resolve(true);
+                })
+                .catch((error) => {
+                    dispatch('message/change', {
+                        mod: 'Record',
+                        message: {
+                            state: MessageStatusEnum.Error,
+                            message: error,
+                        },
+                    },
+                    { root: true});
+                    return resolve(false);
+                });
+        });
+    },
+    getActualRandom({ commit, rootState, dispatch }): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.get(`${rootState.settings.apiUrl}/records/actualRandom`)
+                .then((response) => {
+                    const record: Record = response.data as Record;
+                    commit(RECORD_CHANGE_CURRENT_STATE, record);
+                    return resolve(true);
+                })
+                .catch((error) => {
+                    dispatch('message/change', {
+                        mod: 'Record',
+                        message: {
+                            state: MessageStatusEnum.Error,
+                            message: error,
+                        },
+                    },
+                    { root: true});
+                    return resolve(false);
+                });
+        });
+    },
+    getBids({ commit, rootState, dispatch }, recordId: number): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.get(`${rootState.settings.apiUrl}/records/getBids?id=${recordId}`)
+                .then((response) => {
+                    commit(RECORD_CHANGE_BIDS_TO_CURRENT, response.data as BidDto[]);
                     return resolve(true);
                 })
                 .catch((error) => {

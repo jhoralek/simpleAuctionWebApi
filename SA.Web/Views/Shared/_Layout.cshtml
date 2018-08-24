@@ -17,6 +17,11 @@
     <environment exclude="Development">
         <link rel="stylesheet" as="style" asp-href-include=@($"/css/{appname}.*.css") />
         <link rel="stylesheet" as="style" asp-href-include="@($"/css/chunk-vendors.*.css")" />
+        <link rel="stylesheet" as="style" asp-href-include="@($"/css/custom.css")" />
+    </environment>
+
+    <environment include="Development">
+        <link rel="stylesheet" as="style" asp-href-include="@($"/css/custom.css")" />
     </environment>
 
 </head>

@@ -96,7 +96,7 @@
 
 <script lang="ts">
 
-import { Component, Prop } from 'vue-property-decorator';
+import { Component, Prop, Watch } from 'vue-property-decorator';
 import { State, Action, namespace } from 'vuex-class';
 
 import { UserSimpleDto } from '@/poco';
@@ -121,6 +121,12 @@ export default class UserTableComponent extends BaseComponent {
         rowsPerPage: 10,
         totalItems: 0,
     };
+
+    @Watch('users') private changeUsers(users) {
+        if (users !== undefined && users.length > 0) {
+            this.pagination.totalItems = users.length;
+        }
+    }
 
     private mounted() {
         this.headers.push({
@@ -201,3 +207,11 @@ export default class UserTableComponent extends BaseComponent {
 }
 
 </script>
+
+<style>
+
+.user-admin-table .v-pagination .v-pagination__item--active {
+    background-color: #546E7A !important;
+}
+
+</style>

@@ -3,7 +3,7 @@ import {
     Country,
     Record,
 } from '@/model';
-import { MessageDto } from '@/poco';
+import { MessageDto, RecordTableDto } from '@/poco';
 
 /**
  * This is root state of app store
@@ -54,7 +54,7 @@ export interface SettingsState {
  */
 export interface RecordState {
     current?: Record;
-    records: Record[];
+    records: RecordTableDto[];
     error: boolean;
 }
 

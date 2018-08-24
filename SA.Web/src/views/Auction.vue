@@ -1,29 +1,9 @@
 <template>
   <div class="auction">
-    <v-progress-linear v-if="isLoading && records === undefined" :indeterminate="isLoading"></v-progress-linear>
-    <v-container pa-2 grid-list-xs>
-      <v-layout>
+    <v-container grid-list-xs pa-0>
+      <v-layout row wrap>
         <v-flex xs12>
-          <section grid-list-xs pa-0 class="page-head">
-            <v-flex xs8 md6>
-              <h1 class="display-1 primary--text">{{ resx('auctions') }}</h1>
-            </v-flex>
-            <v-flex xs4 md6>
-              <v-switch
-                v-model="viewType"
-                :label="`${getViewType ? resx('table'): resx('grid')}`" />
-            </v-flex>
-          </section>
-          <section>
-            <v-layout mb-5 row wrap>
-              <v-flex xs12>
-                <v-container pa-0 grid-list-xs>
-                  <auction-table-component :records="records" v-if="getViewType" />
-                  <auction-grid-component :records="records" v-if="getViewType === false" />
-                </v-container>
-              </v-flex>
-            </v-layout>
-          </section>
+          <auction-grid-component :records="records" />
         </v-flex>
       </v-layout>
     </v-container>
@@ -79,3 +59,20 @@ export default class Auction extends BaseView {
 }
 
 </script>
+
+<style>
+
+.auction h1 {
+  font-family: Roboto;
+  font-size: 35px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #000000;
+  padding-bottom: 30px;
+  padding-top: 30px;
+}
+
+</style>

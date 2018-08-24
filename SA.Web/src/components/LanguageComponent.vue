@@ -1,5 +1,5 @@
 <template>
-  <div class="languageComponent text-xs-center" v-if="settings.language">
+  <div class="loginForm fill-height languageComponent text-xs-center" v-if="settings.language">
     <v-menu offset-y>
         <v-btn flat slot="activator">
             <img :src="current" />

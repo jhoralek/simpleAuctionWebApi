@@ -18,7 +18,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
         private readonly IHostingEnvironment _hostingEnvironment;
 
         public RecordsRepository(
-            SaDbContext context,            
+            SaDbContext context,
             IHostingEnvironment hostingEnvironment)
         {
             _context = context;
@@ -58,10 +58,10 @@ namespace SA.EntityFramework.EntityFramework.Repository
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (itemToDelte != null)
-            {                                
-                var deleted = _context.Records.Remove(itemToDelte);                
+            {
+                var deleted = _context.Records.Remove(itemToDelte);
                 var root = _hostingEnvironment.WebRootPath;
-                
+
                 if (itemToDelte.Files.Any())
                 {
                     var item = itemToDelte.Files.FirstOrDefault();
@@ -129,7 +129,8 @@ namespace SA.EntityFramework.EntityFramework.Repository
 
         public async Task<IEnumerable<TResult>> GetAllAsync<TResult, TOrder>(
             Expression<Func<Record, bool>> query = null,
-            Expression<Func<Record, TOrder>> order = null)
+            Expression<Func<Record, TOrder>> order = null,
+            int? take = null)
                 where TResult : class
         {
             var request = query != null
@@ -139,6 +140,11 @@ namespace SA.EntityFramework.EntityFramework.Repository
             request = order != null
                 ? request.OrderBy(order)
                 : request;
+
+            if (take.HasValue)
+            {
+                request = request.Take(take.Value);
+            }
 
             return await request.ProjectTo<TResult>().ToListAsync();
         }

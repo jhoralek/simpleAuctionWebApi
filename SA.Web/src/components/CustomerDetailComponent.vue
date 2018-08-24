@@ -108,7 +108,7 @@
         </v-layout>
         <v-layout row wrap>
           <v-flex xs12 justify-end align-center>
-            <v-btn color="success" flat @click="submitCustomer">{{ resx('submit') }}</v-btn>
+            <v-btn color="black" @click="submitCustomer">{{ resx('submit') }}</v-btn>
           </v-flex>
         </v-layout>
       </v-form>
@@ -192,3 +192,12 @@ export default class CustomerDetailComponent extends BaseComponent {
 }
 
 </script>
+
+<style>
+
+#customer-form .v-btn {
+  color: white !important;
+  border-radius: 5px !important;
+}
+
+</style>

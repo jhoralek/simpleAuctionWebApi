@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import Vuetify from 'vuetify';
 import Vue from 'vue';
 import VeeValidate from 'vee-validate';

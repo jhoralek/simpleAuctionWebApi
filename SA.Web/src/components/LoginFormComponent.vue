@@ -2,7 +2,7 @@
     <div class="loginForm fill-height">
         <div v-if="!auth.isAuthenticated">
             <v-dialog class="login-dialog-container" v-model="openedModal" persistent max-width="500px">
-                <v-btn class="login-button align-center" slot="activator" flat>{{ resx('login') }}</v-btn>
+                <v-btn class="login-button" flat color="white" slot="activator"><div class="btn-text">{{ resx('login') }}</div></v-btn>
                 <v-card v-if="openedModal">
                     <v-progress-linear v-if="isLoging" :indeterminate="isLoging"></v-progress-linear>
                     <v-form lazy-validation>
@@ -34,10 +34,10 @@
                             </v-container>
                             <small>*{{ resx('requiredFields') }}</small>
                         </v-card-text>
-                        <v-card-actions>
+                        <v-card-actions class="form-action">
                             <v-spacer></v-spacer>
-                            <v-btn color="info" flat @click.native="openedModal = false">{{ resx('close') }}</v-btn>
-                            <v-btn color="success" flat @click="submit">{{ resx('submit') }}</v-btn>
+                            <v-btn color="black" @click.native="openedModal = false">{{ resx('close') }}</v-btn>
+                            <v-btn color="black" @click="submit">{{ resx('submit') }}</v-btn>
                         </v-card-actions>
                     </v-form>
                 </v-card>
@@ -45,7 +45,7 @@
 
         </div>
         <div v-if="auth.isAuthenticated">
-            <v-btn class="logout-button" flat @click="logout">{{ resx('logout') }}</v-btn>
+            <v-btn class="login-button" color="white" flat @click="logout"><div class="btn-text">{{ resx('logout') }}</div></v-btn>
         </div>
     </div>
 </template>
@@ -137,6 +137,24 @@ export default class LoginFormComponent extends FormBaseComponent {
 
 .loginForm div {
     height: 100%;
+}
+
+.form-action .v-btn {
+    color: white !important;
+    border-radius: 5px !important;
+}
+
+.login-button .v-btn__content {
+    background-color: black !important;
+    color: white !important;
+    border-radius: 5px !important;
+}
+
+.login-button .v-btn__content .btn-text {
+    padding-top: 8px !important;
+    padding-bottom: 5px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
 }
 
 </style>

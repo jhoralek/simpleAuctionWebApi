@@ -56,7 +56,8 @@ namespace SA.EntityFramework.EntityFramework.Repository
 
         public async Task<IEnumerable<TResult>> GetAllAsync<TResult, TOrder>(
             Expression<Func<Bid, bool>> query = null,
-            Expression<Func<Bid, TOrder>> order = null)
+            Expression<Func<Bid, TOrder>> order = null,
+            int? take = null)
         where TResult : class
         {
             var request = query != null

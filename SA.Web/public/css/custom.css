@@ -1,0 +1,86 @@
+html {
+    font-size: 16px;
+}
+
+nav .v-btn__content {
+    font-size: 16px;
+}
+
+.application .theme--light.v-toolbar, .theme--light .v-toolbar {
+    background-color: white !important;
+}
+
+.v-toolbar {
+    --webkit-box-shadow: 0 0px 0px 0px rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0) !important;
+    box-shadow: 0 0px 0px 0px rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0) !important;
+}
+
+.v-toolbar__title {
+    background-color: black !important;
+    color: white !important;
+    height: 100%;
+    width: 404px;
+}
+
+.v-toolbar__content {
+    background-color: white !important;
+    padding: 0 !important;
+    height: 170px !important;
+}
+
+.v-toolbar__items {
+    background-color: white !important;
+}
+
+.logo-button .v-btn {
+    color: white !important;
+    height: inherit !important;
+}
+
+.logo-button .v-btn:before {
+    color: blue !important;
+}
+
+.logo-button .v-btn:after {
+    color: blue !important;
+}
+
+.logo-upper {
+    font-size: 25px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.2em !important;
+}
+
+.logo-capitalize {
+    text-transform: none !important;
+    font-weight: 300;
+}
+
+.v-btn--active:before, .v-btn:focus:before, .v-btn:hover:before {
+    background-color: white !important;
+}
+
+a.v-btn--active.v-btn.v-btn--flat.v-btn--router .v-btn__content .btn-text {
+    border-bottom: 3px solid black !important;
+}
+
+.v-menu__activator .v-btn__content {
+    height: inherit !important;
+}
+
+.login-button.v-btn__content {
+    height: inherit;
+}
+
+.v-btn:before {
+    opacity: .0 !important;
+}
+
+.v-ripple__container {
+    width: 0px !important;
+    height: 0px !important;
+}
+
+.application.theme--light {
+    background: white !important;
+}
