@@ -25,6 +25,8 @@ namespace SA.EntityFramework.EntityFramework
 
         public DbSet<GdprRecord> GdprRecords { get; set; }
 
+        public DbSet<UserActivation> UserActivations { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder builder) {}
 
         protected override void OnModelCreating(ModelBuilder builder)

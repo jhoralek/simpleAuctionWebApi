@@ -227,7 +227,6 @@
             v-if="state === 3"
             color="black"
             @click="submit">
-            <v-icon left dark>done_outline</v-icon>
             {{ resx('submit') }}
         </v-btn>
     </div>

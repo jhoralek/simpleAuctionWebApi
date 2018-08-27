@@ -10,6 +10,7 @@ import ResponseMessage from './ResponseMessage';
 import UserShortInfo from './UserShortInfo';
 import UserSimpleDto from './UserSimpleDto';
 import BidDto from './BidDto';
+import ChangePasswordDto from './ChangePasswordDto';
 
 export {
     AuthResponse,
@@ -24,4 +25,5 @@ export {
     UserShortInfo,
     UserSimpleDto,
     BidDto,
+    ChangePasswordDto,
 };

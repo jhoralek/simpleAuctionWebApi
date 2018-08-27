@@ -9,6 +9,7 @@ import {
 import {
     AuthResponse,
     LoginDto,
+    ChangePasswordDto,
  } from '@/poco';
 
 import { MessageStatusEnum } from '@/model';
@@ -34,7 +35,7 @@ const actions: ActionTree<AuthState, RootState> = {
                 Password: login.password })
             .then((response) => {
                 const user: AuthResponse = response.data as AuthResponse;
-                commit(AUTH_LOGIN_USER, { login, user });
+                commit(AUTH_LOGIN_USER, { user });
                 if (user.error !== null) {
                     dispatch('message/change',
                         {
@@ -95,6 +96,80 @@ const actions: ActionTree<AuthState, RootState> = {
     },
     setLanguage({commit}, language: string): void {
         commit(AUTH_SET_LANGUAGE, language);
+    },
+    sendEmailToResetPassowrd({dispatch, rootState}, email: string): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.get(`${rootState.settings.apiUrl}/users/resetPassword?email=${email}`)
+                .then((response) => {
+                    const result = response.data as boolean;
+                    const myMessage = {
+                        state:  result ? MessageStatusEnum.Success : MessageStatusEnum.Error,
+                        message: result ? 'emailSent' : 'emailNotExists',
+                    };
+
+                    dispatch('message/change', {
+                        mod: 'Auth',
+                        message: myMessage,
+                    },
+                    { root: true });
+
+                    resolve(response.data as boolean);
+                })
+                .catch((error) => {
+                    dispatch('message/change', {
+                        mod: 'Auth',
+                        message: {
+                            state: MessageStatusEnum.Error,
+                                message: error,
+                        },
+                    },
+                    { root: true });
+                    return resolve(false);
+                });
+        });
+    },
+    resetPassword({commit, dispatch, rootState}, model: ChangePasswordDto): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.post(`${rootState.settings.apiUrl}/users/resetPassword`, model)
+                .then((response) => {
+                    const user: AuthResponse = response.data as AuthResponse;
+                    commit(AUTH_LOGIN_USER, { user });
+                    if (user.error !== null) {
+                        dispatch('message/change',
+                            {
+                                mod: 'Auth',
+                                message: {
+                                    state: MessageStatusEnum.Error,
+                                    message: user.error,
+                                },
+                            },
+                            { root: true });
+                        return resolve(false);
+                    } else {
+                        dispatch('message/change', {
+                                mod: 'Auth',
+                                message: {
+                                    state: MessageStatusEnum.Success,
+                                    message: 'userLoggedInSuccessfully',
+                                },
+                            },
+                            { root: true });
+                        return resolve(true);
+                    }
+                })
+                .catch((error) => {
+                    dispatch('message/change', {
+                        mod: 'Auth',
+                        message: {
+                            state: MessageStatusEnum.Error,
+                                message: error,
+                        },
+                    },
+                    { root: true });
+                    return resolve(false);
+                });
+
+        });
     },
 };
 

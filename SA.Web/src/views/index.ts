@@ -15,6 +15,8 @@ import GdprAdministration from './admin/GdprAdministration.vue';
 import Cookies from './Cookies.vue';
 import Gdpr from './Gdpr.vue';
 import Registration from './Registration.vue';
+import Results from './results/Results.vue';
+import ResetPassword from './results/ResetPassword.vue';
 
 export {
     About,
@@ -34,4 +36,6 @@ export {
     AuctionAdministration,
     GdprAdministration,
     Registration,
+    Results,
+    ResetPassword,
 };

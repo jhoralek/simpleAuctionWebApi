@@ -14,6 +14,7 @@ export default class Validation {
                 userName: `"${resource.userName}"`,
                 password: `"${resource.password}"`,
                 repPassword: `"${resource.repeatPassword}"`,
+                newPassword: `"${resource.newPassword}"`,
                 isAgreementToTerms: `"${resource.agreementToTerms}"`,
                 lastName: `"${resource.lastName}"`,
                 firstName: `"${resource.firstName}"`,

@@ -18,6 +18,8 @@ import {
   Gdpr,
   GdprAdministration,
   Registration,
+  Results,
+  ResetPassword,
 } from '@/views';
 
 import { state } from '@/store/modules/auth';
@@ -131,6 +133,36 @@ export default new Router({
       path: '/registration',
       name: 'registration',
       component: Registration,
+    },
+    {
+      path: '/validation-expired',
+      name: 'validationExpired',
+      component: Results,
+    },
+    {
+      path: '/validated-successfully',
+      name: 'validationSucessfully',
+      component: Results,
+    },
+    {
+      path: '/password-reset-failed',
+      name: 'passwordResetFailed',
+      component: Results,
+    },
+    {
+      path: '/password-reset',
+      name: 'passwordReset',
+      component: ResetPassword,
+    },
+    {
+      path: '/successfully-registered',
+      name: 'successfullyRegistered',
+      component: Results,
+    },
+    {
+      path: '/password-reset-successfully',
+      name: 'passwordResetSuccessfully',
+      component: Results,
     },
   ],
 });

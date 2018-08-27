@@ -5,7 +5,7 @@
                 <v-btn class="login-button" flat color="white" slot="activator"><div class="btn-text">{{ resx('login') }}</div></v-btn>
                 <v-card v-if="openedModal">
                     <v-progress-linear v-if="isLoging" :indeterminate="isLoging"></v-progress-linear>
-                    <v-form lazy-validation>
+                    <v-form lazy-validation v-if="!resetPassword">
                         <v-card-title>
                             <span class="headline">{{ resx('login') }}</span>
                         </v-card-title>
@@ -38,6 +38,35 @@
                             <v-spacer></v-spacer>
                             <v-btn color="black" @click.native="openedModal = false">{{ resx('close') }}</v-btn>
                             <v-btn color="black" @click="submit">{{ resx('submit') }}</v-btn>
+                        </v-card-actions>
+                        <v-card-actions>
+                            <v-btn color="black" flat  @click.native="resetPassword = true"><div class="btn-underscore">{{ resx('passwordReset') }}</div></v-btn>
+                        </v-card-actions>
+                    </v-form>
+                    <v-form lazy-validation v-else>
+                        <v-card-title>
+                            <span class="headline">{{ resx('passwordReset') }}</span>
+                        </v-card-title>
+                         <v-card-text>
+                            <v-container  grid-list-xs pa-0>
+                                    <v-layout wrap>
+                                        <v-flex xs12 sm12 md12>
+                                            <v-text-field
+                                                :label= "labelEmail"
+                                                v-model="email"
+                                                required
+                                                v-validate="'email|required'"
+                                                :error-messages="errors.collect('email')"
+                                                data-vv-name="email" />
+                                        </v-flex>
+                                    </v-layout>
+                            </v-container>
+                            <small>*{{ resx('requiredFields') }}</small>
+                        </v-card-text>
+                        <v-card-actions class="form-action">
+                            <v-spacer></v-spacer>
+                            <v-btn color="black" @click.native="resetPassword = false">{{ resx('back') }}</v-btn>
+                            <v-btn color="black" @click="submitResetPassword">{{ resx('submit') }}</v-btn>
                         </v-card-actions>
                     </v-form>
                 </v-card>
@@ -75,12 +104,15 @@ export default class LoginFormComponent extends FormBaseComponent {
     @SettingsAction('changeFormView') public changeFormView: any;
     @AuthAction('loginUser') public login: any;
     @AuthAction('logoutUser') public logoutUser: any;
+    @AuthAction('sendEmailToResetPassowrd') private resetPasswordFnc: any;
 
     private visiblePwd: boolean = false;
     private openedModal: boolean = false;
     private userName: string = '';
     private password: string = '';
+    private email: string = '';
     private isLoging: boolean = false;
+    private resetPassword: boolean = false;
 
     // this is because I cannot pass getter function to the component props
     // so I need to create computed props. They can be used in component props
@@ -91,6 +123,10 @@ export default class LoginFormComponent extends FormBaseComponent {
     }
     get labelPassword(): string {
         return this.settings.resource.password;
+    }
+
+    get labelEmail(): string {
+        return this.settings.resource.email;
     }
 
     get validationMinPasswordChars(): string {
@@ -115,6 +151,21 @@ export default class LoginFormComponent extends FormBaseComponent {
                 this.langChange(this.auth.language);
             }
             this.isLoging = false;
+        });
+    }
+
+    public submitResetPassword() {
+        this.$validator.validateAll().then((response) => {
+            if (response) {
+                this.isLoging = true;
+                this.resetPasswordFnc(this.email)
+                    .then((resp1) => {
+                        this.isLoging = false;
+                        if (resp1) {
+                            this.openedModal = false;
+                        }
+                    });
+            }
         });
     }
 
@@ -155,6 +206,11 @@ export default class LoginFormComponent extends FormBaseComponent {
     padding-bottom: 5px !important;
     padding-left: 15px !important;
     padding-right: 15px !important;
+}
+
+.btn-underscore {
+    font-size: 12px;
+    border-bottom: 3px solid black !important;
 }
 
 </style>
