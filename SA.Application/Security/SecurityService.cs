@@ -1,10 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SA.Application.Account;
-using SA.Application.Customer;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
+using System;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -17,51 +16,61 @@ namespace SA.Application.Security
         private readonly IConfiguration _configuration;
         private readonly IEntityRepository<User> _userRepository;
         private readonly IEntityRepository<Core.Model.Customer> _customerRepository;
+        private readonly IEntityRepository<UserActivation> _userActivationRepository;
 
         public SecurityService(IConfiguration configuration,
             IEntityRepository<User> userRepository,
-            IEntityRepository<Core.Model.Customer> customerRepository)
+            IEntityRepository<Core.Model.Customer> customerRepository,
+            IEntityRepository<UserActivation> userActivationRepository)
         {
             _configuration = configuration;
             _userRepository = userRepository;
             _customerRepository = customerRepository;
+            _userActivationRepository = userActivationRepository;
         }
 
         public async Task<AuthResponse> Login(LoginUserDto user)
         {
             var hashPassword = GetMD5HashData(user.Password);
-            var persistedUser = await _userRepository.GetOneAsync<User>(x =>
-                x.UserName == user.UserName &&
-                x.Password == hashPassword &&
-                x.IsActive);
-            
-            if (persistedUser == null)
+            try
             {
-                return new AuthResponse { Error = "UserNotAuthenticated" };
-            }
+                var persistedUser = await _userRepository.GetOneAsync<User>(x =>
+                    x.UserName == user.UserName &&
+                    x.Password == hashPassword &&
+                    x.IsActive);
 
-            var token = await RequestToken();
+                if (persistedUser == null)
+                {
+                    return new AuthResponse { Error = "UserNotAuthenticated" };
+                }
 
-            if (!string.IsNullOrWhiteSpace(token.Error))
-            {
+                var token = await RequestToken();
+
+                if (!string.IsNullOrWhiteSpace(token.Error))
+                {
+                    return new AuthResponse
+                    {
+                        Error = $"{token.Error}: {token.ErrorDescription}"
+                    };
+                }
+
+                persistedUser.Token = $"{token.TokenType} {token.AccessToken}";
+                await _userRepository.UpdateAsync(persistedUser);
+
                 return new AuthResponse
                 {
-                    Error = $"{token.Error}: {token.ErrorDescription}"
+                    UserId = persistedUser.Id,
+                    Token = persistedUser.Token,
+                    UserName = persistedUser.UserName,
+                    Language = persistedUser.Language,
+                    IsDealer = persistedUser.Customer.IsDealer,
+                    IsFeePayed = persistedUser.Customer.IsFeePayed,
                 };
             }
-
-            persistedUser.Token = $"{token.TokenType} {token.AccessToken}";
-            await _userRepository.UpdateAsync(persistedUser);
-
-            return new AuthResponse
+            catch (Exception e)
             {
-                UserId = persistedUser.Id,
-                Token = persistedUser.Token,
-                UserName = persistedUser.UserName,
-                Language = persistedUser.Language,
-                IsDealer = persistedUser.Customer.IsDealer,
-                IsFeePayed = persistedUser.Customer.IsFeePayed,
-            };
+                throw e;
+            }
         }
 
         private async Task<TokenDto> RequestToken()
@@ -108,6 +117,29 @@ namespace SA.Application.Security
                 returnValue.Append(hashData[i].ToString());
             }
             return returnValue.ToString();
+        }
+
+        public async Task<AuthResponse> ResetPassword(ChangePasswordDto obj)
+        {
+            if (obj.OldPassword != obj.RepeatOldPassword)
+                return new AuthResponse { Error = "PasswordsNotSame" };
+
+            var oldPassword = GetMD5HashData(obj.OldPassword);
+
+            var activation = await _userActivationRepository.GetOneAsync<UserActivation>(x => x.Token == obj.Token);
+
+            if (activation == null)
+                return new AuthResponse { Error = "ResetTokenExpired" };
+
+            var user = await _userRepository.GetOneAsync<User>(x => x.Id == activation.UserId && x.Password == oldPassword);
+
+            if (user == null)
+                return new AuthResponse { Error = "UserNotExists", UserId = activation.UserId };
+
+            user.Password = GetMD5HashData(obj.NewPassword);
+            await _userRepository.UpdateAsync(user);
+
+            return await Login(new LoginUserDto { UserName = user.UserName, Password = obj.NewPassword });
         }
     }
 }

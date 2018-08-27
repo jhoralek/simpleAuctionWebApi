@@ -8,5 +8,7 @@ namespace SA.Application.Security
         Task<AuthResponse> Login(LoginUserDto user);
 
         string GetMD5HashData(string data);
+
+        Task<AuthResponse> ResetPassword(ChangePasswordDto obj);
     }
 }

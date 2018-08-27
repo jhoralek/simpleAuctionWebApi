@@ -67,7 +67,7 @@ namespace SA.Core.Model
 
         [MySqlCharset("utf8")]
         [MySqlCollation("utf8_general_ci")]
-        public virtual string CompanyLegalNumer { get; set; }
+        public virtual string CompanyLegalNumber { get; set; }
 
         [Required]
         public virtual int AddressId { get; set; }

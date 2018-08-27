@@ -10,6 +10,7 @@ using Newtonsoft.Json.Serialization;
 using SA.Application.Account;
 using SA.Application.Country;
 using SA.Application.Customer;
+using SA.Application.Email;
 using SA.Application.Records;
 using SA.Application.Security;
 using SA.Core.Model;
@@ -71,8 +72,13 @@ namespace SA.Web
             services.AddSingleton<IEntityRepository<File>, FilesRepository>();
             services.AddSingleton<IEntityRepository<Record>, RecordsRepository>();
             services.AddSingleton<IEntityRepository<GdprRecord>, GdprRecordsRepository>();
+            services.AddSingleton<IEntityRepository<UserActivation>, UserActivationsRepository>();
 
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+
+            services.AddSingleton<IEmailConfiguration>(_configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddSingleton<IUserEmailFactory, UserEmailFactory>();
 
             services.AddSingleton<ISecurityService, SecurityService>();
 
@@ -130,8 +136,8 @@ namespace SA.Web
                     .ForMember(x => x.Files, x => x.Ignore())
                     .ForMember(x => x.Bids, x => x.Ignore());
                 cfg.CreateMap<Customer, Customer>();
-                cfg.CreateMap<Address, Address>()
-                    .ForMember(dto => dto.Country, dto => dto.Ignore());
+                cfg.CreateMap<Address, Address>();
+                cfg.CreateMap<UserActivation, UserActivation>();
             });
         }
 

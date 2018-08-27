@@ -17,7 +17,7 @@ namespace SA.Application.Customer
         public virtual bool IsFeePayed { get; set; }
         public virtual string WebPageUrl { get; set; }
         public virtual string CompanyNumber { get; set; }
-        public virtual string CompanyLegalNumer { get; set; }
+        public virtual string CompanyLegalNumber { get; set; }
         public virtual string CompanyName { get; set; }
         public virtual int AddressId { get; set; }
         public virtual Address Address { get; set; }
