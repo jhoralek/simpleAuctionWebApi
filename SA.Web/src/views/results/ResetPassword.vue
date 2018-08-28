@@ -15,45 +15,32 @@
           </v-layout>
           <v-layout row wrap class="pwd-form" v-if="change">
             <v-flex xs12 >
-              <v-form lazy-validation>
-                  <v-text-field
-                      :label="labelPassword"
-                      v-model="change.oldPassword"
-                      :append-icon="visible ? 'visibility_off' : 'visibility'"
-                      :append-icon-cb="() => (visible = !visible)"
-                      :type="visible ? 'text' : 'password'"
-                      counter
-                      v-validate="'required|max:25|min:4'"
-                      :error-messages="errors.collect('password')"
-                      data-vv-name="password" />
-                  <v-text-field
-                      :label="labelRepeatPassword"
-                      v-model="change.repeatOldPassword"
-                      :append-icon="visibleRep ? 'visibility_off' : 'visibility'"
-                      :append-icon-cb="() => (visibleRep = !visibleRep)"
-                      :type="visibleRep ? 'text' : 'password'"
-                      counter
-                      v-validate="{is:change.oldPassword, required: true}"
-                      :error-messages="errors.collect('repPassword')"
-                      data-vv-name="repPassword" />
-                  <v-text-field
-                      :label="labelNewPassword"
-                      v-model="change.newPassword"
-                      :append-icon="visibleNewPwdFnc ? 'visibility_off' : 'visibility'"
-                      :append-icon-cb="() => (visibleNewPwdFnc = !visibleNewPwdFnc)"
-                      :type="visibleNewPwdFnc ? 'text' : 'password'"
-                      counter
-                      v-validate="'required|max:25|min:4'"
-                      :error-messages="errors.collect('newPassword')"
-                      data-vv-name="newPassword" />
-                  <v-btn
-                      :loading="loading"
-                      :disabled="disable"
-                      color="black"
-                      @click="submit">
-                      {{ resx('submit') }}
-                      </v-btn>
-              </v-form>
+                <v-form lazy-validation>
+                    <v-text-field :label="labelNewPassword"
+                                  v-model="change.newPassword"
+                                  :append-icon="visibleNewPwdFnc ? 'visibility_off' : 'visibility'"
+                                  :append-icon-cb="() => (visibleNewPwdFnc = !visibleNewPwdFnc)"
+                                  :type="visibleNewPwdFnc ? 'text' : 'password'"
+                                  counter
+                                  v-validate="'required|max:25|min:4'"
+                                  :error-messages="errors.collect('newPassword')"
+                                  data-vv-name="newPassword" />
+                    <v-text-field :label="labelRepeatPassword"
+                                  v-model="change.repeatNewPassword"
+                                  :append-icon="visibleRep ? 'visibility_off' : 'visibility'"
+                                  :append-icon-cb="() => (visibleRep = !visibleRep)"
+                                  :type="visibleRep ? 'text' : 'password'"
+                                  counter
+                                  v-validate="{is:change.newPassword, required: true}"
+                                  :error-messages="errors.collect('repPassword')"
+                                  data-vv-name="repPassword" />
+                    <v-btn :loading="loading"
+                           :disabled="disable"
+                           color="black"
+                           @click="submit">
+                        {{ resx('submit') }}
+                    </v-btn>
+                </v-form>
             </v-flex>
           </v-layout>
         </v-container>
@@ -85,8 +72,7 @@ export default class ResetPassword extends BaseView {
   private disable: boolean = false;
 
   private change: ChangePasswordDto = {
-    oldPassword: '',
-    repeatOldPassword: '',
+    repeatNewPassword: '',
     newPassword: '',
     token: '',
   } as ChangePasswordDto;
@@ -100,24 +86,12 @@ export default class ResetPassword extends BaseView {
   get logo(): string {
     return `${this.settings.apiUrl.replace('/api', '')}/img/home_cars_jera_trading.png`;
   }
-
-  get labelPassword(): string {
-      return this.settings.resource.password;
-  }
-
   get labelRepeatPassword(): string {
       return this.settings.resource.repeatPassword;
   }
 
   get labelNewPassword(): string {
       return this.settings.resource.newPassword;
-  }
-
-  get visible(): boolean {
-      return this.visiblePwd;
-  }
-  set visible(value: boolean) {
-      this.visiblePwd = value;
   }
 
   get visibleRep(): boolean {

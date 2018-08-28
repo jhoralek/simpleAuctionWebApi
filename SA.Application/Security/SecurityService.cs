@@ -121,17 +121,15 @@ namespace SA.Application.Security
 
         public async Task<AuthResponse> ResetPassword(ChangePasswordDto obj)
         {
-            if (obj.OldPassword != obj.RepeatOldPassword)
-                return new AuthResponse { Error = "PasswordsNotSame" };
-
-            var oldPassword = GetMD5HashData(obj.OldPassword);
+            if (obj.NewPassword != obj.RepeatNewPassword)
+                return new AuthResponse { Error = "PasswordsNotSame" };            
 
             var activation = await _userActivationRepository.GetOneAsync<UserActivation>(x => x.Token == obj.Token);
 
             if (activation == null)
                 return new AuthResponse { Error = "ResetTokenExpired" };
 
-            var user = await _userRepository.GetOneAsync<User>(x => x.Id == activation.UserId && x.Password == oldPassword);
+            var user = await _userRepository.GetOneAsync<User>(x => x.Id == activation.UserId);
 
             if (user == null)
                 return new AuthResponse { Error = "UserNotExists", UserId = activation.UserId };
