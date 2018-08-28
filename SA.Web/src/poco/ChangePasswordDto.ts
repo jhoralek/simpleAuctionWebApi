@@ -1,6 +1,5 @@
 export default interface ChangePasswordDto {
-    oldPassword: string;
-    repeatOldPassword: string;
+    repeatNewPassword: string;
     newPassword: string;
     token: string;
 }
