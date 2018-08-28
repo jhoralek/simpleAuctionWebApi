@@ -59,7 +59,7 @@ const actions: ActionTree<RecordState, RootState> = {
                         mod: 'Record',
                         message: {
                             state: MessageStatusEnum.Error,
-                            message: error,
+                            message: error.message,
                         },
                     },
                     { root: true});
@@ -84,7 +84,7 @@ const actions: ActionTree<RecordState, RootState> = {
                         mod: 'Record',
                         message: {
                             state: MessageStatusEnum.Error,
-                            message: error,
+                            message: error.message,
                         },
                     },
                     { root: true});
@@ -105,7 +105,7 @@ const actions: ActionTree<RecordState, RootState> = {
                         mod: 'Record',
                         message: {
                             state: MessageStatusEnum.Error,
-                            message: error,
+                            message: error.message,
                         },
                     },
                     { root: true});
@@ -125,7 +125,7 @@ const actions: ActionTree<RecordState, RootState> = {
                         mod: 'Record',
                         message: {
                             state: MessageStatusEnum.Error,
-                            message: error,
+                            message: error.message,
                         },
                     },
                     { root: true});
@@ -153,7 +153,7 @@ const actions: ActionTree<RecordState, RootState> = {
                         mod: 'Record',
                         message: {
                             state: MessageStatusEnum.Error,
-                            message: error,
+                            message: error.message,
                         },
                     },
                     { root: true});
@@ -177,7 +177,7 @@ const actions: ActionTree<RecordState, RootState> = {
                         mod: 'Record',
                         message: {
                             state: MessageStatusEnum.Error,
-                            message: error,
+                            message: error.message,
                         },
                     },
                     { root: true});
@@ -197,7 +197,7 @@ const actions: ActionTree<RecordState, RootState> = {
                     mod: 'Record',
                     message: {
                         state: MessageStatusEnum.Error,
-                        message: error,
+                        message: error.message,
                     },
                 },
                 { root: true});
@@ -227,7 +227,7 @@ const actions: ActionTree<RecordState, RootState> = {
                     mod: 'Record',
                     message: {
                         state: MessageStatusEnum.Error,
-                        message: error,
+                        message: error.message,
                     },
                 },
                 { root: true});
@@ -247,7 +247,7 @@ const actions: ActionTree<RecordState, RootState> = {
                     mod: 'Record',
                     message: {
                         state: MessageStatusEnum.Error,
-                        message: error,
+                        message: error.message,
                     },
                 },
                 { root: true});
@@ -294,7 +294,7 @@ const actions: ActionTree<RecordState, RootState> = {
                     mod: 'Record',
                     message: {
                         state: MessageStatusEnum.Error,
-                        message: error,
+                        message: error.message,
                     },
                 },
                 { root: true});
@@ -331,7 +331,7 @@ const actions: ActionTree<RecordState, RootState> = {
                     mod: 'Record',
                     message: {
                         state: MessageStatusEnum.Error,
-                        message: error,
+                        message: error.message,
                     },
                 },
                 { root: true});
@@ -363,7 +363,7 @@ const actions: ActionTree<RecordState, RootState> = {
                     mod: 'Record',
                     message: {
                         state: MessageStatusEnum.Error,
-                        message: error,
+                        message: error.message,
                     },
                 },
                 { root: true});

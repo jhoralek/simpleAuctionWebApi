@@ -11,6 +11,8 @@ import UserShortInfo from './UserShortInfo';
 import UserSimpleDto from './UserSimpleDto';
 import BidDto from './BidDto';
 import ChangePasswordDto from './ChangePasswordDto';
+import AuctionDto from './AuctionDto';
+import AuctionTableDto from './AuctionTableDto';
 
 export {
     AuthResponse,
@@ -26,4 +28,6 @@ export {
     UserSimpleDto,
     BidDto,
     ChangePasswordDto,
+    AuctionDto,
+    AuctionTableDto,
 };

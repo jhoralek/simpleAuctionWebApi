@@ -49,11 +49,14 @@ nav .v-btn__content {
     font-size: 25px !important;
     text-transform: uppercase !important;
     letter-spacing: 0.2em !important;
+    padding-left: 5px !important;
 }
 
 .logo-capitalize {
     text-transform: none !important;
     font-weight: 300;
+    letter-spacing: 0.1em !important;
+    padding-left: 5px !important;
 }
 
 .v-btn--active:before, .v-btn:focus:before, .v-btn:hover:before {
@@ -83,4 +86,8 @@ a.v-btn--active.v-btn.v-btn--flat.v-btn--router .v-btn__content .btn-text {
 
 .application.theme--light {
     background: white !important;
+}
+
+.auction-detail {
+    padding-top: 50px !important;
 }

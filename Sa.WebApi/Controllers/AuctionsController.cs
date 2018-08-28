@@ -1,0 +1,75 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SA.Application.Records;
+using SA.Core.Model;
+using SA.EntityFramework.EntityFramework.Repository;
+using SA.WebApi.Controllers;
+using System;
+using System.Threading.Tasks;
+
+namespace Sa.WebApi.Controllers
+{
+    [Route("api/Auctions")]
+    public class AuctionsController : BaseController<Auction>
+    {
+        public AuctionsController(IEntityRepository<Auction> repository)
+            : base(repository) { }
+
+        [HttpGet]
+        [Route("getAllActive")]
+        public async Task<IActionResult> GetAllActive()
+            => Json(await _repository
+                .GetAllAsync<AuctionDto, string>(x =>
+                    x.IsActive &&
+                    x.ValidTo >= DateTime.Now,
+                    x => x.Name));
+
+        [HttpGet]
+        [Route("getAllInFeature")]
+        public async Task<IActionResult> GetAllInFeature()
+            => Json(await _repository
+                .GetAllAsync<AuctionDto, string>(x =>
+                    x.IsActive &&
+                    x.ValidFrom < DateTime.Now,
+                    x => x.Name));
+
+        [Authorize("admin")]
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] Auction auction)
+        {
+            var persistedItem = await _repository.GetOneAsync<Auction>(x => x.Id == auction.Id);
+            if (auction == null && persistedItem == null)
+            {
+                return BadRequest();
+            }
+            return Json(await _repository.UpdateAsync(auction));
+        }
+
+        [Authorize("admin")]
+        [HttpPost]
+        [Route("create")]
+        public async Task<IActionResult> Create([FromBody] Auction auction)
+            => Json(await _repository.AddAsync(auction));
+
+        [Authorize("admin")]
+        [HttpGet]
+        [Route("getAllForAdmin")]
+        public async Task<IActionResult> GetAllForAdmin()
+            => Json(await _repository
+                    .GetAllAsync<AuctionTableDto, bool>(order: y =>
+                        y.IsActive));
+
+        [Authorize("admin")]
+        [HttpDelete("{id}")]
+        [Route("delete")]
+        public async Task<IActionResult> Delete(int id)
+            => Json(await _repository.RemoveAsync(id));
+
+        [Route("getForEdit")]
+        [Authorize("admin")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetForEdit(int id)
+            => Json(await _repository
+                .GetOneAsync<AuctionDto>(x => x.Id == id));
+    }
+}

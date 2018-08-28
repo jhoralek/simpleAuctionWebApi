@@ -8,6 +8,7 @@ import Address from './Address';
 import MessageStatusEnum from './MessageStatusEnum';
 import { GdprApplicationType } from './GdprApplicationType';
 import GdprRecord from './GdprRecord';
+import Auction from './Auction';
 
 export {
     Address,
@@ -20,4 +21,5 @@ export {
     MessageStatusEnum,
     GdprApplicationType,
     GdprRecord,
+    Auction,
 };

@@ -9,6 +9,7 @@ import {
   settings,
   record,
   message,
+  auction,
 } from '@/store/modules';
 
 Vue.use(Vuex);
@@ -16,7 +17,7 @@ Vue.use(Vuex);
 const vuexLocal = new VuexPersistance({
   storage: window.localStorage,
   supportCircular: true,
-  modules: ['auth', 'settings'],
+  modules: ['auth', 'settings', 'record', 'auction'],
   key: 'simple_auction',
 });
 
@@ -29,6 +30,8 @@ const store: StoreOptions<RootState> = {
     profile: undefined,
     record: undefined,
     message: undefined,
+    auction: undefined,
+
   },
   modules: {
     profile, // my own Store state hook up as a module
@@ -36,6 +39,7 @@ const store: StoreOptions<RootState> = {
     settings,
     record,
     message,
+    auction,
   },
   plugins: [vuexLocal.plugin], // vuex in localStorage as a plugin
 };

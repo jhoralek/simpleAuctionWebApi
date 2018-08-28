@@ -3,12 +3,12 @@
     <v-container grid-list-xs pa-2>
       <v-layout row wrap>
         <v-flex xs12>
-          <h1>{{ resx('auctionsAdministration') }}</h1>
+          <h1>{{ resx('recordAdministration') }}</h1>
         </v-flex>
       </v-layout>
       <v-layout row wrap>
         <v-flex xs12>
-          <admin-auction-table-component :auctions="auctions" :loading="isLodading" />
+          <admin-record-table-component :auctions="records" :loading="isLodading" />
         </v-flex>
       </v-layout>
     </v-container>
@@ -21,25 +21,25 @@ import Component from 'vue-class-component';
 import { Action, Getter, namespace } from 'vuex-class';
 
 import BaseView from '../BaseView.vue';
-import AdminAuctionTableComponent from '@/components/auction/AdminAuctionTableComponent.vue';
-import { AuctionTableDto } from '@/poco';
+import AdminRecordTableComponent from '@/components/auction/AdminRecordTableComponent.vue';
+import { RecordTableDto } from '@/poco';
 
-const AuctionAction = namespace('auction', Action);
-const AuctionGetter = namespace('auction', Getter);
+const RecordAction = namespace('record', Action);
+const RecordGetter = namespace('record', Getter);
 
 @Component({
   components: {
-    AdminAuctionTableComponent,
+    AdminRecordTableComponent,
   },
 })
-export default class AuctionAdministration extends BaseView {
-  @AuctionGetter('getAuctions') private auctions: AuctionTableDto[];
-  @AuctionAction('getAllForAdmin') private loadAuctions: any;
+export default class RecordsAdministration extends BaseView {
+  @RecordGetter('getRecords') private records: RecordTableDto[];
+  @RecordAction('getAllForAdmin') private loadRecords: any;
 
   private isLodading: boolean = true;
 
   private mounted() {
-    this.loadAuctions().then((response) => {
+    this.loadRecords().then((response) => {
       if (response) {
         this.isLodading = false;
       }

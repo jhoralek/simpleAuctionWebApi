@@ -11,6 +11,7 @@ import Auction from './Auction.vue';
 import AuctionDetail from './AuctionDetail.vue';
 import UserAdministration from './admin/UserAdministration.vue';
 import AuctionAdministration from './admin/AuctionAdministration.vue';
+import RecordsAdministration from './admin/RecordsAdministration.vue';
 import GdprAdministration from './admin/GdprAdministration.vue';
 import Cookies from './Cookies.vue';
 import Gdpr from './Gdpr.vue';
@@ -38,4 +39,5 @@ export {
     Registration,
     Results,
     ResetPassword,
+    RecordsAdministration,
 };

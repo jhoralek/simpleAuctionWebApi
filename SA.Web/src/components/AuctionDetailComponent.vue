@@ -1,5 +1,5 @@
 <template>
-    <v-container  grid-list-xs pa-0 v-if="record">
+    <v-container grid-list-xs pa-0 v-if="record" class="auction-detail">
         <v-layout row wrap>
             <v-flex xs12 lg6>
                 <v-container  grid-list-xs pa-0>
@@ -284,7 +284,11 @@ export default class AuctionDetalComponent extends BaseComponent {
     private expander1: boolean[] = [true];
 
     private mounted() {
-        this.detail(this.record.id);
+        if (this.record === undefined) {
+            this.detail(this.$route.query.id);
+        } else {
+            this.detail(this.record.id);
+        }
     }
 
     private filePath(file: FileSimpleDto): string {

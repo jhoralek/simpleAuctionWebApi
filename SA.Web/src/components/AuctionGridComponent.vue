@@ -94,7 +94,7 @@ export default class AuctionGridComponent extends BaseComponent {
       const result = response as boolean;
       this.isLoading = false;
       if (result) {
-        this.$router.push({ name: 'auctionDetail' });
+        this.$router.push({ path: `/auctionDetail?id=${record.id}`  });
       }
     });
   }

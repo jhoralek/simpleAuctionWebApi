@@ -29,16 +29,16 @@ const mutations: MutationTree<RecordState> = {
         state.error = false;
         state.current = record;
 
-        if (record.validFrom !== null) {
+        if (record !== null && record.validFrom !== null) {
             state.current.validFrom = new Date(record.validFrom);
         }
-        if (record.validTo !== null) {
+        if (record !== null && record.validTo !== null) {
             state.current.validTo = new Date(record.validTo);
         }
-        if (record.dateOfFirstRegistration !== null) {
+        if (record !== null && record.dateOfFirstRegistration !== null) {
             state.current.dateOfFirstRegistration = new Date(record.dateOfFirstRegistration);
         }
-        if (record.stk !== null) {
+        if (record !== null && record.stk !== null) {
             state.current.stk = new Date(record.stk);
         }
     },

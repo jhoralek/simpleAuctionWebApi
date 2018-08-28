@@ -27,6 +27,8 @@ namespace SA.EntityFramework.EntityFramework
 
         public DbSet<UserActivation> UserActivations { get; set; }
 
+        public DbSet<Auction> Auctions { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder builder) {}
 
         protected override void OnModelCreating(ModelBuilder builder)

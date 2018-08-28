@@ -51,4 +51,27 @@ export default class Helpers  {
 
         return currencyFormatter.format(price, config[language]);
     }
+
+    /**
+     * Anonymize string with special character
+     * @param str String to be anonymized
+     * @param start Character where anonymization will start
+     * @param end Character where anonymization will end
+     * @param character Character which will replace string (default *)
+     */
+    public static anonymizeString(str: string, start: number, end: number, character: string = null): string {
+        const stringLength = str.length;
+
+        if (stringLength === 0) {
+            return str;
+        }
+
+        const origStartString = str.substring(0, start);
+        const origEndString = str.substring(end, stringLength);
+
+        const anonymizedLength = str.substring(start, end).length;
+        const anonymizedString = new Array(anonymizedLength + 1).join(character !== null ? character : '*');
+
+        return `${origStartString}${anonymizedString}${origEndString}`;
+    }
 }
