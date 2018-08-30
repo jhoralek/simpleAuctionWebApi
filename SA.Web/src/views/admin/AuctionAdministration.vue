@@ -33,7 +33,7 @@ const AuctionGetter = namespace('auction', Getter);
   },
 })
 export default class AuctionAdministration extends BaseView {
-  @AuctionGetter('getAuctions') private auctions: AuctionTableDto[];
+  @AuctionGetter('getTableAuctions') private auctions: AuctionTableDto[];
   @AuctionAction('getAllForAdmin') private loadAuctions: any;
 
   private isLodading: boolean = true;

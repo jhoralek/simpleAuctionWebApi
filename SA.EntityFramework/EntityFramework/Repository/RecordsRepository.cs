@@ -122,6 +122,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
                 }
 
                 await _context.SaveChangesAsync();
+
                 return itemToUpdate;
             }
             return null;

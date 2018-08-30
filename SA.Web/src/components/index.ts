@@ -17,6 +17,7 @@ import GdprFormComponent from './User/GdprFormComponent.vue';
 import HomeComponent from './views/HomeComponent.vue';
 import ActualRandomComponent from './views/ActualRandomComponent.vue';
 import QuestionDialogComponent from './helpers/QuestionDialogComponent.vue';
+import LoadingComponent from './helpers/LoadingComponent.vue';
 
 export {
     LoginFormComponent,
@@ -38,5 +39,6 @@ export {
     HomeComponent,
     ActualRandomComponent,
     QuestionDialogComponent,
+    LoadingComponent,
 };
 

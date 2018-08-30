@@ -27,12 +27,16 @@ namespace Sa.WebApi.Controllers
         [HttpGet]
         [Route("getAllInFeature")]
         public async Task<IActionResult> GetAllInFeature()
-            => Json(await _repository
-                .GetAllAsync<AuctionDto, string>(x =>
+        {
+            var today = DateTime.Now.Date;
+            var auctions = await _repository
+                .GetAllAsync<AuctionDto, DateTime>(x =>
                     x.IsActive &&
-                    x.ValidFrom < DateTime.Now,
-                    x => x.Name));
+                    x.ValidFrom > today,
+                    x => x.ValidFrom);
 
+            return Json(auctions);
+        }
         [Authorize("admin")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] Auction auction)
@@ -71,5 +75,14 @@ namespace Sa.WebApi.Controllers
         public async Task<IActionResult> GetForEdit(int id)
             => Json(await _repository
                 .GetOneAsync<AuctionDto>(x => x.Id == id));
+
+        [Route("getAllActiveLookup")]
+        [Authorize("admin")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllActiveLookup()
+            => Json(await _repository
+                .GetAllAsync<AuctionLookupDto, DateTime>(x => 
+                    x.IsActive,
+                    x => x.ValidFrom));        
     }
 }

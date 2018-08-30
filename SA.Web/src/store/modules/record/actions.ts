@@ -47,11 +47,16 @@ const actions: ActionTree<RecordState, RootState> = {
     loadAllPublished({commit, rootState, dispatch}): Promise<boolean> {
         return new Promise<boolean> ((resolve) => {
             return axios.get(
-                `${rootState.settings.apiUrl}/records/getAllForList`)
+                `${rootState.settings.apiUrl}/records/getAllCurrentAuctionItems`)
                 .then((response) => {
                     const records: RecordTableDto[] = response.data as RecordTableDto[];
-
                     commit(RECORD_CHANGE_LIST_STATE, records);
+                    if (records.length === 0) {
+                        dispatch('auction/getFutureAutions', {
+                            mod: 'Auction',
+                        },
+                        { root: true });
+                    }
                     return resolve(true);
                 })
                 .catch((error) => {

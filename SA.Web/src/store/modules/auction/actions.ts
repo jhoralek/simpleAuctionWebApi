@@ -9,6 +9,7 @@ import {
 import {
     AuctionDto,
     AuctionTableDto,
+    AuctionLookupDto,
  } from '@/poco';
 
 import { MessageStatusEnum, Auction } from '@/model';
@@ -19,6 +20,8 @@ import {
     AUCTION_INITIAL_CURRENT,
     AUCTION_CHANGE_TABLE_STATE,
     AUCTION_DELETE_RECORD_FROM_LIST,
+    AUCTION_CHANGE_LOOKUP_STATE,
+    AUCTION_CHANGE_AUCTIONS_STATE,
 } from '@/store/mutation-types';
 import { resolveSrv } from 'dns';
 
@@ -174,6 +177,45 @@ const actions: ActionTree<AuctionState, RootState> = {
                 },
                 { root: true});
                 return resolve(false);
+            });
+        });
+    },
+    getLookup({commit, rootState, dispatch}): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.get(`${rootState.settings.apiUrl}/auctions/getAllActiveLookup`,
+                { headers: { authorization: rootState.auth.token } })
+            .then((response) => {
+                commit(AUCTION_CHANGE_LOOKUP_STATE, response.data as AuctionLookupDto[]);
+                return resolve(true);
+            })
+            .catch((error) => {
+                dispatch('message/change', {
+                    mod: 'Auction',
+                    message: {
+                        state: MessageStatusEnum.Error,
+                        message: error.message,
+                    },
+                },
+                { root: true});
+            });
+        });
+    },
+    getFutureAutions({commit, rootState, dispatch}): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.get(`${rootState.settings.apiUrl}/auctions/getAllInFeature`)
+            .then((response) => {
+                commit(AUCTION_CHANGE_AUCTIONS_STATE, response.data as AuctionDto[]);
+                return resolve(true);
+            })
+            .catch((error) => {
+                dispatch('message/change', {
+                    mod: 'Auction',
+                    message: {
+                        state: MessageStatusEnum.Error,
+                        message: error.message,
+                    },
+                },
+                { root: true});
             });
         });
     },

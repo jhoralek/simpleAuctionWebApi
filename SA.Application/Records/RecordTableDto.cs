@@ -1,5 +1,4 @@
-﻿using SA.Core.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 
@@ -19,5 +18,7 @@ namespace SA.Application.Records
         public virtual ICollection<FileSimpleDto> Files { get; set; } = new List<FileSimpleDto>();       
         public virtual int? RegistrationYear { get; set; }
         public virtual string Fuel { get; set; }
+        public virtual string AuctionName { get; set; }
+        public virtual string Mileage { get; set; }
     }
 }

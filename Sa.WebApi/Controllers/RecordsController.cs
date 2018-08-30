@@ -24,6 +24,23 @@ namespace SA.WebApi.Controllers
                     x.ValidTo >= DateTime.Now,
                 x => x.Name));
 
+        [HttpGet]
+        [Route("getAllCurrentAuctionItems")]
+        public async Task<IActionResult> GetAllCurrentAuctionItems()
+        {
+            var today = DateTime.Now.Date;
+            var records = await _repository.GetAllAsync<RecordTableDto, DateTime>(x => x.IsActive
+                && x.Auction.IsActive
+                && x.Auction.ValidFrom <= today
+                && x.Auction.ValidTo >= today
+                && !x.Auction.IsEnded
+                && x.ValidFrom <= today
+                && x.ValidTo >= today,
+                x => x.ValidTo);
+
+            return Json(records);
+        }
+
         [Route("getById")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)

@@ -13,4 +13,6 @@ export default interface RecordTableDto {
     files: FileSimpleDto[];
     fuel: string;
     registrationYear: number;
+    auctionName: string;
+    mileage: string;
 }

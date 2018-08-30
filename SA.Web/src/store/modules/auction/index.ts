@@ -8,6 +8,7 @@ import mutations from '@/store/modules/auction/mutations';
 export const state: AuctionState = {
     auctionsTable: undefined,
     auctions: undefined,
+    lookupList: undefined,
     current: undefined,
 };
 

@@ -1,7 +1,7 @@
 import { MutationTree } from 'vuex';
 
 import { AuctionState } from '@/store/types';
-import { AuctionDto, AuctionTableDto } from '@/poco';
+import { AuctionDto, AuctionTableDto, AuctionLookupDto } from '@/poco';
 import { Auction } from '@/model';
 
 const mutations: MutationTree<AuctionState> = {
@@ -12,6 +12,7 @@ const mutations: MutationTree<AuctionState> = {
     AUTH_INITIAL_STATE(state) {
         state.auctions = [] as AuctionDto[];
         state.auctionsTable = [] as AuctionTableDto[];
+        state.lookupList = [] as AuctionLookupDto[];
         state.current = undefined;
     },
     AUCTION_CHANGE_CURRENT_STATE(state, auction: Auction) {
@@ -43,6 +44,12 @@ const mutations: MutationTree<AuctionState> = {
             state.auctions = state.auctions
                 .filter((item) => item.id !== auction.id);
         }
+    },
+    AUCTION_CHANGE_LOOKUP_STATE(state, list: AuctionLookupDto[]) {
+        state.lookupList = list;
+    },
+    AUCTION_CHANGE_AUCTIONS_STATE(state, list: AuctionDto[]) {
+        state.auctions = list;
     },
 };
 

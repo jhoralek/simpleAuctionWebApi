@@ -7,7 +7,7 @@
                         <div class="big-box">
                             <v-layout row wrap class="big-data">
                                 <v-flex xs12 md6 class="big-img-wrapper">
-                                    <img :src="randomImagePath(record)" class="big-img" />
+                                    <img :src="firstImagePath(record)" class="big-img" />
                                 </v-flex>
                                 <v-flex xs12 md6>
                                     <div class="big-box-info">
@@ -129,9 +129,9 @@ export default class ActualRandomComponent extends FormBaseComponent {
         return this.record.currentPrice + this.record.minimumBid;
     }
 
-    private randomImagePath(record: Record): string {
+    private firstImagePath(record: Record): string {
         const { files } = record;
-        const rf = files[Math.floor(Math.random() * files.length)];
+        const rf = files[0];
         return `/${rf.path}/${rf.recordId}/images/${rf.name}`;
     }
 

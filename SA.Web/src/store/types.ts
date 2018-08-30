@@ -9,6 +9,7 @@ import {
     RecordTableDto,
     AuctionTableDto,
     AuctionDto,
+    AuctionLookupDto,
 } from '@/poco';
 
 /**
@@ -80,6 +81,7 @@ export interface MessageState {
  */
 export interface AuctionState {
     auctionsTable: AuctionTableDto[];
+    lookupList: AuctionLookupDto[];
     auctions: AuctionDto[];
     current: Auction;
 }

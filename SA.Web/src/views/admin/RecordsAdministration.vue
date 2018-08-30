@@ -8,7 +8,7 @@
       </v-layout>
       <v-layout row wrap>
         <v-flex xs12>
-          <admin-record-table-component :auctions="records" :loading="isLodading" />
+          <admin-record-table-component :records="records" :loading="isLodading" />
         </v-flex>
       </v-layout>
     </v-container>

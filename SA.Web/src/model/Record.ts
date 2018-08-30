@@ -1,6 +1,5 @@
-import { FuelEnum } from '@/model/FuelEnum';
-import { User, Bid, Customer } from '@/model';
-import { FileSimpleDto, BidDto } from '@/poco';
+import { User} from '@/model';
+import { FileSimpleDto, BidDto, AuctionDto } from '@/poco';
 
 export default interface Record {
     isActive: boolean;
@@ -41,4 +40,6 @@ export default interface Record {
     bids?: BidDto[];
     id?: number;
     currentPrice: number;
+    auctionId: number;
+    auction: AuctionDto;
 }

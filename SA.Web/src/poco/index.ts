@@ -13,6 +13,7 @@ import BidDto from './BidDto';
 import ChangePasswordDto from './ChangePasswordDto';
 import AuctionDto from './AuctionDto';
 import AuctionTableDto from './AuctionTableDto';
+import AuctionLookupDto from './AuctionLookupDto';
 
 export {
     AuthResponse,
@@ -30,4 +31,5 @@ export {
     ChangePasswordDto,
     AuctionDto,
     AuctionTableDto,
+    AuctionLookupDto,
 };

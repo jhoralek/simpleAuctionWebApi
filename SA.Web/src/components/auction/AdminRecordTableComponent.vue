@@ -20,6 +20,20 @@
         <v-flex xs12 row wrap>
           <v-form lazy-validation ref="step1" v-if="record.current && state === 1">
             <v-container grid-list-md>
+              <v-layout row wrap v-if="auctionsCombo">
+                <v-flex xs12>
+                  <v-select
+                    v-model="record.current.auctionId"
+                    v-validate="'required'"
+                    data-vv-name="auctionId"
+                    :error-messages="errors.collect('auctionId')"
+                    item-value="id"
+                    item-text="name"
+                    single-line
+                    :label="labelAuction"
+                    :items="auctionsCombo" />
+                </v-flex>
+              </v-layout>
               <v-layout row wrap>
                 <v-flex xs12 md4>
                   <v-text-field
@@ -379,7 +393,7 @@
           <v-progress-linear v-if="editLoading" color="blue" indeterminate></v-progress-linear>
           <v-data-table
             :headers="headers"
-            :items="auctions"
+            :items="records"
             :loading="loading"
             :pagination.sync="pagination"
             hide-actions
@@ -387,6 +401,7 @@
             <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
             <template slot="items" slot-scope="props">
               <td>{{ props.item.name }}</td>
+              <td>{{ props.item.auctionName }}</td>
               <td>{{ props.item.state }}</td>
               <td>{{ props.item.validFrom | moment('DD.MM.YYYY HH:mm') }}</td>
               <td>{{ props.item.validTo | moment('DD.MM.YYYY HH:mm') }}</td>
@@ -424,18 +439,20 @@
 <script lang="ts">
 
 import { Component, Prop, Watch } from 'vue-property-decorator';
-import { State, Action, namespace } from 'vuex-class';
+import { State, Getter, Action, namespace } from 'vuex-class';
 
 import BaseComponent from '../BaseComponent.vue';
 import PriceComponent from '@/components/helpers/PriceComponent.vue';
 import DatePickerComponent from '@/components/helpers/DatePickerComponent.vue';
 import FileUploadComponent from '@/components/helpers/FileUploadComponent.vue';
 import QuestionDialogComponent from '@/components/helpers/QuestionDialogComponent.vue';
-import { RecordTableDto, AuthUser, FileSimpleDto } from '@/poco';
+import { RecordTableDto, AuthUser, FileSimpleDto, AuctionLookupDto } from '@/poco';
 import { Record, File } from '@/model';
 import { RecordState, AuthState } from '@/store/types';
 
 const RecordAction = namespace('record', Action);
+const AuctionGetter = namespace('auction', Getter);
+const AuctionAction = namespace('auction', Action);
 
 @Component({
   components: {
@@ -449,7 +466,7 @@ export default class AdminRecordTableComponent extends BaseComponent {
   @State('record') private record: RecordState;
   @State('auth') private auth: AuthState;
 
-  @Prop({default: []}) private auctions: RecordTableDto[];
+  @Prop({default: []}) private records: RecordTableDto[];
   @Prop({default: true}) private loading: boolean;
 
   @RecordAction('initialCurrent') private initCurrent: any;
@@ -460,6 +477,9 @@ export default class AdminRecordTableComponent extends BaseComponent {
   @RecordAction('updateRecord') private updateRecord: any;
   @RecordAction('setFiles') private setFiles: any;
   @RecordAction('setCurrentUserId') private setCurrentUserId: any;
+
+  @AuctionAction('getLookup') private loadAuctionsCombo: any;
+  @AuctionGetter('getLookupList') private auctionsCombo: AuctionLookupDto[];
 
   private editLoading: boolean = false;
   private questionDialog: boolean = false;
@@ -472,9 +492,9 @@ export default class AdminRecordTableComponent extends BaseComponent {
       totalItems: 0,
   };
 
-  @Watch('auctions') private changeUsers(auctions) {
-      if (auctions !== undefined && auctions.length > 0) {
-          this.pagination.totalItems = auctions.length;
+  @Watch('records') private changeUsers(records) {
+      if (records !== undefined && records.length > 0) {
+          this.pagination.totalItems = records.length;
       }
   }
 
@@ -483,12 +503,17 @@ export default class AdminRecordTableComponent extends BaseComponent {
             text: this.settings.resource.name,
             align: 'left',
             sortable: true,
-            value: 'name  ' });
+            value: 'name' });
+        this.headers.push({
+            text: this.settings.resource.auctions,
+            align: 'left',
+            sortable: true,
+            value: 'auctionName' });
         this.headers.push({
             text: this.settings.resource.state,
             align: 'left',
             sortable: true,
-            value: 'state  ' });
+            value: 'state' });
         this.headers.push({
             text: this.settings.resource.validFrom,
             align: 'rigth',
@@ -524,6 +549,7 @@ export default class AdminRecordTableComponent extends BaseComponent {
             align: 'center',
             sortable: true,
             value: 'action' });
+        this.loadAuctionsCombo();
   }
 
   get questionWarning(): string {
@@ -660,6 +686,10 @@ export default class AdminRecordTableComponent extends BaseComponent {
 
   get labelMoreDescription(): string {
     return this.settings.resource.moreDescription;
+  }
+
+  get labelAuction(): string {
+    return this.settings.resource.auctions;
   }
 
   get pages() {

@@ -286,8 +286,6 @@ export default class AuctionDetalComponent extends BaseComponent {
     private mounted() {
         if (this.record === undefined) {
             this.detail(this.$route.query.id);
-        } else {
-            this.detail(this.record.id);
         }
     }
 

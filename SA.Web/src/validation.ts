@@ -29,6 +29,7 @@ export default class Validation {
                 companyLegalNumber: `"${resource.companyLegalNumber}"`,
                 city: `"${resource.city}"`,
                 countryId: `"${resource.country}"`,
+                auctionId: `"${resource.auctions}"`,
                 postCode: `"${resource.postCode}"`,
                 stret: `"${resource.street}"`,
                 language: `"${resource.language}"`,
