@@ -73,6 +73,7 @@ namespace SA.Web
             services.AddSingleton<IEntityRepository<Record>, RecordsRepository>();
             services.AddSingleton<IEntityRepository<GdprRecord>, GdprRecordsRepository>();
             services.AddSingleton<IEntityRepository<UserActivation>, UserActivationsRepository>();
+            services.AddSingleton<IEntityRepository<Auction>, AuctionsRepository>();
 
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
@@ -89,7 +90,8 @@ namespace SA.Web
                         ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().Price
                         : x.StartingPrice))
                     .ForMember(dto => dto.NumberOfBids, dto => dto.MapFrom(x => x.Bids.Count()))
-                    .ForMember(dto => dto.RegistrationYear, dto => dto.MapFrom(x => x.DateOfFirstRegistration.HasValue ? x.DateOfFirstRegistration.Value.Year as int? : null));
+                    .ForMember(dto => dto.RegistrationYear, dto => dto.MapFrom(x => x.DateOfFirstRegistration.HasValue ? x.DateOfFirstRegistration.Value.Year as int? : null))
+                    .ForMember(dto => dto.AuctionName, dto => dto.MapFrom(x => x.Auction.Name));
                 cfg.CreateMap<Record, RecordDetailDto>()
                     .ForMember(dto => dto.CurrentPrice, dto => dto.MapFrom(x => x.Bids.Any()
                         ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().Price
@@ -121,6 +123,12 @@ namespace SA.Web
                     .ForMember(dto => dto.FullName, dto => dto.MapFrom(x => $"{x.FirstName} {x.LastName}"));
                 cfg.CreateMap<GdprRecord, GdprRecordDto>();
 
+                cfg.CreateMap<Auction, AuctionDto>();
+                cfg.CreateMap<Auction, AuctionTableDto>()
+                    .ForMember(dto => dto.NumberOfRecords, dto => dto.MapFrom(x => x.Records.Count()));
+                cfg.CreateMap<Auction, AuctionLookupDto>()
+                    .ForMember(dto => dto.Name, dto => dto.MapFrom(x => $"{x.Name} - [{x.ValidFrom.ToShortDateString()} - {x.ValidTo.ToShortDateString()}]"));
+
                 // reverse mapping
                 cfg.CreateMap<UserDto, User>();
                 cfg.CreateMap<UserSimpleDto, User>();
@@ -128,16 +136,22 @@ namespace SA.Web
                     .ForMember(x => x.User, x => x.Ignore());
                 cfg.CreateMap<RecordTableDto, Record>()
                     .ForMember(x => x.Files, x => x.Ignore());
+                cfg.CreateMap<AuctionDto, Auction>()
+                    .ForMember(x => x.Records, x => x.Ignore());
 
                 // update mapping
                 cfg.CreateMap<User, User>();
                 cfg.CreateMap<Record, Record>()
                     .ForMember(x => x.User, x => x.Ignore())
+                    .ForMember(x => x.Auction, x => x.Ignore())
                     .ForMember(x => x.Files, x => x.Ignore())
                     .ForMember(x => x.Bids, x => x.Ignore());
                 cfg.CreateMap<Customer, Customer>();
                 cfg.CreateMap<Address, Address>();
                 cfg.CreateMap<UserActivation, UserActivation>();
+                cfg.CreateMap<Auction, Auction>()
+                    .ForMember(x => x.Created, x => x.Ignore())
+                    .ForMember(x => x.Records, x => x.Ignore());
             });
         }
 

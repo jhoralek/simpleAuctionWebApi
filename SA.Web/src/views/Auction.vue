@@ -1,5 +1,6 @@
 <template>
   <div class="auction">
+    <loading-component :open="isLoading"/>
     <v-container grid-list-xs pa-0>
       <v-layout row wrap>
         <v-flex xs12>
@@ -21,6 +22,7 @@ import BaseView from '@/views/BaseView.vue';
 import {
   AuctionTableComponent,
   AuctionGridComponent,
+  LoadingComponent,
 } from '@/components';
 
 const RecordAction = namespace('record', Action);
@@ -32,6 +34,7 @@ const SettingsGetter = namespace('settings', Getter);
   components: {
     AuctionTableComponent,
     AuctionGridComponent,
+    LoadingComponent,
   },
 })
 export default class Auction extends BaseView {

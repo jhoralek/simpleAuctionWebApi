@@ -7,25 +7,27 @@
                         <div class="big-box">
                             <v-layout row wrap class="big-data">
                                 <v-flex xs12 md6 class="big-img-wrapper">
-                                    <img :src="randomImagePath(record)" class="big-img" />
+                                    <img :src="firstImagePath(record)" class="big-img" />
                                 </v-flex>
                                 <v-flex xs12 md6>
                                     <div class="big-box-info">
-                                        <v-layout row wrap>
-                                            <v-flex xs12><h1>{{ record.name }}</h1></v-flex>
-                                        </v-layout>
-                                        <v-layout row wrap>
-                                            <v-flex xs3>{{ resx('registration') }}</v-flex>
-                                            <v-flex xs3>{{ resx('fuel') }}</v-flex>
-                                            <v-flex xs3>{{ resx('power') }}</v-flex>
-                                            <v-flex xs3>{{ resx('mileAge') }}</v-flex>
-                                        </v-layout>
-                                        <v-layout row wrap>
-                                            <v-flex xs3>{{ record.dateOfFirstRegistration | moment('YYYY') }}</v-flex>
-                                            <v-flex xs3>{{ record.fuel }}</v-flex>
-                                            <v-flex xs3>{{ record.power }}</v-flex>
-                                            <v-flex xs3>{{ record.mileage }}</v-flex>
-                                        </v-layout>
+                                        <div class="record-info">
+                                            <v-layout row wrap>
+                                                <v-flex xs12><h1>{{ record.name }}</h1></v-flex>
+                                            </v-layout>
+                                            <v-layout row wrap>
+                                                <v-flex xs3>{{ resx('registration') }}</v-flex>
+                                                <v-flex xs3>{{ resx('fuel') }}</v-flex>
+                                                <v-flex xs3>{{ resx('power') }}</v-flex>
+                                                <v-flex xs3>{{ resx('mileAge') }}</v-flex>
+                                            </v-layout>
+                                            <v-layout row wrap>
+                                                <v-flex xs3>{{ record.dateOfFirstRegistration | moment('YYYY') }}</v-flex>
+                                                <v-flex xs3>{{ record.fuel }}</v-flex>
+                                                <v-flex xs3>{{ record.power }}</v-flex>
+                                                <v-flex xs3>{{ record.mileage }}</v-flex>
+                                            </v-layout>
+                                        </div>
                                         <v-layout row wrap>
                                             <v-flex xs12>
                                                 <v-data-table
@@ -34,7 +36,7 @@
                                                     class="elevation-1">
                                                     <template slot="items" slot-scope="props">
                                                     <td>{{ props.item.created | moment('HH:mm DD.MM.YYYY') }}</td>
-                                                    <td>{{ props.item.userName }}</td>
+                                                    <td>{{ anonymize(props.item.userName) }}</td>
                                                     <td>{{ resx('bidedBy') }}</td>
                                                     <td class="text-xs-right">
                                                         <price-component :price="props.item.price" />
@@ -101,6 +103,7 @@ import FormBaseComponent from '@/components/FormBaseComponent.vue';
 import { PriceComponent, CountdownComponent, BidComponent } from '@/components';
 import { Record } from '@/model';
 import { AuthUser } from '@/poco';
+import Helpers from '@/helpers';
 
 const RecordAction = namespace('record', Action);
 const RecordGetter = namespace('record', Getter);
@@ -126,9 +129,9 @@ export default class ActualRandomComponent extends FormBaseComponent {
         return this.record.currentPrice + this.record.minimumBid;
     }
 
-    private randomImagePath(record: Record): string {
+    private firstImagePath(record: Record): string {
         const { files } = record;
-        const rf = files[Math.floor(Math.random() * files.length)];
+        const rf = files[0];
         return `/${rf.path}/${rf.recordId}/images/${rf.name}`;
     }
 
@@ -138,6 +141,10 @@ export default class ActualRandomComponent extends FormBaseComponent {
 
     private validTo(validTo: Date): string {
         return validTo.toString();
+    }
+
+    private anonymize(str: string): string {
+        return Helpers.anonymizeString(str, 1, str.length);
     }
 }
 
@@ -220,8 +227,8 @@ export default class ActualRandomComponent extends FormBaseComponent {
   font-weight: 500;
   font-style: normal;
   font-stretch: normal;
-  line-height: 1.33;
-  letter-spacing: 0px;
+  line-height: 1.15;
+  letter-spacing: 0.3px;
   text-align: left;
   color: #000000;
 }
@@ -260,19 +267,25 @@ export default class ActualRandomComponent extends FormBaseComponent {
 .acutal-random-wrapper .header-box {
     position: absolute !important;
     top: 0px;
-    left: 180px;
+    left: 140px;
 }
 
 .acutal-random-wrapper .header-box h1 {
   color: black !important;
   font-family: Roboto;
-  font-size: 27px;
-  font-weight: 500;
+  font-size: 35px;
+  font-weight: normal;
   font-style: normal;
   font-stretch: normal;
-  line-height: 1.33;
-  letter-spacing: 0px;
+  line-height: 1.15;
+  letter-spacing: 0.3px;
   text-align: left;
 }
+
+.big-box-info .record-info {
+    padding-left: 25px;
+    border-bottom: 1px solid #d1d1d1;
+}
+
 
 </style>

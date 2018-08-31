@@ -2,8 +2,15 @@ import {
     User,
     Country,
     Record,
+    Auction,
 } from '@/model';
-import { MessageDto, RecordTableDto } from '@/poco';
+import {
+    MessageDto,
+    RecordTableDto,
+    AuctionTableDto,
+    AuctionDto,
+    AuctionLookupDto,
+} from '@/poco';
 
 /**
  * This is root state of app store
@@ -15,6 +22,7 @@ export interface RootState {
     profile: ProfileState;
     record: RecordState;
     message: MessageState;
+    auction: AuctionState;
 }
 /**
  * User state
@@ -66,6 +74,16 @@ export interface MessageState {
     module: string;
     created: Date;
     message: MessageDto;
+}
+
+/**
+ * Auction state
+ */
+export interface AuctionState {
+    auctionsTable: AuctionTableDto[];
+    lookupList: AuctionLookupDto[];
+    auctions: AuctionDto[];
+    current: Auction;
 }
 
 export interface Dictionary<T> {

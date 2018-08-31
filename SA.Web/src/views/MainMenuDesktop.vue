@@ -32,6 +32,9 @@
             <v-list-tile to="/auctionsAdministration">
                 <v-list-tile-title>{{ resx('auctionsAdministration')}}</v-list-tile-title>
             </v-list-tile>
+            <v-list-tile to="/record-administration">
+                <v-list-tile-title>{{ resx('recordAdministration')}}</v-list-tile-title>
+            </v-list-tile>
             <v-list-tile to="/gdprAdministration">
                 <v-list-tile-title>{{ resx('gdprAdministration')}}</v-list-tile-title>
             </v-list-tile>
@@ -41,9 +44,9 @@
         <div class="fill-height align-content-center">
             <login-form-component/>
         </div>
-        <div class="fill-height align-content-center">
+        <!-- <div class="fill-height align-content-center">
             <language-component />
-        </div>
+        </div> -->
         </v-toolbar-items>
     </v-toolbar>
 </template>

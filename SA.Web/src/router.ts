@@ -14,6 +14,7 @@ import {
   AuctionDetail,
   UserAdministration,
   AuctionAdministration,
+  RecordsAdministration,
   Cookies,
   Gdpr,
   GdprAdministration,
@@ -70,6 +71,12 @@ export default new Router({
       path: '/usersAdministration',
       name: 'usersAdministration',
       component: UserAdministration,
+      beforeEnter: adminAuthenticated,
+    },
+    {
+      path: '/record-administration',
+      name: 'recordAdministration',
+      component: RecordsAdministration,
       beforeEnter: adminAuthenticated,
     },
     {

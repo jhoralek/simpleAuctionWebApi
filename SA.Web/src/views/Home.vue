@@ -15,7 +15,7 @@
         <actual-random-component />
       </v-flex>
     </v-layout>
-    <v-container grid-list-md class="registration-container">
+    <v-container grid-list-md class="registration-container" v-if="!auth.isAuthenticated">
       <v-layout row wrap>
         <v-flex xs12>
           <h2 class="header">{{ resx('registration') }}</h2>
@@ -41,7 +41,7 @@ import {
   ActualRandomComponent,
 } from '@/components';
 
-import { SettingsState } from '@/store/types';
+import { SettingsState, AuthState } from '@/store/types';
 
 const ProfileAction = namespace('profile', Action);
 
@@ -54,6 +54,7 @@ const ProfileAction = namespace('profile', Action);
 })
 export default class Home extends BaseView {
   @State('settings') private settings: SettingsState;
+  @State('auth') private auth: AuthState;
   @ProfileAction('initialState') private init: any;
 
   private mounted() {
@@ -90,7 +91,8 @@ export default class Home extends BaseView {
 }
 
 h2.header {
-  font-size: 46px;
+  font-size: 35px;
+  font-family: Roboto;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
