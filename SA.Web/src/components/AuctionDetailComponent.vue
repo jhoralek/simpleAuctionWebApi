@@ -1,11 +1,11 @@
 <template>
     <v-container grid-list-xs pa-0 v-if="record" class="auction-detail">
         <v-layout row wrap>
-            <v-flex xs12 lg6>
+            <v-flex xs12 md6 class="left-side">
                 <v-container  grid-list-xs pa-0>
-                    <v-layout column fill-height>
-                        <v-flex xs12 md12>
-                            <v-carousel>
+                    <v-layout column>
+                        <v-flex xs12>
+                            <v-carousel hide-delimiters :cycle="false">
                                 <v-carousel-item
                                     v-for="(item,i) in record.files"
                                     :key="i"
@@ -14,234 +14,261 @@
                             </v-carousel>
                         </v-flex>
                         <v-flex xs12>
-                            <v-container  grid-list-xs pa-0>
-                                <v-layout column fill-height>
-                                    <v-flex xs12>
-                                        <v-expansion-panel expand>
-                                            <v-expansion-panel-content :value="expander1">
-                                                <div slot="header">
-                                                    <h3 class="headline">{{ resx('auctionDetailInformation') }}</h3>
-                                                </div>
-                                                <v-container class="grey lighten-3">
-                                                    <v-layout row wrap v-if="!currentUser.isFeePayed">
-                                                        <v-flex xs6>
-                                                            <h1 class="display-1 font-weight-medium">{{ record.name }}</h1>
-                                                        </v-flex>
-                                                        <v-flex xs6>
-                                                            <v-layout row justify-end align-center>
-                                                                <h1 class=" red--text text--lighten-1 display-1 font-weight-bold">
-                                                                    <PriceComponent :price="record.currentPrice" />
-                                                                </h1>
-                                                            </v-layout>
-                                                        </v-flex>
-                                                    </v-layout>
-                                                    <v-layout row wrap v-if="currentUser.isFeePayed">
-                                                        <v-flex xs6>
-                                                            <h3 class="font-weight-bold">{{ record.name }}</h3>
-                                                        </v-flex>
-                                                        <v-flex xs6>
-                                                            <v-layout row  justify-end align-center>
-                                                                <h3 class="red--text text--lighten-1 font-weight-bold">
-                                                                    <PriceComponent :price="record.currentPrice" />
-                                                                </h3>
-                                                            </v-layout>
-                                                        </v-flex>
-                                                        <v-flex xs12>
-                                                            <v-layout row justify-end align-center>
-                                                                <bid-component :bid="minimumBid" />
-                                                            </v-layout>
-                                                        </v-flex>
-                                                    </v-layout>
-                                                    <v-layout row wrap>
-                                                        <v-flex xs6>{{ resx('startingPrice') }}</v-flex>
-                                                        <v-flex xs6>
-                                                            <v-layout row justify-end align-center>
-                                                                <PriceComponent :price="record.startingPrice" />
-                                                            </v-layout>
-                                                        </v-flex>
-                                                    </v-layout>
-                                                    <v-layout row wrap>
-                                                        <v-flex xs6>{{ resx('minimumBid') }}</v-flex>
-                                                        <v-flex xs6>
-                                                            <v-layout row justify-end align-center>
-                                                                <PriceComponent :price="record.minimumBid" />
-                                                            </v-layout>
-                                                        </v-flex>
-                                                    </v-layout>
-                                                    <v-layout row wrap>
-                                                        <v-flex xs6>{{ resx('numberOfBids') }}</v-flex>
-                                                        <v-flex xs6>
-                                                            {{ record.numberOfBids }}
-                                                        </v-flex>
-                                                    </v-layout>
-                                                    <v-layout row wrap>
-                                                        <v-flex xs6>{{ resx('beginningOfTheAuction') }}</v-flex>
-                                                        <v-flex xs6>{{ record.validFrom | moment('DD.MM.YYYY HH:mm') }}</v-flex>
-                                                    </v-layout>
-                                                    <v-layout row wrap>
-                                                        <v-flex xs6>{{ resx('endOfAuction') }}</v-flex>
-                                                        <v-flex xs6>{{ record.validTo | moment('DD.MM.YYYY HH:mm') }}</v-flex>
-                                                    </v-layout>
-                                                    <v-layout row wrap>
-                                                        <v-flex xs6>{{ resx('contactToAppointment') }}</v-flex>
-                                                        <v-flex xs6>{{ record.contactToAppointment }}</v-flex>
-                                                    </v-layout>
-                                                </v-container>
-                                            </v-expansion-panel-content>
-                                        </v-expansion-panel>
-                                    </v-flex>
-                                </v-layout>
-                            </v-container>
+                            <v-expansion-panel expand>
+                                <v-expansion-panel-content :value="expander1">
+                                    <div slot="header">
+                                        <h3>{{ resx('auctionDetailInformation') }}</h3>
+                                    </div>
+                                    <v-layout row wrap>
+                                        <v-flex xs12 md6>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('startingPrice') }}</v-flex>
+                                                <v-flex xs6 class="info-value"><price-component :price="record.startingPrice" /></v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12 md6>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('beginningOfTheAuction') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.validFrom | moment('DD.MM.YYYY HH:mm') }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout row wrap>
+                                        <v-flex xs12 md6>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('minimumBid') }}</v-flex>
+                                                <v-flex xs6 class="info-value"><price-component :price="record.minimumBid" /></v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12 md6>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('endOfAuction') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.validTo | moment('DD.MM.YYYY HH:mm') }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout row wrap>
+                                        <v-flex xs12 md6>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('numberOfBids') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.numberOfBids }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12 md6>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('contactToAppointment') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.contactToAppointment }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-expansion-panel-content>
+                            </v-expansion-panel>
+                            <v-expansion-panel expand>
+                                <v-expansion-panel-content :value="expander">
+                                    <div slot="header">
+                                        <h3>{{ resx('specification') }}</h3>
+                                    </div>
+                                    <v-layout row wrap>
+                                        <v-flex xs12>
+                                            <v-layout row wrap>
+                                                <v-flex xs8 class="info-text">{{ resx('dimensions') }}</v-flex>
+                                                <v-flex xs4 class="info-value text-xs-right">{{ record.dimensions}}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12>
+                                            <v-layout row wrap>
+                                                <v-flex xs8 class="info-text">{{ resx('maximumWeight') }}</v-flex>
+                                                <v-flex xs4 class="info-value text-xs-right">{{ record.maximumWeight }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout row wrap>
+                                        <v-flex xs12>
+                                            <v-layout row wrap>
+                                                <v-flex xs8 class="info-text">{{ resx('operationWeight') }}</v-flex>
+                                                <v-flex xs4 class="info-value text-xs-right">{{ record.operationWeight}}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12>
+                                            <v-layout row wrap>
+                                                <v-flex xs8 class="info-text">{{ resx('maximumWeightOfRide') }}</v-flex>
+                                                <v-flex xs4 class="info-value text-xs-right">{{ record.maximumWeightOfRide }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout row wrap>
+                                        <v-flex xs12>
+                                            <v-layout row wrap>
+                                                <v-flex xs8 class="info-text">{{ resx('mostTechnicallyWeightOfRide') }}</v-flex>
+                                                <v-flex xs4 class="info-value text-xs-right">{{ record.mostTechnicallyWeightOfRide}}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12>
+                                            <v-layout row wrap>
+                                                <v-flex xs8 class="info-text">{{ resx('mostTechnicallyAcceptableWeight') }}</v-flex>
+                                                <v-flex xs4 class="info-value text-xs-right">{{ record.mostTechnicallyAcceptableWeight }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-expansion-panel-content>
+                            </v-expansion-panel>
                         </v-flex>
                     </v-layout>
                 </v-container>
             </v-flex>
-            <v-flex xs12 lg6>
+            <v-flex xs12 md6 class="right-side">
                 <v-container  grid-list-xs pa-0>
                     <v-layout column fill-height>
                         <v-flex xs12 >
+                            <v-layout row wrap class="item-header">
+                                <v-flex xs12 md6><h1>{{ record.name }}</h1></v-flex>
+                                <v-flex xs12 md6>
+                                    <v-layout row wrap class="header-info">
+                                        <v-flex xs4>{{ resx('buildDate') }} {{ record.dateOfFirstRegistration | moment('YYYY') }}</v-flex>
+                                        <v-flex xs4>{{ record.fuel }}</v-flex>
+                                        <v-flex xs4>{{ record.state }}</v-flex>
+                                    </v-layout>
+                                </v-flex>
+                            </v-layout>
+                            <v-layout row wrap class="header-info2">
+                                <v-flex xs12 md6 class="info-text">{{ resx('toTheEndOfAuction') }}</v-flex>
+                                <v-flex xs12 md6 class="info-text text-xs-right">{{ resx('actualPrice') }} </v-flex>
+                            </v-layout>
+                            <v-layout row wrap class="header-info2">
+                                <v-flex xs12 md6 class="info2">
+                                    <countdown-component
+                                        :id="recordIdToString(record)"
+                                        :date="dateToString(record.validTo)"
+                                        :startDate="dateToString(record.validFrom)" />
+                                </v-flex>
+                                <v-flex xs12 md6 class="text-xs-right info2">
+                                    <price-component :price="record.currentPrice" />
+                                </v-flex>
+                            </v-layout>
+                            <v-layout row wrap class="info3">
+                                <v-flex xs12 class="text-xs-center">
+                                    <bid-component :bid="minimumBid" v-if="currentUser.isFeePayed && canBid(record.validFrom)" />
+                                </v-flex>
+                            </v-layout>
                             <v-expansion-panel expand>
                                 <v-expansion-panel-content :value="expander">
                                     <div slot="header">
-                                        <h3 class="headline">{{ resx('carInformation') }}</h3>
+                                        <h3>{{ resx('carInformation') }}</h3>
                                     </div>
-                                    <v-container class="grey lighten-3">
-                                        <v-flex xs12 offset-xs1>
+                                    <v-layout row wrap>
+                                        <v-flex xs12 md6>
                                             <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('dateOfFirstRegistration') }}</v-flex>
-                                                <v-flex xs6>{{ record.dateOfFirstRegistration | moment('YYYY') }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('doors') }}</v-flex>
-                                                <v-flex xs6>{{ record.doors }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('mileAge') }}</v-flex>
-                                                <v-flex xs6>{{ record.mileage }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('power') }}</v-flex>
-                                                <v-flex xs6>{{ record.power }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('fuel') }}</v-flex>
-                                                <v-flex xs6>{{ record.fuel }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('color') }}</v-flex>
-                                                <v-flex xs6>{{ record.color }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('transmission') }}</v-flex>
-                                                <v-flex xs6>{{ record.transmission }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('numberOfSeets') }}</v-flex>
-                                                <v-flex xs6>{{ record.numberOfSeets }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('axle') }}</v-flex>
-                                                <v-flex xs6>{{ record.axle }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('euroNorm') }}</v-flex>
-                                                <v-flex xs6>{{ record.euroNorm }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('auditControlIsProvidedBy') }}</v-flex>
-                                                <v-flex xs6>{{ record.registrationCheck }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('vehicleVinNumber') }}</v-flex>
-                                                <v-flex xs6>{{ record.vin }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('technicalViewOfTheVehicle') }}</v-flex>
-                                                <v-flex xs6>{{ record.stk | moment('DD.MM.YYYY') }}</v-flex>
+                                                <v-flex xs6 class="info-text">{{ resx('doors') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.doors}}</v-flex>
                                             </v-layout>
                                         </v-flex>
-                                    </v-container>
+                                        <v-flex xs12 md6>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('mileAge') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.mileAge }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout row wrap>
+                                        <v-flex xs12 md6>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('power') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.power }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12 md6>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('color') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.color }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout row wrap>
+                                        <v-flex xs12 md6>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('transmission') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.transmission }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12 md6>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('numberOfSeets') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.numberOfSeets }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout row wrap>
+                                        <v-flex xs12 md6>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('axle') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.axle }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12 md6>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('euroNorm') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.euroNorm }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout row wrap>
+                                       <v-flex xs12 md6>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('technicalViewOfTheVehicle') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.technicalViewOfTheVehicle | moment('DD.MM.YYYY') }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12 md6>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('vehicleVinNumber') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.vehicleVinNumber }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout row wrap>
+                                        <v-flex xs12>
+                                            <v-layout row wrap>
+                                                <v-flex xs6 class="info-text">{{ resx('auditControlIsProvidedBy') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.auditControlIsProvidedBy }}</v-flex>
+                                            </v-layout>
+                                        </v-flex>
+                                    </v-layout>
                                 </v-expansion-panel-content>
+                            </v-expansion-panel>
+                            <v-expansion-panel expand>
                                 <v-expansion-panel-content :value="expander">
                                     <div slot="header">
-                                        <h3 class="headline">{{ resx('equipment') }}</h3>
+                                        <h3>{{ resx('equipment') }}</h3>
                                     </div>
-                                    <v-container class="grey lighten-3">
-                                        <v-flex xs12 offset-xs1>
-                                            <v-layout row wrap>
-                                                <v-flex xs12>{{ record.equipment }}</v-flex>
-                                            </v-layout>
+                                    <v-layout row wrap>
+                                        <v-flex xs12 class="info-value">
+                                            {{ record.equipment }}
                                         </v-flex>
-                                    </v-container>
+                                    </v-layout>
                                 </v-expansion-panel-content>
+                            </v-expansion-panel>
+                            <v-expansion-panel expand>
                                 <v-expansion-panel-content :value="expander">
                                     <div slot="header">
-                                        <h3 class="headline">{{ resx('state') }}</h3>
+                                        <h3>{{ resx('defects') }}</h3>
                                     </div>
-                                    <v-container class="grey lighten-3">
-                                        <v-flex xs12 offset-xs1>
-                                            <v-layout row wrap>
-                                                <v-flex xs12>{{ record.state }}</v-flex>
-                                            </v-layout>
+                                    <v-layout row wrap>
+                                        <v-flex xs12 class="info-value">
+                                            {{ record.defects }}
                                         </v-flex>
-                                    </v-container>
+                                    </v-layout>
                                 </v-expansion-panel-content>
+                            </v-expansion-panel>
+                            <v-expansion-panel expand>
                                 <v-expansion-panel-content :value="expander">
                                     <div slot="header">
-                                        <h3 class="headline">{{ resx('specification') }}</h3>
+                                        <h3>{{ resx('moreDescription') }}</h3>
                                     </div>
-                                    <v-container class="grey lighten-3">
-                                        <v-flex xs12 offset-xs1>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('dimensions') }}</v-flex>
-                                                <v-flex xs6>{{ record.dimensions }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('maximumWeight') }}</v-flex>
-                                                <v-flex xs6>{{ record.maximumWeight }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('operationWeight') }}</v-flex>
-                                                <v-flex xs6>{{ record.operationWeight }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('maximumWeightOfRide') }}</v-flex>
-                                                <v-flex xs6>{{ record.maximumWeightOfRide }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('mostTechnicallyWeightOfRide') }}</v-flex>
-                                                <v-flex xs6>{{ record.mostTechnicallyAcceptableWeight }}</v-flex>
-                                            </v-layout>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>{{ resx('mostTechnicallyAcceptableWeight') }}</v-flex>
-                                                <v-flex xs6>{{ record.mostTechnicallyAcceptableWeight }}</v-flex>
-                                            </v-layout>
+                                    <v-layout row wrap>
+                                        <v-flex xs12 class="info-value">
+                                            {{ record.moreDescription }}
                                         </v-flex>
-                                    </v-container>
-                                </v-expansion-panel-content>
-                                <v-expansion-panel-content :value="expander">
-                                    <div slot="header">
-                                        <h3 class="headline">{{ resx('defects') }}</h3>
-                                    </div>
-                                    <v-container class="grey lighten-3">
-                                        <v-flex xs12 offset-xs1>
-                                            <v-layout row wrap>
-                                                <v-flex xs12>{{ record.defects }}</v-flex>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-container>
-                                </v-expansion-panel-content>
-                                <v-expansion-panel-content :value="expander">
-                                    <div slot="header">
-                                        <h3 class="headline">{{ resx('moreDescription') }}</h3>
-                                    </div>
-                                    <v-container class="grey lighten-3">
-                                        <v-flex xs12 offset-xs1>
-                                            <v-layout row wrap>
-                                                <v-flex xs12>{{ record.moreDescription }}</v-flex>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-container>
+                                    </v-layout>
                                 </v-expansion-panel-content>
                             </v-expansion-panel>
                         </v-flex>
@@ -252,12 +279,13 @@
     </v-container>
 </template>
 
-<<script lang="ts">
+<script lang="ts">
+
 import { Component, Prop } from 'vue-property-decorator';
 import { Getter, Action, namespace } from 'vuex-class';
 
 import BaseComponent from './BaseComponent.vue';
-import { PriceComponent, BidComponent } from '@/components';
+import { PriceComponent, BidComponent, CountdownComponent } from '@/components';
 import {
     Record,
     Bid,
@@ -273,6 +301,7 @@ const RecordAction = namespace('record', Action);
     components: {
         PriceComponent,
         BidComponent,
+        CountdownComponent,
     },
 })
 export default class AuctionDetalComponent extends BaseComponent {
@@ -289,6 +318,10 @@ export default class AuctionDetalComponent extends BaseComponent {
         }
     }
 
+    private recordIdToString(record: RecordTableDto): string {
+        return record.id.toString();
+    }
+
     private filePath(file: FileSimpleDto): string {
         return `${this.settings.apiUrl.replace('/api', '')}/${file.path}/${file.recordId}/images/${file.name}`;
     }
@@ -297,9 +330,161 @@ export default class AuctionDetalComponent extends BaseComponent {
         return `${user.customer.companyName}`;
     }
 
+    private dateToString(date: Date): string {
+        return date.toString();
+    }
+
+    private canBid(validFrom: Date): boolean {
+        return validFrom <= new Date();
+    }
+
     get minimumBid(): number {
         return this.record.currentPrice + this.record.minimumBid;
     }
 }
 
 </script>
+
+<style>
+
+.auction-detail .header-info2 {
+    background-color: black !important;
+    max-height: 100px !important;
+    color: white !important;
+}
+
+.auction-detail .info3 {
+    background-color: #ededed !important;
+    border-bottom-left-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+    margin: 0 auto !important;
+}
+
+.auction-detail .bid-component {
+    padding-top: 20px !important;
+    max-width: 80% !important;
+    margin: auto !important;
+    position: relative !important;
+}
+
+.auction-detail .header-info2 .info2 {
+  font-size: 29px !important;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0px;
+  text-align: left;
+  padding-right: 15px !important;
+  padding-left: 15px !important;
+}
+
+.auction-detail .item-header {
+    padding-top: 30px !important;
+}
+
+.auction-detail .header-info .flex {
+  line-height: 6 !important;
+  text-align: center !important;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.9px;
+  text-align: left;
+  color: #929292;
+}
+
+.auction-detail h1 {
+  font-size: 40px !important;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.33;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #000000;
+}
+
+.auction-detail .left-side {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+
+.auction-detail .right-side {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+
+.auction-detail .info-text {
+  font-size: 10px !important;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 3;
+  letter-spacing: 0.8px;
+  text-align: left;
+  color: #929292;
+  padding-left: 15px !important;
+  text-transform: uppercase;
+  padding-right: 15px !important;
+}
+
+.auction-detail {
+    font-family: Roboto !important;
+}
+
+.auction-detail .info-value {
+  font-size: 13px !important;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 2;
+  letter-spacing: 0.8px;
+  text-align: right;
+  padding-right: 15px !important;
+  color: #000000;
+}
+
+.auction-detail .v-carousel {
+    --webkit-box-shadow: 0 0px 0px 0px rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0) !important;
+    box-shadow: 0 0px 0px 0px rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0) !important;
+    max-width: 600px;
+    max-height: 430px;
+    border-radius: 5px !important;
+    border: 1px solid #e6e6e6 !important;
+}
+
+.auction-detail .v-expansion-panel {
+    border-radius: 5px !important;
+    margin-top: 25px !important;
+    --webkit-box-shadow: 0 0px 0px 0px rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0) !important;
+    box-shadow: 0 0px 0px 0px rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0) !important;
+    border: 1px solid #e6e6e6 !important;
+}
+
+.auction-detail .v-expansion-panel__header {
+    background-color: #ededed !important;
+}
+
+.auction-detail .v-expansion-panel__container {
+    border: 1px solid #e6e6e6 !important;
+}
+
+.auction-detail .v-expansion-panel__header h3 {
+    font-size: 15px !important;
+    font-weight: bold !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 3.87;
+    letter-spacing: 1.2px;
+    text-align: left;
+    color: #000000;
+    text-transform: uppercase;
+}
+
+.auction-detail .v-expansion-panel__body {
+    background-color: #ffffff !important;
+}
+
+</style>
