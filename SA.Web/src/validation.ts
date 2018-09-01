@@ -65,6 +65,8 @@ export default class Validation {
                 dateOfFirstRegistration: `"${resource.dateOfFirstRegistration}"`,
                 bid: `"${resource.bid}"`,
                 applicationType: `"${resource.applicationType}"`,
+                timeFrom: `"${resource.timeFrom}"`,
+                timeTo: `"${resource.timeTo}"`,
             },
         };
     }

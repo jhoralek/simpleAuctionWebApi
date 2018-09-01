@@ -14,8 +14,11 @@ import {
     RECORD_INITIAL_CURRENT,
     RECORD_DELETE_RECORD_FROM_LIST,
     RECORD_SET_CURRENT_FILES,
+    RECORD_APPEND_CURRENT_FILES,
     RECORD_SET_CURRENT_USER_ID,
     RECORD_CHANGE_BIDS_TO_CURRENT,
+    RECORD_SET_VALID_DATES,
+    RECORD_SET_VALID_TIMES,
 } from '@/store/mutation-types';
 import {
     RecordTableDto,
@@ -56,6 +59,8 @@ const actions: ActionTree<RecordState, RootState> = {
                             mod: 'Auction',
                         },
                         { root: true });
+                    } else {
+                        dispatch('auction/initialState', {}, { root: true});
                     }
                     return resolve(true);
                 })
@@ -277,6 +282,12 @@ const actions: ActionTree<RecordState, RootState> = {
             return resolve(true);
         });
     },
+    addFiles({commit}, files: FileSimpleDto[]): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            commit (RECORD_APPEND_CURRENT_FILES, files);
+            return resolve(true);
+        });
+    },
     updateRecord({rootState, dispatch}, record: Record): Promise<boolean> {
         return new Promise<boolean> ((resolve) => {
             return axios.put(`${rootState.settings.apiUrl}/records`, record,
@@ -374,6 +385,18 @@ const actions: ActionTree<RecordState, RootState> = {
                 { root: true});
                 return resolve(false);
             });
+        });
+    },
+    setValidDates({commit}, record: Record): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            commit(RECORD_SET_VALID_DATES, record);
+            return resolve(true);
+        });
+    },
+    setValidTimes({commit}, {from, to}): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            commit(RECORD_SET_VALID_TIMES, { from, to});
+            return resolve(true);
         });
     },
 };

@@ -28,7 +28,7 @@ namespace SA.WebApi.Controllers
         [Route("getAllCurrentAuctionItems")]
         public async Task<IActionResult> GetAllCurrentAuctionItems()
         {
-            var today = DateTime.Now.Date;
+            var today = DateTime.Now;
             var records = await _repository.GetAllAsync<RecordTableDto, DateTime>(x => x.IsActive
                 && x.Auction.IsActive
                 && x.Auction.ValidFrom <= today
@@ -109,18 +109,22 @@ namespace SA.WebApi.Controllers
         [Route("actualRandom")]
         public async Task<IActionResult> ActualRandom()
         {
-            var today = DateTime.Now.Date;
+            var today = DateTime.Now;
 
             var items = await _repository
                 .GetAllAsync<RecordDetailDto, int>(
-                    x =>
+                    x =>                    
                         x.IsActive
+                        && x.Auction.IsActive
+                        && x.Auction.ValidFrom <= today
+                        && x.Auction.ValidTo >= today
+                        && !x.Auction.IsEnded
                         && x.ValidFrom <= today
                         && x.ValidTo >= today,
-                    x => x.Id,
-                    1);
+                    x => x.Id);
 
-            var item = items.FirstOrDefault();
+            var randomId = items.Select(x => x.Id).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+            var item = items.FirstOrDefault(x => x.Id == randomId);
 
             if (item != null)
             {

@@ -9,7 +9,7 @@ const mutations: MutationTree<AuctionState> = {
      * Initialization of the state
      * @param state Auction state
      */
-    AUTH_INITIAL_STATE(state) {
+    AUCTION_INITIAL_STATE(state) {
         state.auctions = [] as AuctionDto[];
         state.auctionsTable = [] as AuctionTableDto[];
         state.lookupList = [] as AuctionLookupDto[];

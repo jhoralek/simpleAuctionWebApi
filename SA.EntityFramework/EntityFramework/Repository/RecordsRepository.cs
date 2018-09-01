@@ -36,16 +36,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
                 var root = _hostingEnvironment.WebRootPath;
                 foreach (var file in added.Entity.Files)
                 {
-                    var tempFullPath = Path.Combine(root, $"tempFiles/{file.Name}");
-                    var targetPath = Path.Combine(root, $"{file.Path}/{file.RecordId}/images/");
-                    var destFullPath = Path.Combine(targetPath, file.Name);
-
-                    if (!Directory.Exists(targetPath))
-                    {
-                        Directory.CreateDirectory(targetPath);
-                    }
-
-                    System.IO.File.Copy(tempFullPath, destFullPath, true);
+                    copyFile(root, file);
                 }
             }
 
@@ -80,7 +71,9 @@ namespace SA.EntityFramework.EntityFramework.Repository
 
         public async Task<Record> UpdateAsync(Record item)
         {
-            var itemToUpdate = await _context.Records
+            var root = _hostingEnvironment.WebRootPath;
+
+            var itemToUpdate = await _context.Records.Include(x => x.Files)
                 .FirstOrDefaultAsync(x => x.Id == item.Id);
 
             if (itemToUpdate != null)
@@ -95,7 +88,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
                     }
                 }
 
-                foreach(var file in item.Files)
+                foreach(var file in item.Files.Where(x => x.Id <= 0))
                 {
                     if (!itemToUpdate.Files.Select(x => x.Name).Contains(file.Name))
                     {
@@ -110,6 +103,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
                     foreach(var file in filesForDelete)
                     {
                         itemToUpdate.Files.Remove(file);
+                        deleteFile(root, file);
                     }
                 }
 
@@ -118,6 +112,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
                     foreach(var file in filesForAdding)
                     {
                         itemToUpdate.Files.Add(file);
+                        copyFile(root, file);
                     }
                 }
 
@@ -161,5 +156,29 @@ namespace SA.EntityFramework.EntityFramework.Repository
                 .Include(x => x.User)
                 .Include(x => x.Bids)
                 .Include(x => x.Files);
+
+        private void copyFile(string root, Core.Model.File file)
+        {
+            var tempFullPath = Path.Combine(root, $"tempFiles/{file.Name}");
+            var targetPath = Path.Combine(root, $"{file.Path}/{file.RecordId}/images/");
+            var destFullPath = Path.Combine(targetPath, file.Name);
+
+            if (!Directory.Exists(targetPath))
+            {
+                Directory.CreateDirectory(targetPath);
+            }
+
+            System.IO.File.Copy(tempFullPath, destFullPath, true);
+        }
+
+        private void deleteFile(string root, Core.Model.File file)
+        {
+            var fileFullPath = Path.Combine(root, $"{file.Path}/{file.RecordId}/images/{file.Name}");
+
+            if (System.IO.File.Exists(fileFullPath))
+            {
+                System.IO.File.Delete(fileFullPath);
+            }
+        }
     }
 }

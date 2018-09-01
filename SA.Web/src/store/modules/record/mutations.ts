@@ -60,6 +60,10 @@ const mutations: MutationTree<RecordState> = {
         state.error = false;
         state.current.files = files;
     },
+    RECORD_APPEND_CURRENT_FILES(state, files: FileSimpleDto[]) {
+        state.error = false;
+        files.forEach((x) => state.current.files.push(x));
+    },
     RECORD_SET_CURRENT_USER_ID(state, userId: number) {
         state.error = false;
         state.current.userId = userId;
@@ -67,6 +71,74 @@ const mutations: MutationTree<RecordState> = {
     RECORD_CHANGE_BIDS_TO_CURRENT(state, bids: BidDto[]) {
         state.error = false;
         state.current.bids = bids as BidDto[];
+    },
+    RECORD_SET_VALID_DATES(state, record: Record) {
+        state.error = false;
+
+        const startDate: Date = new Date(Date.UTC(
+            record.validFrom.getFullYear(),
+            record.validFrom.getMonth(),
+            record.validFrom.getDate(),
+            0,
+            0,
+            0,
+            0,
+        ));
+
+        const endDate: Date = new Date(Date.UTC(
+            record.validTo.getFullYear(),
+            record.validTo.getMonth(),
+            record.validTo.getDate(),
+            23,
+            59,
+            59,
+            0,
+        ));
+
+        state.current.validFrom = startDate;
+        state.current.validTo = endDate;
+    },
+    RECORD_SET_VALID_TIMES(state, { from, to }) {
+        state.error = false;
+        if (state.current.validFrom && from) {
+            const fromHours: number = from === undefined
+                ? 0
+                : parseInt((from as string).split(':')[0], 0);
+            const fromMinutes: number = from === undefined
+                ? 0
+                : parseInt((from as string).split(':')[1], 0);
+
+            const fromDate: Date = new Date(Date.UTC(
+                state.current.validFrom.getFullYear(),
+                state.current.validFrom.getMonth(),
+                state.current.validFrom.getDate(),
+                fromHours,
+                fromMinutes,
+                0,
+                0,
+            ));
+            state.current.validFrom = fromDate;
+        }
+
+        if (state.current.validTo && to) {
+            const toHours: number = to === undefined
+                ? 0
+                : parseInt((to as string).split(':')[0], 0);
+            const toMinutes: number = to === undefined
+                ? 0
+                : parseInt((to as string).split(':')[1], 0);
+
+            const toDate: Date = new Date(Date.UTC(
+                state.current.validTo.getFullYear(),
+                state.current.validTo.getMonth(),
+                state.current.validTo.getDate(),
+                toHours,
+                toMinutes,
+                0,
+                0,
+            ));
+            state.current.validTo = toDate;
+        }
     },
 };
 

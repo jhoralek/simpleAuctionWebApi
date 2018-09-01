@@ -30,6 +30,18 @@
                     :label="labelName" />
                 </v-flex>
                 <v-flex xs12 md4>
+                  <v-switch
+                    v-model="auction.current.isActive"
+                    :label="labelIsActive" />
+                </v-flex>
+                <v-flex xs12 md4>
+                  <v-switch
+                    v-model="auction.current.isEnded"
+                    :label="labelIsEnded" />
+                </v-flex>
+              </v-layout>
+              <v-layout row wrap>
+                <v-flex xs12 md4>
                   <date-picker-component
                     :date="auction.current.validFrom"
                     name="validFrom"
@@ -48,14 +60,19 @@
               </v-layout>
               <v-layout row wrap>
                 <v-flex xs12 md4>
-                  <v-switch
-                    v-model="auction.current.isActive"
-                    :label="labelIsActive" />
+                  <time-picker-component
+                    :time="timeFrom"
+                    name="timeFrom"
+                    :label="labelTimeFrom"
+                    :validation="{ required: true}"
+                    @time="timeFrom = $event" />
                 </v-flex>
                 <v-flex xs12 md4>
-                  <v-switch
-                    v-model="auction.current.isEnded"
-                    :label="labelIsEnded" />
+                  <time-picker-component
+                    :time="timeTo"
+                    name="timeTo"
+                    :label="labelTimeTo"
+                    @time="timeTo = $event" />
                 </v-flex>
               </v-layout>
             </v-container>
@@ -143,6 +160,7 @@ import { State, Action, namespace } from 'vuex-class';
 import BaseComponent from '../BaseComponent.vue';
 import DatePickerComponent from '@/components/helpers/DatePickerComponent.vue';
 import QuestionDialogComponent from '@/components/helpers/QuestionDialogComponent.vue';
+import TimePickerComponent from '@/components/helpers/TimePickerComponent.vue';
 
 import { AuctionTableDto } from '@/poco';
 import { Auction } from '@/model';
@@ -154,6 +172,7 @@ const AuctionAction = namespace('auction', Action);
   components: {
     DatePickerComponent,
     QuestionDialogComponent,
+    TimePickerComponent,
   },
 })
 export default class AdminAuctionTableComponent extends BaseComponent {
@@ -169,6 +188,8 @@ export default class AdminAuctionTableComponent extends BaseComponent {
   @AuctionAction('delete') private delete: any;
   @AuctionAction('update') private update: any;
 
+  private timeTo: string = null;
+  private timeFrom: string = null;
   private editLoading: boolean = false;
   private questionDialog: boolean = false;
   private objectToDelete: AuctionTableDto = undefined;
@@ -224,6 +245,14 @@ export default class AdminAuctionTableComponent extends BaseComponent {
             value: 'action' });
   }
 
+  get labelTimeFrom(): string {
+    return this.settings.resource.timeFrom;
+  }
+
+  get labelTimeTo(): string {
+    return this.settings.resource.timeTo;
+  }
+
   get questionWarning(): string {
     return this.settings.resource.warning;
   }
@@ -271,6 +300,21 @@ export default class AdminAuctionTableComponent extends BaseComponent {
       this.editLoading = true;
       this.getDetail(item.id).then((response) => {
         this.formActive = response as boolean;
+        const { current } = this.auction;
+        const fromHours: string = current.validFrom.getHours().toString();
+        const fromMinutes: string = current.validFrom.getMinutes().toString();
+
+        const toHours: string = current.validTo.getHours().toString();
+        const toMinutes: string = current.validTo.getMinutes().toString();
+
+        const fH: string = '00'.substring(fromHours.length) + fromHours;
+        const fM: string = '00'.substring(fromMinutes.length) + fromMinutes;
+
+        const tH: string = '00'.substring(toHours.length) + toHours;
+        const tM: string = '00'.substring(toMinutes.length) + toMinutes;
+
+        this.timeFrom = `${fH}:${fM}`;
+        this.timeTo = `${tH}:${tM}`;
         this.editLoading = false;
       });
     }
@@ -296,6 +340,8 @@ export default class AdminAuctionTableComponent extends BaseComponent {
 
   private newAuction() {
     this.initCurrent().then((response) => {
+      this.timeFrom = undefined;
+      this.timeTo = undefined;
       this.formActive = response as boolean;
     });
   }
@@ -303,6 +349,42 @@ export default class AdminAuctionTableComponent extends BaseComponent {
   private submit(): void {
     this.$validator.validateAll().then((response) => {
       if (response) {
+        const fromHours: number = this.timeFrom === undefined
+            ? 0
+            : parseInt((this.timeFrom as string).split(':')[0], 0);
+        const fromMinutes: number = this.timeFrom === undefined
+            ? 0
+            : parseInt((this.timeFrom as string).split(':')[1], 0);
+        const toHours: number = this.timeTo === undefined
+            ? 0
+            : parseInt((this.timeTo as string).split(':')[0], 0);
+        const toMinutes: number = this.timeTo === undefined
+            ? 0
+            : parseInt((this.timeTo as string).split(':')[1], 0);
+
+        const fromDate: Date = new Date(Date.UTC(
+            this.auction.current.validFrom.getFullYear(),
+            this.auction.current.validFrom.getMonth(),
+            this.auction.current.validFrom.getDate(),
+            fromHours,
+            fromMinutes,
+            0,
+            0,
+        ));
+
+        const toDate: Date = new Date(Date.UTC(
+              this.auction.current.validTo.getFullYear(),
+              this.auction.current.validTo.getMonth(),
+              this.auction.current.validTo.getDate(),
+              toHours,
+              toMinutes,
+              0,
+              0,
+          ));
+
+        this.auction.current.validFrom = fromDate;
+        this.auction.current.validTo = toDate;
+
         if (this.auction.current.id === undefined ||
             this.auction.current.id <= 0) {
             this.create(this.auction.current).then((respRecord) => {

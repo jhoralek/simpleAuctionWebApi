@@ -18,11 +18,15 @@ namespace Sa.WebApi.Controllers
         [HttpGet]
         [Route("getAllActive")]
         public async Task<IActionResult> GetAllActive()
-            => Json(await _repository
-                .GetAllAsync<AuctionDto, string>(x =>
+        {
+            var today = DateTime.Now.Date;
+            return Json(await _repository
+                .GetAllAsync<AuctionDto, DateTime>(x =>
                     x.IsActive &&
-                    x.ValidTo >= DateTime.Now,
-                    x => x.Name));
+                    x.ValidFrom <= today &&
+                    x.ValidTo >= today,
+                    x => x.ValidFrom));
+        }
 
         [HttpGet]
         [Route("getAllInFeature")]

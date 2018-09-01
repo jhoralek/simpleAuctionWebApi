@@ -1,7 +1,70 @@
 <template>
   <div class="auction-grid-list">
     <loading-component :open="isLoading" />
-    <v-container v-bind="{ [`grid-list-xs`]: true }" fluid v-if="records.length > 0">
+        <v-container grid-list-xs fluid v-if="auctions && auctions.length > 0">
+      <v-layout row wrap v-if="auctions" class="auctions-container">
+        <v-flex xs12 v-for="(auction, index) in auctions" :key="index" class="auction-list">
+          <v-card>
+            <v-card-title>
+              <v-layout row wrap>
+                <v-flex xs12 md6 class="text-xs-left">
+                  <h1>{{ resx('auctions') }} {{ auction.name }}</h1>
+                  <v-btn color="black">
+                    {{ auction.records.length }}
+                    <span class="car-text">{{ btnCarsText(auction.records.length) }}</span>
+                  </v-btn>
+                </v-flex>
+                <v-flex xs12 md6 class="text-xs-right">
+                  <h3>{{ resx('from').toLowerCase() }} {{ auction.validFrom | moment('DD.MM.YYYY') }} {{ resx('to').toLowerCase() }} {{ auction.validTo | moment('DD.MM.YYYY') }}</h3>
+                </v-flex>
+              </v-layout>
+            </v-card-title>
+            <v-layout row wrap>
+              <lory class="js_multislides" :options="{ enableMouseEvents: true, slidesToScroll: 4, slideSpeed: 1000 }">
+                <prev slot="actions" color="#ffffff"></prev>
+                <div class="items">
+                  <item v-for="(item, i2) in auction.records" :key="i2">
+                    <v-flex xs12 sm3 class="auction-item">
+                      <v-card>
+                        <v-card-media :src="firstImagePath(item)" @click="detail(item)"></v-card-media>
+                        <v-layout row wrap>
+                          <v-flex xs12 class="text-xs-center">
+                            <h4>{{ item.name }}</h4>
+                          </v-flex>
+                        </v-layout>
+                        <v-layout row wrap class="auction-item-info">
+                          <v-flex xs4 class="text-xs-center">
+                            <span>{{ item.registrationYear }}</span>
+                          </v-flex>
+                          <v-flex xs4 class="text-xs-center">
+                            <span>{{ item.fuel }}</span>
+                          </v-flex>
+                          <v-flex xs4 class="text-xs-center">
+                            <span>{{ item.mileage }}</span>
+                          </v-flex>
+                        </v-layout>
+                        <v-layout row wrap>
+                          <v-flex xs12 class="text-xs-center">
+                            <span class="auction-item-price-text">{{ resx('actualPrice') }}</span>
+                          </v-flex>
+                        </v-layout>
+                        <v-layout row wrap>
+                          <v-flex xs12 class="text-xs-center item-price">
+                            <h4><price-component :price="item.currentPrice" /></h4>
+                          </v-flex>
+                        </v-layout>
+                      </v-card>
+                    </v-flex>
+                  </item>
+                </div>
+                <next slot="actions" color="#ffffff"></next>
+              </lory>
+            </v-layout>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+    <v-container v-bind="{ [`grid-list-xs`]: true }" fluid v-else>
       <v-layout row wrap>
         <v-flex xs12 sm4 v-for="(record, index) in records" :key="index" class="auction-box">
           <v-card>
@@ -51,67 +114,6 @@
         </v-flex>
       </v-layout>
     </v-container>
-    <v-container grid-list-xs fluid v-else>
-      <v-layout row wrap v-if="auctions" class="auctions-container">
-        <v-flex xs12 v-for="(auction, index) in auctions" :key="index" class="auction-list">
-          <v-card>
-            <v-card-title>
-              <v-layout row wrap>
-                <v-flex xs12 md6 class="text-xs-left">
-                  <h1>{{ resx('auctions') }} {{ auction.name }}</h1>
-                  <v-btn color="black">
-                    {{ auction.records.length }}
-                    <span class="car-text">{{ btnCarsText(auction.records.length) }}</span>
-                  </v-btn>
-                </v-flex>
-                <v-flex xs12 md6 class="text-xs-right">
-                  <h3>{{ resx('from').toLowerCase() }} {{ auction.validFrom | moment('DD.MM.YYYY') }} {{ resx('to').toLowerCase() }} {{ auction.validTo | moment('DD.MM.YYYY') }}</h3>
-                </v-flex>
-              </v-layout>
-            </v-card-title>
-            <v-layout row wrap>
-              <lory class="js_multislides" :options="{ enableMouseEvents: true, slidesToScroll: 4, slideSpeed: 1000 }">
-                <prev slot="actions" color="#ffffff"></prev>
-                <item v-for="(item, i2) in auction.records" :key="i2">
-                  <v-flex xs12 sm3 class="auction-item">
-                    <v-card>
-                      <v-card-media :src="firstImagePath(item)" @click="detail(item)"></v-card-media>
-                      <v-layout row wrap>
-                        <v-flex xs12 class="text-xs-center">
-                          <h4>{{ item.name }}</h4>
-                        </v-flex>
-                      </v-layout>
-                      <v-layout row wrap class="auction-item-info">
-                        <v-flex xs4 class="text-xs-center">
-                          <span>{{ item.registrationYear }}</span>
-                        </v-flex>
-                        <v-flex xs4 class="text-xs-center">
-                          <span>{{ item.fuel }}</span>
-                        </v-flex>
-                        <v-flex xs4 class="text-xs-center">
-                          <span>{{ item.mileage }}</span>
-                        </v-flex>
-                      </v-layout>
-                      <v-layout row wrap>
-                        <v-flex xs12 class="text-xs-center">
-                          <span class="auction-item-price-text">{{ resx('actualPrice') }}</span>
-                        </v-flex>
-                      </v-layout>
-                      <v-layout row wrap>
-                        <v-flex xs12 class="text-xs-center item-price">
-                          <h4><price-component :price="item.currentPrice" /></h4>
-                        </v-flex>
-                      </v-layout>
-                    </v-card>
-                  </v-flex>
-                </item>
-                <next slot="actions" color="#ffffff"></next>
-              </lory>
-            </v-layout>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-container>
   </div>
 </template>
 
@@ -129,7 +131,9 @@ import LoadingComponent from './helpers/LoadingComponent.vue';
 import { RecordTableDto, AuctionDto } from '@/poco';
 
 const RecordAction = namespace('record', Action);
+const RecordGetter = namespace('record', Getter);
 const AuctionGetter = namespace('auction', Getter);
+const AuctionAction = namespace('auction', Action);
 
 @Component({
     components: {
@@ -143,13 +147,22 @@ const AuctionGetter = namespace('auction', Getter);
     },
 })
 export default class AuctionGridComponent extends BaseComponent {
-  @Prop({default: undefined}) private records: RecordTableDto[];
-  @RecordAction('getDetail') private loadRecord: any;
-
+  @RecordGetter('getRecords') private records: RecordTableDto[];
   @AuctionGetter('getAuctions') private auctions: AuctionDto[];
+
+  @AuctionAction('getFutureAutions') private featuredAcutions: any;
+  @RecordAction('loadAllPublished') private loadRecods: any;
+  @RecordAction('getDetail') private loadRecord: any;
 
   private isLoading: boolean = false;
   private mKey: string = 'loading';
+
+  private mounted() {
+    this.isLoading = true;
+    this.loadRecods().then((respAuction) => {
+        this.isLoading = false;
+    });
+  }
 
   private firstImagePath(record: Record): string {
     const { files } = record;
@@ -167,7 +180,7 @@ export default class AuctionGridComponent extends BaseComponent {
       const result = response as boolean;
       this.isLoading = false;
       if (result) {
-        this.$router.push({ path: `/auctionDetail?id=${record.id}`  });
+        this.$router.push({ path: `/auctionDetail?id=${record.id}` });
       }
     });
   }
@@ -221,6 +234,10 @@ export default class AuctionGridComponent extends BaseComponent {
 .auction-grid-list .v-card__media__content {
   width: 347px !important;
   height: 279px !important;
+}
+
+.auctions-container .items {
+  padding-left: 30px !important;
 }
 
 .auction-grid-list .v-card__title {
@@ -310,7 +327,6 @@ export default class AuctionGridComponent extends BaseComponent {
 
 .auctions-container .auction-list .flex {
   max-width: 100% !important;
-  padding-left: 30px !important;
 }
 
 .auctions-container .slider svg {
