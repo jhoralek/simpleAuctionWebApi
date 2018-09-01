@@ -8,7 +8,7 @@
       </v-layout>
       <v-layout row wrap>
         <v-flex xs12>
-          <admin-record-table-component :records="records" :loading="isLodading" />
+          <admin-record-table-component />
         </v-flex>
       </v-layout>
     </v-container>
@@ -18,14 +18,9 @@
 <script lang="ts">
 
 import Component from 'vue-class-component';
-import { Action, Getter, namespace } from 'vuex-class';
 
 import BaseView from '../BaseView.vue';
 import AdminRecordTableComponent from '@/components/auction/AdminRecordTableComponent.vue';
-import { RecordTableDto } from '@/poco';
-
-const RecordAction = namespace('record', Action);
-const RecordGetter = namespace('record', Getter);
 
 @Component({
   components: {
@@ -33,18 +28,6 @@ const RecordGetter = namespace('record', Getter);
   },
 })
 export default class RecordsAdministration extends BaseView {
-  @RecordGetter('getRecords') private records: RecordTableDto[];
-  @RecordAction('getAllForAdmin') private loadRecords: any;
-
-  private isLodading: boolean = true;
-
-  private mounted() {
-    this.loadRecords().then((response) => {
-      if (response) {
-        this.isLodading = false;
-      }
-    });
-  }
 }
 
 </script>

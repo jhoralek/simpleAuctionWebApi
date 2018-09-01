@@ -95,7 +95,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
                     }
                 }
 
-                foreach(var file in item.Files)
+                foreach(var file in item.Files.Where(x => x.Id <= 0))
                 {
                     if (!itemToUpdate.Files.Select(x => x.Name).Contains(file.Name))
                     {

@@ -1,10 +1,11 @@
 <template>
   <div class="admin-auciton-table">
-     <question-dialog-component
-            :header="questionWarning"
-            :question="questionMessage"
-            :dialog="questionDialog"
-            @result="deleteRecord($event)" />
+    <loading-component :open="loading" />
+    <question-dialog-component
+      :header="questionWarning"
+      :question="questionMessage"
+      :dialog="questionDialog"
+      @result="deleteRecord($event)" />
     <v-container  grid-list-xs pa-0 v-if="formActive">
       <v-layout row wrap>
         <v-flex xs7>
@@ -347,9 +348,20 @@
                   :key="image.name"
                   xs12 md3 >
                   <v-card>
-                    <v-card-media
-                      :src="tempImagePath(image)"
-                      height="150px" />
+                    <v-card-media :src="imagePath(image)" height="150px">
+                      <v-tooltip bottom>
+                        <v-btn
+                          fab
+                          dark
+                          small
+                          color="black"
+                          slot="activator"
+                          @click.native="deleteImage(image)">
+                          <v-icon dark>remove</v-icon>
+                        </v-btn>
+                        <span>{{ resx('delete') }}</span>
+                      </v-tooltip>
+                    </v-card-media>
                   </v-card>
                 </v-flex>
               </v-layout>
@@ -387,22 +399,18 @@
         <v-flex xs12>
           <v-layout>
             <v-flex xs12 class="text-xs-right">
-              <v-btn color="black" dark class="mb-2" @click="newAuction">{{ resx('new') }}</v-btn>
+              <v-btn color="black" dark class="mb-2" @click="newRecord">{{ resx('new') }}</v-btn>
             </v-flex>
           </v-layout>
-          <v-progress-linear v-if="editLoading" color="blue" indeterminate></v-progress-linear>
           <v-data-table
             :headers="headers"
             :items="records"
-            :loading="loading"
             :pagination.sync="pagination"
             hide-actions
             class="elevation-1">
-            <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
             <template slot="items" slot-scope="props">
               <td>{{ props.item.name }}</td>
               <td>{{ props.item.auctionName }}</td>
-              <td>{{ props.item.state }}</td>
               <td>{{ props.item.validFrom | moment('DD.MM.YYYY HH:mm') }}</td>
               <td>{{ props.item.validTo | moment('DD.MM.YYYY HH:mm') }}</td>
               <td><price-component :price="props.item.startingPrice" /></td>
@@ -446,11 +454,13 @@ import PriceComponent from '@/components/helpers/PriceComponent.vue';
 import DatePickerComponent from '@/components/helpers/DatePickerComponent.vue';
 import FileUploadComponent from '@/components/helpers/FileUploadComponent.vue';
 import QuestionDialogComponent from '@/components/helpers/QuestionDialogComponent.vue';
+import LoadingComponent from '@/components/helpers/LoadingComponent.vue';
 import { RecordTableDto, AuthUser, FileSimpleDto, AuctionLookupDto } from '@/poco';
 import { Record, File } from '@/model';
 import { RecordState, AuthState } from '@/store/types';
 
 const RecordAction = namespace('record', Action);
+const RecordGetter = namespace('record', Getter);
 const AuctionGetter = namespace('auction', Getter);
 const AuctionAction = namespace('auction', Action);
 
@@ -460,14 +470,15 @@ const AuctionAction = namespace('auction', Action);
     DatePickerComponent,
     FileUploadComponent,
     QuestionDialogComponent,
+    LoadingComponent,
   },
 })
 export default class AdminRecordTableComponent extends BaseComponent {
   @State('record') private record: RecordState;
   @State('auth') private auth: AuthState;
 
-  @Prop({default: []}) private records: RecordTableDto[];
-  @Prop({default: true}) private loading: boolean;
+  @RecordGetter('getRecords') private records: RecordTableDto[];
+  @RecordAction('getAllForAdmin') private loadRecords: any;
 
   @RecordAction('initialCurrent') private initCurrent: any;
   @RecordAction('getDetail') private getDetail: any;
@@ -481,7 +492,7 @@ export default class AdminRecordTableComponent extends BaseComponent {
   @AuctionAction('getLookup') private loadAuctionsCombo: any;
   @AuctionGetter('getLookupList') private auctionsCombo: AuctionLookupDto[];
 
-  private editLoading: boolean = false;
+  private loading: boolean = false;
   private questionDialog: boolean = false;
   private objectToDelete: RecordTableDto = undefined;
   private state: number = 1;
@@ -499,57 +510,58 @@ export default class AdminRecordTableComponent extends BaseComponent {
   }
 
   private mounted() {
-        this.headers.push({
-            text: this.settings.resource.name,
-            align: 'left',
-            sortable: true,
-            value: 'name' });
-        this.headers.push({
-            text: this.settings.resource.auctions,
-            align: 'left',
-            sortable: true,
-            value: 'auctionName' });
-        this.headers.push({
-            text: this.settings.resource.state,
-            align: 'left',
-            sortable: true,
-            value: 'state' });
-        this.headers.push({
-            text: this.settings.resource.validFrom,
-            align: 'rigth',
-            sortable: true,
-            value: 'validFrom' });
-        this.headers.push({
-            text: this.settings.resource.validTo,
-            align: 'rigth',
-            sortable: true,
-            value: 'validTo' });
-        this.headers.push({
-            text: this.settings.resource.startingPrice,
-            align: 'rigth',
-            sortable: true,
-            value: 'startingPrice' });
-        this.headers.push({
-            text: this.settings.resource.minimumBid,
-            align: 'rigth',
-            sortable: true,
-            value: 'minimumBid' });
-        this.headers.push({
-            text: this.settings.resource.currentPrice,
-            align: 'rigth',
-            sortable: true,
-            value: 'currentPrice' });
-        this.headers.push({
-            text: this.settings.resource.numberOfBids,
-            align: 'rigth',
-            sortable: false,
-            value: 'numberOfBids' });
-        this.headers.push({
-            text: this.settings.resource.action,
-            align: 'center',
-            sortable: true,
-            value: 'action' });
-        this.loadAuctionsCombo();
+      this.loading = true;
+      this.loadRecords().then((response) => {
+        if (response) {
+          this.loading = false;
+        }
+      });
+      this.headers.push({
+          text: this.settings.resource.name,
+          align: 'left',
+          sortable: true,
+          value: 'name' });
+      this.headers.push({
+          text: this.settings.resource.auctions,
+          align: 'left',
+          sortable: true,
+          value: 'auctionName' });
+      this.headers.push({
+          text: this.settings.resource.validFrom,
+          align: 'rigth',
+          sortable: true,
+          value: 'validFrom' });
+      this.headers.push({
+          text: this.settings.resource.validTo,
+          align: 'rigth',
+          sortable: true,
+          value: 'validTo' });
+      this.headers.push({
+          text: this.settings.resource.startingPrice,
+          align: 'rigth',
+          sortable: true,
+          value: 'startingPrice' });
+      this.headers.push({
+          text: this.settings.resource.minimumBid,
+          align: 'rigth',
+          sortable: true,
+          value: 'minimumBid' });
+      this.headers.push({
+          text: this.settings.resource.currentPrice,
+          align: 'rigth',
+          sortable: true,
+          value: 'currentPrice' });
+      this.headers.push({
+          text: this.settings.resource.numberOfBids,
+          align: 'rigth',
+          sortable: false,
+          value: 'numberOfBids' });
+      this.headers.push({
+          text: this.settings.resource.action,
+          align: 'center',
+          sortable: true,
+          value: 'action' });
+      this.loadAuctionsCombo();
   }
 
   get questionWarning(): string {
@@ -700,8 +712,34 @@ export default class AdminRecordTableComponent extends BaseComponent {
       return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage);
   }
 
-  private tempImagePath(file: FileSimpleDto): string {
-    return `/tempFiles/${file.name}`;
+  private deleteImage(file: FileSimpleDto): void {
+    if (this.record.current !== undefined) {
+      const filesToRemain: FileSimpleDto[] = this.record.current.files
+        .filter((x) => x.id !== file.id && x.name !== file.name);
+
+      this.setFiles(filesToRemain.map((x) => {
+          const item: File = {
+            path: x.path,
+            userId: x.userId,
+            recordId: x.recordId,
+            created: new Date(),
+            user: null,
+            record: null,
+            name: x.name,
+            id: x.id,
+          } as File;
+
+          return item;
+        }));
+    }
+  }
+
+  private imagePath(file: FileSimpleDto): string {
+    const path: string = file.id > 0
+      ? `/${file.path}/${file.recordId}/images`
+      : `/tempFiles`;
+
+    return `${path}/${file.name}`;
   }
 
   private backToList(): void {
@@ -714,10 +752,10 @@ export default class AdminRecordTableComponent extends BaseComponent {
 
   private edit(item: RecordTableDto): void {
     if (item.id > 0) {
-      this.editLoading = true;
+      this.loading = true;
       this.getDetail(item.id).then((response) => {
         this.formActive = response as boolean;
-        this.editLoading = false;
+        this.loading = false;
       });
     }
   }
@@ -740,7 +778,7 @@ export default class AdminRecordTableComponent extends BaseComponent {
     }
   }
 
-  private newAuction() {
+  private newRecord() {
     this.initCurrent().then((response) => {
       this.formActive = response as boolean;
       this.setCurrentUserId(this.auth.userId);
@@ -807,6 +845,10 @@ export default class AdminRecordTableComponent extends BaseComponent {
 </script>
 
 <style>
+
+.record-administration h1 {
+  padding-bottom: 0px !important;
+}
 
 .admin-auciton-table .elevation-1 {
     -webkit-box-shadow: 0 0px 0px 0px rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0),0 0px 0px 0 rgba(0,0,0,.0) !important;
