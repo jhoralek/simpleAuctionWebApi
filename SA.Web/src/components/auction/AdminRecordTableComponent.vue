@@ -32,7 +32,8 @@
                     item-text="name"
                     single-line
                     :label="labelAuction"
-                    :items="auctionsCombo" />
+                    :items="auctionsCombo"
+                    @change="auctionChange" />
                 </v-flex>
               </v-layout>
               <v-layout row wrap>
@@ -66,20 +67,19 @@
               </v-layout>
               <v-layout row wrap>
                 <v-flex xs12 md4>
-                  <date-picker-component
-                    :date="record.current.validFrom"
-                    name="validFrom"
-                    :validation="{required: true }"
-                    :label="labelValidFrom"
-                    @date="record.current.validFrom = $event"/>
+                  <time-picker-component
+                    :time="timeFrom"
+                    name="timeFrom"
+                    :label="labelTimeFrom"
+                    :validation="{ required: true}"
+                    @time="setTime($event, 'from')" />
                 </v-flex>
                 <v-flex xs12 md4>
-                  <date-picker-component
-                    :date="record.current.validTo"
-                    name="validTo"
-                    :validation="{required: true }"
-                    :label="labelValidTo"
-                    @date="record.current.validTo = $event" />
+                  <time-picker-component
+                    :time="timeTo"
+                    name="timeTo"
+                    :label="labelTimeTo"
+                    @time="setTime($event, 'to')" />
                 </v-flex>
                 <v-flex xs12 md4>
                   <v-text-field
@@ -452,12 +452,15 @@ import { State, Getter, Action, namespace } from 'vuex-class';
 import BaseComponent from '../BaseComponent.vue';
 import PriceComponent from '@/components/helpers/PriceComponent.vue';
 import DatePickerComponent from '@/components/helpers/DatePickerComponent.vue';
+import TimePickerComponent from '@/components/helpers/TimePickerComponent.vue';
 import FileUploadComponent from '@/components/helpers/FileUploadComponent.vue';
 import QuestionDialogComponent from '@/components/helpers/QuestionDialogComponent.vue';
 import LoadingComponent from '@/components/helpers/LoadingComponent.vue';
+
 import { RecordTableDto, AuthUser, FileSimpleDto, AuctionLookupDto } from '@/poco';
 import { Record, File } from '@/model';
 import { RecordState, AuthState } from '@/store/types';
+import moment from 'moment';
 
 const RecordAction = namespace('record', Action);
 const RecordGetter = namespace('record', Getter);
@@ -471,6 +474,7 @@ const AuctionAction = namespace('auction', Action);
     FileUploadComponent,
     QuestionDialogComponent,
     LoadingComponent,
+    TimePickerComponent,
   },
 })
 export default class AdminRecordTableComponent extends BaseComponent {
@@ -487,11 +491,16 @@ export default class AdminRecordTableComponent extends BaseComponent {
   @RecordAction('deleteRecord') private delete: any;
   @RecordAction('updateRecord') private updateRecord: any;
   @RecordAction('setFiles') private setFiles: any;
+  @RecordAction('addFiles') private addFiles: any;
   @RecordAction('setCurrentUserId') private setCurrentUserId: any;
+  @RecordAction('setValidDates') private setDates: any;
+  @RecordAction('setValidTimes') private setTimes: any;
 
   @AuctionAction('getLookup') private loadAuctionsCombo: any;
   @AuctionGetter('getLookupList') private auctionsCombo: AuctionLookupDto[];
 
+  private timeTo: string = null;
+  private timeFrom: string = null;
   private loading: boolean = false;
   private questionDialog: boolean = false;
   private objectToDelete: RecordTableDto = undefined;
@@ -562,6 +571,14 @@ export default class AdminRecordTableComponent extends BaseComponent {
           sortable: true,
           value: 'action' });
       this.loadAuctionsCombo();
+  }
+
+  get labelTimeFrom(): string {
+    return this.settings.resource.timeFrom;
+  }
+
+  get labelTimeTo(): string {
+    return this.settings.resource.timeTo;
   }
 
   get questionWarning(): string {
@@ -712,6 +729,38 @@ export default class AdminRecordTableComponent extends BaseComponent {
       return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage);
   }
 
+  private auctionChange(): void {
+    if (this.record.current !== undefined) {
+      if (this.record.current.auctionId !== undefined) {
+        const auction: AuctionLookupDto = this.auctionsCombo
+          .find((x) => x.id === this.record.current.auctionId);
+
+        if (auction) {
+          const datesString: string[] = auction.name.substring(
+              auction.name.indexOf('[') + 1,
+              auction.name.lastIndexOf(']')).split('-');
+          const fromDate = moment(datesString[0].trim(), 'DD.MM.YYYY');
+          const toDate = moment(datesString[1].trim(), 'DD.MM.YYYY');
+
+          this.record.current.validFrom = fromDate.toDate();
+          this.record.current.validTo = toDate.toDate();
+          this.setDates(this.record.current);
+        }
+      }
+    }
+  }
+
+  private setTime($event, time: string): void {
+    switch (time) {
+      case 'from':
+        this.setTimes({ from: $event, to: undefined });
+        break;
+      case 'to':
+        this.setTimes({ from: undefined, to: $event });
+        break;
+    }
+  }
+
   private deleteImage(file: FileSimpleDto): void {
     if (this.record.current !== undefined) {
       const filesToRemain: FileSimpleDto[] = this.record.current.files
@@ -755,6 +804,21 @@ export default class AdminRecordTableComponent extends BaseComponent {
       this.loading = true;
       this.getDetail(item.id).then((response) => {
         this.formActive = response as boolean;
+        const { current } = this.record;
+        const fromHours: string = current.validFrom.getHours().toString();
+        const fromMinutes: string = current.validFrom.getMinutes().toString();
+
+        const toHours: string = current.validTo.getHours().toString();
+        const toMinutes: string = current.validTo.getMinutes().toString();
+
+        const fH: string = '00'.substring(fromHours.length) + fromHours;
+        const fM: string = '00'.substring(fromMinutes.length) + fromMinutes;
+
+        const tH: string = '00'.substring(toHours.length) + toHours;
+        const tM: string = '00'.substring(toMinutes.length) + toMinutes;
+
+        this.timeFrom = `${fH}:${fM}`;
+        this.timeTo = `${tH}:${tM}`;
         this.loading = false;
       });
     }
@@ -786,7 +850,7 @@ export default class AdminRecordTableComponent extends BaseComponent {
   }
 
   private newFiles(files: File[]): void {
-      this.setFiles(files.map((file) => {
+      this.addFiles(files.map((file) => {
           const item: File = {
             path: 'auction',
             userId: this.auth.userId,

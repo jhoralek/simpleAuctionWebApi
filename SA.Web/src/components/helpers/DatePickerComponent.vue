@@ -13,7 +13,7 @@
         <v-text-field v-if="validation && name"
             slot="activator"
             v-model="dateFormatted"
-            :v-validation="validation"
+            :v-validate="validation"
             :data-vv-name="name"
             :error-messages="errors.collect(name)"
             :label="label"

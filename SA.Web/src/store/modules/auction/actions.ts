@@ -10,6 +10,7 @@ import {
     AuctionDto,
     AuctionTableDto,
     AuctionLookupDto,
+    RecordTableDto,
  } from '@/poco';
 
 import { MessageStatusEnum, Auction } from '@/model';
@@ -22,6 +23,7 @@ import {
     AUCTION_DELETE_RECORD_FROM_LIST,
     AUCTION_CHANGE_LOOKUP_STATE,
     AUCTION_CHANGE_AUCTIONS_STATE,
+    RECORD_CHANGE_LIST_STATE,
 } from '@/store/mutation-types';
 import { resolveSrv } from 'dns';
 
@@ -200,12 +202,13 @@ const actions: ActionTree<AuctionState, RootState> = {
             });
         });
     },
-    getFutureAutions({commit, rootState, dispatch}): Promise<boolean> {
-        return new Promise<boolean>((resolve) => {
+    getFutureAutions({commit, rootState, dispatch}): Promise<number> {
+        return new Promise<number>((resolve) => {
             return axios.get(`${rootState.settings.apiUrl}/auctions/getAllInFeature`)
             .then((response) => {
-                commit(AUCTION_CHANGE_AUCTIONS_STATE, response.data as AuctionDto[]);
-                return resolve(true);
+                const data: AuctionDto[] = response.data as AuctionDto[];
+                commit(AUCTION_CHANGE_AUCTIONS_STATE, data);
+                return resolve(data.length);
             })
             .catch((error) => {
                 dispatch('message/change', {
@@ -216,6 +219,7 @@ const actions: ActionTree<AuctionState, RootState> = {
                     },
                 },
                 { root: true});
+                return resolve(0);
             });
         });
     },

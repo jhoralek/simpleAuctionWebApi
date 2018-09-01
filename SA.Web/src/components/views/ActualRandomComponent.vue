@@ -1,13 +1,14 @@
 <template>
-    <v-layout row wrap class="actual-random" v-if="record">
+    <v-layout row wrap class="actual-random" v-if="record !== undefined && record !== null">
         <v-flex xs12>
             <v-container grid-list-md class="acutal-random-wrapper">
                 <v-layout row wrap>
                     <v-flex xs12>
                         <div class="big-box">
                             <v-layout row wrap class="big-data">
+
                                 <v-flex xs12 md6 class="big-img-wrapper">
-                                    <img :src="firstImagePath(record)" class="big-img" />
+                                    <img :src="firstImagePath(record)" class="big-img" @click="detail(record)" />
                                 </v-flex>
                                 <v-flex xs12 md6>
                                     <div class="big-box-info">
@@ -118,7 +119,7 @@ const AuthGetter = namespace('auth', Getter);
 })
 export default class ActualRandomComponent extends FormBaseComponent {
     @RecordAction('getActualRandom') private randomRecord: any;
-    @RecordGetter('getCurrent') private record;
+    @RecordGetter('getCurrent') private record: Record;
     @AuthGetter('getCurrentLoggedUser') private currentUser: AuthUser;
 
     public mounted() {
@@ -145,6 +146,12 @@ export default class ActualRandomComponent extends FormBaseComponent {
 
     private anonymize(str: string): string {
         return Helpers.anonymizeString(str, 1, str.length);
+    }
+
+    private detail(record: Record): void {
+        if (record) {
+            this.$router.push({ path: `/auctionDetail?id=${record.id}` });
+        }
     }
 }
 
@@ -252,6 +259,7 @@ export default class ActualRandomComponent extends FormBaseComponent {
     height: 100%;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
+    cursor: pointer;
 }
 
 .big-img-wrapper {

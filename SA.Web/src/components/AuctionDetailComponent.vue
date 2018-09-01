@@ -241,7 +241,7 @@
                                         <h3>{{ resx('equipment') }}</h3>
                                     </div>
                                     <v-layout row wrap>
-                                        <v-flex xs12 class="info-value">
+                                        <v-flex xs12 class="info-value text-xs-left extra-padding">
                                             {{ record.equipment }}
                                         </v-flex>
                                     </v-layout>
@@ -253,7 +253,7 @@
                                         <h3>{{ resx('defects') }}</h3>
                                     </div>
                                     <v-layout row wrap>
-                                        <v-flex xs12 class="info-value">
+                                        <v-flex xs12 class="info-value text-xs-left extra-padding">
                                             {{ record.defects }}
                                         </v-flex>
                                     </v-layout>
@@ -265,7 +265,7 @@
                                         <h3>{{ resx('moreDescription') }}</h3>
                                     </div>
                                     <v-layout row wrap>
-                                        <v-flex xs12 class="info-value">
+                                        <v-flex xs12 class="info-value text-xs-left extra-padding">
                                             {{ record.moreDescription }}
                                         </v-flex>
                                     </v-layout>
@@ -335,7 +335,7 @@ export default class AuctionDetalComponent extends BaseComponent {
     }
 
     private canBid(validFrom: Date): boolean {
-        return validFrom <= new Date();
+        return new Date(validFrom) <= new Date();
     }
 
     get minimumBid(): number {
@@ -444,6 +444,10 @@ export default class AuctionDetalComponent extends BaseComponent {
   text-align: right;
   padding-right: 15px !important;
   color: #000000;
+}
+
+.auction-detail .extra-padding {
+    padding-left: 15px !important;
 }
 
 .auction-detail .v-carousel {
