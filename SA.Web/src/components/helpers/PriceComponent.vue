@@ -1,7 +1,5 @@
 <template>
-    <div v-if="price && lang">
-        {{ formatPrice() }}
-    </div>
+    <span v-if="price && lang">{{ formatPrice() }}</span>
 </template>
 
 <script lang="ts">

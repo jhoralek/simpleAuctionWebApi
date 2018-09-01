@@ -35,6 +35,7 @@ nav .v-btn__content {
 .logo-button .v-btn {
     color: white !important;
     height: inherit !important;
+    margin-left: 10px !important;
 }
 
 .logo-button .v-btn:before {
@@ -90,4 +91,8 @@ a.v-btn--active.v-btn.v-btn--flat.v-btn--router .v-btn__content .btn-text {
 
 .auction-detail {
     padding-top: 50px !important;
+}
+
+.theme--light .v-expansion-panel .v-expansion-panel__container .v-expansion-panel__header .v-expansion-panel__header__icon .v-icon {
+    color: rgba(0,0,0,1) !important;
 }

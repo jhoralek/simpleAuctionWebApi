@@ -1,5 +1,5 @@
 <template>
-    <div classs="count-down" :id="countDownSelector()"></div>
+    <div class="count-down" :id="countDownSelector()"></div>
 </template>
 
 <script lang="ts">
@@ -9,18 +9,29 @@ import Helpers from '@/helpers';
 
 @Component({})
 export default class CountdownComponent extends Vue {
-    @Prop({default: undefined}) public date: string;
-    @Prop({default: 1}) public id: string;
+    @Prop({default: undefined}) private date: string;
+    @Prop({default: undefined}) private startDate: string;
+    @Prop({default: 1}) private id: string;
 
-    public mounted() {
+    private mounted() {
         const realDate = new Date(this.date);
+        const realStartDate = new Date(this.startDate);
 
         const x = setInterval(() => {
             const element = document.getElementById(`count-down-${this.id}`);
 
             if (element !== null) {
                 const thick = Helpers.countDown(realDate);
-                element.innerHTML = thick;
+
+                if (this.startDate !== undefined) {
+                    if (new Date() < realStartDate) {
+                        element.innerHTML = '--d --h --m --s';
+                    } else {
+                        element.innerHTML = thick;
+                    }
+                } else {
+                    element.innerHTML = thick;
+                }
             }
         }, 1000);
     }
@@ -31,9 +42,3 @@ export default class CountdownComponent extends Vue {
 }
 
 </script>
-
-<style>
-.count-down {
-  margin-left: 5px;
-}
-</style>
