@@ -13,6 +13,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
     public class FilesRepository : IEntityRepository<File>
     {
         private readonly SaDbContext _context;
+        public SaDbContext Context { get { return _context; } }
         public FilesRepository(SaDbContext context)
         {
             _context = context;

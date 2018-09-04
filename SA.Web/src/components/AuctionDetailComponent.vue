@@ -100,7 +100,7 @@
                                         <v-flex xs12>
                                             <v-layout row wrap>
                                                 <v-flex xs8 class="info-text">{{ resx('mostTechnicallyWeightOfRide') }}</v-flex>
-                                                <v-flex xs4 class="info-value text-xs-right">{{ record.mostTechnicallyWeightOfRide}}</v-flex>
+                                                <v-flex xs4 class="info-value text-xs-right">{{ record.mostTechnicallyAcceptableWeight }}</v-flex>
                                             </v-layout>
                                         </v-flex>
                                         <v-flex xs12>
@@ -165,7 +165,7 @@
                                         <v-flex xs12 md6>
                                             <v-layout row wrap>
                                                 <v-flex xs6 class="info-text">{{ resx('mileAge') }}</v-flex>
-                                                <v-flex xs6 class="info-value">{{ record.mileAge }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.mileage }}</v-flex>
                                             </v-layout>
                                         </v-flex>
                                     </v-layout>
@@ -221,7 +221,7 @@
                                         <v-flex xs12 md6>
                                             <v-layout row wrap>
                                                 <v-flex xs6 class="info-text">{{ resx('vehicleVinNumber') }}</v-flex>
-                                                <v-flex xs6 class="info-value">{{ record.vehicleVinNumber }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.vin }}</v-flex>
                                             </v-layout>
                                         </v-flex>
                                     </v-layout>
@@ -229,7 +229,7 @@
                                         <v-flex xs12>
                                             <v-layout row wrap>
                                                 <v-flex xs6 class="info-text">{{ resx('auditControlIsProvidedBy') }}</v-flex>
-                                                <v-flex xs6 class="info-value">{{ record.auditControlIsProvidedBy }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.registrationCheck  }}</v-flex>
                                             </v-layout>
                                         </v-flex>
                                     </v-layout>

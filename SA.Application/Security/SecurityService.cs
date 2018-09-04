@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SA.Application.Account;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -139,5 +141,11 @@ namespace SA.Application.Security
 
             return await Login(new LoginUserDto { UserName = user.UserName, Password = obj.NewPassword });
         }
+
+        public async Task<bool> CheckUniqueUserName(string userName)
+            => !await _userRepository.Context.Users.AnyAsync(x => x.UserName == userName);
+
+        public async Task<bool> CheckUniqueEmailAddress(string email)
+            => !await _userRepository.Context.Customers.AnyAsync(x => x.Email == email);
     }
 }

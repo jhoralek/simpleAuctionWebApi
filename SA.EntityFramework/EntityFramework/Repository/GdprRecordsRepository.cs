@@ -12,6 +12,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
     public class GdprRecordsRepository : IEntityRepository<GdprRecord>
     {
         private readonly SaDbContext _context;
+        public SaDbContext Context { get { return _context; } }
         public GdprRecordsRepository(SaDbContext context)
         {
             _context = context;

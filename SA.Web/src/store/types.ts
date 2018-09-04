@@ -31,6 +31,7 @@ export interface ProfileState {
     user?: User;
     list: User[];
     error: boolean;
+    errorMessage: string;
 }
 /**
  * Used for authentication

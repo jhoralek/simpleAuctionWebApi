@@ -13,6 +13,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
     public class UsersRepository : IEntityRepository<User>
     {
         private readonly SaDbContext _context;
+        public SaDbContext Context { get { return _context; } }
         public UsersRepository(SaDbContext context)
         {
             _context = context;

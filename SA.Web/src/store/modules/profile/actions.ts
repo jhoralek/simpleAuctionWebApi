@@ -16,6 +16,7 @@ import {
     USER_SET_CURRENT_USER_CUSTOMERS_ADDRESS,
     USER_CHANGE_ADMIN_LIST,
 } from '@/store/mutation-types';
+import { resolve } from 'path';
 
 const actions: ActionTree<ProfileState, RootState> = {
     /**
@@ -328,6 +329,44 @@ const actions: ActionTree<ProfileState, RootState> = {
             },
             { root: true });
             return null;
+        });
+    },
+    checkUserName({rootState, dispatch}, userName: string): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.get(`${rootState.settings.apiUrl}/users/checkUserName?userName=${userName}`)
+                .then((response) => {
+                    return resolve(response.data as boolean);
+                })
+                .catch((error) => {
+                    dispatch('message/change', {
+                        mod: 'Profile',
+                        message: {
+                            state: MessageStatusEnum.Error,
+                            message: error,
+                        },
+                    },
+                    { root: true });
+                    return resolve(false);
+                });
+        });
+    },
+    checkEmail({rootState, dispatch}, email: string): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.get(`${rootState.settings.apiUrl}/users/checkEmail?email=${email}`)
+                .then((response) => {
+                    return resolve(response.data as boolean);
+                })
+                .catch((error) => {
+                    dispatch('message/change', {
+                        mod: 'Profile',
+                        message: {
+                            state: MessageStatusEnum.Error,
+                            message: error,
+                        },
+                    },
+                    { root: true });
+                    return resolve(false);
+                });
         });
     },
 };

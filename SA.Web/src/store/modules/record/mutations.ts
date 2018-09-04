@@ -79,8 +79,8 @@ const mutations: MutationTree<RecordState> = {
             record.validFrom.getFullYear(),
             record.validFrom.getMonth(),
             record.validFrom.getDate(),
-            0,
-            0,
+            record.validFrom.getHours(),
+            record.validFrom.getMinutes(),
             0,
             0,
         ));
@@ -89,8 +89,8 @@ const mutations: MutationTree<RecordState> = {
             record.validTo.getFullYear(),
             record.validTo.getMonth(),
             record.validTo.getDate(),
-            23,
-            59,
+            record.validTo.getHours(),
+            record.validTo.getMinutes(),
             59,
             0,
         ));
@@ -109,9 +109,9 @@ const mutations: MutationTree<RecordState> = {
                 : parseInt((from as string).split(':')[1], 0);
 
             const fromDate: Date = new Date(Date.UTC(
-                state.current.validFrom.getFullYear(),
-                state.current.validFrom.getMonth(),
-                state.current.validFrom.getDate(),
+                state.current.validFrom.getUTCFullYear(),
+                state.current.validFrom.getUTCMonth(),
+                state.current.validFrom.getUTCDate(),
                 fromHours,
                 fromMinutes,
                 0,
@@ -129,9 +129,9 @@ const mutations: MutationTree<RecordState> = {
                 : parseInt((to as string).split(':')[1], 0);
 
             const toDate: Date = new Date(Date.UTC(
-                state.current.validTo.getFullYear(),
-                state.current.validTo.getMonth(),
-                state.current.validTo.getDate(),
+                state.current.validTo.getUTCFullYear(),
+                state.current.validTo.getUTCMonth(),
+                state.current.validTo.getUTCDate(),
                 toHours,
                 toMinutes,
                 0,

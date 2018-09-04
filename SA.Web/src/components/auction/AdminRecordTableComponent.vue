@@ -307,7 +307,7 @@
                 <v-flex xs12 md4>
                   <v-textarea
                     v-model="record.current.equipment"
-                    v-validate="'max:250'"
+                    v-validate="'max:1000'"
                     :error-messages="errors.collect('equipment')"
                     :label="labelEquipment"
                     data-vv-name="equipment" />
@@ -315,7 +315,7 @@
                 <v-flex xs12 md4>
                   <v-textarea
                     v-model="record.current.defects"
-                    v-validate="'max:250'"
+                    v-validate="'max:1000'"
                     :error-messages="errors.collect('defects')"
                     :label="labelDefects"
                     data-vv-name="defects" />
@@ -323,7 +323,7 @@
                 <v-flex xs12 md4>
                   <v-textarea
                     v-model="record.current.moreDescription"
-                    v-validate="'max:250'"
+                    v-validate="'max:1000'"
                     :error-messages="errors.collect('moreDescription')"
                     data-vv-name="moreDescription"
                     couter
@@ -496,7 +496,7 @@ export default class AdminRecordTableComponent extends BaseComponent {
   @RecordAction('setValidDates') private setDates: any;
   @RecordAction('setValidTimes') private setTimes: any;
 
-  @AuctionAction('getLookup') private loadAuctionsCombo: any;
+  @AuctionAction('getAllLookup') private loadAuctionsCombo: any;
   @AuctionGetter('getLookupList') private auctionsCombo: AuctionLookupDto[];
 
   private timeTo: string = null;
@@ -739,8 +739,8 @@ export default class AdminRecordTableComponent extends BaseComponent {
           const datesString: string[] = auction.name.substring(
               auction.name.indexOf('[') + 1,
               auction.name.lastIndexOf(']')).split('-');
-          const fromDate = moment(datesString[0].trim(), 'DD.MM.YYYY');
-          const toDate = moment(datesString[1].trim(), 'DD.MM.YYYY');
+          const fromDate = moment(datesString[0].trim(), 'DD.MM.YYYY HH:mm');
+          const toDate = moment(datesString[1].trim(), 'DD.MM.YYYY HH:mm');
 
           this.record.current.validFrom = fromDate.toDate();
           this.record.current.validTo = toDate.toDate();

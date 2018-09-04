@@ -13,6 +13,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
     public class CountriesRepository : IEntityRepository<Country>
     {
         private readonly SaDbContext _context;
+        public SaDbContext Context { get { return _context; } }
         public CountriesRepository(SaDbContext context)
         {
             _context = context;

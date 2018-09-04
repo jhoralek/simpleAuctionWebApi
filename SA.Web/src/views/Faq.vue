@@ -2,7 +2,7 @@
     <div class="faq">
         <v-container grid-list-xs pa-2>
             <h1>{{ resx('faq') }}</h1>
-            <h3>Jak se mohu účastni aukce?</h3>
+            <h3>Jak se mohu účastnit aukce?</h3>
             <p>Aukce je možné se zúčastnit pouze po řádném zaregistrování na stránkách JERA-Trading.cz. <v-btn flat to="/registration">{{ resx('registration') }}</V-btn></p>
             <p>Po vyplnění registračního formuláře budou data ověřena a obratem Vám přidělíme přihlašovací údaje, které obdržíte v elektronické podobě na Váš e-mail.</p>
             <p>Přihlašovací údaje Vám umožní  přístup do nabídky  vozidel, po zaplacení jistiny se můžete aktivně účastnit závazné elektronické aukce.</p>
@@ -19,7 +19,7 @@
             <h3>Jakou formou mohu vozidlo zaplatit?</h3>
             <p>Jediný způsob platby je bankovním převodem na účet společnosti JERA Trading s.r.o.</p>
             <h3>Jak mohu prodávat své vozy či techniku?</h3>
-            <p>V případě zájmu o prodej Vašich vozidel nás neváhejte kontaktovat MAIL. Ke každému prodávajícímu přistupujeme individuálně dle jeho potřeb a požadavků.</p>
+            <p>V případě zájmu o prodej Vašich vozidel nás neváhejte kontaktovat info@jera-trading.cz. Ke každému prodávajícímu přistupujeme individuálně dle jeho potřeb a požadavků.</p>
             <h3>Proč nakupovat vozidla či techniku prostřednictvím JERA Trading s.r.o.?</h3>
             <p>Většina vozů je po prvním majiteli s jasnou historií a servisována v autorizovaných servisech. Najeté kilometry či motohodiny odpovídají vždy skutečnosti.</p>
             <h3>Je cena v aukci bez DPH?</h3>

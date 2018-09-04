@@ -19,6 +19,7 @@ namespace SA.Application.Records
         public virtual int? RegistrationYear { get; set; }
         public virtual string Fuel { get; set; }
         public virtual string AuctionName { get; set; }
+        public virtual int AuctionId { get; set; }
         public virtual string Mileage { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
     public class AddressesRepository : IEntityRepository<Address>
     {
         private readonly SaDbContext _context;
+        public SaDbContext Context { get { return _context; } }
         public AddressesRepository(SaDbContext context)
         {
             _context = context;
