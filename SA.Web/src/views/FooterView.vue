@@ -35,7 +35,7 @@
                                     E: info@jera-trading.cz
                                 </v-flex>
                                 <v-flex xs6 md6>
-                                    T: +420 123 456 789
+                                    T: +420 723 613 713
                                 </v-flex>
                             </v-layout>
                         </v-container>

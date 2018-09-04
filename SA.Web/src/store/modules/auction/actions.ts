@@ -202,6 +202,26 @@ const actions: ActionTree<AuctionState, RootState> = {
             });
         });
     },
+    getAllLookup({commit, rootState, dispatch}): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.get(`${rootState.settings.apiUrl}/auctions/getAllLookup`,
+                { headers: { authorization: rootState.auth.token } })
+            .then((response) => {
+                commit(AUCTION_CHANGE_LOOKUP_STATE, response.data as AuctionLookupDto[]);
+                return resolve(true);
+            })
+            .catch((error) => {
+                dispatch('message/change', {
+                    mod: 'Auction',
+                    message: {
+                        state: MessageStatusEnum.Error,
+                        message: error.message,
+                    },
+                },
+                { root: true});
+            });
+        });
+    },
     getFutureAutions({commit, rootState, dispatch}): Promise<number> {
         return new Promise<number>((resolve) => {
             return axios.get(`${rootState.settings.apiUrl}/auctions/getAllInFeature`)

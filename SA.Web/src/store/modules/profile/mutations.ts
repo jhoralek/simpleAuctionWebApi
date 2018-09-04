@@ -11,6 +11,7 @@ const mutations: MutationTree<ProfileState> = {
      */
     USER_CHANGE(state, user: User) {
         state.error = false;
+        state.errorMessage = undefined;
         state.user = user;
     },
 

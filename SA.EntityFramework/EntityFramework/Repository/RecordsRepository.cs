@@ -17,6 +17,8 @@ namespace SA.EntityFramework.EntityFramework.Repository
         private readonly SaDbContext _context;
         private readonly IHostingEnvironment _hostingEnvironment;
 
+        public SaDbContext Context { get { return _context; } }
+
         public RecordsRepository(
             SaDbContext context,
             IHostingEnvironment hostingEnvironment)

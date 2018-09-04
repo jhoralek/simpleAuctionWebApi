@@ -12,6 +12,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
     public class UserActivationsRepository : IEntityRepository<UserActivation>
     {
         private readonly SaDbContext _context;
+        public SaDbContext Context { get { return _context; } }
         public UserActivationsRepository(SaDbContext context)
         {
             _context = context;

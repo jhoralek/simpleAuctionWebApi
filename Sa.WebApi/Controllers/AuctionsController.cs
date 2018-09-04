@@ -87,6 +87,13 @@ namespace Sa.WebApi.Controllers
             => Json(await _repository
                 .GetAllAsync<AuctionLookupDto, DateTime>(x => 
                     x.IsActive,
-                    x => x.ValidFrom));        
+                    x => x.ValidFrom));
+
+        [Route("getAllLookup")]
+        [Authorize("admin")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllLookup()
+            => Json(await _repository
+                .GetAllAsync<AuctionLookupDto, bool>(order: x => x.IsActive));
     }
 }

@@ -17,5 +17,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
                 where TResult : class;
         Task<TResult> GetOneAsync<TResult>(Expression<Func<T, bool>> query)
             where TResult : class;
+
+        SaDbContext Context { get; }
     }
 }

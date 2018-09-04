@@ -132,6 +132,9 @@ export default class ActualRandomComponent extends FormBaseComponent {
 
     private firstImagePath(record: Record): string {
         const { files } = record;
+        if (files.length === 0) {
+            return '';
+        }
         const rf = files[0];
         return `/${rf.path}/${rf.recordId}/images/${rf.name}`;
     }

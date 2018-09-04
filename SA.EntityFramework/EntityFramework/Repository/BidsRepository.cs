@@ -13,6 +13,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
     public class BidsRepository : IEntityRepository<Bid>
     {
         private readonly SaDbContext _context;
+        public SaDbContext Context { get { return _context; } }
         public BidsRepository(SaDbContext context)
         {
             _context = context;

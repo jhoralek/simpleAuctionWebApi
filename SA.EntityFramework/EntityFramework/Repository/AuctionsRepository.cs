@@ -14,6 +14,7 @@ namespace SA.EntityFramework.EntityFramework.Repository
     public class AuctionsRepository : IEntityRepository<Auction>
     {
         private readonly SaDbContext _context;
+        public SaDbContext Context { get { return _context; } }
         private readonly IHostingEnvironment _hostingEnvironment;
 
         public AuctionsRepository(

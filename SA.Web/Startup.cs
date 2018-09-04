@@ -127,14 +127,18 @@ namespace SA.Web
                 cfg.CreateMap<Auction, AuctionTableDto>()
                     .ForMember(dto => dto.NumberOfRecords, dto => dto.MapFrom(x => x.Records.Count()));
                 cfg.CreateMap<Auction, AuctionLookupDto>()
-                    .ForMember(dto => dto.Name, dto => dto.MapFrom(x => $"{x.Name} - [{x.ValidFrom.ToShortDateString()} - {x.ValidTo.ToShortDateString()}]"));
+                    .ForMember(dto => dto.Name, dto => dto.MapFrom(x => $"{x.Name} - [{x.ValidFrom.ToString("dd.MM.yyyy HH:mm")} - {x.ValidTo.ToString("dd.MM.yyyy HH:mm")}] - { (x.IsActive ? "Aktivní" : "Neaktivní") }"));
 
                 // reverse mapping
                 cfg.CreateMap<UserDto, User>();
                 cfg.CreateMap<UserSimpleDto, User>();
                 cfg.CreateMap<RecordDetailDto, Record>()
+                    .ForMember(x => x.Auction, x => x.Ignore())
+                    .ForMember(x => x.Files, x => x.Ignore())
+                    .ForMember(x => x.Bids, x => x.Ignore())
                     .ForMember(x => x.User, x => x.Ignore());
                 cfg.CreateMap<RecordTableDto, Record>()
+                    .ForMember(x => x.User, x => x.Ignore())
                     .ForMember(x => x.Files, x => x.Ignore());
                 cfg.CreateMap<AuctionDto, Auction>()
                     .ForMember(x => x.Records, x => x.Ignore());

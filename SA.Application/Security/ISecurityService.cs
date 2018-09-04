@@ -10,5 +10,9 @@ namespace SA.Application.Security
         string GetMD5HashData(string data);
 
         Task<AuthResponse> ResetPassword(ChangePasswordDto obj);
+
+        Task<bool> CheckUniqueUserName(string userName);
+
+        Task<bool> CheckUniqueEmailAddress(string email);
     }
 }

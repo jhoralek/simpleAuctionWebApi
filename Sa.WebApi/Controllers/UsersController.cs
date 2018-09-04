@@ -133,5 +133,15 @@ namespace SA.WebApi.Controllers
         [Route("resetPassword")]
         public async Task<IActionResult> ResetPasswrd([FromBody] ChangePasswordDto model)
             => Json(await _securityService.ResetPassword(model));
+
+        [HttpGet("{userName}")]
+        [Route("checkUserName")]
+        public async Task<IActionResult> CheckUserName(string userName)
+            => Json(await _securityService.CheckUniqueUserName(userName));
+
+        [HttpGet("{email}")]
+        [Route("checkEmail")]
+        public async Task<IActionResult> CheckEmail(string email)
+            => Json(await _securityService.CheckUniqueEmailAddress(email));
     }
 }

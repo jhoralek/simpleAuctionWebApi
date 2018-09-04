@@ -11,6 +11,7 @@ export const state: ProfileState = {
     user: undefined,
     list: [],
     error: false,
+    errorMessage: undefined,
 };
 
 const namespaced: boolean = true;

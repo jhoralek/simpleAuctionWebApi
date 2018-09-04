@@ -95,7 +95,7 @@
                       :id="recordIdToString(record)"
                       :date="record.validTo" />
                   </v-flex>
-                  <v-flex xs6 class="text-xs-right">
+                  <v-flex xs6 class="text-xs-right list-item-price">
                     <price-component
                       :price="record.currentPrice" />
                   </v-flex>
@@ -166,6 +166,9 @@ export default class AuctionGridComponent extends BaseComponent {
 
   private firstImagePath(record: Record): string {
     const { files } = record;
+    if (files.length === 0) {
+      return '';
+    }
     const rf = files[0];
     return `/${rf.path}/${rf.recordId}/images/${rf.name}`;
   }
@@ -313,6 +316,8 @@ export default class AuctionGridComponent extends BaseComponent {
   color: #030303 !important;
 }
 
+
+
 .auctions-container .slides li {
   width: 280px !important;
 }
@@ -348,6 +353,11 @@ export default class AuctionGridComponent extends BaseComponent {
   line-height: 2.12;
   letter-spacing: 0px;
   color: #000000;
+}
+
+.auction-grid-list .list-item-price span {
+  font-size: 18px !important;
+  color: white !important;
 }
 
 .auctions-container .auction-item .v-card__media__content {

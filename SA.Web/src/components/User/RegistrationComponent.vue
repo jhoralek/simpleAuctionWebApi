@@ -6,34 +6,42 @@
             </v-flex>
         </v-layout>
         <v-form lazy-validation ref="step1" v-if="profile.user && state === 1">
-            <v-text-field
-                v-model="newUser.userName"
-                v-validate="'required|max:25|min:4'"
-                :error-messages="errors.collect('userName')"
-                data-vv-name="userName"
-                couter
-                :label="labelUserName" />
-            <v-text-field
-                :label="labelPassword"
-                v-model="newUser.password"
-                :append-icon="visible ? 'visibility_off' : 'visibility'"
-                :append-icon-cb="() => (visible = !visible)"
-                :type="visible ? 'text' : 'password'"
-                counter
-                v-validate="'required|max:25|min:4'"
-                :error-messages="errors.collect('password')"
-                data-vv-name="password" />
-            <v-text-field
-                :label="labelRepeatPassword"
-                v-model="repPassword"
-                :append-icon="visibleRep ? 'visibility_off' : 'visibility'"
-                :append-icon-cb="() => (visibleRep = !visibleRep)"
-                :type="visibleRep ? 'text' : 'password'"
-                counter
-                v-validate="{is:newUser.password, required: true}"
-                :error-messages="errors.collect('repPassword')"
-                data-vv-name="repPassword" />
-            <v-layout>
+            <v-layout row wrap>
+                <v-flex xs12>
+                    <v-text-field
+                        v-model="newUser.userName"
+                        v-validate="'required|max:25|min:4|userNameUnique'"
+                        :error-messages="errors.collect('userName')"
+                        data-vv-name="userName"
+                        couter
+                        :label="labelUserName" />
+                </v-flex>
+            </v-layout>
+            <v-layout row wrap>
+                <v-flex xs12>
+                    <v-text-field
+                        :label="labelPassword"
+                        v-model="newUser.password"
+                        :append-icon="visible ? 'visibility_off' : 'visibility'"
+                        :append-icon-cb="() => (visible = !visible)"
+                        :type="visible ? 'text' : 'password'"
+                        counter
+                        v-validate="'required|max:25|min:4'"
+                        :error-messages="errors.collect('password')"
+                        data-vv-name="password" />
+                    <v-text-field
+                        :label="labelRepeatPassword"
+                        v-model="repPassword"
+                        :append-icon="visibleRep ? 'visibility_off' : 'visibility'"
+                        :append-icon-cb="() => (visibleRep = !visibleRep)"
+                        :type="visibleRep ? 'text' : 'password'"
+                        counter
+                        v-validate="{is:newUser.password, required: true}"
+                        :error-messages="errors.collect('repPassword')"
+                        data-vv-name="repPassword" />
+                </v-flex>
+            </v-layout>
+            <v-layout row wrap>
                 <v-flex xs12 md8>
                     <v-checkbox
                         v-validate="'required'"
@@ -90,7 +98,7 @@
                 <v-flex xs12 md6>
                     <v-text-field
                         v-model="newCustomer.email"
-                        v-validate="'email|required'"
+                        v-validate="'email|required|emailUnique'"
                         :error-messages="errors.collect('email')"
                         data-vv-name="email"
                         couter
@@ -238,13 +246,15 @@ import { Component, Vue } from 'vue-property-decorator';
 import { State, Action, namespace, Getter } from 'vuex-class';
 
 import FormBaseComponent from '../FormBaseComponent.vue';
-import { ProfileState } from '@/store/types';
+import { ProfileState, SettingsState } from '@/store/types';
 import {
     User,
     Country,
     Customer,
     Address,
 } from '@/model';
+import { ExtendOptions } from 'vee-validate';
+import { log } from 'util';
 
 const ProfileAction = namespace('profile', Action);
 const SettingsGetter = namespace('settings', Getter);
@@ -256,6 +266,8 @@ export default class RegistrationComponent extends FormBaseComponent {
     @ProfileAction('setCurrentUsersCustomer') private setCustomer: any;
     @ProfileAction('setCurrentUserCustomersAddress') private setAddress: any;
     @ProfileAction('newUser') private saveUser: any;
+    @ProfileAction('checkUserName') private validateUser: any;
+    @ProfileAction('checkEmail') private validateEmail: any;
     @SettingsGetter('getCountries') private countries: Country[];
 
     private newUser: User = {
@@ -278,6 +290,41 @@ export default class RegistrationComponent extends FormBaseComponent {
     private repPassword: string = '';
     private visiblePwd: boolean = false;
     private visibleRepPwd: boolean = false;
+
+    public mounted() {
+        const userNameRule = {
+            getMessage: (field) => `${field} ${ this.isAlreadyUseMessage }`,
+            validate: (value) => new Promise((resolve) => {
+                return this.validateUser(value).then((response) => {
+                    return resolve({
+                        valid: response as boolean,
+                    });
+                });
+            }),
+        };
+
+        const emailRule = {
+            getMessage: (field) => `${field} ${ this.isAlreadyUseMessage }`,
+            validate: (value) => new Promise((resolve) => {
+                return this.validateEmail(value).then((response) => {
+                    return resolve({
+                        valid: response as boolean,
+                    });
+                });
+            }),
+        };
+
+        this.$validator.extend('userNameUnique',
+            userNameRule,
+            { imediate: false } as ExtendOptions);
+        this.$validator.extend('emailUnique',
+            emailRule,
+            { imediate: false } as ExtendOptions);
+    }
+
+    get isAlreadyUseMessage(): string {
+        return this.settings.resource.isAlreadyUsed.toLowerCase();
+    }
 
     get labelUserName(): string {
         return this.settings.resource.userName;

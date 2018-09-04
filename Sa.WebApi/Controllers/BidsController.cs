@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SA.Application;
-using SA.Application.Bid;
 using SA.Application.Records;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
@@ -16,12 +14,15 @@ namespace SA.WebApi.Controllers
     public class BidsController : BaseController<Bid>
     {
         private readonly IEntityRepository<Record> _recordRepository;
+        private readonly IEntityRepository<Auction> _auctionRepository;
         public BidsController(
             IEntityRepository<Bid> repository,
-            IEntityRepository<Record> recordRepository)
+            IEntityRepository<Record> recordRepository,
+            IEntityRepository<Auction> auctionRepository)
             : base(repository)
         {
             _recordRepository = recordRepository;
+            _auctionRepository = auctionRepository;
         }
 
         [Authorize("read:messages")]
@@ -68,8 +69,14 @@ namespace SA.WebApi.Controllers
                 // extend when last bid is less then 5 min. before auction ends.
                 if (now.AddMinutes(5) >= record.ValidTo)
                 {
-                    record.ValidTo = record.ValidTo.AddMinutes(5);
-                    await _recordRepository.UpdateAsync(Mapper.Map<Record>(record));
+                    var recordToUpdate = _recordRepository.Context.Records.First(x => x.Id == record.Id);
+                    recordToUpdate.ValidTo = record.ValidTo.AddMinutes(5);
+                    await _recordRepository.Context.SaveChangesAsync();
+
+                    // need to extend auction aswell
+                    var auction = await _auctionRepository.GetOneAsync<Auction>(x => x.Id == record.AuctionId);
+                    auction.ValidTo = record.ValidTo;
+                    await _auctionRepository.UpdateAsync(auction);
                 }
 
                 response.Status = MessageStatusEnum.Success; ;

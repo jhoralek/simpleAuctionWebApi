@@ -31,7 +31,6 @@ const store: StoreOptions<RootState> = {
     record: undefined,
     message: undefined,
     auction: undefined,
-
   },
   modules: {
     profile, // my own Store state hook up as a module
