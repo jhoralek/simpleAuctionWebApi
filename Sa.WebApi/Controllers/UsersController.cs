@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using SA.Application.Account;
 using SA.Application.Email;
+using SA.Application.Records;
 using SA.Application.Security;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
@@ -16,6 +18,7 @@ namespace SA.WebApi.Controllers
     {
         private readonly ISecurityService _securityService;
         private readonly IEntityRepository<Customer> _customerRepository;
+        private readonly IEntityRepository<Record> _recordRepository;
         private readonly IEntityRepository<UserActivation> _userActivationRepository;
         private readonly IUserEmailFactory _userEmailFactory;
         private readonly IConfiguration _configuration;
@@ -24,6 +27,7 @@ namespace SA.WebApi.Controllers
             IEntityRepository<User> repository,
             ISecurityService securityService,
             IEntityRepository<Customer> customerRepository,
+            IEntityRepository<Record> recordRepository,
             IEntityRepository<UserActivation> userActivationRepository,
             IUserEmailFactory userEmailFactory,
             IConfiguration configuration)
@@ -31,6 +35,7 @@ namespace SA.WebApi.Controllers
         {
             _securityService = securityService;
             _customerRepository = customerRepository;
+            _recordRepository = recordRepository;
             _userActivationRepository = userActivationRepository;
             _userEmailFactory = userEmailFactory;
             _configuration = configuration;
@@ -79,6 +84,34 @@ namespace SA.WebApi.Controllers
         public async Task<IActionResult> GetAllUsersForAdmin()
             => Json(await _repository
                 .GetAllAsync<UserSimpleDto, bool>(order: u => u.IsActive));
+
+        [HttpGet("{userId}")]
+        [Authorize("read:messages")]
+        [Route("getUsersCurrentAuctions")]
+        public async Task<IActionResult> GetUsersCurrentAuctions(int userId)
+        {
+            var now = DateTime.Now;
+            var records = await _recordRepository
+                .GetAllAsync<RecordTableDto, DateTime>(x => x.IsActive
+                    && x.ValidFrom <= now 
+                    && x.ValidTo >= now
+                    && x.Bids.Any(y => y.UserId == userId), x => x.ValidFrom);
+
+            return Json(records);
+        }
+
+        [HttpGet("{userId}")]
+        [Authorize("read:messages")]
+        [Route("getUsersEndedAuctions")]
+        public async Task<IActionResult> GetUsersEndedAuctions(int userId)
+        {
+            var now = DateTime.Now;
+            var records = await _recordRepository
+                .GetAllAsync<RecordTableDto, DateTime>(x => x.ValidTo < now
+                    && x.Bids.Any(y => y.UserId == userId), x => x.ValidFrom);
+
+            return Json(records);
+        }
 
         [HttpPost]
         [Route("updateUserAdmin")]

@@ -6,6 +6,7 @@ import {
 } from '@/store/types';
 
 import { User, Customer, Address } from '@/model';
+import { RecordTableDto } from '@/poco';
 
 const getters: GetterTree<ProfileState, RootState> = {
     /**
@@ -57,6 +58,12 @@ const getters: GetterTree<ProfileState, RootState> = {
      */
     getList(state): User[] {
         return state.list;
+    },
+    getCurrentAuctions(state): RecordTableDto[] {
+        return state.usersCurrent;
+    },
+    getEndedAuctions(state): RecordTableDto[] {
+        return state.usersEnded;
     },
 };
 

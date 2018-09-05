@@ -147,7 +147,7 @@
                             </v-layout>
                             <v-layout row wrap class="info3">
                                 <v-flex xs12 class="text-xs-center">
-                                    <bid-component :bid="minimumBid" v-if="currentUser.isFeePayed && canBid(record.validFrom)" />
+                                    <bid-component :bid="minimumBid" v-if="currentUser.isFeePayed && canBid(record.validFrom, record.validTo) && record.isActive" />
                                 </v-flex>
                             </v-layout>
                             <v-expansion-panel expand>
@@ -334,8 +334,9 @@ export default class AuctionDetalComponent extends BaseComponent {
         return date.toString();
     }
 
-    private canBid(validFrom: Date): boolean {
-        return new Date(validFrom) <= new Date();
+    private canBid(validFrom: Date, validTo: Date): boolean {
+        return new Date(validFrom) <= new Date()
+            && new Date(validTo) >= new Date();
     }
 
     get minimumBid(): number {

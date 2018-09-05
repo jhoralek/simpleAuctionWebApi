@@ -1,3 +1,4 @@
+import { RecordTableDto } from '@/poco';
 export default interface UserSimpleDto {
     id: number;
     userName: string;
@@ -10,4 +11,6 @@ export default interface UserSimpleDto {
     isFeePayed: boolean;
     email: string;
     phoneNumber: string;
+    actualAuctions: RecordTableDto[];
+    endedAuctions: RecordTableDto[];
 }

@@ -51,6 +51,13 @@
                     </v-flex>
                 </v-layout>
             </v-card-actions>
+            <v-card-actions class="red darken-3 footer-color" v-if="!auth.isFeePayed && auth.isAuthenticated">
+                <v-layout row class="text-xs-center">
+                    <v-flex xs12>
+                        {{ resx('feeNotPayedInformation') }}
+                    </v-flex>
+                </v-layout>
+            </v-card-actions>
         </v-card>
     </v-footer>
 </template>
@@ -60,11 +67,12 @@
 import BaseView from './BaseView.vue';
 import Component from 'vue-class-component';
 import { State } from 'vuex-class';
-import { SettingsState } from '@/store/types';
+import { SettingsState, AuthState } from '@/store/types';
 
 @Component({})
 export default class FooterView extends BaseView {
     @State('settings') private settings: SettingsState;
+    @State('auth') private auth: AuthState;
 
     get sokolovskaLogo(): string {
         return `${this.settings.apiUrl.replace('/api', '')}/img/sokolovska-logo.png`;
@@ -75,9 +83,13 @@ export default class FooterView extends BaseView {
 
 <style>
 
-.footer-content {
+.footer-color {
     color: white !important;
+}
+
+.footer-content {
     background-color: black !important;
+    color: white !important;
 }
 
 .footer-colaboration {

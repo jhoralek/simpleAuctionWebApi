@@ -6,7 +6,7 @@ import {
 } from '@/store/types';
 
 import { User, MessageStatusEnum, Customer, Address, GdprRecord } from '@/model';
-import { UserShortInfo, UserSimpleDto, GdprRecordTableDto } from '@/poco';
+import { UserShortInfo, UserSimpleDto, GdprRecordTableDto, RecordTableDto } from '@/poco';
 
 import {
     USER_INITIAL_STATE,
@@ -15,8 +15,9 @@ import {
     USER_SET_CURRENT_USERS_CUSTOMER,
     USER_SET_CURRENT_USER_CUSTOMERS_ADDRESS,
     USER_CHANGE_ADMIN_LIST,
+    USER_CHANGE_USERS_CURRENT_AUCTIONS,
+    USER_CHANGE_USERS_ENDED_AUCTIONS,
 } from '@/store/mutation-types';
-import { resolve } from 'path';
 
 const actions: ActionTree<ProfileState, RootState> = {
     /**
@@ -355,6 +356,56 @@ const actions: ActionTree<ProfileState, RootState> = {
             return axios.get(`${rootState.settings.apiUrl}/users/checkEmail?email=${email}`)
                 .then((response) => {
                     return resolve(response.data as boolean);
+                })
+                .catch((error) => {
+                    dispatch('message/change', {
+                        mod: 'Profile',
+                        message: {
+                            state: MessageStatusEnum.Error,
+                            message: error,
+                        },
+                    },
+                    { root: true });
+                    return resolve(false);
+                });
+        });
+    },
+    loadUsersCurrentAuctions({commit, rootState, dispatch}): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+
+            const { userId, token } = rootState.auth;
+            const { apiUrl } = rootState.settings;
+
+            return axios.get(`${apiUrl}/users/getUsersCurrentAuctions?userId=${userId}`,
+                { headers: { authorization: token }})
+                .then((response) => {
+                    commit(USER_CHANGE_USERS_CURRENT_AUCTIONS, response.data as RecordTableDto[]);
+                    return resolve(true);
+                })
+                .catch((error) => {
+                    dispatch('message/change', {
+                        mod: 'Profile',
+                        message: {
+                            state: MessageStatusEnum.Error,
+                            message: error,
+                        },
+                    },
+                    { root: true });
+                    return resolve(false);
+                });
+        });
+    },
+    loadUsersEndedAuctions({commit, rootState, dispatch}): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+
+            const { userId, token } = rootState.auth;
+            const { apiUrl } = rootState.settings;
+
+            return axios.get(`${apiUrl}/users/getUsersEndedAuctions?userId=${userId}`,
+                { headers: { authorization: token }})
+                .then((response) => {
+                    commit(USER_CHANGE_USERS_ENDED_AUCTIONS, response.data as RecordTableDto[]);
+                    return resolve(true);
                 })
                 .catch((error) => {
                     dispatch('message/change', {

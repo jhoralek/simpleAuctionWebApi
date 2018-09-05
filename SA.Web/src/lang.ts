@@ -4,10 +4,10 @@ export class Translator {
 
     public static languages: string [] = [
         'cs',
-        'en',
-        'de',
-        'ru',
-        'sk',
+        // 'en',
+        // 'de',
+        // 'ru',
+        // 'sk',
     ];
     /**
      * Set resource
@@ -54,6 +54,7 @@ export class Translator {
         beginningOfTheAuction: 'Začátek aukce',
         bid: 'Přihodit',
         bidBadRequest: 'Příhoz se nezdařil. Zkuste to znovu.',
+        bidding: 'Přihazuji',
         bidedBy: 'Přihodil',
         bidQuestionMessage: 'Opravdu chcete zvýšit na částku {0} Kč?',
         bidOverpaid: 'Váš příhoz není nejvyšší',
@@ -90,6 +91,7 @@ export class Translator {
         deleteSuccessfully: 'Záznam byl smazán',
         deletingPersonalInformation: 'Smazání osobních údajů',
         detailOfAuction: 'Detail aukce',
+        didntWon: 'Nevyhrál jste',
         dimensions: 'Celkové rozměry (délka / šířka / výška)',
         doors: 'Dveře',
         edit: 'Upravit',
@@ -106,6 +108,8 @@ export class Translator {
         faq: 'Otázky a odpovědi',
         feeExpirationDate: 'Datum vypršení poplatku',
         feeNotPayed: 'Poplatek není zaplacen',
+        feeNotPayedInformation: `Nemáte zaplacenu jistinu nutnou, aby jste mohli dražit vozy a strojní techniku.
+        Kontaktujte sprváce pro bližší informace.`,
         feePayed: 'Poplatek zaplacen',
         filedByTheRegionalCurtInPilsen: 'Spisová značka: {0} vedená u Krajského soudu v Plzni',
         firstName: 'Jméno',
@@ -151,6 +155,7 @@ export class Translator {
         newObjection: 'Vznesení námitky',
         newPassword: 'Nové heslo',
         news: 'Novinky',
+        notWinning: `Nevyhráváte`,
         numberOfBids: 'Počet příhozů',
         numberOfRecords: 'Počet položek',
         numberOfSeets: 'Počet sedadel',
@@ -226,6 +231,8 @@ export class Translator {
         webPageName2: 'Trading s.r.o.',
         webPageUrl: 'URL webových stránek',
         weColaborateWith: 'Spolupracujeme',
+        winning: 'Vyhráváte',
+        won: 'Vyhrál jste',
         yearOfManufacture: 'Rok výroby',
     };
 
@@ -253,6 +260,7 @@ export class Translator {
         beginningOfTheAuction: 'Beginning of the auction',
         bid: 'Bid',
         bidBadRequest: 'Your bid failed. Try it again.',
+        bidding: `I'm bidding`,
         bidedBy: 'Bided by',
         bidQuestionMessage: 'Are you sure, you want to increase to {0} CZK?',
         bidOverpaid: 'You were overpaied by another user.',
@@ -289,6 +297,7 @@ export class Translator {
         deletingPersonalInformation: 'Deleting of personal information',
         detailOfAuction: 'Detail of auction',
         dimensions: 'Overall dimensions (length / width / height)',
+        didntWon: `You didn't won`,
         doors: 'Doors',
         edit: 'Edit',
         equipment: 'Equipment',
@@ -303,6 +312,8 @@ export class Translator {
         expired: 'Expired',
         faq: 'FAQ',
         feeExpirationDate: 'Fee expiration date',
+        feeNotPayedInformation: `You do not have payed auction fee. Please, contact web site operator
+        for further information.`,
         feeNotPayed: 'Fee not payed',
         feePayed: 'Fee payed',
         filedByTheRegionalCurtInPilsen: 'File number: {0} filed bz the regional curt in Pilsen',
@@ -350,6 +361,7 @@ export class Translator {
         newObjection: 'New objection',
         newPassword: 'New password',
         news: 'News',
+        notWinning: `You're not winning`,
         numberOfBids: 'Number of bids',
         numberOfRecords: 'Number of recors',
         numberOfSeets: 'Number of seets',
@@ -425,6 +437,8 @@ export class Translator {
         webPageName2: 'Trading s.r.o.',
         webPageUrl: 'Web page URL',
         weColaborateWith: 'We colaborate',
+        winning: `You're winning`,
+        won: 'You won',
         yearOfManufacture: 'Year of manufacture',
     };
 

@@ -6,9 +6,11 @@
                     <v-flex xs12>
                         <div class="big-box">
                             <v-layout row wrap class="big-data">
-
                                 <v-flex xs12 md6 class="big-img-wrapper">
-                                    <img :src="firstImagePath(record)" class="big-img" @click="detail(record)" />
+                                    <v-card>
+                                        <v-card-media :src="firstImagePath(record)" @click="detail(record)">
+                                        </v-card-media>
+                                    </v-card>
                                 </v-flex>
                                 <v-flex xs12 md6>
                                     <div class="big-box-info">
@@ -268,6 +270,15 @@ export default class ActualRandomComponent extends FormBaseComponent {
 .big-img-wrapper {
     padding: 0px !important;
     margin: 0px !important;
+}
+
+.big-img-wrapper .v-card {
+    --webkit-box-shadow: 0 0px 0px 0px rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0) !important;
+    box-shadow: 0 0px 0px 0px rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0) !important;
+}
+
+.big-img-wrapper .v-card__media {
+    height: 100% !important;
 }
 
 .big-box .big-box-info {

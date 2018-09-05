@@ -84,7 +84,7 @@
                 <v-flex xs12 md4>
                   <v-text-field
                     v-model="record.current.mileage"
-                    v-validate="'numeric'"
+                    v-validate="'max:50'"
                     :error-messages="errors.collect('mileAge')"
                     data-vv-name="mileAge"
                     couter

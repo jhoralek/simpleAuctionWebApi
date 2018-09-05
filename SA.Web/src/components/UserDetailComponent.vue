@@ -19,11 +19,9 @@
               :items="flags" />
           </v-flex>
           <v-flex xs12>
-            <v-checkbox
-              v-model="user.sendingNews"
-              :label="labelSendingNews"
-              :value="false"
-              type="checkbox" />
+             <v-switch
+                v-model="user.sendingNews"
+                :label="labelSendingNews" />
           </v-flex>
         </v-layout>
         <v-layout row wrap>

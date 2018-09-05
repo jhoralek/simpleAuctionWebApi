@@ -21,5 +21,7 @@ namespace SA.Application.Records
         public virtual string AuctionName { get; set; }
         public virtual int AuctionId { get; set; }
         public virtual string Mileage { get; set; }
+        public virtual int WinningUserId { get; set; }
+        public virtual List<int> BiddingUserIds { get; set; } = new List<int>();
     }
 }
