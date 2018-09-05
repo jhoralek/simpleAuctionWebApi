@@ -29,6 +29,8 @@ export interface RootState {
  */
 export interface ProfileState {
     user?: User;
+    usersCurrent: RecordTableDto[];
+    usersEnded: RecordTableDto[];
     list: User[];
     error: boolean;
     errorMessage: string;
@@ -57,6 +59,7 @@ export interface SettingsState {
     apiUrl: string;
     tableView: boolean;
     currentForm: string;
+    version: string;
 }
 /**
  * Record state

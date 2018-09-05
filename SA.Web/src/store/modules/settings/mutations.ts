@@ -7,13 +7,14 @@ const mutations: MutationTree<SettingsState> = {
      * @param state Settigns state
      * @param res - resource with language mutation
      */
-    SETTINGS_INITIAL_STATE(state, { res, apiUrl }) {
+    SETTINGS_INITIAL_STATE(state, { res, apiUrl, version }) {
         state.language = 'cs';
         state.resource = res;
         state.countries = undefined;
         state.apiUrl = apiUrl;
         state.tableView = true;
         state.currentForm = '';
+        state.version = version;
     },
     /**
      * Change language

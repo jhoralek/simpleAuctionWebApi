@@ -2,6 +2,7 @@ import { MutationTree } from 'vuex';
 
 import { ProfileState } from '@/store/types';
 import { User, Customer, Address } from '@/model';
+import { RecordTableDto } from '@/poco';
 
 const mutations: MutationTree<ProfileState> = {
     /**
@@ -35,6 +36,16 @@ const mutations: MutationTree<ProfileState> = {
             customer: undefined,
             language: 'cs',
         };
+        state.usersCurrent = [] as RecordTableDto[];
+        state.usersEnded = [] as RecordTableDto[];
+    },
+    USER_CHANGE_USERS_CURRENT_AUCTIONS(state, records: RecordTableDto[]) {
+        state.error = records === undefined;
+        state.usersCurrent = records;
+    },
+    USER_CHANGE_USERS_ENDED_AUCTIONS(state, records: RecordTableDto[]) {
+        state.error = records === undefined;
+        state.usersEnded = records;
     },
     USER_SET_CURRENT_USER(state, user: User) {
         state.error = user !== undefined && user !== null;

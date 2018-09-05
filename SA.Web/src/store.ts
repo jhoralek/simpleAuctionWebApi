@@ -24,7 +24,7 @@ const vuexLocal = new VuexPersistance({
 // create store with RootState
 const store: StoreOptions<RootState> = {
   state: {
-    version: '0.0.1 alpha',
+    version: '1.0.0.0',
     settings: undefined,
     auth: undefined,
     profile: undefined,

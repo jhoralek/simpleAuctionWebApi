@@ -89,6 +89,10 @@ namespace SA.Web
                     .ForMember(dto => dto.CurrentPrice, dto => dto.MapFrom(x => x.Bids.Any()
                         ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().Price
                         : x.StartingPrice))
+                    .ForMember(dto => dto.WinningUserId, dto => dto.MapFrom(x => x.Bids.Any()
+                        ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().UserId
+                        : 0))
+                    .ForMember(dto => dto.BiddingUserIds, dto => dto.MapFrom(x => x.Bids.Select(y => y.UserId).Distinct()))
                     .ForMember(dto => dto.NumberOfBids, dto => dto.MapFrom(x => x.Bids.Count()))
                     .ForMember(dto => dto.RegistrationYear, dto => dto.MapFrom(x => x.DateOfFirstRegistration.HasValue ? x.DateOfFirstRegistration.Value.Year as int? : null))
                     .ForMember(dto => dto.AuctionName, dto => dto.MapFrom(x => x.Auction.Name));

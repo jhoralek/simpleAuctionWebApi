@@ -12,6 +12,7 @@ export const state: SettingsState = {
     apiUrl: undefined,
     tableView: true,
     currentForm: undefined,
+    version: undefined,
 };
 
 const namespaced: boolean = true;

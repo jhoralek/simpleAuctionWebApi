@@ -15,4 +15,6 @@ export default interface RecordTableDto {
     registrationYear: number;
     auctionName: string;
     mileage: string;
+    winningUserId: number;
+    biddingUserIds: number[];
 }
