@@ -278,11 +278,11 @@
                 </v-container>
             </v-flex>
         </v-layout>
-        <!-- <v-layout row wrap>
+        <v-layout row wrap>
             <v-flex xs12>
                 <auction-feature-list-component :take="1" />
             </v-flex>
-        </v-layout> -->
+        </v-layout>
     </v-container>
 </template>
 
