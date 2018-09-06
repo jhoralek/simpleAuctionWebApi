@@ -1,76 +1,64 @@
 <template>
   <div class="auction-grid-list">
     <loading-component :open="isLoading" />
-    <auction-feature-list-component v-if="auctions && auctions.length > 0" />
-    <v-container v-bind="{ [`grid-list-xs`]: true }" fluid v-else>
-      <v-layout row wrap>
-        <v-flex xs12 sm4 v-for="(record, index) in records" :key="index" class="auction-box">
+    <v-container grid-list-xs fluid v-if="auctions">
+      <v-layout row wrap v-if="auctions" class="auctions-container">
+        <v-flex xs12 v-for="(auction, index) in auctions.slice(0, limitList)" :key="index" class="auction-list">
           <v-card>
-              <v-card-media :src="firstImagePath(record)" @click="detail(record)">
-                <v-layout row wrap v-if="auth.isFeePayed && auth.isAuthenticated && isBidding(record.biddingUserIds)">
-                  <v-flex xs12 class="text-xs-right">
-                    <v-tooltip top v-if="auth.userId === record.winningUserId">
-                        <v-btn icon slot="activator" color="white">
-                          <v-icon small color="green" style="cursor: pointer">thumb_up</v-icon>
-                        </v-btn>
-                        <span>{{ resx('winning') }} </span>
-                    </v-tooltip>
-                    <v-tooltip top v-else>
-                        <v-btn icon slot="activator" color="white">
-                          <v-icon small color="red" style="cursor: pointer">thumb_down</v-icon>
-                        </v-btn>
-                        <span>{{ resx('notWinning') }} </span>
-                    </v-tooltip>
+            <v-card-title>
+              <v-layout row wrap>
+                <v-flex xs12 md6 class="text-xs-left">
+                  <h1>{{ resx('auctions') }} {{ auction.name }}</h1>
+                  <v-btn color="black">
+                    {{ auction.records.length }}
+                    <span class="car-text">{{ btnCarsText(auction.records.length) }}</span>
+                  </v-btn>
+                </v-flex>
+                <v-flex xs12 md6 class="text-xs-right">
+                  <h3>{{ resx('from').toLowerCase() }} {{ auction.validFrom | moment('DD.MM.YYYY') }} {{ resx('to').toLowerCase() }} {{ auction.validTo | moment('DD.MM.YYYY') }}</h3>
+                </v-flex>
+              </v-layout>
+            </v-card-title>
+            <v-layout row wrap>
+              <lory class="js_multislides" :options="{ enableMouseEvents: true, slidesToScroll: 4, slideSpeed: 1000 }">
+                <prev slot="actions" color="#ffffff"></prev>
+                <item v-for="(item, i2) in auction.records" :key="i2" style="padding-left: 20px">
+                  <v-flex xs12 sm3 class="auction-item">
+                    <v-card>
+                      <v-card-media :src="firstImagePath(item)" @click="detail(item)"></v-card-media>
+                      <v-layout row wrap>
+                        <v-flex xs12 class="text-xs-center">
+                          <h4>{{ item.name }}</h4>
+                        </v-flex>
+                      </v-layout>
+                      <v-layout row wrap class="auction-item-info">
+                        <v-flex xs4 class="text-xs-center">
+                          <span>{{ item.registrationYear }}</span>
+                        </v-flex>
+                        <v-flex xs4 class="text-xs-center">
+                          <span>{{ item.fuel }}</span>
+                        </v-flex>
+                        <v-flex xs4 class="text-xs-center">
+                          <span>{{ item.mileage }}</span>
+                        </v-flex>
+                      </v-layout>
+                      <v-layout row wrap>
+                        <v-flex xs12 class="text-xs-center">
+                          <span class="auction-item-price-text">{{ resx('actualPrice') }}</span>
+                        </v-flex>
+                      </v-layout>
+                      <v-layout row wrap>
+                        <v-flex xs12 class="text-xs-center item-price">
+                          <h4><price-component :price="item.currentPrice" /></h4>
+                        </v-flex>
+                      </v-layout>
+                    </v-card>
                   </v-flex>
-                </v-layout>
-              </v-card-media>
-              <v-card-title>
-                <v-layout row wrap>
-                  <v-flex xs8>{{ record.name }}</v-flex>
-                  <v-flex xs2 class="text-xs-right">
-                    <span v-if="record.registrationYear">{{ record.registrationYear }}</span>
-                  </v-flex>
-                  <v-flex xs2 class="text-xs-right">
-                    <span  v-if="record.fuel">{{ record.fuel }}</span>
-                  </v-flex>
-                </v-layout>
-              </v-card-title>
-              <v-card-text>
-                <v-layout row wrap>
-                  <v-flex xs6>
-                    <span>{{ resx('endOfAuction') }}</span>
-                  </v-flex>
-                  <v-flex xs6 class="text-xs-right">
-                    <span>{{ resx('actualPrice') }}</span>
-                  </v-flex>
-                </v-layout>
-                <v-layout row wrap>
-                  <v-flex xs6>
-                    <countdown-component
-                      :id="recordIdToString(record)"
-                      :date="record.validTo" />
-                  </v-flex>
-                  <v-flex xs6 class="text-xs-right list-item-price">
-                    <price-component
-                      :price="record.currentPrice" />
-                  </v-flex>
-                </v-layout>
-              </v-card-text>
-              <v-card-actions>
-                <v-layout row wrap>
-                  <v-flex xs12 class="text-xs-center">
-                    <v-btn @click="detail(record)" flat color="black">
-                      {{ resx('detailOfAuction') }}
-                    </v-btn>
-                  </v-flex>
-                </v-layout>
-              </v-card-actions>
-            </v-card>
-        </v-flex>
-      </v-layout>
-      <v-layout row wrap>
-        <v-flex xs12>
-          <auction-feature-list-component :take="1" />
+                </item>
+                <next slot="actions" color="#ffffff"></next>
+              </lory>
+            </v-layout>
+          </v-card>
         </v-flex>
       </v-layout>
     </v-container>
@@ -88,17 +76,15 @@ import BaseComponent from './BaseComponent.vue';
 import CountdownComponent from './helpers/CountdownComponent.vue';
 import PriceComponent from './helpers/PriceComponent.vue';
 import LoadingComponent from './helpers/LoadingComponent.vue';
-import AuctionFeatureListComponent from './AuctionFeatureListComponent.vue';
 import { RecordTableDto, AuctionDto } from '@/poco';
-import { AuthState } from '@/store/types' ;
 
-const RecordAction = namespace('record', Action);
-const RecordGetter = namespace('record', Getter);
+
 const AuctionGetter = namespace('auction', Getter);
+const AuctionAction = namespace('auction', Action);
+const RecordAction = namespace('record', Action);
 
 @Component({
     components: {
-        AuctionFeatureListComponent,
         CountdownComponent,
         PriceComponent,
         LoadingComponent,
@@ -108,22 +94,26 @@ const AuctionGetter = namespace('auction', Getter);
         Next,
     },
 })
-export default class AuctionGridComponent extends BaseComponent {
-  @State('auth') private auth: AuthState;
-
+export default class AuctionFeatureListComponent extends BaseComponent {
+  @Prop({default: undefined}) private take: number;
   @AuctionGetter('getAuctions') private auctions: AuctionDto[];
 
-  @RecordGetter('getRecords') private records: RecordTableDto[];
-  @RecordAction('loadAllPublished') private loadRecods: any;
+  @AuctionAction('getFutureAutions') private featuredAcutions: any;
   @RecordAction('getDetail') private loadRecord: any;
 
   private isLoading: boolean = false;
 
   private mounted() {
     this.isLoading = true;
-    this.loadRecods().then((respAuction) => {
+    this.featuredAcutions().then(() => {
         this.isLoading = false;
     });
+  }
+
+  get limitList(): number {
+      return this.take !== undefined
+        ? this.take
+        : this.auctions.length;
   }
 
   private firstImagePath(record: Record): string {
@@ -135,9 +125,6 @@ export default class AuctionGridComponent extends BaseComponent {
     return `/${rf.path}/${rf.recordId}/images/${rf.name}`;
   }
 
-  private recordIdToString(record: RecordTableDto): string {
-      return record.id.toString();
-  }
 
   private detail(record: RecordTableDto): void {
     this.isLoading = true;
@@ -161,11 +148,6 @@ export default class AuctionGridComponent extends BaseComponent {
         return `${this.settings.resource.cars.toLowerCase()}`;
     }
   }
-
-  private isBidding(biddingIds: number[]): boolean {
-    return biddingIds.indexOf(this.auth.userId) !== -1;
-  }
-
 }
 
 </script>
@@ -196,6 +178,10 @@ export default class AuctionGridComponent extends BaseComponent {
 .auction-grid-list .v-card__media__content {
   width: 347px !important;
   height: 279px !important;
+}
+
+.auctions-container .items {
+  padding-left: 30px !important;
 }
 
 .auction-grid-list .v-card__title {
@@ -245,9 +231,79 @@ export default class AuctionGridComponent extends BaseComponent {
   cursor: pointer;
 }
 
+.auctions-container .auction-item {
+  width: 280px !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+}
+
+.auctions-container .auction-item .auction-item-info {
+  font-family: Roboto;
+  font-size: 10px !important;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0.8px;
+  color: #929292 !important;
+}
+
+.auctions-container .auction-item .auction-item-price-text {
+  text-transform: uppercase !important;
+  font-family: Roboto;
+  font-size: 10px !important;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0.8px;
+  color: #030303 !important;
+}
+
+
+
+.auctions-container .slides li {
+  width: 280px !important;
+}
+
+.auctions-container .auction-item .item-price h4 div {
+  line-height: 1.2 !important;
+}
+
+.auctions-container .auction-list .slider {
+  width: 100% !important;
+}
+
+.auctions-container .auction-list .flex {
+  max-width: 100% !important;
+}
+
+.auctions-container .slider svg {
+  background-color: black !important;
+  border-radius: 5px !important;
+}
+
+.auctions-container .auction-item .v-card {
+    border-radius: 5px !important;
+    border: 1px solid #d1d2d1 !important;
+}
+
+.auctions-container .auction-item h4 {
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: 500 !important;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 2.12;
+  letter-spacing: 0px;
+  color: #000000;
+  white-space: normal !important;
+}
+
 .auction-grid-list .list-item-price span {
   font-size: 18px !important;
   color: white !important;
+}
+
+.auctions-container .auction-item .v-card__media__content {
+  max-height: 210px !important;
 }
 
 .auction-list .v-btn {
@@ -307,6 +363,10 @@ export default class AuctionGridComponent extends BaseComponent {
   background-color: #ffffff !important;
   border: 0px !important;
   padding-bottom: 20px !important;
+}
+
+.auctions-container {
+  padding-top: 50px !important;
 }
 
 </style>

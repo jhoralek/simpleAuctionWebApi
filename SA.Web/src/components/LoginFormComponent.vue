@@ -190,6 +190,11 @@ export default class LoginFormComponent extends FormBaseComponent {
     height: 100%;
 }
 
+.loginForm div .login-button {
+    height: 40px;
+    margin-top: 65px;
+}
+
 .form-action .v-btn {
     color: white !important;
     border-radius: 5px !important;
