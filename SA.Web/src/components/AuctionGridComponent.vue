@@ -198,10 +198,6 @@ export default class AuctionGridComponent extends BaseComponent {
   height: 279px !important;
 }
 
-.auctions-container .items {
-  padding-left: 30px !important;
-}
-
 .auction-grid-list .v-card__title {
   font-family: Roboto;
   font-size: 25px;
@@ -249,78 +245,9 @@ export default class AuctionGridComponent extends BaseComponent {
   cursor: pointer;
 }
 
-.auctions-container .auction-item {
-  width: 280px !important;
-  padding-left: 12px !important;
-  padding-right: 12px !important;
-}
-
-.auctions-container .auction-item .auction-item-info {
-  font-family: Roboto;
-  font-size: 10px !important;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.8px;
-  color: #929292 !important;
-}
-
-.auctions-container .auction-item .auction-item-price-text {
-  text-transform: uppercase !important;
-  font-family: Roboto;
-  font-size: 10px !important;
-  font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.8px;
-  color: #030303 !important;
-}
-
-
-
-.auctions-container .slides li {
-  width: 280px !important;
-}
-
-.auctions-container .auction-item .item-price h4 div {
-  line-height: 1.2 !important;
-}
-
-.auctions-container .auction-list .slider {
-  width: 100% !important;
-}
-
-.auctions-container .auction-list .flex {
-  max-width: 100% !important;
-}
-
-.auctions-container .slider svg {
-  background-color: black !important;
-  border-radius: 5px !important;
-}
-
-.auctions-container .auction-item .v-card {
-    border-radius: 5px !important;
-    border: 1px solid #d1d2d1 !important;
-}
-
-.auctions-container .auction-item h4 {
-  font-family: Roboto;
-  font-size: 20px;
-  font-weight: 500 !important;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 2.12;
-  letter-spacing: 0px;
-  color: #000000;
-}
-
 .auction-grid-list .list-item-price span {
   font-size: 18px !important;
   color: white !important;
-}
-
-.auctions-container .auction-item .v-card__media__content {
-  max-height: 210px !important;
 }
 
 .auction-list .v-btn {
@@ -380,10 +307,6 @@ export default class AuctionGridComponent extends BaseComponent {
   background-color: #ffffff !important;
   border: 0px !important;
   padding-bottom: 20px !important;
-}
-
-.auctions-container {
-  padding-top: 50px !important;
 }
 
 </style>

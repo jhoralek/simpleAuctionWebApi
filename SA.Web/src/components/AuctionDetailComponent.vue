@@ -222,8 +222,8 @@
                                         </v-flex>
                                         <v-flex xs12 md6>
                                             <v-layout row wrap>
-                                                <v-flex xs6 class="info-text">{{ resx('vehicleVinNumber') }}</v-flex>
-                                                <v-flex xs6 class="info-value">{{ record.vin }}</v-flex>
+                                                <v-flex xs5 class="info-text">{{ resx('vehicleVinNumber') }}</v-flex>
+                                                <v-flex xs7 class="info-value">{{ record.vin }}</v-flex>
                                             </v-layout>
                                         </v-flex>
                                     </v-layout>

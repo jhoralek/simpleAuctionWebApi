@@ -294,6 +294,7 @@ export default class AuctionFeatureListComponent extends BaseComponent {
   line-height: 2.12;
   letter-spacing: 0px;
   color: #000000;
+  white-space: normal !important;
 }
 
 .auction-grid-list .list-item-price span {
