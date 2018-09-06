@@ -3,7 +3,7 @@
         <v-layout row wrap>
             <v-flex xs12 md6 class="left-side">
                 <v-container  grid-list-xs pa-0>
-                    <v-layout column>
+                    <v-layout row wrap>
                         <v-flex xs12>
                             <v-carousel hide-delimiters :cycle="false">
                                 <v-carousel-item
@@ -13,6 +13,8 @@
                                 ></v-carousel-item>
                             </v-carousel>
                         </v-flex>
+                    </v-layout>
+                    <v-layout row wrap>
                         <v-flex xs12>
                             <v-expansion-panel expand>
                                 <v-expansion-panel-content :value="expander1">
@@ -212,10 +214,10 @@
                                         </v-flex>
                                     </v-layout>
                                     <v-layout row wrap>
-                                       <v-flex xs12 md6>
+                                    <v-flex xs12 md6>
                                             <v-layout row wrap>
                                                 <v-flex xs6 class="info-text">{{ resx('technicalViewOfTheVehicle') }}</v-flex>
-                                                <v-flex xs6 class="info-value">{{ record.technicalViewOfTheVehicle | moment('DD.MM.YYYY') }}</v-flex>
+                                                <v-flex xs6 class="info-value">{{ record.stk | moment('DD.MM.YYYY') }}</v-flex>
                                             </v-layout>
                                         </v-flex>
                                         <v-flex xs12 md6>
@@ -276,6 +278,11 @@
                 </v-container>
             </v-flex>
         </v-layout>
+        <!-- <v-layout row wrap>
+            <v-flex xs12>
+                <auction-feature-list-component :take="1" />
+            </v-flex>
+        </v-layout> -->
     </v-container>
 </template>
 
@@ -285,7 +292,13 @@ import { Component, Prop } from 'vue-property-decorator';
 import { Getter, Action, namespace } from 'vuex-class';
 
 import BaseComponent from './BaseComponent.vue';
-import { PriceComponent, BidComponent, CountdownComponent } from '@/components';
+import AuctionFeatureListComponent from './AuctionFeatureListComponent.vue';
+
+import {
+    PriceComponent,
+    BidComponent,
+    CountdownComponent,
+} from '@/components';
 import {
     Record,
     Bid,
@@ -302,6 +315,7 @@ const RecordAction = namespace('record', Action);
         PriceComponent,
         BidComponent,
         CountdownComponent,
+        AuctionFeatureListComponent,
     },
 })
 export default class AuctionDetalComponent extends BaseComponent {
@@ -433,6 +447,7 @@ export default class AuctionDetalComponent extends BaseComponent {
 
 .auction-detail {
     font-family: Roboto !important;
+    padding-bottom: 20px !important;
 }
 
 .auction-detail .info-value {

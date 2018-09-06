@@ -109,9 +109,9 @@ const mutations: MutationTree<RecordState> = {
                 : parseInt((from as string).split(':')[1], 0);
 
             const fromDate: Date = new Date(Date.UTC(
-                state.current.validFrom.getUTCFullYear(),
-                state.current.validFrom.getUTCMonth(),
-                state.current.validFrom.getUTCDate(),
+                state.current.validFrom.getFullYear(),
+                state.current.validFrom.getMonth(),
+                state.current.validFrom.getDate(),
                 fromHours,
                 fromMinutes,
                 0,
@@ -129,9 +129,9 @@ const mutations: MutationTree<RecordState> = {
                 : parseInt((to as string).split(':')[1], 0);
 
             const toDate: Date = new Date(Date.UTC(
-                state.current.validTo.getUTCFullYear(),
-                state.current.validTo.getUTCMonth(),
-                state.current.validTo.getUTCDate(),
+                state.current.validTo.getFullYear(),
+                state.current.validTo.getMonth(),
+                state.current.validTo.getDate(),
                 toHours,
                 toMinutes,
                 0,
