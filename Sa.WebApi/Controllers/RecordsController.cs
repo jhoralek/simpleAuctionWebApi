@@ -136,5 +136,28 @@ namespace SA.WebApi.Controllers
 
             return Json(item);
         }
+
+        [HttpGet("{take}")]
+        [Route("getLatestEndedRecords")]
+        public async Task<IActionResult> GetLatestEndedRecords(int take = 20)
+        {
+            var now = DateTime.Now;
+            var items = await _repository
+                .GetAllAsync<RecordTableDto, DateTime>(x => x.ValidFrom < now
+                    && x.ValidTo < now, 
+                    x => x.ValidTo, take);
+
+            return Json(items);
+        }
+
+        [HttpGet]
+        [Authorize("admin")]
+        [Route("getAllEndedRecords")]
+        public async Task<IActionResult> GetAllEndedRecords()
+        {
+            var now = DateTime.Now;
+            return Json(await _repository.GetAllAsync<RecordTableDto, int>(x => x.ValidFrom < now
+                && x.ValidTo < now, x => x.Id));
+        }
     }
 }

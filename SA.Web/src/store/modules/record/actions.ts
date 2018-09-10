@@ -59,8 +59,6 @@ const actions: ActionTree<RecordState, RootState> = {
                             mod: 'Auction',
                         },
                         { root: true });
-                    } else {
-                        dispatch('auction/initialState', {}, { root: true});
                     }
                     return resolve(true);
                 })
@@ -397,6 +395,47 @@ const actions: ActionTree<RecordState, RootState> = {
         return new Promise<boolean>((resolve) => {
             commit(RECORD_SET_VALID_TIMES, { from, to});
             return resolve(true);
+        });
+    },
+    getAllEndedRecords({commit, rootState, dispatch}): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.get(`${rootState.settings.apiUrl}/records/getAllEndedRecords`,
+                { headers: { authorization: rootState.auth.token } })
+            .then((response) => {
+                commit(RECORD_CHANGE_LIST_STATE, response.data as RecordTableDto[]);
+                return resolve(true);
+            })
+            .catch((error) => {
+                dispatch('message/change', {
+                    mod: 'Record',
+                    message: {
+                        state: MessageStatusEnum.Error,
+                        message: error.message,
+                    },
+                },
+                { root: true});
+                return resolve(false);
+            });
+        });
+    },
+    getLatestEndedRecords({commit, rootState, dispatch}, take: number): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.get(`${rootState.settings.apiUrl}/records/getLatestEndedRecords?take=${take}`)
+            .then((response) => {
+                commit(RECORD_CHANGE_LIST_STATE, response.data as RecordTableDto[]);
+                return resolve(true);
+            })
+            .catch((error) => {
+                dispatch('message/change', {
+                    mod: 'Record',
+                    message: {
+                        state: MessageStatusEnum.Error,
+                        message: error.message,
+                    },
+                },
+                { root: true});
+                return resolve(false);
+            });
         });
     },
 };

@@ -176,5 +176,11 @@ namespace SA.WebApi.Controllers
         [Route("checkEmail")]
         public async Task<IActionResult> CheckEmail(string email)
             => Json(await _securityService.CheckUniqueEmailAddress(email));
+
+        [Authorize("admin")]
+        [HttpGet("{userId}")]
+        [Route("getCustomerInfo")]
+        public async Task<IActionResult> GetCustomerInfo(int userId)
+            => Json(await _repository.GetOneAsync<UserShortDto>(x => x.Id == userId));
     }
 }

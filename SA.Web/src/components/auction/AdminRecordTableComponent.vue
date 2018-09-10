@@ -411,13 +411,13 @@
             <template slot="items" slot-scope="props">
               <td>{{ props.item.name }}</td>
               <td>{{ props.item.auctionName }}</td>
-              <td>{{ props.item.validFrom | moment('DD.MM.YYYY HH:mm') }}</td>
-              <td>{{ props.item.validTo | moment('DD.MM.YYYY HH:mm') }}</td>
-              <td><price-component :price="props.item.startingPrice" /></td>
-              <td><price-component :price="props.item.minimumBid" /></td>
-              <td><price-component :price="props.item.currentPrice" /></td>
-              <td>{{ props.item.numberOfBids }}</td>
-              <td>
+              <td class="text-xs-right">{{ props.item.validFrom | moment('DD.MM.YYYY HH:mm') }}</td>
+              <td class="text-xs-right">{{ props.item.validTo | moment('DD.MM.YYYY HH:mm') }}</td>
+              <td class="text-xs-right"><price-component :price="props.item.startingPrice" /></td>
+              <td class="text-xs-right"><price-component :price="props.item.minimumBid" /></td>
+              <td class="text-xs-right"><price-component :price="props.item.currentPrice" /></td>
+              <td class="text-xs-right">{{ props.item.numberOfBids }}</td>
+              <td class="text-xs-right">
                   <v-icon
                       style="cursor: pointer"
                       small
@@ -537,37 +537,37 @@ export default class AdminRecordTableComponent extends BaseComponent {
           value: 'auctionName' });
       this.headers.push({
           text: this.settings.resource.validFrom,
-          align: 'rigth',
+          align: 'right',
           sortable: true,
           value: 'validFrom' });
       this.headers.push({
           text: this.settings.resource.validTo,
-          align: 'rigth',
+          align: 'right',
           sortable: true,
           value: 'validTo' });
       this.headers.push({
           text: this.settings.resource.startingPrice,
-          align: 'rigth',
+          align: 'right',
           sortable: true,
           value: 'startingPrice' });
       this.headers.push({
           text: this.settings.resource.minimumBid,
-          align: 'rigth',
+          align: 'right',
           sortable: true,
           value: 'minimumBid' });
       this.headers.push({
           text: this.settings.resource.currentPrice,
-          align: 'rigth',
+          align: 'right',
           sortable: true,
           value: 'currentPrice' });
       this.headers.push({
           text: this.settings.resource.numberOfBids,
-          align: 'rigth',
+          align: 'right',
           sortable: false,
           value: 'numberOfBids' });
       this.headers.push({
           text: this.settings.resource.action,
-          align: 'center',
+          align: 'right',
           sortable: true,
           value: 'action' });
       this.loadAuctionsCombo();

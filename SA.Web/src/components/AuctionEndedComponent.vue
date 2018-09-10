@@ -5,23 +5,7 @@
       <v-layout row wrap>
         <v-flex xs12 sm4 v-for="(record, index) in records" :key="index" class="auction-box">
           <v-card>
-              <v-card-media :src="firstImagePath(record)" @click="detail(record)">
-                <v-layout row wrap v-if="auth.isFeePayed && auth.isAuthenticated && isBidding(record.biddingUserIds)">
-                  <v-flex xs12 class="text-xs-right">
-                    <v-tooltip top v-if="auth.userId === record.winningUserId">
-                        <v-btn icon slot="activator" color="white">
-                          <v-icon small color="green" style="cursor: pointer">thumb_up</v-icon>
-                        </v-btn>
-                        <span>{{ resx('winning') }} </span>
-                    </v-tooltip>
-                    <v-tooltip top v-else>
-                        <v-btn icon slot="activator" color="white">
-                          <v-icon small color="red" style="cursor: pointer">thumb_down</v-icon>
-                        </v-btn>
-                        <span>{{ resx('notWinning') }} </span>
-                    </v-tooltip>
-                  </v-flex>
-                </v-layout>
+              <v-card-media :src="firstImagePath(record)">
               </v-card-media>
               <v-card-title>
                 <v-layout row wrap>
@@ -40,86 +24,54 @@
                     <span>{{ resx('endOfAuction') }}</span>
                   </v-flex>
                   <v-flex xs6 class="text-xs-right">
-                    <span>{{ resx('actualPrice') }}</span>
+                    <span>{{ resx('finalPrice') }}</span>
                   </v-flex>
                 </v-layout>
                 <v-layout row wrap>
-                  <v-flex xs6>
-                    <countdown-component
-                      :id="recordIdToString(record)"
-                      :date="record.validTo" />
-                  </v-flex>
+                  <v-flex xs6>{{ resx('endOfAuction') }}</v-flex>
                   <v-flex xs6 class="text-xs-right list-item-price">
                     <price-component
                       :price="record.currentPrice" />
                   </v-flex>
                 </v-layout>
               </v-card-text>
-              <v-card-actions>
-                <v-layout row wrap>
-                  <v-flex xs12 class="text-xs-center">
-                    <v-btn @click="detail(record)" flat color="black">
-                      {{ resx('detailOfAuction') }}
-                    </v-btn>
-                  </v-flex>
-                </v-layout>
-              </v-card-actions>
             </v-card>
         </v-flex>
       </v-layout>
-      <v-layout row wrap>
-        <v-flex xs12>
-          <auction-feature-list-component :take="1" />
-        </v-flex>
-      </v-layout>
     </v-container>
-    <auction-feature-list-component v-else />
   </div>
 </template>
 
 <script lang="ts">
 
-import { Lory, Item, Prev, Next } from 'vue-lory';
 import { Component, Prop } from 'vue-property-decorator';
 import { State, Action, Getter, namespace } from 'vuex-class';
 
-import { Record } from '@/model';
 import BaseComponent from './BaseComponent.vue';
-import CountdownComponent from './helpers/CountdownComponent.vue';
 import PriceComponent from './helpers/PriceComponent.vue';
 import LoadingComponent from './helpers/LoadingComponent.vue';
-import AuctionFeatureListComponent from './AuctionFeatureListComponent.vue';
-import { RecordTableDto, AuctionDto } from '@/poco';
-import { AuthState } from '@/store/types' ;
+
+import { Record } from '@/model';
+import { RecordTableDto } from '@/poco';
 
 const RecordAction = namespace('record', Action);
 const RecordGetter = namespace('record', Getter);
-const AuctionGetter = namespace('auction', Getter);
 
 @Component({
     components: {
-        AuctionFeatureListComponent,
-        CountdownComponent,
         PriceComponent,
         LoadingComponent,
-        Lory,
-        Item,
-        Prev,
-        Next,
     },
 })
-export default class AuctionGridComponent extends BaseComponent {
-  @State('auth') private auth: AuthState;
-
+export default class AuctionEndedComponent extends BaseComponent {
   @RecordGetter('getRecords') private records: RecordTableDto[];
-  @RecordAction('loadAllPublished') private loadRecods: any;
-  @RecordAction('getDetail') private loadRecord: any;
+  @RecordAction('getLatestEndedRecords') private loadRecods: any;
 
   private isLoading: boolean = false;
 
   private mounted() {
     this.isLoading = true;
-    this.loadRecods().then((respAuction) => {
+    this.loadRecods(20).then((respAuction) => {
         this.isLoading = false;
     });
   }
@@ -132,26 +84,6 @@ export default class AuctionGridComponent extends BaseComponent {
     const rf = files[0];
     return `/${rf.path}/${rf.recordId}/images/${rf.name}`;
   }
-
-  private recordIdToString(record: RecordTableDto): string {
-      return record.id.toString();
-  }
-
-  private detail(record: RecordTableDto): void {
-    this.isLoading = true;
-    this.loadRecord(record.id).then((response) => {
-      const result = response as boolean;
-      this.isLoading = false;
-      if (result) {
-        this.$router.push({ path: `/auctionDetail?id=${record.id}` });
-      }
-    });
-  }
-
-  private isBidding(biddingIds: number[]): boolean {
-    return biddingIds.indexOf(this.auth.userId) !== -1;
-  }
-
 }
 
 </script>
@@ -177,7 +109,6 @@ export default class AuctionGridComponent extends BaseComponent {
     border-radius: 5px !important;
     background-color: #ffffff !important;
     border: solid 1px #979797 !important;
-    padding: 0px !important;
 }
 
 .auction-grid-list .v-card__media__content {

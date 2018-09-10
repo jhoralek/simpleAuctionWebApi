@@ -18,6 +18,9 @@ import Gdpr from './Gdpr.vue';
 import Registration from './Registration.vue';
 import Results from './results/Results.vue';
 import ResetPassword from './results/ResetPassword.vue';
+import AuctionEndedAdministration from './admin/AuctionEndedAdministration.vue';
+import AuctionEnded from './AuctionEnded.vue';
+import GdprInfo from './GdprInfo.vue';
 
 export {
     About,
@@ -40,4 +43,7 @@ export {
     Results,
     ResetPassword,
     RecordsAdministration,
+    AuctionEnded,
+    AuctionEndedAdministration,
+    GdprInfo,
 };

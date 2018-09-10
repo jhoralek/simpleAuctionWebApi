@@ -16,6 +16,7 @@
         <!-- <v-btn flat to="/news"><div class="btn-text">{{ resx('news') }}</div></v-btn>
         <v-btn flat to="/forDealers"><div class="btn-text">{{ resx('forDealers') }}</div></v-btn> -->
         <v-btn flat to="/auctions"><div class="btn-text">{{ resx('auctions') }}</div></v-btn>
+        <v-btn flat to="/ended"><div class="btn-text">{{ resx('endedAuctions') }}</div></v-btn>
         <!-- <v-btn flat to="/about"><div class="btn-text">{{ resx('about') }}</div></v-btn> -->
         <v-btn flat to="/faq"><div class="btn-text">{{ resx('faq') }}</div></v-btn>
         <v-btn flat to="/contact"><div class="btn-text">{{ resx('contact') }}</div></v-btn>
@@ -31,6 +32,9 @@
             </v-list-tile>
             <v-list-tile to="/auctionsAdministration">
                 <v-list-tile-title>{{ resx('auctionsAdministration')}}</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile to="/endedAdministration">
+                <v-list-tile-title>{{ resx('endedAuctions')}}</v-list-tile-title>
             </v-list-tile>
             <v-list-tile to="/record-administration">
                 <v-list-tile-title>{{ resx('recordAdministration')}}</v-list-tile-title>

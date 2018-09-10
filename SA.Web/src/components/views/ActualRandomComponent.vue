@@ -1,5 +1,5 @@
 <template>
-    <v-layout row wrap class="actual-random" v-if="record !== undefined && record !== null">
+    <v-layout row wrap class="actual-random" v-if="record && record !== null">
         <v-flex xs12>
             <v-container grid-list-md class="acutal-random-wrapper">
                 <v-layout row wrap>
@@ -308,6 +308,5 @@ export default class ActualRandomComponent extends FormBaseComponent {
     padding-left: 25px;
     border-bottom: 1px solid #d1d1d1;
 }
-
 
 </style>

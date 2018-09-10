@@ -1,6 +1,4 @@
-﻿using SA.Application.Records;
-using System;
-using System.Collections.Generic;
+﻿using System;
 
 namespace SA.Application.Account
 {
