@@ -3,7 +3,7 @@
         <v-container grid-list-xs pa-2>
             <h1>{{ resx('faq') }}</h1>
             <h3>Jak se mohu účastnit aukce?</h3>
-            <p>Aukce je možné se zúčastnit pouze po řádném zaregistrování na stránkách JERA-Trading.cz. <v-btn flat to="/registration">{{ resx('registration') }}</V-btn></p>
+            <p>Aukce je možné se zúčastnit pouze po řádném zaregistrování na stránkách JERA-Trading.cz. <v-btn flat to="/registration">{{ resx('registration') }}</v-btn></p>
             <p>Po vyplnění registračního formuláře budou data ověřena a obratem Vám přidělíme přihlašovací údaje, které obdržíte v elektronické podobě na Váš e-mail.</p>
             <p>Přihlašovací údaje Vám umožní  přístup do nabídky  vozidel, po zaplacení jistiny se můžete aktivně účastnit závazné elektronické aukce.</p>
             <h3>Je nutná pro aktivní účast na aukci jistina?</h3>
@@ -44,13 +44,11 @@
 
 import BaseView from './BaseView.vue';
 import Component from 'vue-class-component';
-import { State } from 'vuex-class';
 
 import { SettingsState } from '@/store/types';
 
 @Component({})
 export default class Faq extends BaseView {
-    @State('settings') private settings: SettingsState;
 }
 
 </script>

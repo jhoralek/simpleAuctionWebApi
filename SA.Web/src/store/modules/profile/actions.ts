@@ -6,7 +6,7 @@ import {
 } from '@/store/types';
 
 import { User, MessageStatusEnum, Customer, Address, GdprRecord } from '@/model';
-import { UserShortInfo, UserSimpleDto, GdprRecordTableDto, RecordTableDto } from '@/poco';
+import { UserShortInfo, UserSimpleDto, GdprRecordTableDto, RecordTableDto, UserShortDto } from '@/poco';
 
 import {
     USER_INITIAL_STATE,
@@ -417,6 +417,30 @@ const actions: ActionTree<ProfileState, RootState> = {
                     },
                     { root: true });
                     return resolve(false);
+                });
+        });
+    },
+    getCustomerInfo({rootState, dispatch}, userId: number): Promise<UserShortDto> {
+        return new Promise<UserShortDto>((resolve) => {
+
+            const { token } = rootState.auth;
+            const { apiUrl } = rootState.settings;
+
+            return axios.get(`${apiUrl}/users/getCustomerInfo?userId=${userId}`,
+                { headers: { authorization: token }})
+                .then((response) => {
+                    return resolve(response.data as UserShortDto);
+                })
+                .catch((error) => {
+                    dispatch('message/change', {
+                        mod: 'Profile',
+                        message: {
+                            state: MessageStatusEnum.Error,
+                            message: error,
+                        },
+                    },
+                    { root: true });
+                    return resolve(null);
                 });
         });
     },

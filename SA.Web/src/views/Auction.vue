@@ -15,9 +15,7 @@
 import { Component } from 'vue-property-decorator';
 
 import BaseView from '@/views/BaseView.vue';
-import {
-  AuctionGridComponent,
-} from '@/components';
+import { AuctionGridComponent } from '@/components';
 
 @Component({
   components: {
@@ -28,20 +26,3 @@ export default class Auction extends BaseView {
 }
 
 </script>
-
-<style>
-
-.auction h1 {
-  font-family: Roboto;
-  font-size: 35px;
-  font-weight: 500;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0px;
-  text-align: left;
-  color: #000000;
-  padding-bottom: 30px;
-  padding-top: 30px;
-}
-
-</style>

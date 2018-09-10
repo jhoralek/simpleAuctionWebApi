@@ -19,6 +19,7 @@ import ActualRandomComponent from './views/ActualRandomComponent.vue';
 import QuestionDialogComponent from './helpers/QuestionDialogComponent.vue';
 import LoadingComponent from './helpers/LoadingComponent.vue';
 import AuctionFeatureListComponent from './AuctionFeatureListComponent.vue';
+import AuctionEndedComponent from './AuctionEndedComponent.vue';
 
 export {
     LoginFormComponent,
@@ -42,5 +43,6 @@ export {
     QuestionDialogComponent,
     LoadingComponent,
     AuctionFeatureListComponent,
+    AuctionEndedComponent,
 };
 

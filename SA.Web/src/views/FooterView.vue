@@ -31,10 +31,10 @@
                     <v-flex xs12 md6>
                         <v-container fluid>
                             <v-layout row wrap class="text-xs-center">
-                                <v-flex xs6 md6>
+                                <v-flex xs6>
                                     E: info@jera-trading.cz
                                 </v-flex>
-                                <v-flex xs6 md6>
+                                <v-flex xs6>
                                     T: +420 723 613 713
                                 </v-flex>
                             </v-layout>
@@ -43,7 +43,14 @@
                     <v-flex xs12 md6>
                         <v-container fluid>
                             <v-layout row class="text-xs-center">
-                                <v-flex xs12>
+                                <v-flex xs6>
+                                    <v-btn color="black" to="/gdpr-info">
+                                        <div class="btn-text">
+                                            {{ resx('gdpr') }}
+                                        </div>
+                                    </v-btn>
+                                </v-flex>
+                                <v-flex xs6>
                                     &copy; {{ new Date().getFullYear() }} - <strong>{{ resx('auctionHall') }}</strong>
                                 </v-flex>
                             </v-layout>
@@ -107,6 +114,14 @@ export default class FooterView extends BaseView {
 .colaboration {
     padding-top: 39px !important;
     padding-bottom: 50px !important;
+}
+
+.footer-content a {
+    color: white !important;
+}
+
+.footer-content a .v-btn__content .btn-text {
+    border-bottom: 1px solid white !important;
 }
 
 </style>

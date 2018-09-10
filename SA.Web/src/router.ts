@@ -21,6 +21,9 @@ import {
   Registration,
   Results,
   ResetPassword,
+  AuctionEnded,
+  AuctionEndedAdministration,
+  GdprInfo,
 } from '@/views';
 
 import { state } from '@/store/modules/auth';
@@ -112,10 +115,22 @@ export default new Router({
       component: News,
     },
     {
+      path: '/ended',
+      name: 'ended',
+      component: AuctionEnded,
+    },
+    {
+      path: '/endedAdministration',
+      name: 'endedAdministration',
+      component: AuctionEndedAdministration,
+      beforeEnter: adminAuthenticated,
+    },
+    {
       path: '/protectionPersonalData',
       name: 'protectionPersonalData',
       component: ProtectionPersonalData,
     },
+
     {
       path: '/termsAndConditions',
       name: 'termsAndConditions',
@@ -130,6 +145,11 @@ export default new Router({
       path: '/cookies',
       name: 'cookies',
       component: Cookies,
+    },
+    {
+      path: '/gdpr-info',
+      name: 'gdprInfo',
+      component: GdprInfo,
     },
     {
       path: '/gdpr',

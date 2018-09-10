@@ -118,6 +118,15 @@ namespace SA.Web
                     .ForMember(dto => dto.IsFeePayed, dto => dto.MapFrom(x => x.Customer.IsFeePayed))
                     .ForMember(dto => dto.PhoneNumber, dto => dto.MapFrom(x => x.Customer.PhoneNumber))
                     .ForMember(dto => dto.Email, dto => dto.MapFrom(x => x.Customer.Email));
+                cfg.CreateMap<User, UserShortDto>()
+                    .ForMember(dto => dto.Email, dto => dto.MapFrom(x => x.Customer.Email))
+                    .ForMember(dto => dto.PhoneNumber, dto => dto.MapFrom(x => x.Customer.PhoneNumber))
+                    .ForMember(dto => dto.FullName, dto => dto.MapFrom(x => $"{x.Customer.TitleBefore} {x.Customer.FirstName} {x.Customer.LastName} {x.Customer.TitleAfter}"))
+                    .ForMember(dto => dto.CompanyNumber, dto => dto.MapFrom(x => x.Customer.CompanyNumber))
+                    .ForMember(dto => dto.CompanyName, dto => dto.MapFrom(x => x.Customer.CompanyName))
+                    .ForMember(dto => dto.Street, dto => dto.MapFrom(x => x.Customer.Address.Street))
+                    .ForMember(dto => dto.City, dto => dto.MapFrom(x => x.Customer.Address.City))
+                    .ForMember(dto => dto.PostCode, dto => dto.MapFrom(x => x.Customer.Address.PostCode));
 
                 cfg.CreateMap<Country, CountryLookupDto>();
                 cfg.CreateMap<Country, CountryDto>();
