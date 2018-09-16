@@ -24,13 +24,16 @@
                     <span>{{ resx('endOfAuction') }}</span>
                   </v-flex>
                   <v-flex xs6 class="text-xs-right">
-                    <span>{{ resx('finalPrice') }}</span>
+                    <span v-if="record.numberOfBids > 0">{{ resx('finalPrice') }}</span>
+                    <span class="price-with-dph" v-if="record.withVat && record.numberOfBids > 0">{{ resx('withVat') }}</span>
+                    <span class="price-with-dph" v-else-if="record.numberOfBids > 0">{{ resx('withoutVat') }}</span>
                   </v-flex>
                 </v-layout>
                 <v-layout row wrap>
                   <v-flex xs6>{{ resx('endOfAuction') }}</v-flex>
                   <v-flex xs6 class="text-xs-right list-item-price">
                     <price-component
+                      v-if="record.numberOfBids > 0"
                       :price="record.currentPrice" />
                   </v-flex>
                 </v-layout>
@@ -225,6 +228,13 @@ export default class AuctionEndedComponent extends BaseComponent {
   background-color: #ffffff !important;
   border: 0px !important;
   padding-bottom: 20px !important;
+}
+
+.auction-box .price-with-dph {
+  padding-left: 2px;
+  color: #929292;
+  font-size: 10px;
+  font-weight: bold;
 }
 
 </style>

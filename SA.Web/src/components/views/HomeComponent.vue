@@ -17,7 +17,7 @@
                 </v-flex>
                 <v-flex xs12 md6>
                     <router-link
-                        to="/protectionPersonalData"
+                        to="/gdpr-info"
                         class="v-btn v-btn--flat v-btn--router">
                         <div class="btn-text">
                             {{ resx('protectionPersonalData') }}

@@ -43,8 +43,9 @@ namespace SA.Application.Records
         public virtual decimal CurrentPrice { get; set; }
         public virtual int NumberOfBids { get; set; }
         public virtual int AuctionId { get; set; }
+        public virtual bool WithVat { get; set; }
         public virtual AuctionDto Auction { get; set; }
         public virtual ICollection<FileSimpleDto> Files { get; set; } = new List<FileSimpleDto>();
-        public virtual ICollection<BidSimpleDto> Bids { get; set; } = new List<BidSimpleDto>();
+        public virtual ICollection<BidSimpleDto> Bids { get; set; } = new List<BidSimpleDto>();        
     }
 }

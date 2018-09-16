@@ -17,14 +17,14 @@ Vue.use(Vuex);
 const vuexLocal = new VuexPersistance({
   storage: window.localStorage,
   supportCircular: true,
-  modules: ['auth', 'settings', 'record', 'auction'],
+  modules: ['auth', 'settings', 'record', 'auction', 'profile'],
   key: 'simple_auction',
 });
 
 // create store with RootState
 const store: StoreOptions<RootState> = {
   state: {
-    version: '1.0.0.2',
+    version: '1.0.0.4',
     settings: undefined,
     auth: undefined,
     profile: undefined,

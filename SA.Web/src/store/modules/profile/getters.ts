@@ -65,6 +65,9 @@ const getters: GetterTree<ProfileState, RootState> = {
     getEndedAuctions(state): RecordTableDto[] {
         return state.usersEnded;
     },
+    getCurrentCustomer(state): Customer {
+        return state.customerCurrent;
+    },
 };
 
 export default getters;

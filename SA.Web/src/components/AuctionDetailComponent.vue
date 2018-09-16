@@ -134,7 +134,11 @@
                             </v-layout>
                             <v-layout row wrap class="header-info2">
                                 <v-flex xs12 md6 class="info-text">{{ resx('toTheEndOfAuction') }}</v-flex>
-                                <v-flex xs12 md6 class="info-text text-xs-right">{{ resx('actualPrice') }} </v-flex>
+                                <v-flex xs12 md6 class="info-text text-xs-right">
+                                    {{ resx('actualPrice') }}
+                                    <span class="price-with-dph" v-if="record.withVat">{{ resx('withVat') }}</span>
+                                    <span class="price-with-dph" v-else>{{ resx('withoutVat') }}</span>
+                                </v-flex>
                             </v-layout>
                             <v-layout row wrap class="header-info2">
                                 <v-flex xs12 md6 class="info2">
@@ -398,9 +402,9 @@ export default class AuctionDetalComponent extends BaseComponent {
 }
 
 .auction-detail .header-info .flex {
-  line-height: 6 !important;
+  line-height: 5 !important;
   text-align: center !important;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -505,6 +509,13 @@ export default class AuctionDetalComponent extends BaseComponent {
 
 .auction-detail .v-expansion-panel__body {
     background-color: #ffffff !important;
+}
+
+.header-info2 .price-with-dph {
+  padding-left: 2px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 10px;
 }
 
 </style>

@@ -5,8 +5,6 @@ import VeeValidate from 'vee-validate';
 
 import moment from 'vue-moment';
 
-import 'babel-polyfill';
-
 import App from './App.vue';
 import router from '@/router';
 import store from '@/store';

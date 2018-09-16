@@ -8,5 +8,6 @@ namespace SA.Application.Records
         public string Name { get; set; }
         public DateTime ValidTo { get; set; }
         public decimal CurrentPrice { get; set; }
+        public bool WithVat { get; set; }
     }
 }

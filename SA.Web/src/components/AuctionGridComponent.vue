@@ -41,6 +41,8 @@
                   </v-flex>
                   <v-flex xs6 class="text-xs-right">
                     <span>{{ resx('actualPrice') }}</span>
+                    <span class="price-with-dph" v-if="record.withVat">{{ resx('withVat') }}</span>
+                    <span class="price-with-dph" v-else>{{ resx('withoutVat') }}</span>
                   </v-flex>
                 </v-layout>
                 <v-layout row wrap>
@@ -294,6 +296,13 @@ export default class AuctionGridComponent extends BaseComponent {
   background-color: #ffffff !important;
   border: 0px !important;
   padding-bottom: 20px !important;
+}
+
+.auction-list .price-with-dph {
+  padding-left: 2px;
+  color: #929292;
+  font-size: 10px;
+  font-weight: bold;
 }
 
 </style>
