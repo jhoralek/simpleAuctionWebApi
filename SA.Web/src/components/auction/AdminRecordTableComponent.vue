@@ -92,10 +92,15 @@
                 </v-flex>
               </v-layout>
               <v-layout row wrap>
-                <v-flex xs12 md4>
+                <v-flex xs12 md2>
                   <v-switch
                     v-model="record.current.isActive"
                     :label="labelIsActive" />
+                </v-flex>
+                <v-flex xs12 md2>
+                  <v-switch
+                    v-model="record.current.withVat"
+                    :label="labelWithVat" />
                 </v-flex>
                 <v-flex xs12 md4>
                   <v-text-field
@@ -619,6 +624,10 @@ export default class AdminRecordTableComponent extends BaseComponent {
 
   get labelIsActive(): string {
     return this.settings.resource.active;
+  }
+
+  get labelWithVat(): string {
+    return this.settings.resource.withVat;
   }
 
   get labelColor(): string {

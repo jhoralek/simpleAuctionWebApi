@@ -1,13 +1,14 @@
 <template>
     <div class="gdpr-info">
         <v-container grid-list-xs pa-2>
-            <h1>{{ resx('gdpr') }}</h1>
+            <h1>{{ resx('protectionPersonalData') }}</h1>
             <h2>Základní informace</h2>
             <h3>Správce osobních údajů</h3>
             <p>Jsme společnost <strong>JERA Trading s.r.o.</strong>, se sídlem Chodov, Tyršova 842, PSČ 357 35, zapsaná v obchodním rejstříku vedeném u Krajského soudu v Plzni, spisová značka C 36595, IČ: 07310099, a jako správce zpracováváme vaše osobní údaje.</p>
             <h2>Jaké osobní údaje zpracováváme</h2>
             <h3>Osobní údaje, které nám poskytnete</h3>
             <p>Zpracováváme osobní údaje, které nám sami poskytnete, při registraci na naše stránky <v-btn flat to="/registration">www.jera-trading.cz</v-btn></p>
+            <p>Může se jednat zejména o tyto údaje: tituly, jméno, příjmení, bydliště, datum narození, rodné číslo, telefonní číslo, číslo OP resp. jiného dokladu totožnosti.</p>
             <h3>Osobní údaje, které získáváme jinak než přímo od vás</h3>
             <p>V rámci společných marketingových kampaních můžeme vaše osobní údaje zpracovávat i my. Pro účely marketingových kampaní, případně pro účely řádného splnění smlouvy je můžeme kombinovat.</p>
             <p>V případě, že vaše osobní údaje budou předány jinému subjektu, budeme vás o tom předem informovat včetně uvedení toho, komu osobní údaje předáváme. Pakliže někdo předá vaše osobní údaje nám, musí vás o tom rovněž předem informovat.</p>

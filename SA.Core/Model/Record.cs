@@ -165,5 +165,9 @@ namespace SA.Core.Model
         public virtual int AuctionId { get; set; }
 
         public virtual Auction Auction { get; set; }
+
+        [Required]
+        [DefaultValue(false)]
+        public virtual bool WithVat { get; set; }
     }
 }

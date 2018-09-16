@@ -15,7 +15,7 @@
         <v-btn flat to="/"><div class="btn-text">{{ resx('home') }}</div></v-btn>
         <!-- <v-btn flat to="/news"><div class="btn-text">{{ resx('news') }}</div></v-btn>
         <v-btn flat to="/forDealers"><div class="btn-text">{{ resx('forDealers') }}</div></v-btn> -->
-        <v-btn flat to="/auctions"><div class="btn-text">{{ resx('auctions') }}</div></v-btn>
+        <v-btn class="login-button" flat to="/auctions"><div class="btn-text">{{ resx('auctions') }}</div></v-btn>
         <v-btn flat to="/ended"><div class="btn-text">{{ resx('endedAuctions') }}</div></v-btn>
         <!-- <v-btn flat to="/about"><div class="btn-text">{{ resx('about') }}</div></v-btn> -->
         <v-btn flat to="/faq"><div class="btn-text">{{ resx('faq') }}</div></v-btn>
@@ -85,5 +85,10 @@ export default class MainMenuDesktop extends BaseView {
 </script>
 
 <style>
+
+.login-button {
+    height: 40px !important;
+    margin-top: 65px !important;
+}
 
 </style>

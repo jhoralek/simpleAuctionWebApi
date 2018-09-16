@@ -17,4 +17,5 @@ export default interface RecordTableDto {
     mileage: string;
     winningUserId: number;
     biddingUserIds: number[];
+    withVat: boolean;
 }

@@ -38,6 +38,11 @@ const mutations: MutationTree<ProfileState> = {
         };
         state.usersCurrent = [] as RecordTableDto[];
         state.usersEnded = [] as RecordTableDto[];
+        state.customerCurrent = undefined;
+    },
+    USER_CHANGE_CURRENT_CUSTOMER(state, customer: Customer) {
+        state.error = customer === undefined;
+        state.customerCurrent = customer;
     },
     USER_CHANGE_USERS_CURRENT_AUCTIONS(state, records: RecordTableDto[]) {
         state.error = records === undefined;

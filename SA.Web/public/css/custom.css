@@ -96,3 +96,15 @@ a.v-btn--active.v-btn.v-btn--flat.v-btn--router .v-btn__content .btn-text {
 .theme--light .v-expansion-panel .v-expansion-panel__container .v-expansion-panel__header .v-expansion-panel__header__icon .v-icon {
     color: rgba(0,0,0,1) !important;
 }
+
+a.v-btn--active.v-btn.v-btn--flat.v-btn--router.login-button .v-btn__content .btn-text {
+    border-bottom: 0px solid black !important;
+}
+
+.price-with-dph {
+    font-size: 12px;
+    font-weight: 100;
+    font-style: normal;
+    color: #929292;
+    text-transform: lowercase;
+  }

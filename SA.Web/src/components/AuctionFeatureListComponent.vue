@@ -45,11 +45,15 @@
                       <v-layout row wrap>
                         <v-flex xs12 class="text-xs-center">
                           <span class="auction-item-price-text">{{ resx('actualPrice') }}</span>
+                          <span class="price-with-dph" v-if="item.withVat">{{ resx('withVat') }}</span>
+                          <span class="price-with-dph" v-else>{{ resx('withoutVat') }}</span>
                         </v-flex>
                       </v-layout>
                       <v-layout row wrap>
                         <v-flex xs12 class="text-xs-center item-price">
-                          <h4><price-component :price="item.currentPrice" /></h4>
+                          <h4>
+                            <price-component :price="item.currentPrice" />
+                          </h4>
                         </v-flex>
                       </v-layout>
                     </v-card>
@@ -367,6 +371,14 @@ export default class AuctionFeatureListComponent extends BaseComponent {
 
 .auctions-container {
   padding-top: 50px !important;
+}
+
+.auction-item .price-with-dph {
+  padding-left: 2px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 10px;
+  color: #030303;
 }
 
 </style>

@@ -42,4 +42,5 @@ export default interface Record {
     currentPrice: number;
     auctionId: number;
     auction: AuctionDto;
+    withVat: boolean;
 }

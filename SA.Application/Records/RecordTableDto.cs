@@ -23,5 +23,6 @@ namespace SA.Application.Records
         public virtual string Mileage { get; set; }
         public virtual int WinningUserId { get; set; }
         public virtual List<int> BiddingUserIds { get; set; } = new List<int>();
+        public virtual bool WithVat { get; set; }
     }
 }

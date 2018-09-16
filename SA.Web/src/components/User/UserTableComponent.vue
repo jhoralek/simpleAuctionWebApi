@@ -8,7 +8,7 @@
           </v-card-title>
           <v-card-text>
             <v-container  grid-list-xs pa-0>
-              <v-layout wrap>
+              <v-layout row wrap>
                 <v-flex xs12 md6>
                     <v-switch
                         v-model="profile.user.isFeePayed"
@@ -19,6 +19,26 @@
                         v-model="profile.user.isActive"
                         :label="lableIsActive" />
                 </v-flex>
+              </v-layout>
+              <v-layout row wrap v-if="currentCustomer">
+                  <v-flex xs12 md6>{{ resx('fullName') }}</v-flex>
+                  <v-flex xs12 md6>{{ currentCustomer.firstName }} {{ currentCustomer.lastName }}</v-flex>
+              </v-layout>
+              <v-layout row wrap v-if="currentCustomer">
+                  <v-flex xs12 md6>{{ resx('email') }}</v-flex>
+                  <v-flex xs12 md6>{{ currentCustomer.email }}</v-flex>
+              </v-layout>
+              <v-layout row wrap v-if="currentCustomer">
+                  <v-flex xs12 md6>{{ resx('companyName') }}</v-flex>
+                  <v-flex xs12 md6>{{ currentCustomer.companyName }}</v-flex>
+              </v-layout>
+              <v-layout row wrap v-if="currentCustomer">
+                  <v-flex xs12 md6>{{ resx('companyNumber') }}</v-flex>
+                  <v-flex xs12 md6>{{ currentCustomer.companyNumber }}</v-flex>
+              </v-layout>
+              <v-layout row wrap v-if="currentCustomer">
+                  <v-flex xs12 md6>{{ resx('phoneNumber') }}</v-flex>
+                  <v-flex xs12 md6>{{ currentCustomer.phoneNumber }}</v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
@@ -97,13 +117,15 @@
 <script lang="ts">
 
 import { Component, Prop, Watch } from 'vue-property-decorator';
-import { State, Action, namespace } from 'vuex-class';
+import { State, Action, Getter, namespace } from 'vuex-class';
 
+import { Customer } from '@/model';
 import { UserSimpleDto } from '@/poco';
 import { ProfileState } from '@/store/types';
 import BaseComponent from '../BaseComponent.vue';
 
 const ProfileAction = namespace('profile', Action);
+const ProfileGetter = namespace('profile', Getter);
 
 @Component({})
 export default class UserTableComponent extends BaseComponent {
@@ -113,6 +135,7 @@ export default class UserTableComponent extends BaseComponent {
     @Prop({default: true}) private loading: boolean;
     @ProfileAction('setCurrentUser') private setUser: any;
     @ProfileAction('updateUserAdmin') private updateUser: any;
+    @ProfileGetter('getCurrentCustomer') private currentCustomer: Customer;
 
     private actionInProgress: boolean = false;
     private dialog: boolean = false;

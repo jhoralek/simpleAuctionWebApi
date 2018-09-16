@@ -35,6 +35,15 @@ namespace SA.Web
         public void ConfigureServices(IServiceCollection services)
         {
             string domain = $"https://{_configuration["Auth0:Domain"]}/";
+
+            services.AddCors(options => {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
+
             services.AddMvc();
 
             services.AddAuthentication(options =>
@@ -185,6 +194,7 @@ namespace SA.Web
             }
             app.UseStaticFiles();
             app.UseAuthentication();
+            app.UseCors("CorsPolicy");
 
             //using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             //{

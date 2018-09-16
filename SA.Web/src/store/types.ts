@@ -3,6 +3,7 @@ import {
     Country,
     Record,
     Auction,
+    Customer,
 } from '@/model';
 import {
     MessageDto,
@@ -30,6 +31,7 @@ export interface RootState {
 export interface ProfileState {
     user?: User;
     usersCurrent: RecordTableDto[];
+    customerCurrent: Customer;
     usersEnded: RecordTableDto[];
     list: User[];
     error: boolean;

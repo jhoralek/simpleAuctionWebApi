@@ -31,5 +31,11 @@ namespace SA.WebApi.Controllers
             Mapper.Map(customer, item);
             return Json(await _repository.UpdateAsync(item));
         }
+
+        [HttpGet("{customerId}")]
+        [Route("getById")]
+        [Authorize("admin")]
+        public async Task<IActionResult> GetById(int customerId)
+            => Json(await _repository.GetOneAsync<Customer>(x => x.Id == customerId));
     }
 }

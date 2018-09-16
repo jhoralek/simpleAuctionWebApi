@@ -17,6 +17,7 @@ import {
     USER_CHANGE_ADMIN_LIST,
     USER_CHANGE_USERS_CURRENT_AUCTIONS,
     USER_CHANGE_USERS_ENDED_AUCTIONS,
+    USER_CHANGE_CURRENT_CUSTOMER,
 } from '@/store/mutation-types';
 
 const actions: ActionTree<ProfileState, RootState> = {
@@ -90,9 +91,10 @@ const actions: ActionTree<ProfileState, RootState> = {
                 });
         });
     },
-    setCurrentUser({commit}, user: User): Promise<boolean> {
+    setCurrentUser({commit, dispatch}, user: User): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
             commit(USER_SET_CURRENT_USER, user);
+            dispatch('profile/getCustomer', user.customerId, { root: true});
             return resolve(true);
         });
     },
@@ -106,6 +108,18 @@ const actions: ActionTree<ProfileState, RootState> = {
         return new Promise<boolean>((resolve) => {
             commit(USER_SET_CURRENT_USER_CUSTOMERS_ADDRESS, address);
             return resolve(true);
+        });
+    },
+    getCustomer({commit, rootState}, customerId: number): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            const { auth } = rootState;
+            return axios.get(`${rootState.settings.apiUrl}/customers/getById?customerId=${customerId}`,
+            { headers: { authorization: auth.token }})
+            .then((response) => {
+                const customer = response.data as Customer;
+                commit(USER_CHANGE_CURRENT_CUSTOMER, customer);
+                return resolve(true);
+            });
         });
     },
     newUser({rootState, dispatch}, user: User): Promise<boolean> {

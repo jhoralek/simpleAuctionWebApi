@@ -14,6 +14,7 @@ export const state: ProfileState = {
     list: [],
     error: false,
     errorMessage: undefined,
+    customerCurrent: undefined,
 };
 
 const namespaced: boolean = true;
