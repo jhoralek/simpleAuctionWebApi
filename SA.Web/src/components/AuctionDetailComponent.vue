@@ -1,19 +1,60 @@
 <template>
     <v-container grid-list-xs pa-0 v-if="record" class="auction-detail">
         <v-layout row wrap>
-            <v-flex xs12 md6 class="left-side">
-                <v-container  grid-list-xs pa-0>
-                    <v-layout row wrap>
-                        <v-flex xs12>
-                            <v-carousel hide-delimiters :cycle="false">
-                                <v-carousel-item
-                                    v-for="(item,i) in record.files"
-                                    :key="i"
-                                    :src="filePath(item)"
-                                ></v-carousel-item>
-                            </v-carousel>
+            <v-flex xs12 md6>
+                <v-carousel hide-delimiters :cycle="false">
+                    <v-carousel-item
+                        v-for="(item,i) in record.files"
+                        :key="i"
+                        :src="filePath(item)"
+                    ></v-carousel-item>
+                </v-carousel>
+            </v-flex>
+            <v-flex xs12 md6>
+                <div class="right-side">
+                    <v-layout row wrap class="item-header">
+                        <v-flex xs12 md6>
+                            <h1 class="hidden-sm-and-down">{{ record.name }}</h1>
+                            <h2 class="hidden-md-and-up">{{ record.name }}</h2>
+                        </v-flex>
+                        <v-flex xs12 md6>
+                            <v-layout row wrap class="header-info">
+                                <v-flex xs4>{{ resx('buildDate') }} {{ record.dateOfFirstRegistration | moment('YYYY') }}</v-flex>
+                                <v-flex xs4>{{ record.fuel }}</v-flex>
+                                <v-flex xs4>{{ record.state }}</v-flex>
+                            </v-layout>
                         </v-flex>
                     </v-layout>
+                    <v-layout row wrap class="header-info2">
+                        <v-flex xs6 class="info-text">{{ resx('toTheEndOfAuction') }}</v-flex>
+                        <v-flex xs6 class="info-text text-xs-right">
+                            {{ resx('actualPrice') }}
+                            <span class="price-with-dph" v-if="record.withVat">{{ resx('withVat') }}</span>
+                            <span class="price-with-dph" v-else>{{ resx('withoutVat') }}</span>
+                        </v-flex>
+                    </v-layout>
+                    <v-layout row wrap class="header-info2">
+                        <v-flex xs6 class="info2">
+                            <countdown-component
+                                :id="recordIdToString(record)"
+                                :date="dateToString(record.validTo)"
+                                :startDate="dateToString(record.validFrom)" />
+                        </v-flex>
+                        <v-flex xs6 class="text-xs-right info2">
+                            <price-component :price="record.currentPrice" />
+                        </v-flex>
+                    </v-layout>
+                    <v-layout row wrap class="info3">
+                        <v-flex xs12 class="text-xs-center">
+                            <bid-component :bid="minimumBid" v-if="currentUser.isFeePayed && canBid(record.validFrom, record.validTo) && record.isActive" />
+                        </v-flex>
+                    </v-layout>
+                </div>
+            </v-flex>
+        </v-layout>
+        <v-layout row wrap>
+            <v-flex xs12 md6 class="left-side">
+                <v-container  grid-list-xs pa-0>
                     <v-layout row wrap>
                         <v-flex xs12>
                             <v-expansion-panel expand>
@@ -122,40 +163,6 @@
                 <v-container  grid-list-xs pa-0>
                     <v-layout column fill-height>
                         <v-flex xs12 >
-                            <v-layout row wrap class="item-header">
-                                <v-flex xs12 md6><h1>{{ record.name }}</h1></v-flex>
-                                <v-flex xs12 md6>
-                                    <v-layout row wrap class="header-info">
-                                        <v-flex xs4>{{ resx('buildDate') }} {{ record.dateOfFirstRegistration | moment('YYYY') }}</v-flex>
-                                        <v-flex xs4>{{ record.fuel }}</v-flex>
-                                        <v-flex xs4>{{ record.state }}</v-flex>
-                                    </v-layout>
-                                </v-flex>
-                            </v-layout>
-                            <v-layout row wrap class="header-info2">
-                                <v-flex xs12 md6 class="info-text">{{ resx('toTheEndOfAuction') }}</v-flex>
-                                <v-flex xs12 md6 class="info-text text-xs-right">
-                                    {{ resx('actualPrice') }}
-                                    <span class="price-with-dph" v-if="record.withVat">{{ resx('withVat') }}</span>
-                                    <span class="price-with-dph" v-else>{{ resx('withoutVat') }}</span>
-                                </v-flex>
-                            </v-layout>
-                            <v-layout row wrap class="header-info2">
-                                <v-flex xs12 md6 class="info2">
-                                    <countdown-component
-                                        :id="recordIdToString(record)"
-                                        :date="dateToString(record.validTo)"
-                                        :startDate="dateToString(record.validFrom)" />
-                                </v-flex>
-                                <v-flex xs12 md6 class="text-xs-right info2">
-                                    <price-component :price="record.currentPrice" />
-                                </v-flex>
-                            </v-layout>
-                            <v-layout row wrap class="info3">
-                                <v-flex xs12 class="text-xs-center">
-                                    <bid-component :bid="minimumBid" v-if="currentUser.isFeePayed && canBid(record.validFrom, record.validTo) && record.isActive" />
-                                </v-flex>
-                            </v-layout>
                             <v-expansion-panel expand>
                                 <v-expansion-panel-content :value="expander">
                                     <div slot="header">
@@ -358,7 +365,10 @@ export default class AuctionDetalComponent extends BaseComponent {
     }
 
     get minimumBid(): number {
-        return this.record.currentPrice + this.record.minimumBid;
+        const bid = this.record.bids.length === 0
+            ? this.record.currentPrice
+            : this.record.currentPrice + this.record.minimumBid;
+        return bid;
     }
 }
 
@@ -386,8 +396,13 @@ export default class AuctionDetalComponent extends BaseComponent {
     position: relative !important;
 }
 
+.auction-detail .hidden-md-and-up {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
+
 .auction-detail .header-info2 .info2 {
-  font-size: 29px !important;
+  font-size: 22px !important;
   font-weight: 500;
   font-style: normal;
   font-stretch: normal;
@@ -425,14 +440,15 @@ export default class AuctionDetalComponent extends BaseComponent {
   color: #000000;
 }
 
-.auction-detail .left-side {
-    padding-left: 10px !important;
-    padding-right: 10px !important;
-}
-
-.auction-detail .right-side {
-    padding-left: 10px !important;
-    padding-right: 10px !important;
+.auction-detail h2 {
+  font-size: 25px !important;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.33;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #000000;
 }
 
 .auction-detail .info-text {
@@ -516,6 +532,10 @@ export default class AuctionDetalComponent extends BaseComponent {
   text-transform: uppercase;
   font-weight: bold;
   font-size: 10px;
+}
+
+.auction-detail .count-down {
+    font-size: 22px !important;
 }
 
 </style>

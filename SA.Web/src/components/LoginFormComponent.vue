@@ -2,7 +2,8 @@
     <div class="loginForm fill-height">
         <div v-if="!auth.isAuthenticated">
             <v-dialog class="login-dialog-container" v-model="openedModal" persistent max-width="500px">
-                <v-btn class="login-button" flat color="white" slot="activator"><div class="btn-text">{{ resx('login') }}</div></v-btn>
+                <v-btn class="login-button hidden-sm-and-down" flat color="white" slot="activator"><div class="btn-text">{{ resx('login') }}</div></v-btn>
+                <router-link class="hidden-md-and-up nav-item btn btn--flat btn--router" slot="activator" to="#">{{ resx('login') }}</router-link>
                 <v-card v-if="openedModal">
                     <v-progress-linear v-if="isLoging" :indeterminate="isLoging"></v-progress-linear>
                     <v-form lazy-validation v-if="!resetPassword">
@@ -74,7 +75,8 @@
 
         </div>
         <div v-if="auth.isAuthenticated">
-            <v-btn class="login-button" color="white" flat @click="logout"><div class="btn-text">{{ resx('logout') }}</div></v-btn>
+            <v-btn class="login-button hidden-sm-and-down" color="white" flat @click="logout"><div class="btn-text">{{ resx('logout') }}</div></v-btn>
+            <v-btn class="logout-btn hidden-md-and-up" flat color="black" @click="logout">{{ resx('logout') }}</v-btn>
         </div>
     </div>
 </template>
@@ -216,6 +218,25 @@ export default class LoginFormComponent extends FormBaseComponent {
 .btn-underscore {
     font-size: 12px;
     border-bottom: 3px solid black !important;
+}
+
+.logout-btn .v-btn__content {
+    color: white !important;
+    text-decoration: underline !important;
+    font-weight: 300;
+    font-size: 14px !important;
+    text-transform: capitalize !important;
+    text-align: left !important;
+    padding: 0px !important;
+    height: 0px !important;
+}
+
+.logout-btn {
+    text-align: left !important;
+    padding: 0px !important;
+    height: 0px !important;
+    margin: 0px !important;
+    min-width: 0px !important;
 }
 
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="auction-grid-list">
     <loading-component :open="isLoading" />
-    <v-container v-bind="{ [`grid-list-xs`]: true }" fluid v-if="records && records.length > 0">
+    <v-container class="grid-container" v-bind="{ [`grid-list-xs`]: true }" fluid v-if="records && records.length > 0">
       <v-layout row wrap>
         <v-flex xs12 sm4 v-for="(record, index) in records" :key="index" class="auction-box">
           <v-card>
@@ -208,7 +208,7 @@ export default class AuctionGridComponent extends BaseComponent {
 }
 
 .auction-grid-list .auction-box {
-  padding: 25px !important;
+  padding: 20px !important;
 }
 
 .auction-grid-list .v-card__text {
@@ -303,6 +303,10 @@ export default class AuctionGridComponent extends BaseComponent {
   color: #929292;
   font-size: 10px;
   font-weight: bold;
+}
+
+.auction-grid-list .grid-container {
+  padding: 0px !important;
 }
 
 </style>

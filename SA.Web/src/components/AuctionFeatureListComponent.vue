@@ -80,6 +80,7 @@ import BaseComponent from './BaseComponent.vue';
 import CountdownComponent from './helpers/CountdownComponent.vue';
 import PriceComponent from './helpers/PriceComponent.vue';
 import LoadingComponent from './helpers/LoadingComponent.vue';
+import Carousel from './helpers/Carousel.vue';
 import { RecordTableDto, AuctionDto } from '@/poco';
 
 
@@ -96,6 +97,7 @@ const RecordAction = namespace('record', Action);
         Item,
         Prev,
         Next,
+        Carousel,
     },
 })
 export default class AuctionFeatureListComponent extends BaseComponent {

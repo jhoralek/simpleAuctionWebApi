@@ -85,6 +85,7 @@ export default class HomeComponent extends FormBaseComponent {
   color: #000000;
   padding-bottom: 51px;
   padding-right: 10%;
+  padding-left: 10px;
   padding-top: 80px;
 }
 
@@ -101,6 +102,7 @@ export default class HomeComponent extends FormBaseComponent {
   letter-spacing: 0.5px;
   text-align: justify;
   padding-right: 10%;
+  padding-left: 10px;
   padding-bottom: 30px;
 
 }

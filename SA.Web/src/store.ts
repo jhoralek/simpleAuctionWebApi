@@ -17,7 +17,7 @@ Vue.use(Vuex);
 const vuexLocal = new VuexPersistance({
   storage: window.localStorage,
   supportCircular: true,
-  modules: ['auth', 'settings', 'record', 'auction', 'profile'],
+  modules: ['auth', 'settings', 'record', 'auction'],
   key: 'simple_auction',
 });
 

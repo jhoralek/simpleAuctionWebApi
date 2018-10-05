@@ -85,6 +85,7 @@ export default class Home extends BaseView {
 .rectangle {
   max-width: 404px;
   height: 100%;
+  min-height: 300px;
   border-bottom-right-radius: 59px;
   background-color: #000000;
   z-index: 1;
