@@ -60,7 +60,7 @@
               <v-card-actions>
                 <v-layout row wrap>
                   <v-flex xs12 class="text-xs-center">
-                    <v-btn @click="detail(record)" flat color="black">
+                    <v-btn @click="detail(record.id)" flat color="black">
                       {{ resx('detailOfAuction') }}
                     </v-btn>
                   </v-flex>
@@ -71,11 +71,13 @@
       </v-layout>
       <v-layout row wrap>
         <v-flex xs12>
-          <auction-feature-list-component :take="1" />
+          <carousel :data="auctions[0]" @detail="detail($event)" />
         </v-flex>
       </v-layout>
     </v-container>
-    <auction-feature-list-component v-else />
+    <div v-for="(auction, index) in auctions" :key="index" v-else>
+      <carousel :data="auction" @detail="detail($event)" />
+    </div>
   </div>
 </template>
 
@@ -90,17 +92,18 @@ import BaseComponent from './BaseComponent.vue';
 import CountdownComponent from './helpers/CountdownComponent.vue';
 import PriceComponent from './helpers/PriceComponent.vue';
 import LoadingComponent from './helpers/LoadingComponent.vue';
-import AuctionFeatureListComponent from './AuctionFeatureListComponent.vue';
-import { RecordTableDto, AuctionDto } from '@/poco';
+import Carousel from './helpers/Carousel.vue';
+import { RecordTableDto, AuctionDto, CarouselDto } from '@/poco';
 import { AuthState } from '@/store/types' ;
 
 const RecordAction = namespace('record', Action);
 const RecordGetter = namespace('record', Getter);
 const AuctionGetter = namespace('auction', Getter);
+const AuctionAction = namespace('auction', Action);
 
 @Component({
     components: {
-        AuctionFeatureListComponent,
+        Carousel,
         CountdownComponent,
         PriceComponent,
         LoadingComponent,
@@ -117,12 +120,21 @@ export default class AuctionGridComponent extends BaseComponent {
   @RecordAction('loadAllPublished') private loadRecods: any;
   @RecordAction('getDetail') private loadRecord: any;
 
+  @AuctionGetter('getAuctionsCarousel') private auctions: CarouselDto[];
+  @AuctionAction('getFutureAutions') private featuredAcutions: any;
+
   private isLoading: boolean = false;
 
   private mounted() {
     this.isLoading = true;
     this.loadRecods().then((respAuction) => {
-        this.isLoading = false;
+        if (this.records.length === 0) {
+          this.featuredAcutions().then(() => {
+            this.isLoading = false;
+          });
+        } else {
+          this.isLoading = false;
+        }
     });
   }
 
@@ -139,13 +151,13 @@ export default class AuctionGridComponent extends BaseComponent {
       return record.id.toString();
   }
 
-  private detail(record: RecordTableDto): void {
+  private detail(id: number): void {
     this.isLoading = true;
-    this.loadRecord(record.id).then((response) => {
+    this.loadRecord(id).then((response) => {
       const result = response as boolean;
       this.isLoading = false;
       if (result) {
-        this.$router.push({ path: `/auctionDetail?id=${record.id}` });
+        this.$router.push({ path: `/auctionDetail?id=${id}` });
       }
     });
   }

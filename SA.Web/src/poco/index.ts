@@ -15,6 +15,8 @@ import AuctionDto from './AuctionDto';
 import AuctionTableDto from './AuctionTableDto';
 import AuctionLookupDto from './AuctionLookupDto';
 import UserShortDto from './UserShortDto';
+import CarouselDto from './CarouselDto';
+import CarouselItemDto from './CarouselItemDto';
 
 export {
     AuthResponse,
@@ -34,4 +36,6 @@ export {
     AuctionTableDto,
     AuctionLookupDto,
     UserShortDto,
+    CarouselDto,
+    CarouselItemDto,
 };

@@ -38,9 +38,9 @@
                                                     hide-actions
                                                     class="elevation-1">
                                                     <template slot="items" slot-scope="props">
-                                                    <td>{{ props.item.created | moment('HH:mm DD.MM.YYYY') }}</td>
-                                                    <td>{{ anonymize(props.item.userName) }}</td>
-                                                    <td>{{ resx('bidedBy') }}</td>
+                                                    <td class="text-xs-left">{{ props.item.created | moment('HH:mm DD.MM.YYYY') }}</td>
+                                                    <td class="text-xs-left">{{ anonymize(props.item.userName) }}</td>
+                                                    <td class="text-xs-left">{{ resx('bidedBy') }}</td>
                                                     <td class="text-xs-right">
                                                         <price-component :price="props.item.price" />
                                                     </td>
@@ -49,8 +49,8 @@
                                             </v-flex>
                                         </v-layout>
                                         <v-layout row wrap v-if="currentUser.isFeePayed">
-                                            <v-flex xs4></v-flex>
-                                            <v-flex xs8 class="text-xs-right">
+                                            <v-flex md4></v-flex>
+                                            <v-flex xs12 md8 class="text-xs-right">
                                                 <bid-component :bid="minimumBid" />
                                             </v-flex>
                                         </v-layout>
@@ -194,7 +194,7 @@ export default class ActualRandomComponent extends FormBaseComponent {
 }
 
 .small-box {
-  width: 550px !important;
+  max-width: 550px !important;
   height: 185px !important;
   border-radius: 15px;
   color: #fff;
@@ -211,7 +211,7 @@ export default class ActualRandomComponent extends FormBaseComponent {
   border-radius: 20px;
   background-color: #ffffff;
   border: solid 1px #dbdbdb;
-  height: 300px !important;
+  /* height: 300px !important; */
   position: relative;
   z-index: 2;
 }
@@ -257,24 +257,25 @@ export default class ActualRandomComponent extends FormBaseComponent {
     height: 100% !important;
     padding: 0px !important;
     margin: 0px !important;
+    border-radius: 20px;
 }
 
 .big-box .big-img {
     width: 100%;
     height: 100%;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
     cursor: pointer;
 }
 
 .big-img-wrapper {
     padding: 0px !important;
     margin: 0px !important;
+    min-height: 300px !important;
 }
 
 .big-img-wrapper .v-card {
     --webkit-box-shadow: 0 0px 0px 0px rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0) !important;
     box-shadow: 0 0px 0px 0px rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0) !important;
+    border-radius: 20px;
 }
 
 .big-img-wrapper .v-card__media {
@@ -305,8 +306,11 @@ export default class ActualRandomComponent extends FormBaseComponent {
 }
 
 .big-box-info .record-info {
-    padding-left: 25px;
     border-bottom: 1px solid #d1d1d1;
+}
+
+.big-box table.v-table tbody td {
+    padding: 5px !important;
 }
 
 </style>
