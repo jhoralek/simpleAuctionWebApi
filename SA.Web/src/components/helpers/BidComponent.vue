@@ -70,7 +70,8 @@ export default class BidComponent extends BaseComponent {
         if (!/^[0-9]+$/.test(newBid)) {
             this.disable = true;
         } else {
-            if (parseInt(newBid, 0) < this.record.minimumBid + this.record.currentPrice) {
+            if (this.record.bids.length > 0 &&
+                parseInt(newBid, 0) < this.record.minimumBid + this.record.currentPrice) {
                 this.disable = true;
             } else {
                 this.disable = false;

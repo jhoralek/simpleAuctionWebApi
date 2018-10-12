@@ -56,7 +56,7 @@ namespace SA.WebApi.Controllers
 
             var record = await _recordRepository.GetOneAsync<RecordTableDto>(x => x.Id == bid.RecordId);
 
-            if (record.CurrentPrice >= bid.Price)
+            if (record.NumberOfBids > 0 && record.CurrentPrice >= bid.Price)
             {
                 response.Status = MessageStatusEnum.Warning;
                 response.Code = "bidOverpaid";

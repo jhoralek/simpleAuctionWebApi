@@ -19,12 +19,12 @@ namespace Sa.WebApi.Controllers
         [Route("getAllActive")]
         public async Task<IActionResult> GetAllActive()
         {
-            var today = DateTime.Now.Date;
+            var now = DateTime.Now;
             return Json(await _repository
                 .GetAllAsync<AuctionDto, DateTime>(x =>
                     x.IsActive &&
-                    x.ValidFrom <= today &&
-                    x.ValidTo >= today,
+                    x.ValidFrom <= now &&
+                    x.ValidTo >= now,
                     x => x.ValidFrom));
         }
 
@@ -32,11 +32,11 @@ namespace Sa.WebApi.Controllers
         [Route("getAllInFeature")]
         public async Task<IActionResult> GetAllInFeature()
         {
-            var today = DateTime.Now.Date;
+            var now = DateTime.Now;
             var auctions = await _repository
                 .GetAllAsync<AuctionDto, DateTime>(x =>
                     x.IsActive &&
-                    x.ValidFrom > today,
+                    x.ValidFrom > now,
                     x => x.ValidFrom);
 
             return Json(auctions);

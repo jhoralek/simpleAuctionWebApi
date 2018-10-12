@@ -18,8 +18,8 @@ import HomeComponent from './views/HomeComponent.vue';
 import ActualRandomComponent from './views/ActualRandomComponent.vue';
 import QuestionDialogComponent from './helpers/QuestionDialogComponent.vue';
 import LoadingComponent from './helpers/LoadingComponent.vue';
-import AuctionFeatureListComponent from './AuctionFeatureListComponent.vue';
 import AuctionEndedComponent from './AuctionEndedComponent.vue';
+import Carousel from './helpers/Carousel.vue';
 
 export {
     LoginFormComponent,
@@ -42,7 +42,7 @@ export {
     ActualRandomComponent,
     QuestionDialogComponent,
     LoadingComponent,
-    AuctionFeatureListComponent,
     AuctionEndedComponent,
+    Carousel,
 };
 

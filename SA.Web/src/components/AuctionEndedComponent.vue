@@ -140,7 +140,7 @@ export default class AuctionEndedComponent extends BaseComponent {
 }
 
 .auction-grid-list .auction-box {
-  padding: 25px !important;
+  padding: 20px !important;
 }
 
 .auction-grid-list .v-card__text {
