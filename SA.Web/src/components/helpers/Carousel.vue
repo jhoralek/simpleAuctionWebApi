@@ -14,7 +14,7 @@
         </v-layout>
         <v-layout row wrap fill-height>
             <v-flex class="chevron">
-                <i class="material-icons" @click="moveForward">
+                <i class="material-icons" @click="moveBack">
                     chevron_left
                 </i>
             </v-flex>
@@ -58,7 +58,7 @@
                 </v-layout>
             </v-flex>
             <v-flex class="chevron">
-                <i class="material-icons" @click="moveBack">
+                <i class="material-icons" @click="moveForward">
                     chevron_right
                 </i>
             </v-flex>

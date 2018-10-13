@@ -5,7 +5,7 @@
       <v-layout row wrap>
         <v-flex xs12 sm4 v-for="(record, index) in records" :key="index" class="auction-box">
           <v-card>
-              <v-card-media :src="firstImagePath(record)" @click="detail(record)">
+              <v-card-media :src="firstImagePath(record)" @click="detail(record.id)">
                 <v-layout row wrap v-if="auth.isFeePayed && auth.isAuthenticated && isBidding(record.biddingUserIds)">
                   <v-flex xs12 class="text-xs-right">
                     <v-tooltip top v-if="auth.userId === record.winningUserId">

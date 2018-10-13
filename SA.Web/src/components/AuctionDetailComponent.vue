@@ -1,7 +1,7 @@
 <template>
     <div class="detail">
         <loading-component :open="isLoading" />
-        <v-container grid-list-xs pa-0 v-if="record" class="auction-detail">
+        <v-container grid-list-xs pa-0 v-if="record" class="auction-detail" :id="recordIdString">
             <v-layout row wrap>
                 <v-flex xs12 md6>
                     <v-carousel hide-delimiters :cycle="false">
@@ -362,6 +362,10 @@ export default class AuctionDetalComponent extends BaseComponent {
         this.featuredAcutions();
     }
 
+    private updated() {
+        window.scrollTo(0, 0);
+    }
+
     private recordIdToString(record: RecordTableDto): string {
         return record.id.toString();
     }
@@ -399,6 +403,10 @@ export default class AuctionDetalComponent extends BaseComponent {
             ? this.record.currentPrice
             : this.record.currentPrice + this.record.minimumBid;
         return bid;
+    }
+
+    get recordIdString(): string {
+        return `record-${this.record.id}`;
     }
 }
 
