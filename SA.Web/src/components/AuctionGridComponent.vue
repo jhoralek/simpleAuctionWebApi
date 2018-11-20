@@ -128,13 +128,9 @@ export default class AuctionGridComponent extends BaseComponent {
   private mounted() {
     this.isLoading = true;
     this.loadRecods().then((respAuction) => {
-        if (this.records.length === 0) {
-          this.featuredAcutions().then(() => {
-            this.isLoading = false;
-          });
-        } else {
+        this.featuredAcutions().then(() => {
           this.isLoading = false;
-        }
+        });
     });
   }
 
