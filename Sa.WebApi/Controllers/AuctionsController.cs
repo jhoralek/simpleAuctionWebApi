@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SA.Application.Records;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
 using SA.WebApi.Controllers;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Sa.WebApi.Controllers
@@ -63,9 +66,13 @@ namespace Sa.WebApi.Controllers
         [HttpGet]
         [Route("getAllForAdmin")]
         public async Task<IActionResult> GetAllForAdmin()
-            => Json(await _repository
-                    .GetAllAsync<AuctionTableDto, bool>(order: y =>
-                        y.IsActive));
+            => Json(await _repository.Context.Auctions
+                .Include(x => x.Records)
+                .OrderBy(x => x.IsActive).ThenByDescending(x => x.ValidTo)
+                .ProjectTo<AuctionTableDto>()
+                .ToListAsync());
+            //=> Json(await _repository
+            //        .GetAllAsync<AuctionTableDto, DateTime>(order: y => y.ValidTo));
 
         [Authorize("admin")]
         [HttpDelete("{id}")]
@@ -93,7 +100,13 @@ namespace Sa.WebApi.Controllers
         [Authorize("admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllLookup()
-            => Json(await _repository
-                .GetAllAsync<AuctionLookupDto, bool>(order: x => x.IsActive));
+            => Json(await _repository.Context.Auctions
+                .Include(x => x.Records)
+                .OrderBy(x => x.IsActive)
+                .ThenByDescending(x => x.ValidTo)
+                .ProjectTo<AuctionLookupDto>()
+                .ToListAsync());
+            //=> Json(await _repository
+            //    .GetAllAsync<AuctionLookupDto, bool>(order: x => x.IsActive));
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SA.Application.Records;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
@@ -95,9 +97,16 @@ namespace SA.WebApi.Controllers
         [HttpGet]
         [Route("getAllForAdmin")]
         public async Task<IActionResult> GetAllForAdmin()
-            => Json(await _repository
-                    .GetAllAsync<RecordTableDto, bool>(order: y =>
-                        y.IsActive));
+            => Json(await _repository.Context.Records
+                .Include(x => x.User)
+                .Include(x => x.Bids)
+                .Include(x => x.Files)
+                .OrderBy(x => x.IsActive).ThenByDescending(x => x.ValidTo)
+                .ProjectTo<RecordTableDto>()
+                .ToListAsync());
+            //=> Json(await _repository
+            //        .GetAllAsync<RecordTableDto, bool>(order: y =>
+            //            y.IsActive));
 
         [Authorize("admin")]
         [HttpDelete("{id}")]
