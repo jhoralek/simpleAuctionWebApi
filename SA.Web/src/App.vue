@@ -71,6 +71,7 @@ export default class App extends Vue {
   @SettingsGetter('getTranslate') public resx: string;
 
   @AuthAction('initialState') public initAuth: any;
+  @AuthAction('startTimer') public startTimer: any;
   @ProfileAction('loadByToken') public loadByToken: any;
   @ProfileAction('initialState')  public initProfile: any;
   @SettingsAction('initialState') public initSettings: any;
@@ -91,6 +92,10 @@ export default class App extends Vue {
         const parent = element.parentNode;
         parent.removeChild(element);
         this.initProfile().then((x) => {
+          if (this.auth.timer != null && this.auth.secondsToLogout > 0) {
+            this.startTimer();
+          }
+
           if (this.auth.isAuthenticated) {
               this.setLang(this.profile.user.language);
           } else {

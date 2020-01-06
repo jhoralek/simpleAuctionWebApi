@@ -57,7 +57,7 @@ export default class Home extends BaseView {
   @State('auth') private auth: AuthState;
   @ProfileAction('initialState') private init: any;
 
-  private mounted() {
+  public mounted() {
     this.init();
   }
 

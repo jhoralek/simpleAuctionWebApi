@@ -37,7 +37,7 @@ export default class GdprAdministration extends BaseView {
   private records: GdprRecordTableDto[] = [] as GdprRecordTableDto[];
   private isLoading: boolean = true;
 
-  private mounted() {
+  public mounted() {
     this.getRecords().then((response) => {
       if (response) {
         this.records = response as GdprRecordTableDto[];

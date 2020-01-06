@@ -106,7 +106,7 @@ export default class Customer extends BaseView {
 
   private isLoading: boolean = true;
 
-  private mounted() {
+  public mounted() {
     this.initProfile().then((response) => {
       this.load().then((responseUser) => {
         this.isLoading = false;

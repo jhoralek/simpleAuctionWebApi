@@ -19,10 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SA.Application\SA.Application.csproj" />
     <ProjectReference Include="..\SA.Core\SA.Core.csproj" />
     <ProjectReference Include="..\SA.EntityFramework\SA.EntityFramework.csproj" />

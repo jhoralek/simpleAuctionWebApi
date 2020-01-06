@@ -87,7 +87,7 @@ export default class Results extends BaseView {
   private successfullyRegistered: boolean = false;
   private passwordResetSuccessfully: boolean = false;
 
-  private mounted() {
+  public mounted() {
       switch (this.$route.name) {
         case 'validationExpired':
             this.validationExpired = true;

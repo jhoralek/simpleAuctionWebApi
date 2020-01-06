@@ -38,7 +38,7 @@ export default class AuctionAdministration extends BaseView {
 
   private isLodading: boolean = true;
 
-  private mounted() {
+  public mounted() {
     this.loadAuctions().then((response) => {
       if (response) {
         this.isLodading = false;

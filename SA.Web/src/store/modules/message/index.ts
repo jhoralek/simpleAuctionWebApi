@@ -1,23 +1,27 @@
-import { Module } from 'vuex';
-import { RootState,  MessageState } from '@/store/types';
+import { Module } from "vuex";
+import { RootState, MessageState } from "@/store/types";
 
-import getters from '@/store/modules/message/getters';
-import actions from '@/store/modules/message/actions';
-import mutations from '@/store/modules/message/mutations';
+import getters from "@/store/modules/message/getters";
+import actions from "@/store/modules/message/actions";
+import mutations from "@/store/modules/message/mutations";
 
 export const state: MessageState = {
-    isOn: false,
-    module: undefined,
-    created: undefined,
-    message: undefined,
+  isOn: false,
+  module: undefined,
+  created: undefined,
+  message: undefined,
+  timeout: 6000,
+  fromResources: true,
+  buttonText: "close",
+  callbackFnc: undefined
 };
 
 const namespaced: boolean = true;
 
 export const message: Module<MessageState, RootState> = {
-    namespaced,
-    state,
-    getters,
-    actions,
-    mutations,
+  namespaced,
+  state,
+  getters,
+  actions,
+  mutations
 };
