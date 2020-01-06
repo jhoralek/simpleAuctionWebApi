@@ -35,3 +35,4 @@ pi-init
 # Visual Studio 2017
 .vs/
 
+appsettings.*
