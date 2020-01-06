@@ -37,7 +37,7 @@ export default class UserAdministration extends BaseView {
   @ProfileGetter('getList') private users: UserSimpleDto[];
 
   private isLoading: boolean = true;
-  private mounted() {
+  public mounted() {
     this.getUsers().then((response) => {
       if (response) {
         this.isLoading = false;

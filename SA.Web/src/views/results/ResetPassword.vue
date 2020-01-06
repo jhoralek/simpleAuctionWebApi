@@ -77,7 +77,7 @@ export default class ResetPassword extends BaseView {
     token: '',
   } as ChangePasswordDto;
 
-  private mounted() {
+  public mounted() {
     if (this.$route.name === 'passwordReset') {
       this.change.token = this.$route.query.token;
     }

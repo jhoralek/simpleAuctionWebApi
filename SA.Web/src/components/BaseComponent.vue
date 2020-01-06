@@ -10,6 +10,6 @@ const SettingsGetter = namespace('settings', Getter);
 export default class BaseComponent extends Vue {
 
   @State('settings') public settings: SettingsState;
-  @SettingsGetter('getTranslate') public resx: string;
+  @SettingsGetter('getTranslate') public resx: any;
 }
 </script>

@@ -1,13 +1,19 @@
 <script lang="ts">
 
 import { Component, Vue } from 'vue-property-decorator';
-import { Getter, State, Action } from 'vuex-class';
+import { Getter, Action, namespace } from 'vuex-class';
 
-const namespace: string = 'settings';
+const AuthAction = namespace('auth', Action);
+const SettingsGetter = namespace('settings', Getter);
 
 @Component({})
 export default class BaseView extends Vue {
-    @Getter('getTranslate', { namespace }) public resx: string;
+    @SettingsGetter('getTranslate') public resx: string;
+    @AuthAction('resetTimer') public resetTimer: any;
+
+    public mounted() {
+        this.resetTimer();
+    }
 }
 
 </script>

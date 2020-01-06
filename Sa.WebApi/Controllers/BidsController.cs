@@ -31,7 +31,7 @@ namespace SA.WebApi.Controllers
         public async Task<IActionResult> GetActualPrice(int recordId)
         {
             var bids = await _repository
-                .GetAllAsync<Application.Bid.BidSimpleDto, decimal>(x => 
+                .GetAllAsync<Application.Bid.BidSimpleDto, decimal>(x =>
                     x.RecordId == recordId, x => x.Price);
             return Json(bids.Max(x => x.Price));
         }
@@ -70,19 +70,22 @@ namespace SA.WebApi.Controllers
                 if (now.AddMinutes(5) >= record.ValidTo)
                 {
                     var recordToUpdate = _recordRepository.Context.Records.First(x => x.Id == record.Id);
-                    recordToUpdate.ValidTo = record.ValidTo.AddMinutes(5);
+
+                    var extendTo = record.ValidTo.AddMinutes(5);
+
+                    recordToUpdate.ValidTo = extendTo;
                     await _recordRepository.Context.SaveChangesAsync();
 
                     // need to extend auction aswell
                     var auction = await _auctionRepository.GetOneAsync<Auction>(x => x.Id == record.AuctionId);
-                    auction.ValidTo = record.ValidTo;
+                    auction.ValidTo = extendTo;
                     await _auctionRepository.UpdateAsync(auction);
                 }
 
                 response.Status = MessageStatusEnum.Success; ;
                 response.Code = "createdSuccessfully";
             }
-            catch(Exception e)
+            catch (Exception)
             {
                 response.Status = MessageStatusEnum.Error;
                 response.Code = "bidBadRequest";

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 using SA.Application.Account;
 using SA.Application.Country;
@@ -17,6 +18,7 @@ using SA.Core.Model;
 using SA.Core.Security;
 using SA.EntityFramework.EntityFramework;
 using SA.EntityFramework.EntityFramework.Repository;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -36,7 +38,8 @@ namespace SA.Web
         {
             string domain = $"https://{_configuration["Auth0:Domain"]}/";
 
-            services.AddCors(options => {
+            services.AddCors(options =>
+            {
                 options.AddPolicy("CorsPolicy",
                     builder => builder.AllowAnyOrigin()
                         .AllowAnyMethod()
@@ -50,11 +53,18 @@ namespace SA.Web
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-            }).AddJwtBearer(options =>
+            })
+            .AddJwtBearer(options =>
             {
                 options.Authority = domain;
                 options.Audience = _configuration["Auth0:Audience"];
+                options.IncludeErrorDetails = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true,
+                    SaveSigninToken = true,
+                };
             });
 
             services.AddAuthorization(options =>
@@ -192,6 +202,7 @@ namespace SA.Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseCors("CorsPolicy");
