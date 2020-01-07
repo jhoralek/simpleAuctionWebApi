@@ -58,6 +58,7 @@ export interface SettingsState {
   tableView: boolean;
   currentForm: string;
   version: string;
+  isMobile: boolean;
 }
 /**
  * Record state

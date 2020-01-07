@@ -212,25 +212,25 @@ export default class AdminAuctionTableComponent extends BaseComponent {
             text: this.settings.resource.name,
             align: 'left',
             sortable: true,
-            value: 'name  ' });
+            value: 'name' });
         this.headers.push({
             text: this.settings.resource.validFrom,
-            align: 'rigth',
+            align: 'right',
             sortable: true,
             value: 'validFrom' });
         this.headers.push({
             text: this.settings.resource.validTo,
-            align: 'rigth',
+            align: 'left',
             sortable: true,
             value: 'validTo' });
         this.headers.push({
             text: this.settings.resource.active,
-            align: 'cenetr',
+            align: 'center',
             sortable: true,
             value: 'isActive' });
         this.headers.push({
             text: this.settings.resource.ended,
-            align: 'cenetr',
+            align: 'center',
             sortable: true,
             value: 'isEnded' });
         this.headers.push({

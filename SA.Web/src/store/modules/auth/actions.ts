@@ -36,10 +36,12 @@ const actions: ActionTree<AuthState, RootState> = {
       return resolve(true);
     });
   },
-  resetTimer({ commit, dispatch }): Promise<boolean> {
+  resetTimer({ commit, rootState, dispatch }): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      commit(AUTH_RESET_TIMER);
-      dispatch("message/initialState", {}, { root: true });
+      if (rootState.auth.timer != undefined || rootState.auth.timer != null) {
+        commit(AUTH_RESET_TIMER);
+        dispatch("message/initialState", {}, { root: true });
+      }
       return resolve(true);
     });
   },

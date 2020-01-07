@@ -101,12 +101,15 @@ namespace SA.WebApi.Controllers
                 .Include(x => x.User)
                 .Include(x => x.Bids)
                 .Include(x => x.Files)
-                .OrderBy(x => x.IsActive).ThenByDescending(x => x.ValidTo)
+                .OrderByDescending(x => x.Auction.IsActive)
+                .ThenByDescending(x => x.IsActive)
+                .ThenByDescending(x => x.ValidFrom)
+                .ThenByDescending(x => x.ValidTo)
                 .ProjectTo<RecordTableDto>()
                 .ToListAsync());
-            //=> Json(await _repository
-            //        .GetAllAsync<RecordTableDto, bool>(order: y =>
-            //            y.IsActive));
+        //=> Json(await _repository
+        //        .GetAllAsync<RecordTableDto, bool>(order: y =>
+        //            y.IsActive));
 
         [Authorize("admin")]
         [HttpDelete("{id}")]
@@ -122,7 +125,7 @@ namespace SA.WebApi.Controllers
 
             var items = await _repository
                 .GetAllAsync<RecordDetailDto, int>(
-                    x =>                    
+                    x =>
                         x.IsActive
                         && x.Auction.IsActive
                         && x.Auction.ValidFrom <= today
@@ -153,7 +156,7 @@ namespace SA.WebApi.Controllers
             var now = DateTime.Now;
             var items = await _repository
                 .GetAllAsync<RecordTableDto, DateTime>(x => x.ValidFrom < now
-                    && x.ValidTo < now, 
+                    && x.ValidTo < now,
                     x => x.ValidTo, take);
 
             return Json(items);

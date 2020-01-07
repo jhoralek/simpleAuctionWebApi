@@ -92,7 +92,10 @@ export default class App extends Vue {
         const parent = element.parentNode;
         parent.removeChild(element);
         this.initProfile().then((x) => {
-          if (this.auth.timer != null && this.auth.secondsToLogout > 0) {
+          if (this.auth.timer != null
+            && this.auth.secondsToLogout > 0
+            && this.auth.token != undefined
+            && this.auth.isAuthenticated) {
             this.startTimer();
           }
 

@@ -68,11 +68,13 @@ namespace Sa.WebApi.Controllers
         public async Task<IActionResult> GetAllForAdmin()
             => Json(await _repository.Context.Auctions
                 .Include(x => x.Records)
-                .OrderBy(x => x.IsActive).ThenByDescending(x => x.ValidTo)
+                .OrderByDescending(x => x.IsActive)
+                .ThenByDescending(x => x.ValidFrom)
+                .ThenByDescending(x => x.ValidTo)
                 .ProjectTo<AuctionTableDto>()
                 .ToListAsync());
-            //=> Json(await _repository
-            //        .GetAllAsync<AuctionTableDto, DateTime>(order: y => y.ValidTo));
+        //=> Json(await _repository
+        //        .GetAllAsync<AuctionTableDto, DateTime>(order: y => y.ValidTo));
 
         [Authorize("admin")]
         [HttpDelete("{id}")]
@@ -92,7 +94,7 @@ namespace Sa.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllActiveLookup()
             => Json(await _repository
-                .GetAllAsync<AuctionLookupDto, DateTime>(x => 
+                .GetAllAsync<AuctionLookupDto, DateTime>(x =>
                     x.IsActive,
                     x => x.ValidFrom));
 
@@ -102,11 +104,12 @@ namespace Sa.WebApi.Controllers
         public async Task<IActionResult> GetAllLookup()
             => Json(await _repository.Context.Auctions
                 .Include(x => x.Records)
-                .OrderBy(x => x.IsActive)
+                .OrderByDescending(x => x.IsActive)
+                .ThenByDescending(x => x.ValidFrom)
                 .ThenByDescending(x => x.ValidTo)
                 .ProjectTo<AuctionLookupDto>()
                 .ToListAsync());
-            //=> Json(await _repository
-            //    .GetAllAsync<AuctionLookupDto, bool>(order: x => x.IsActive));
+        //=> Json(await _repository
+        //    .GetAllAsync<AuctionLookupDto, bool>(order: x => x.IsActive));
     }
 }

@@ -1,26 +1,27 @@
-import { Module } from 'vuex';
-import { RootState, SettingsState } from '@/store/types';
+import { Module } from "vuex";
+import { RootState, SettingsState } from "@/store/types";
 
-import getters from '@/store/modules/settings/getters';
-import actions from '@/store/modules/settings/actions';
-import mutations from '@/store/modules/settings/mutations';
+import getters from "@/store/modules/settings/getters";
+import actions from "@/store/modules/settings/actions";
+import mutations from "@/store/modules/settings/mutations";
 
 export const state: SettingsState = {
-    language: undefined,
-    resource: undefined,
-    countries: undefined,
-    apiUrl: undefined,
-    tableView: true,
-    currentForm: undefined,
-    version: undefined,
+  language: undefined,
+  resource: undefined,
+  countries: undefined,
+  apiUrl: undefined,
+  tableView: true,
+  currentForm: undefined,
+  version: undefined,
+  isMobile: true
 };
 
 const namespaced: boolean = true;
 
 export const settings: Module<SettingsState, RootState> = {
-    namespaced,
-    state,
-    getters,
-    actions,
-    mutations,
+  namespaced,
+  state,
+  getters,
+  actions,
+  mutations
 };
