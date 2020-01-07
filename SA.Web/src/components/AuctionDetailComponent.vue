@@ -356,7 +356,7 @@ export default class AuctionDetalComponent extends BaseComponent {
     private expander1: boolean[] = [true];
 
     private mounted() {
-        if (this.record === undefined) {
+        if (this.record.id === undefined) {
             this.detail(this.$route.query.id);
         }
         this.featuredAcutions();
@@ -367,7 +367,9 @@ export default class AuctionDetalComponent extends BaseComponent {
     }
 
     private recordIdToString(record: RecordTableDto): string {
-        return record.id.toString();
+        if (record.id != undefined) {
+            return record.id.toString();
+        }
     }
 
     private filePath(file: FileSimpleDto): string {
@@ -379,7 +381,9 @@ export default class AuctionDetalComponent extends BaseComponent {
     }
 
     private dateToString(date: Date): string {
-        return date.toString();
+        if (date != undefined) {
+            return date.toString();
+        }
     }
 
     private canBid(validFrom: Date, validTo: Date): boolean {
@@ -406,7 +410,9 @@ export default class AuctionDetalComponent extends BaseComponent {
     }
 
     get recordIdString(): string {
-        return `record-${this.record.id}`;
+        if (this.record.id != undefined) {
+            return `record-${this.record.id}`;
+        }
     }
 }
 

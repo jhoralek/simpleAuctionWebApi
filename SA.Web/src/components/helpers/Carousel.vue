@@ -13,51 +13,24 @@
             </v-flex>
         </v-layout>
         <v-layout row wrap fill-height>
-            <v-flex class="chevron">
+            <v-flex v-if="!isMobile" class="chevron">
                 <i class="material-icons" @click="moveBack">
                     chevron_left
                 </i>
             </v-flex>
             <v-flex class="slider" ref="carouseSlider">
-                <v-layout row overflow-hidden>
-                    <v-flex class="item" xs12 md2 v-for="(item, index) in showItems()" :key="index">
-                        <v-card>
-                            <v-card-media :src="item.imageUrl" @click="detail(item.id)"></v-card-media>
-                            <v-layout row wrap>
-                                <v-flex xs12 class="text-xs-center">
-                                <h4>{{ item.name }}</h4>
-                                </v-flex>
-                            </v-layout>
-                            <v-layout row wrap class="item-info">
-                                <v-flex xs4 class="text-xs-center">
-                                <span>{{ item.info1 }}</span>
-                                </v-flex>
-                                <v-flex xs4 class="text-xs-center">
-                                <span>{{ item.info2 }}</span>
-                                </v-flex>
-                                <v-flex xs4 class="text-xs-center">
-                                <span>{{ item.info3 }}</span>
-                                </v-flex>
-                            </v-layout>
-                            <v-layout row wrap>
-                                <v-flex xs12 class="text-xs-center">
-                                <span class="item-price-text">{{ resx('actualPrice') }}</span>
-                                <span class="price-with-dph" v-if="item.withVat">{{ resx('withVat') }}</span>
-                                <span class="price-with-dph" v-else>{{ resx('withoutVat') }}</span>
-                                </v-flex>
-                            </v-layout>
-                            <v-layout row wrap>
-                                <v-flex xs12 class="text-xs-center item-price">
-                                <h4>
-                                    <price-component :price="item.price" />
-                                </h4>
-                                </v-flex>
-                            </v-layout>
-                        </v-card>
+                <v-layout v-if="isMobile" row class="wrap">
+                    <v-flex class="item" md2 v-for="(item, index) in showItems()" :key="index">
+                       <carousel-item :item="item" />
+                    </v-flex>
+                </v-layout>
+                <v-layout  v-if="!isMobile" row class="overflow-hidden">
+                    <v-flex class="item" md2 v-for="(item, index) in showItems()" :key="index">
+                       <carousel-item :item="item" @detail="detail($event)" />
                     </v-flex>
                 </v-layout>
             </v-flex>
-            <v-flex class="chevron">
+            <v-flex v-if="!isMobile" class="chevron">
                 <i class="material-icons" @click="moveForward">
                     chevron_right
                 </i>
@@ -67,115 +40,121 @@
 </template>
 
 <script lang="ts">
+import { Component, Prop, Watch } from "vue-property-decorator";
+import { Getter, namespace } from "vuex-class";
 
-import { Component, Prop, Watch } from 'vue-property-decorator';
-import BaseComponent from '../BaseComponent.vue';
+import BaseComponent from "../BaseComponent.vue";
+import CarouselItem from "./CarouselItem.vue";
+
 import { CarouselDto, CarouselItemDto } from '@/poco';
 
-import PriceComponent from './PriceComponent.vue';
+const SettingsGetter = namespace("settings", Getter);
 
 @Component({
-    components: {
-        PriceComponent,
-    },
+  components: {
+    CarouselItem
+  }
 })
 export default class Carousel extends BaseComponent {
-    @Prop({default: undefined}) private name: string;
-    @Prop({default: undefined}) private data: CarouselDto;
+  @Prop({ default: undefined })
+  private name: string;
+  @Prop({ default: undefined })
+  private data: CarouselDto;
 
-    private sliderWidth: number = 0;
-    private step: number = 0;
-    private take: number = 1;
+  @SettingsGetter("getIsMobile") private isMobile: boolean;
 
-    private mounted() {
-        this.sliderWidth = this.$el.offsetWidth;
-        this.setTake();
+  private sliderWidth: number = 0;
+  private step: number = 0;
+  private take: number = 1;
+
+  private mounted() {
+    this.sliderWidth = this.$el.offsetWidth;
+    this.setTake();
+  }
+
+  @Watch("sliderWidth")
+  private watchSliderWidth(sliderWidth: number) {
+    if (sliderWidth !== this.sliderWidth) {
+      this.sliderWidth = sliderWidth;
+      this.setTake();
     }
+  }
 
-    @Watch('sliderWidth') private watchSliderWidth(sliderWidth: number) {
-        if (sliderWidth !== this.sliderWidth) {
-            this.sliderWidth = sliderWidth;
-            this.setTake();
-        }
+  private moveBack(): void {
+    if (this.isValidBackStep()) {
+      this.step -= this.take;
     }
+  }
 
-    private moveBack(): void {
-        if (this.isValidBackStep()) {
-            this.step -= this.take;
-        }
+  private moveForward(): void {
+    if (this.isValidForwardStep()) {
+      this.step += this.take;
     }
+  }
 
-    private moveForward(): void {
-        if (this.isValidForwardStep()) {
-            this.step += this.take;
-        }
+  private showItems(): CarouselItemDto[] {
+    return this.data.items.slice(this.step, this.step + this.take);
+  }
+
+  private setTake(): void {
+    if (!this.isMobile) {
+      this.take = 6;
+    } else {
+      this.take = this.data.items.length;
     }
+  }
 
-    private showItems(): CarouselItemDto[]  {
-        return this.data.items.slice(this.step, this.step + this.take);
+  private detail(id: number): void {
+    this.$emit("detail", id);
+  }
+
+  private isValidForwardStep(): boolean {
+    return this.step + this.take < this.data.items.length;
+  }
+
+  private isValidBackStep(): boolean {
+    return this.step >= this.take;
+  }
+
+  private btnCarsText(count: number): string {
+    switch (count) {
+      case 1:
+        return `${this.settings.resource.car.toLowerCase()}`;
+      case 2:
+      case 3:
+        return `${this.settings.resource.fewCars.toLowerCase()}`;
+      default:
+        return `${this.settings.resource.cars.toLowerCase()}`;
     }
-
-    private setTake(): void {
-        if (this.sliderWidth <= 400) {
-            this.take = 1;
-        } else {
-            this.take = 6;
-        }
-    }
-
-    private isValidForwardStep(): boolean {
-        return this.step + this.take < this.data.items.length;
-    }
-
-    private isValidBackStep(): boolean {
-        return this.step >= this.take;
-    }
-
-    private detail(id: number): void {
-        this.$emit('detail', id);
-    }
-
-    private btnCarsText(count: number): string {
-        switch (count) {
-        case 1:
-            return `${this.settings.resource.car.toLowerCase()}`;
-        case 2:
-        case 3:
-            return `${this.settings.resource.fewCars.toLowerCase()}`;
-        default:
-            return `${this.settings.resource.cars.toLowerCase()}`;
-        }
-    }
-
+  }
 }
-
 </script>
 
 <style>
 .carousel-wrapper {
-    position: relative;
-    padding-top: 30px;
-    padding-bottom: 30px;
+  position: relative;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
 .carousel-wrapper .chevron {
-    width: 30px !important;
-    max-width: 30px !important;
-    position: relative;
+  width: 30px !important;
+  max-width: 30px !important;
+  position: relative;
 }
 
 .carousel-wrapper .slider {
-    width: 70%;
+  width: 70%;
 }
 
 .carousel-wrapper .chevron .material-icons:hover {
-    background-color: silver;
+  background-color: silver;
 }
 
 .carousel-wrapper .slider .item {
-    padding-left: 5px !important;
-    padding-right: 5px !important;
-    width: 300px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+  width: 300px !important;
 }
 
 .slider .v-card .v-card__media__content {
@@ -185,19 +164,19 @@ export default class Carousel extends BaseComponent {
 }
 
 .carousel-wrapper .chevron .material-icons {
-    height: 80px;
-    line-height: 80px;
-    background-color: black;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+  height: 80px;
+  line-height: 80px;
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .carousel-wrapper .slide-container .item {
-    display: inline;
+  display: inline;
 }
 
 .carousel-wrapper .item h4 {
@@ -243,18 +222,19 @@ export default class Carousel extends BaseComponent {
   font-size: 10px;
 }
 
-.carousel-wrapper h1, .carousel-wrapper .v-btn {
+.carousel-wrapper h1,
+.carousel-wrapper .v-btn {
   display: inline !important;
 }
 
 .carousel-wrapper .v-btn {
-    padding-left: 15px!important;
-    height: 23px!important;
-    min-width: 50px!important;
-    color: #fff!important;
-    border-radius: 5px!important;
-    text-transform: lowercase;
-    margin-bottom: 20px;
+  padding-left: 15px !important;
+  height: 23px !important;
+  min-width: 50px !important;
+  color: #fff !important;
+  border-radius: 5px !important;
+  text-transform: lowercase;
+  margin-bottom: 20px;
 }
 
 .carousel-wrapper .v-btn span {
@@ -275,5 +255,4 @@ export default class Carousel extends BaseComponent {
   padding-top: 0px !important;
   padding-bottom: 0px !important;
 }
-
 </style>

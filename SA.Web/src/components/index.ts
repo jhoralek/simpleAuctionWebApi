@@ -20,6 +20,7 @@ import QuestionDialogComponent from "./helpers/QuestionDialogComponent.vue";
 import LoadingComponent from "./helpers/LoadingComponent.vue";
 import AuctionEndedComponent from "./AuctionEndedComponent.vue";
 import Carousel from "./helpers/Carousel.vue";
+import CarouselItem from "./helpers/CarouselItem.vue";
 
 export {
   LoginFormComponent,
@@ -43,5 +44,6 @@ export {
   QuestionDialogComponent,
   LoadingComponent,
   AuctionEndedComponent,
-  Carousel
+  Carousel,
+  CarouselItem
 };
