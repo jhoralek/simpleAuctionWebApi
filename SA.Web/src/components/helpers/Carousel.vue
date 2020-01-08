@@ -21,7 +21,7 @@
             <v-flex class="slider" ref="carouseSlider">
                 <v-layout v-if="isMobile" row class="wrap">
                     <v-flex class="item" md2 v-for="(item, index) in showItems()" :key="index">
-                       <carousel-item :item="item" />
+                       <carousel-item :item="item" @detail="detail($event)" />
                     </v-flex>
                 </v-layout>
                 <v-layout  v-if="!isMobile" row class="overflow-hidden">
@@ -46,7 +46,7 @@ import { Getter, namespace } from "vuex-class";
 import BaseComponent from "../BaseComponent.vue";
 import CarouselItem from "./CarouselItem.vue";
 
-import { CarouselDto, CarouselItemDto } from '@/poco';
+import { CarouselDto, CarouselItemDto } from "@/poco";
 
 const SettingsGetter = namespace("settings", Getter);
 
@@ -179,7 +179,7 @@ export default class Carousel extends BaseComponent {
   display: inline;
 }
 
-.carousel-wrapper .item h4 {
+/* .carousel-wrapper .item h4 {
   font-family: Roboto;
   font-size: 20px;
   font-weight: 500 !important;
@@ -189,22 +189,22 @@ export default class Carousel extends BaseComponent {
   letter-spacing: 0px;
   color: #000000;
   white-space: normal !important;
-}
+} */
 
-.carousel-wrapper .item .item-price h4 div {
+/* .carousel-wrapper .item .item-price h4 div {
   line-height: 1.2 !important;
-}
+} */
 
-.carousel-wrapper .item .item-info {
+/* .carousel-wrapper .item .item-info {
   font-family: Roboto;
   font-size: 10px !important;
   font-style: normal;
   font-stretch: normal;
   letter-spacing: 0.8px;
   color: #929292 !important;
-}
+} */
 
-.carousel-wrapper .item .item-price-text {
+/* .carousel-wrapper .item .item-price-text {
   text-transform: uppercase !important;
   font-family: Roboto;
   font-size: 10px !important;
@@ -220,7 +220,7 @@ export default class Carousel extends BaseComponent {
   text-transform: uppercase;
   font-weight: bold;
   font-size: 10px;
-}
+} */
 
 .carousel-wrapper h1,
 .carousel-wrapper .v-btn {
