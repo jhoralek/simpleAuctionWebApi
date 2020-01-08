@@ -101,6 +101,7 @@ should give you 6.4.1 or above
 To run the application you need do two things.
 You will need two command prompts. First for starting the MVC application with WebApi and second one for SPA application which will be commpiled and prepared to load.
 
+#### Developing mode
 In the first command prompt go to into the SA.Web directory of the project and write
 
 ```
@@ -118,6 +119,31 @@ npm run build-dev
 This will compile and copy SPA application into the wwwroot directory inside of the SA.Web project.
 
 Now it is ready to use.
+
+#### Production mode
+
+Go to the project directory SA.Web and run command
+
+```
+npm run build
+```
+
+It deletes directory wwwroot in project directory SA.Web and compile new SPA application into the new created directory wwwroot.
+Then you need to run command to compile ASP.NET Core MVC application with their WebAPI
+
+```
+dotnet publish -c Release --output ./publish SA.Web.csproj
+```
+
+This command compile and publish whole application with their dependant references like SA.Core, SA.Application, SA.EntityFramework and SPA application. All of this is put into the publish directory.
+
+To run this app you need to go tu the publish directory and run command
+
+```
+dotnet SA.Web.dll
+```
+
+It will start the ASP.NET Core 2 MVC application with SPA app init. It will run on http://localhost:5000.
 
 ## Authors
 
