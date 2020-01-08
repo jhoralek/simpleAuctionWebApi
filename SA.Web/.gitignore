@@ -28,6 +28,5 @@ yarn-error.log*
 *.sw*
 
 appsettings.json
-appsettings.Development.json
 appsettings.Qa.json
 appsettings.Production.json

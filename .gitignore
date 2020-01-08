@@ -35,4 +35,5 @@ pi-init
 # Visual Studio 2017
 .vs/
 
-/SA.Web/appsettings.*
+/SA.Web/appsettings.Qa.json
+/SA.Web/appsettings.Production.json
