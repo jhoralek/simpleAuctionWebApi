@@ -11,6 +11,8 @@ import store from "@/store";
 
 import "@/registerServiceWorker";
 import "vuetify/dist/vuetify.min.css";
+import "vue-wysiwyg/dist/vueWysiwyg.css";
+import wysiwyg from "vue-wysiwyg";
 
 import cs from "vee-validate/dist/locale/cs";
 import en from "vee-validate/dist/locale/en";
@@ -21,6 +23,22 @@ import ru from "vee-validate/dist/locale/ru";
 Vue.config.productionTip = false;
 Vue.use(Vuetify);
 Vue.use(moment);
+Vue.use(wysiwyg, {
+  hideModules: {
+    image: true,
+    code: true,
+    justifyLeft: true,
+    justifyCenter: true,
+    justifyRight: true,
+    headings: true,
+    link: true,
+    orderedList: true,
+    unorderedList: true,
+    table: true,
+    separator: true,
+    removeFormat: true
+  }
+});
 Vue.use(VeeValidate, {
   locale: "cs",
   dictionary: { cs, en, sk, de, ru }

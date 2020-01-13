@@ -310,29 +310,39 @@
               </v-layout>
               <v-layout row wrap>
                 <v-flex xs12 md4>
-                  <v-textarea
+                  <!-- <v-textarea
                     v-model="record.current.equipment"
                     v-validate="'max:1000'"
                     :error-messages="errors.collect('equipment')"
                     :label="labelEquipment"
-                    data-vv-name="equipment" />
+                    data-vv-name="equipment" /> -->
+                    <wysiwyg
+                      v-model="record.current.equipment"
+                      :placeholder="labelEquipment" />
                 </v-flex>
                 <v-flex xs12 md4>
-                  <v-textarea
+                  <!-- <v-textarea
                     v-model="record.current.defects"
                     v-validate="'max:1000'"
                     :error-messages="errors.collect('defects')"
                     :label="labelDefects"
-                    data-vv-name="defects" />
+                    data-vv-name="defects" /> -->
+                    <wysiwyg
+                      v-model="record.current.defects"
+                      :placeholder="labelDefects" />
                 </v-flex>
                 <v-flex xs12 md4>
-                  <v-textarea
+                  <!-- <v-text-field
+                    multi-line
                     v-model="record.current.moreDescription"
                     v-validate="'max:1000'"
                     :error-messages="errors.collect('moreDescription')"
                     data-vv-name="moreDescription"
                     couter
-                    :label="labelMoreDescription" />
+                    :label="labelMoreDescription" /> -->
+                    <wysiwyg
+                      v-model="record.current.moreDescription"
+                      :placeholder="labelMoreDescription" />
                 </v-flex>
               </v-layout>
             </v-container>
