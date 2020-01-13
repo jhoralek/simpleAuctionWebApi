@@ -256,8 +256,7 @@
                                             <h3>{{ resx('equipment') }}</h3>
                                         </div>
                                         <v-layout row wrap>
-                                            <v-flex xs12 class="info-value text-xs-left extra-padding">
-                                                {{ record.equipment }}
+                                            <v-flex xs12 class="info-value text-xs-left extra-padding" v-html="record.equipment">
                                             </v-flex>
                                         </v-layout>
                                     </v-expansion-panel-content>
@@ -268,8 +267,7 @@
                                             <h3>{{ resx('defects') }}</h3>
                                         </div>
                                         <v-layout row wrap>
-                                            <v-flex xs12 class="info-value text-xs-left extra-padding">
-                                                {{ record.defects }}
+                                            <v-flex xs12 class="info-value text-xs-left extra-padding" v-html="record.defects">
                                             </v-flex>
                                         </v-layout>
                                     </v-expansion-panel-content>
@@ -280,8 +278,7 @@
                                             <h3>{{ resx('moreDescription') }}</h3>
                                         </div>
                                         <v-layout row wrap>
-                                            <v-flex xs12 class="info-value text-xs-left extra-padding">
-                                                {{ record.moreDescription }}
+                                            <v-flex xs12 class="info-value text-xs-left extra-padding" v-html="record.moreDescription">
                                             </v-flex>
                                         </v-layout>
                                     </v-expansion-panel-content>
