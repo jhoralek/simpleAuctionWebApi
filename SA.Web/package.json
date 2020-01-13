@@ -1,6 +1,6 @@
 {
     "name": "simple-auction",
-    "version": "1.0.0.7",
+    "version": "1.0.7",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
