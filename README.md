@@ -3,6 +3,9 @@
 Simple web application for auctions of cars or heavy machinery.
 We were asked to create a web portal with the option of auctioning heavy machinery and cars.
 
+## Main page
+![MainPage](https://github.com/jhoralek/simpleAuctionWebApi/blob/master/git_content/main_page.png)
+
 ## Technologies we used
 
 ### Backend
