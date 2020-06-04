@@ -40,25 +40,31 @@ import BaseComponent from '../BaseComponent.vue';
 
 @Component({})
 export default class TimePickerComponent extends BaseComponent {
-    @Prop({default: null}) private time: string;
-    @Prop({default: undefined}) private name: string;
-    @Prop({default: undefined}) private validation: object;
-    @Prop({default: ''}) private label: string;
-    @Prop({default: '24hr'}) private format: string;
+    @Prop({default: null})
+    private time: string;
+    @Prop({default: undefined})
+    private name: string;
+    @Prop({default: undefined})
+    private validation: object;
+    @Prop({default: ''})
+    private label: string;
+    @Prop({default: '24hr'})
+    private format: string;
 
     private menu: boolean = false;
     private innerTime: string = null;
 
-    private mounted() {
-        this.innerTime = this.time;
-    }
-
-    @Watch('innerTime') private innerTimeChange(time) {
+    @Watch('innerTime')
+    private innerTimeChange(time) {
         if (time === undefined) {
             return;
         }
 
         this.$emit('time', time);
+    }
+
+    private mounted() {
+        this.innerTime = this.time;
     }
 }
 

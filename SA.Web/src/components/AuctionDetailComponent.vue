@@ -9,7 +9,24 @@
                             v-for="(item,i) in record.files"
                             :key="i"
                             :src="filePath(item)"
-                        ></v-carousel-item>
+                        >
+                        <v-layout row wrap v-if="currentUser.isFeePayed && currentUser.isAuthenticated && isCurrentUserBidding()">
+                            <v-flex xs12 class="text-xs-right">
+                                <v-tooltip top v-if="currentUser.userId === winnerId">
+                                    <v-btn icon slot="activator" color="white">
+                                        <v-icon small color="green" style="cursor: pointer">thumb_up</v-icon>
+                                    </v-btn>
+                                    <span>{{ resx('winning') }} </span>
+                                </v-tooltip>
+                                <v-tooltip top v-else>
+                                    <v-btn icon slot="activator" color="white">
+                                        <v-icon small color="red" style="cursor: pointer">thumb_down</v-icon>
+                                    </v-btn>
+                                    <span>{{ resx('notWinning') }} </span>
+                                </v-tooltip>
+                            </v-flex>
+                        </v-layout>
+                        </v-carousel-item>
                     </v-carousel>
                 </v-flex>
                 <v-flex xs12 md6>
@@ -299,29 +316,30 @@
 
 <script lang="ts">
 
-import { Component, Prop } from 'vue-property-decorator';
+import { Component, Prop, Watch } from 'vue-property-decorator';
 import { Getter, Action, namespace } from 'vuex-class';
+import { clearTimeout, setTimeout } from 'timers';
 
 import BaseComponent from './BaseComponent.vue';
-import Carousel from './helpers/Carousel.vue';
-import LoadingComponent from './helpers/LoadingComponent.vue';
 
-import {
-    PriceComponent,
-    BidComponent,
-    CountdownComponent,
-} from '@/components';
+import CountdownComponent from './helpers/CountdownComponent.vue';
+import PriceComponent from './helpers/PriceComponent.vue';
+import LoadingComponent from './helpers/LoadingComponent.vue';
+import Carousel from './helpers/Carousel.vue';
+import BidComponent from './helpers/BidComponent.vue';
+
 import {
     Record,
     Bid,
     User,
-} from '@/model';
+} from './../model';
+
 import {
     FileSimpleDto,
     AuthUser,
     RecordTableDto,
     CarouselDto,
-} from '@/poco';
+} from './../poco';
 
 const AuthGetter = namespace('auth', Getter);
 const RecordGetter = namespace('record', Getter);
@@ -339,24 +357,67 @@ const AuctionAction = namespace('auction', Action);
     },
 })
 export default class AuctionDetalComponent extends BaseComponent {
-    @AuthGetter('getCurrentLoggedUser') private currentUser: AuthUser;
+    @AuthGetter('getCurrentLoggedUser')
+    private currentUser: AuthUser;
 
-    @RecordGetter('getCurrent') private record: Record;
-    @RecordAction('getDetail') private detail: any;
-    @RecordAction('loadAllPublished') private loadRecods: any;
+    @RecordGetter('getCurrent')
+    private record: Record;
 
-    @AuctionGetter('getAuctionsCarousel') private auctions: CarouselDto[];
-    @AuctionAction('getFutureAutions') private featuredAcutions: any;
+    @RecordGetter('getCurrentWinnerId')
+    private winnerId: number;
+
+    @RecordAction('getDetail')
+    private detail: any;
+    @RecordAction('loadAllPublished')
+    private loadRecods: any;
+    @RecordAction('getRecordsLastBid')
+    private updateWinnerId: any;
+
+    @AuctionGetter('getAuctionsCarousel')
+    private auctions: CarouselDto[];
+
+    @AuctionAction('getFutureAutions')
+    private featuredAcutions: any;
 
     private isLoading: boolean = false;
     private expander: boolean[] = [true, true, true, true, true, true];
     private expander1: boolean[] = [true];
+
+    private winnigRefreshCounter: any = null;
+
+    @Watch('record.bids')
+    private watchBids(newBids) {
+        if (this.winnigRefreshCounter == null) {
+            if (this.isCurrentUserBidding()) {
+                clearInterval(this.winnigRefreshCounter);
+                this.startWinningRefreshCounter();
+            }
+        }
+    }
 
     private mounted() {
         if (this.record.id === undefined) {
             this.detail(this.$route.query.id);
         }
         this.featuredAcutions();
+
+        if (this.isCurrentUserBidding()) {
+            clearInterval(this.winnigRefreshCounter);
+
+            this.startWinningRefreshCounter();
+        }
+    }
+
+    private startWinningRefreshCounter(): void {
+        this.winnigRefreshCounter = setInterval(() => {
+            this.updateWinnerId(this.record.id);
+        }, 30000); // every 30s
+    }
+
+    private beforeDestroy() {
+        if (this.winnigRefreshCounter !== null) {
+            clearInterval(this.winnigRefreshCounter);
+        }
     }
 
     private updated() {
@@ -364,7 +425,7 @@ export default class AuctionDetalComponent extends BaseComponent {
     }
 
     private recordIdToString(record: RecordTableDto): string {
-        if (record.id != undefined) {
+        if (record.id !== undefined) {
             return record.id.toString();
         }
     }
@@ -378,9 +439,19 @@ export default class AuctionDetalComponent extends BaseComponent {
     }
 
     private dateToString(date: Date): string {
-        if (date != undefined) {
+        if (date !== undefined) {
             return date.toString();
         }
+    }
+
+    private isCurrentUserBidding(): boolean {
+        const biddingIds =  this.record.bids.map((x) => x.userId);
+
+        if (biddingIds.length <= 0) {
+            return false;
+        }
+
+        return biddingIds.indexOf(this.currentUser.userId) !== -1;
     }
 
     private canBid(validFrom: Date, validTo: Date): boolean {
@@ -407,7 +478,7 @@ export default class AuctionDetalComponent extends BaseComponent {
     }
 
     get recordIdString(): string {
-        if (this.record.id != undefined) {
+        if (this.record.id !== undefined) {
             return `record-${this.record.id}`;
         }
     }

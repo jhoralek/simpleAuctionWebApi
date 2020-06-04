@@ -16,14 +16,7 @@
                     class="elevation-1">
                     <template slot="items" slot-scope="props">
                         <td class="text-xs-left">
-                            <v-tooltip top v-if="winning(props.item.winningUserId)">
-                                <v-icon small color="green" slot="activator" style="cursor: pointer">thumb_up</v-icon>
-                                <span>{{ resx('winning') }} </span>
-                            </v-tooltip>
-                            <v-tooltip top v-else>
-                                <v-icon small color="red" slot="activator" style="cursor: pointer">thumb_down</v-icon>
-                                <span>{{ resx('notWinning') }} </span>
-                            </v-tooltip>
+                            <thumbs-component :record="props.item"></thumbs-component>
                         </td>
                         <td class="text-xs-left">{{ props.item.name }}</td>
                         <td class="text-xs-left">{{ props.item.validTo | moment('DD.MM.YYYY HH:mm') }}</td>
@@ -64,14 +57,7 @@
                     class="elevation-1">
                     <template slot="items" slot-scope="props">
                         <td class="text-xs-left">
-                            <v-tooltip top v-if="winning(props.item.winningUserId)">
-                                <v-icon small color="green" slot="activator" style="cursor: pointer">thumb_up</v-icon>
-                                <span>{{ resx('won') }} </span>
-                            </v-tooltip>
-                            <v-tooltip top v-else>
-                                <v-icon small color="red" slot="activator" style="cursor: pointer">thumb_down</v-icon>
-                                <span>{{ resx('didntWon') }} </span>
-                            </v-tooltip>
+                            <thumbs-component :record="props.item"></thumbs-component>
                         </td>
                         <td class="text-xs-left">{{ props.item.name }}</td>
                         <td class="text-xs-left">{{ props.item.validTo | moment('DD.MM.YYYY HH:mm') }}</td>
@@ -103,13 +89,15 @@
 <script lang="ts">
 
 import { Component, Prop, Watch } from 'vue-property-decorator';
-import { State, Action, Getter, namespace } from 'vuex-class';
+import { Action, Getter, namespace } from 'vuex-class';
 
-import { AuthState } from '@/store/types';
+import { RecordTableDto } from './../poco';
+
+import BaseComponent from './BaseComponent.vue';
+
 import PriceComponent from '@/components/helpers/PriceComponent.vue';
 import LoadingComponent from '@/components/helpers/LoadingComponent.vue';
-import BaseComponent from './BaseComponent.vue';
-import { RecordTableDto } from '@/poco';
+import ThumbsComponent from './helpers/ThumbsComponent.vue';
 
 const ProfileGetter = namespace('profile', Getter);
 const RecordAction = namespace('record', Action);
@@ -118,13 +106,17 @@ const RecordAction = namespace('record', Action);
     components: {
         LoadingComponent,
         PriceComponent,
+        ThumbsComponent,
     },
 })
 export default class AuctionSummaryComponent extends BaseComponent {
-    @State('auth') private auth: AuthState;
-    @ProfileGetter('getCurrentAuctions') private actualRecords: RecordTableDto[];
-    @ProfileGetter('getEndedAuctions') private endedRecords: RecordTableDto[];
-    @RecordAction('getDetail') private loadRecord: any;
+    @ProfileGetter('getCurrentAuctions')
+    private actualRecords: RecordTableDto[];
+    @ProfileGetter('getEndedAuctions')
+    private endedRecords: RecordTableDto[];
+
+    @RecordAction('getDetail')
+    private loadRecord: any;
 
     private paginationActual: any = {
       rowsPerPage: 5,
@@ -137,16 +129,29 @@ export default class AuctionSummaryComponent extends BaseComponent {
     private loading: boolean = false;
     private headers: any[] = [];
 
-    @Watch('actualRecords') private changeActualRecords(actualRecords) {
+    @Watch('actualRecords')
+    private changeActualRecords(actualRecords) {
         if (actualRecords !== undefined && actualRecords.length > 0) {
             this.paginationActual.totalItems = actualRecords.length;
         }
     }
 
-    @Watch('endedRecords') private changeEndedRecords(endedRecords) {
+    @Watch('endedRecords')
+    private changeEndedRecords(endedRecords) {
         if (endedRecords !== undefined && endedRecords.length > 0) {
             this.paginationEnded.totalItems = endedRecords.length;
         }
+    }
+
+    private goToDetal(item: RecordTableDto): void {
+        this.loading = true;
+        this.loadRecord(item.id).then((response) => {
+            const result = response as boolean;
+            this.loading = false;
+            if (result) {
+                this.$router.push({ path: `/auctionDetail?id=${item.id}` });
+            }
+        });
     }
 
     private mounted() {
@@ -200,22 +205,7 @@ export default class AuctionSummaryComponent extends BaseComponent {
 
         return Math.ceil(this.paginationEnded.totalItems
             / this.paginationEnded.rowsPerPage);
-    }
-
-    private winning(winningUserId: number): boolean {
-        return winningUserId === this.auth.userId;
-    }
-
-    private goToDetal(item: RecordTableDto): void {
-        this.loading = true;
-        this.loadRecord(item.id).then((response) => {
-            const result = response as boolean;
-            this.loading = false;
-            if (result) {
-                this.$router.push({ path: `/auctionDetail?id=${item.id}` });
-            }
-        });
-    }
+        }
 }
 
 </script>

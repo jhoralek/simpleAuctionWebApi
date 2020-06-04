@@ -22,7 +22,7 @@ import { Action, Getter, namespace } from 'vuex-class';
 
 import BaseView from '../BaseView.vue';
 import UserTableComponent from '@/components/User/UserTableComponent.vue';
-import { UserSimpleDto } from '@/poco';
+import { UserSimpleDto } from './../../poco';
 
 const ProfileAction = namespace('profile', Action);
 const ProfileGetter = namespace('profile', Getter);
@@ -33,10 +33,14 @@ const ProfileGetter = namespace('profile', Getter);
   },
 })
 export default class UserAdministration extends BaseView {
-  @ProfileAction('getAllUsersForAdmin') private getUsers: any;
-  @ProfileGetter('getList') private users: UserSimpleDto[];
+  @ProfileAction('getAllUsersForAdmin')
+  private getUsers: any;
+
+  @ProfileGetter('getList')
+  private users: UserSimpleDto[];
 
   private isLoading: boolean = true;
+
   public mounted() {
     this.getUsers().then((response) => {
       if (response) {
@@ -44,6 +48,7 @@ export default class UserAdministration extends BaseView {
       }
     });
   }
+
 }
 
 </script>

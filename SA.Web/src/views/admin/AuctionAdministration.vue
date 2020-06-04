@@ -22,7 +22,7 @@ import { Action, Getter, namespace } from 'vuex-class';
 
 import BaseView from '../BaseView.vue';
 import AdminAuctionTableComponent from '@/components/auction/AdminAuctionTableComponent.vue';
-import { AuctionTableDto } from '@/poco';
+import { AuctionTableDto } from './../../poco';
 
 const AuctionAction = namespace('auction', Action);
 const AuctionGetter = namespace('auction', Getter);
@@ -33,8 +33,11 @@ const AuctionGetter = namespace('auction', Getter);
   },
 })
 export default class AuctionAdministration extends BaseView {
-  @AuctionGetter('getTableAuctions') private auctions: AuctionTableDto[];
-  @AuctionAction('getAllForAdmin') private loadAuctions: any;
+  @AuctionGetter('getTableAuctions')
+  private auctions: AuctionTableDto[];
+
+  @AuctionAction('getAllForAdmin')
+  private loadAuctions: any;
 
   private isLodading: boolean = true;
 

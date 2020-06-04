@@ -4,14 +4,15 @@ import { Component, Vue } from 'vue-property-decorator';
 import { State, Getter, Action, namespace } from 'vuex-class';
 
 import BaseComponent from '@/components/BaseComponent.vue';
-import { SettingsState } from '@/store/types';
-import Validation from '@/validation';
+import { SettingsState } from './../store/types';
+import Validation from './../validation';
 
 const SettingsAction = namespace('settings', Action);
 
 @Component({})
 export default class FormBaseComponent extends BaseComponent {
-    @SettingsAction('changeFormView') public changeFormView: any;
+    @SettingsAction('changeFormView')
+    public changeFormView: any;
 
     public updated() {
         this.changeFormView(this.$el.className);

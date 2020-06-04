@@ -105,7 +105,7 @@
                 </router-link>
             </v-flex>
             </v-card>
-            <v-card v-if="auth.isAuthenticated">
+            <!-- <v-card v-if="auth.isAuthenticated">
             <v-flex justify-start offset-xs1>
                 <router-link
                 class="nav-item btn btn--flat btn--router"
@@ -113,7 +113,7 @@
                 to="/record-administration">{{ resx('recordAdministration') }}
                 </router-link>
             </v-flex>
-            </v-card>
+            </v-card> -->
             <v-card v-if="auth.isAuthenticated">
             <v-flex justify-start offset-xs1>
                 <router-link
@@ -135,14 +135,15 @@
 
 <script lang="ts">
 
-import BaseView from './BaseView.vue';
 import Component from 'vue-class-component';
 import { State } from 'vuex-class';
-import { SettingsState, AuthState } from '@/store/types';
+import { SettingsState, AuthState } from './../store/types';
 
 import {
   LoginFormComponent,
-} from '@/components';
+} from './../components';
+
+import BaseView from './BaseView.vue';
 
 @Component({
     components: {
@@ -150,8 +151,10 @@ import {
     },
 })
 export default class MainMenuDesktop extends BaseView {
-    @State('settings') private settings: SettingsState;
-    @State('auth') private auth: AuthState;
+    @State('settings')
+    private settings: SettingsState;
+    @State('auth')
+    private auth: AuthState;
 
     get pageLogo(): string {
          return `${this.settings.apiUrl.replace('/api', '')}/img/logo-small.png`;

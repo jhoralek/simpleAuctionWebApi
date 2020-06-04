@@ -1,12 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SA.Application;
+using SA.Application.Bid;
+using SA.Application.Email;
 using SA.Application.Records;
 using SA.Core.Model;
 using SA.EntityFramework.EntityFramework.Repository;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SA.WebApi.Controllers
 {
@@ -15,14 +19,21 @@ namespace SA.WebApi.Controllers
     {
         private readonly IEntityRepository<Record> _recordRepository;
         private readonly IEntityRepository<Auction> _auctionRepository;
+        private readonly IEntityRepository<User> _userRepository;
+        private readonly IUserEmailFactory _userEmailFactory;        
+
         public BidsController(
             IEntityRepository<Bid> repository,
             IEntityRepository<Record> recordRepository,
-            IEntityRepository<Auction> auctionRepository)
+            IEntityRepository<Auction> auctionRepository,
+            IEntityRepository<User> userRepository,
+            IUserEmailFactory userEmailFactory)
             : base(repository)
         {
             _recordRepository = recordRepository;
             _auctionRepository = auctionRepository;
+            _userRepository = userRepository;
+            _userEmailFactory = userEmailFactory;
         }
 
         [Authorize("read:messages")]
@@ -31,10 +42,30 @@ namespace SA.WebApi.Controllers
         public async Task<IActionResult> GetActualPrice(int recordId)
         {
             var bids = await _repository
-                .GetAllAsync<Application.Bid.BidSimpleDto, decimal>(x =>
+                .GetAllAsync<BidSimpleDto, decimal>(x =>
                     x.RecordId == recordId, x => x.Price);
             return Json(bids.Max(x => x.Price));
         }
+
+        [Authorize("admin")]
+        [HttpGet("{id}")]
+        [Route("getRecordsBidForAdmin")]
+        public async Task<IActionResult> GetRecordsBidForAdmin(int id)
+            => Json(await _repository
+                .GetAllAsync<BidSimpleDto, DateTime?>(
+                    x => x.RecordId == id,
+                    orderDesc: x => x.Created));
+
+        [Authorize("admin")]
+        [HttpGet("{id}")]
+        [Route("getRecordsLastBid")]
+        public async Task<IActionResult> GetRecordsLastBid(int id)
+            => Json(await _repository.Context.Bids
+                .Where(x => x.RecordId == id)
+                .OrderByDescending(x => x.Created)
+                .Take(1)
+                .ProjectTo<BidSimpleDto>()
+                .FirstOrDefaultAsync());
 
         [Authorize("read:messages")]
         [HttpPost("{recordValidTo}")]
@@ -63,6 +94,8 @@ namespace SA.WebApi.Controllers
                 return Json(response);
             }
 
+            var oldWinner = await _userRepository.GetOneAsync<User>(x => x.Id == record.WinningUserId);
+
             try
             {
                 var newBid = await _repository.AddAsync(bid);
@@ -81,6 +114,8 @@ namespace SA.WebApi.Controllers
                     auction.ValidTo = extendTo;
                     await _auctionRepository.UpdateAsync(auction);
                 }
+
+                await _userEmailFactory.SendAuctionOverbidenEmail(oldWinner, record);
 
                 response.Status = MessageStatusEnum.Success; ;
                 response.Code = "createdSuccessfully";

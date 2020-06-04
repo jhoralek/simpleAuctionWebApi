@@ -15,7 +15,7 @@
 import Component from 'vue-class-component';
 
 import BaseView from './BaseView.vue';
-import { AuctionEndedComponent } from '@/components';
+import { AuctionEndedComponent } from './../components';
 
 @Component({
   components: {

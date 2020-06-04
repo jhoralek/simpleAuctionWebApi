@@ -8,7 +8,7 @@
 
 import { Component, Prop } from 'vue-property-decorator';
 import BaseView from '@/views/BaseView.vue';
-import { AuctionDetailComponent } from '@/components';
+import { AuctionDetailComponent } from './../components';
 
 @Component({
     components: {

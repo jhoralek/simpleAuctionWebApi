@@ -3,6 +3,8 @@ import { RecordState } from '@/store/types';
 import { Record } from '@/model';
 import { FileSimpleDto, RecordTableDto, BidDto } from '@/poco';
 
+const DATE_FORMAT = 'DD.MM.YYYY HH:mm';
+
 const mutations: MutationTree<RecordState> = {
     /**
      * Initialization of the state
@@ -10,6 +12,7 @@ const mutations: MutationTree<RecordState> = {
      */
     RECORD_INITIAL_STATE(state) {
         state.current = undefined;
+        state.currentWinnerId = -1;
         state.records = [];
         state.error = false;
     },
@@ -19,6 +22,7 @@ const mutations: MutationTree<RecordState> = {
             isActive: false,
             files: [],
         } as Record;
+        state.currentWinnerId = -1;
     },
     /**
      * Change current record state
@@ -30,10 +34,10 @@ const mutations: MutationTree<RecordState> = {
         state.current = record;
 
         if (record !== null && record.validFrom !== null) {
-            state.current.validFrom = new Date(record.validFrom);
+            state.current.validFrom = record.validFrom;
         }
         if (record !== null && record.validTo !== null) {
-            state.current.validTo = new Date(record.validTo);
+            state.current.validTo = record.validTo;
         }
         if (record !== null && record.dateOfFirstRegistration !== null) {
             state.current.dateOfFirstRegistration = new Date(record.dateOfFirstRegistration);
@@ -68,76 +72,38 @@ const mutations: MutationTree<RecordState> = {
         state.error = false;
         state.current.userId = userId;
     },
+    RECORD_SET_CURRENT_AUCTION_ID(state, auctionId: number) {
+        state.error = false;
+        state.current.auctionId = auctionId;
+    },
     RECORD_CHANGE_BIDS_TO_CURRENT(state, bids: BidDto[]) {
         state.error = false;
         state.current.bids = bids as BidDto[];
     },
-    RECORD_SET_VALID_DATES(state, record: Record) {
+    RECORD_SET_VALID_DATES(state, dates: any)   {
+        const { validFrom, validTo } = dates;
+
         state.error = false;
 
-        const startDate: Date = new Date(Date.UTC(
-            record.validFrom.getFullYear(),
-            record.validFrom.getMonth(),
-            record.validFrom.getDate(),
-            record.validFrom.getHours(),
-            record.validFrom.getMinutes(),
-            0,
-            0,
-        ));
+        const formatedFrom = this._vm.$moment(new Date(validFrom), DATE_FORMAT).utc(true);
+        const formatedTo = this._vm.$moment(new Date(validTo), DATE_FORMAT).utc(true);
 
-        const endDate: Date = new Date(Date.UTC(
-            record.validTo.getFullYear(),
-            record.validTo.getMonth(),
-            record.validTo.getDate(),
-            record.validTo.getHours(),
-            record.validTo.getMinutes(),
-            59,
-            0,
-        ));
-
-        state.current.validFrom = startDate;
-        state.current.validTo = endDate;
+        state.current.validFrom = formatedFrom;
+        state.current.validTo = formatedTo;
     },
-    RECORD_SET_VALID_TIMES(state, { from, to }) {
+    RECORD_CHANGE_WINNING_USER_ID(state, bid: BidDto) {
+        const { userId, price } = bid;
+
         state.error = false;
-        if (state.current.validFrom && from) {
-            const fromHours: number = from === undefined
-                ? 0
-                : parseInt((from as string).split(':')[0], 0);
-            const fromMinutes: number = from === undefined
-                ? 0
-                : parseInt((from as string).split(':')[1], 0);
+        state.currentWinnerId = userId;
+        state.current.currentPrice = price;
 
-            const fromDate: Date = new Date(Date.UTC(
-                state.current.validFrom.getFullYear(),
-                state.current.validFrom.getMonth(),
-                state.current.validFrom.getDate(),
-                fromHours,
-                fromMinutes,
-                0,
-                0,
-            ));
-            state.current.validFrom = fromDate;
-        }
+        const isIn = state.current.bids
+            .filter((item) => item.id === bid.id).length > 0;
 
-        if (state.current.validTo && to) {
-            const toHours: number = to === undefined
-                ? 0
-                : parseInt((to as string).split(':')[0], 0);
-            const toMinutes: number = to === undefined
-                ? 0
-                : parseInt((to as string).split(':')[1], 0);
-
-            const toDate: Date = new Date(Date.UTC(
-                state.current.validTo.getFullYear(),
-                state.current.validTo.getMonth(),
-                state.current.validTo.getDate(),
-                toHours,
-                toMinutes,
-                0,
-                0,
-            ));
-            state.current.validTo = toDate;
+        if (!isIn) {
+            state.current.bids.unshift(bid);
+            state.current.numberOfBids ++;
         }
     },
 };

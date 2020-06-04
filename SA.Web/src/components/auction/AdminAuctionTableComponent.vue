@@ -91,9 +91,63 @@
     </v-container>
     <v-container  grid-list-xs pa-0 v-else>
       <v-layout row wrap>
-        <v-flex xs12>
+        <v-flex xs12 v-if="itemLoaded">
+          <v-layout row wrap>
+            <v-flex xs10>
+              <h2>{{ resx('auctions') }}:
+                [{{  selecteAuction.name }}:
+                {{ selecteAuction.validFrom | moment('DD.MM.YYYY HH:mm') }} -
+                {{ selecteAuction.validTo | moment('DD.MM.YYYY HH:mm') }}]
+              </h2>
+            </v-flex>
+            <v-flex xs2 class="text-xs-right">
+              <v-btn color="black" dark class="mb-2" @click="backToList">{{ resx('back') }}</v-btn>
+            </v-flex>
+          </v-layout>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <h3>{{ resx('recordAdministration') }}</h3>
+            </v-flex>
+          </v-layout>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <admin-record-table-component :auction="selecteAuction" :records="records" :loading="editLoading" />
+            </v-flex>
+          </v-layout>
+        </v-flex>
+        <v-flex xs12 v-else>
           <v-layout>
-            <v-flex xs12 class="text-xs-right">
+            <v-flex xs7>
+                  <v-chip
+                    class="ma-2"
+                    color="red"
+                    text-color="white">
+                      {{ resx('auctionInErrorState' )}}
+                    </v-chip>
+                  <v-chip
+                    class="ma-2"
+                    color="green"
+                    text-color="white">
+                      {{ resx('auctionIsActive' )}}
+                    </v-chip>
+                  <v-chip
+                    class="ma-2"
+                    color="blue"
+                    text-color="white">
+                      {{ resx('featureAuction' )}}
+                    </v-chip>
+            </v-flex>
+            <v-flex xs2 class="text-xs-right">
+                <v-switch
+                    v-model="isActive"
+                    :label="labelIsActive" />
+            </v-flex>
+            <v-flex xs2 class="text-xs-right">
+                <v-switch
+                    v-model="isEnded"
+                    :label="labelIsEnded" />
+            </v-flex>
+            <v-flex xs1 class="text-xs-right">
               <v-btn color="black" dark class="mb-2" @click="newAuction">{{ resx('new') }}</v-btn>
             </v-flex>
           </v-layout>
@@ -107,40 +161,53 @@
             class="elevation-1">
             <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
             <template slot="items" slot-scope="props">
-              <td>{{ props.item.name }}</td>
-              <td>{{ props.item.validFrom | moment('DD.MM.YYYY HH:mm') }}</td>
-              <td>{{ props.item.validTo | moment('DD.MM.YYYY HH:mm') }}</td>
-              <td>
-                <v-checkbox
-                  v-model="props.item.isActive"
-                  :disabled="true"
-                  hide-details
-                  class="shrink mr-2" />
-              </td>
-              <td>
-                <v-checkbox
-                  v-model="props.item.isEnded"
-                  :disabled="true"
-                  hide-details
-                  class="shrink mr-2" />
-              </td>
-              <td>{{ props.item.numberOfRecords }}</td>
-              <td>
-                  <v-icon
-                      style="cursor: pointer"
-                      small
-                      class="mr-2"
-                      @click="edit(props.item)">
-                      edit
-                  </v-icon>
-                  <v-icon
-                      style="cursor: pointer"
-                      small
-                      class="mr-2"
-                      @click="wantToDeleteRecord(props.item)">
-                      delete
-                  </v-icon>
-              </td>
+              <tr :class="{
+                    row_color_warning: notValidAndNotEnded(props.item),
+                    row_color_feature: validAndNotActive(props.item),
+                    row_color_ok: validAndActive(props.item)
+                  }">
+                <td>{{ props.item.name }}</td>
+                <td>{{ props.item.validFrom | moment('DD.MM.YYYY HH:mm') }}</td>
+                <td>{{ props.item.validTo | moment('DD.MM.YYYY HH:mm') }}</td>
+                <td>
+                  <v-checkbox
+                    v-model="props.item.isActive"
+                    :disabled="true"
+                    hide-details
+                    class="shrink mr-2" />
+                </td>
+                <td>
+                  <v-checkbox
+                    v-model="props.item.isEnded"
+                    :disabled="true"
+                    hide-details
+                    class="shrink mr-2" />
+                </td>
+                <td>{{ props.item.numberOfRecords }}</td>
+                <td>
+                    <v-icon
+                        style="cursor: pointer"
+                        small
+                        class="mr-2"
+                        @click="items(props.item)">
+                        list
+                    </v-icon>
+                    <v-icon
+                        style="cursor: pointer"
+                        small
+                        class="mr-2"
+                        @click="edit(props.item)">
+                        edit
+                    </v-icon>
+                    <v-icon
+                        style="cursor: pointer"
+                        small
+                        class="mr-2"
+                        @click="wantToDeleteRecord(props.item)">
+                        delete
+                    </v-icon>
+                </td>
+              </tr>
             </template>
           </v-data-table>
           <div class="text-xs-center pt-2">
@@ -155,51 +222,116 @@
 <script lang="ts">
 
 import { Component, Prop, Watch } from 'vue-property-decorator';
-import { State, Action, namespace } from 'vuex-class';
+import { State, Action, Getter, namespace } from 'vuex-class';
 
 import BaseComponent from '../BaseComponent.vue';
 import DatePickerComponent from '@/components/helpers/DatePickerComponent.vue';
 import QuestionDialogComponent from '@/components/helpers/QuestionDialogComponent.vue';
 import TimePickerComponent from '@/components/helpers/TimePickerComponent.vue';
+import AdminRecordTableComponent from '@/components/auction/AdminRecordTableComponent.vue';
 
-import { AuctionTableDto } from '@/poco';
-import { Auction } from '@/model';
-import { AuctionState } from '@/store/types';
+import { AuctionTableDto, RecordTableDto } from './../../poco';
+import { Auction, Record } from './../../model';
+import { AuctionState } from './../../store/types';
 
 const AuctionAction = namespace('auction', Action);
+const RecordAction = namespace('record', Action);
+const RecordGetter = namespace('record', Getter);
 
 @Component({
   components: {
     DatePickerComponent,
     QuestionDialogComponent,
     TimePickerComponent,
+    AdminRecordTableComponent,
   },
 })
 export default class AdminAuctionTableComponent extends BaseComponent {
-  @State('auction') private auction: AuctionState;
+  @State('auction')
+  private auction: AuctionState;
 
-  @Prop({default: []}) private auctions: AuctionTableDto[];
-  @Prop({default: true}) private loading: boolean;
+  @Prop({default: []})
+  private auctions: AuctionTableDto[];
+  @Prop({default: true})
+  private loading: boolean;
 
-  @AuctionAction('initialCurrent') private initCurrent: any;
-  @AuctionAction('getDetail') private getDetail: any;
-  @AuctionAction('create') private create: any;
+  @AuctionAction('initialCurrent')
+  private initCurrent: any;
+  @AuctionAction('getDetail')
+  private getDetail: any;
+  @AuctionAction('create')
+  private create: any;
 
-  @AuctionAction('delete') private delete: any;
-  @AuctionAction('update') private update: any;
+  @AuctionAction('delete')
+  private delete: any;
+  @AuctionAction('update')
+  private update: any;
+
+  @RecordGetter('getRecords')
+  private records: RecordTableDto[];
+  @RecordAction('getAuctionRecordsForAdmin')
+  private loadRecords: any;
+  @RecordAction('updateRecordDatesByAuctionId')
+  private updateRecordDatesByAuctionId: any;
 
   private timeTo: string = null;
   private timeFrom: string = null;
   private editLoading: boolean = false;
+  private itemLoaded: boolean = false;
   private questionDialog: boolean = false;
   private objectToDelete: AuctionTableDto = undefined;
   private state: number = 1;
   private formActive: boolean = false;
   private headers: any[] = [];
+  private isActive: boolean = false;
+  private isEnded: boolean = false;
   private pagination: any = {
       rowsPerPage: 10,
       totalItems: 0,
   };
+  private selecteAuction: AuctionTableDto = undefined;
+
+  private tempAuctions: AuctionTableDto[] = [];
+
+  @Watch('isActive') private changeFilterIsActive(isActive) {
+    if (isActive) {
+      if (this.tempAuctions.length <= 0) {
+        Object.assign(this.tempAuctions, this.auctions);
+      }
+
+      if (this.isEnded) {
+        this.auctions = this.tempAuctions.filter((item) => item.isActive || item.isEnded);
+      } else {
+        this.auctions = this.tempAuctions.filter((item) => item.isActive);
+      }
+    } else {
+      if (this.isEnded) {
+        this.auctions = this.tempAuctions.filter((item) => item.isEnded);
+      } else {
+        this.auctions = this.tempAuctions;
+      }
+    }
+  }
+
+  @Watch('isEnded') private changeFilterIsEnded(isEnded) {
+    if (isEnded) {
+      if (this.tempAuctions.length <= 0) {
+        Object.assign(this.tempAuctions, this.auctions);
+      }
+
+      if (this.isActive) {
+        this.auctions = this.tempAuctions.filter((item) => item.isActive || item.isEnded);
+      } else {
+        this.auctions = this.tempAuctions.filter((item) => item.isEnded);
+      }
+    } else {
+      if (this.isActive) {
+        this.auctions = this.tempAuctions.filter((item) => item.isActive);
+      } else {
+        this.auctions = this.tempAuctions;
+      }
+    }
+  }
 
   @Watch('auctions') private changeUsers(auctions) {
       if (auctions !== undefined && auctions.length > 0) {
@@ -289,9 +421,38 @@ export default class AdminAuctionTableComponent extends BaseComponent {
       return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage);
   }
 
+  private notValidAndNotEnded(item: AuctionTableDto): boolean {
+    const currentDate = new Date();
+    const itemDate = new Date(item.validTo);
+    return itemDate <= currentDate
+      && (item.isActive || !item.isEnded);
+  }
+
+  private validAndActive(item: AuctionTableDto): boolean {
+    const currentDate = new Date();
+    const dateTo = new Date(item.validTo);
+    const dateFrom = new Date(item.validFrom);
+
+    return dateTo >= currentDate
+      && dateFrom <= currentDate
+      && item.isActive
+      && !item.isEnded;
+  }
+
+  private validAndNotActive(item: AuctionTableDto): boolean {
+    const currentDate = new Date();
+    const dateTo = new Date(item.validTo);
+    const dateFrom = new Date(item.validFrom);
+
+    return dateFrom >= currentDate
+      && !item.isEnded;
+  }
+
   private backToList(): void {
     this.initCurrent().then((response) => {
       this.formActive = false;
+      this.itemLoaded = false;
+      this.selecteAuction = undefined;
     });
   }
 
@@ -319,6 +480,19 @@ export default class AdminAuctionTableComponent extends BaseComponent {
       });
     }
   }
+
+    private items(item: AuctionTableDto): void {
+      if (item.id > 0) {
+        this.editLoading = true;
+        this.selecteAuction = item;
+        this.loadRecords(item.id).then((response) => {
+          this.itemLoaded = true;
+          if (response) {
+            this.editLoading = false;
+          }
+        });
+      }
+    }
 
   private wantToDeleteRecord(item: AuctionTableDto): void {
     this.questionDialog = true;
@@ -393,9 +567,12 @@ export default class AdminAuctionTableComponent extends BaseComponent {
               }
             });
         } else {
+          const auctionId = this.auction.current.id;
           this.update(this.auction.current).then((respRecord) => {
             if (respRecord) {
-              this.backToList();
+              this.updateRecordDatesByAuctionId(auctionId).then((resp) => {
+                this.backToList();
+              });
             }
           });
         }
@@ -424,6 +601,18 @@ export default class AdminAuctionTableComponent extends BaseComponent {
 
 .admin-auction-table .v-toolbar {
   height: 10px !important;
+}
+
+.application .theme--light.v-table, .theme--light .v-table .row_color_warning {
+  color: red !important;
+}
+
+.application .theme--light.v-table, .theme--light .v-table .row_color_ok {
+  color: green !important;
+}
+
+.application .theme--light.v-table, .theme--light .v-table .row_color_feature {
+  color: lightskyblue !important;
 }
 
 </style>

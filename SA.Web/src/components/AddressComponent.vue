@@ -60,7 +60,7 @@
 import { Component, Prop } from 'vue-property-decorator';
 import { Action, Getter, namespace } from 'vuex-class';
 
-import { Address, Country } from '@/model';
+import { Address, Country } from './../model';
 import BaseComponent from './BaseComponent.vue';
 
 const SettingsGetter = namespace('settings', Getter);
@@ -68,24 +68,16 @@ const ProfileAction = namespace('profile', Action);
 
 @Component({})
 export default class CustomerDetailComponent extends BaseComponent {
-  @Prop({default: undefined}) private address: Address;
-  @SettingsGetter('getCountries') private countries: Country[];
-  @ProfileAction('updateAddress')  private update: any;
+  @Prop({default: undefined})
+  private address: Address;
+
+  @SettingsGetter('getCountries')
+  private countries: Country[];
+
+  @ProfileAction('updateAddress')
+  private update: any;
 
   private isLoading: boolean = false;
-
-  get labelStreet(): string {
-    return super.settings.resource.street;
-  }
-  get labelCity(): string {
-    return super.settings.resource.city;
-  }
-  get labelPostCode(): string {
-    return super.settings.resource.postCode;
-  }
-  get labelCountry(): string {
-    return super.settings.resource.country;
-  }
 
   private submitAddress(): void {
     this.$validator.validateAll().then((response) => {
@@ -98,6 +90,19 @@ export default class CustomerDetailComponent extends BaseComponent {
         });
       }
     });
+  }
+
+  get labelStreet(): string {
+    return super.settings.resource.street;
+  }
+  get labelCity(): string {
+    return super.settings.resource.city;
+  }
+  get labelPostCode(): string {
+    return super.settings.resource.postCode;
+  }
+  get labelCountry(): string {
+    return super.settings.resource.country;
   }
 }
 

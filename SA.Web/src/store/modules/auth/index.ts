@@ -1,9 +1,9 @@
-import { Module } from "vuex";
-import { RootState, AuthState } from "@/store/types";
+import { Module } from 'vuex';
+import { RootState, AuthState } from '@/store/types';
 
-import getters from "@/store/modules/auth/getters";
-import actions from "@/store/modules/auth/actions";
-import mutations from "@/store/modules/auth/mutations";
+import getters from '@/store/modules/auth/getters';
+import actions from '@/store/modules/auth/actions';
+import mutations from '@/store/modules/auth/mutations';
 
 export const state: AuthState = {
   userId: undefined,
@@ -16,7 +16,7 @@ export const state: AuthState = {
   error: false,
   errorMessage: undefined,
   secondsToLogout: 0,
-  timer: null
+  timer: null,
 };
 
 const namespaced: boolean = true;
@@ -26,5 +26,5 @@ export const auth: Module<AuthState, RootState> = {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

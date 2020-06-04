@@ -39,9 +39,9 @@ import {
   RegistrationComponent,
   HomeComponent,
   ActualRandomComponent,
-} from '@/components';
+} from './../components';
 
-import { SettingsState, AuthState } from '@/store/types';
+import { SettingsState, AuthState } from './../store/types';
 
 const ProfileAction = namespace('profile', Action);
 
@@ -53,9 +53,13 @@ const ProfileAction = namespace('profile', Action);
   },
 })
 export default class Home extends BaseView {
-  @State('settings') private settings: SettingsState;
-  @State('auth') private auth: AuthState;
-  @ProfileAction('initialState') private init: any;
+  @State('settings')
+  private settings: SettingsState;
+  @State('auth')
+  private auth: AuthState;
+
+  @ProfileAction('initialState')
+  private init: any;
 
   public mounted() {
     this.init();

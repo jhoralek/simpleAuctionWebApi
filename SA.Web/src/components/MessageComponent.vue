@@ -21,20 +21,35 @@
 import { Component } from 'vue-property-decorator';
 import { State, Action, Getter, namespace } from 'vuex-class';
 
+import { MessageState } from './../store/types';
+import { MessageDto } from './../poco';
+import { MessageStatusEnum } from './../model';
+
 import BaseComponent from '@/components/BaseComponent.vue';
-import { MessageState } from '@/store/types';
-import { MessageDto } from '@/poco';
-import { MessageStatusEnum } from '@/model';
 
 const MessageGetter = namespace('message', Getter);
 const MessageAction = namespace('message', Action);
 
 @Component({})
 export default class MessageComponent extends BaseComponent {
-  @State('message') public message: MessageState;
+  @State('message')
+  public message: MessageState;
 
-  @MessageGetter('getMessage') public innerMessage: MessageDto;
-  @MessageAction('initialState') public initMessage: any;
+  @MessageGetter('getMessage')
+  public innerMessage: MessageDto;
+
+  @MessageAction('initialState')
+  public initMessage: any;
+
+  public callback() {
+      if (this.message.callbackFnc !== undefined) {
+        this.message.callbackFnc();
+        this.initMessage();
+      } else {
+          // call close only snackbar windows
+          this.initMessage();
+      }
+  }
 
   get messageColor() {
     switch (this.innerMessage.state) {
@@ -62,17 +77,6 @@ export default class MessageComponent extends BaseComponent {
       return this.message.fromResources
         ? this.resx(this.innerMessage.message)
         : this.innerMessage.message;
-  }
-
-  public callback() {
-      if (this.message.callbackFnc != undefined) {
-        this.message.callbackFnc();
-        this.initMessage();
-      }
-      else {
-          // call close only snackbar windows
-          this.initMessage();
-      }
   }
 }
 </script>

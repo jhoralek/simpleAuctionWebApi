@@ -36,14 +36,18 @@ import { Vue, Prop, Component, Watch } from 'vue-property-decorator';
 import { Getter, namespace } from 'vuex-class';
 
 import BaseComponent from '../BaseComponent.vue';
-import Helpers from '@/helpers';
+import Helpers from './../../helpers';
 
 @Component({})
 export default class DatePickerComponent extends BaseComponent {
-    @Prop({default: undefined}) private date: Date;
-    @Prop({default: 'date' }) private name: string;
-    @Prop({default: undefined}) private validation: object;
-    @Prop({default: ''}) private label: string;
+    @Prop({default: undefined})
+    private date: Date;
+    @Prop({default: 'date' })
+    private name: string;
+    @Prop({default: undefined})
+    private validation: object;
+    @Prop({default: ''})
+    private label: string;
 
     private dateFormatted: string = null;
     private menu: boolean = false;

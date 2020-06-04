@@ -18,9 +18,10 @@
 import Component from 'vue-class-component';
 import { State} from 'vuex-class';
 
-import { SettingsState } from '@/store/types';
+import { SettingsState } from './../store/types';
+import { GdprFormComponent } from './../components';
+
 import BaseView from './BaseView.vue';
-import { GdprFormComponent } from '@/components';
 
 @Component({
     components: {
@@ -28,7 +29,8 @@ import { GdprFormComponent } from '@/components';
     },
 })
 export default class Gdpr extends BaseView {
-    @State('settings') private settings: SettingsState;
+    @State('settings')
+    private settings: SettingsState;
 
     get logo(): string {
         return `${this.settings.apiUrl.replace('/api', '')}/img/home_cars_jera_trading.png`;

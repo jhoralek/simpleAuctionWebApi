@@ -22,7 +22,7 @@ import { Action, Getter, namespace } from 'vuex-class';
 
 import BaseView from '../BaseView.vue';
 import GdprTableComponent from '@/components/User/GdprTableComponent.vue';
-import { GdprRecordTableDto } from '@/poco';
+import { GdprRecordTableDto } from './../../poco';
 
 const ProfileAction = namespace('profile', Action);
 
@@ -32,7 +32,8 @@ const ProfileAction = namespace('profile', Action);
   },
 })
 export default class GdprAdministration extends BaseView {
-  @ProfileAction('getAllGdprRecordsForAdmin') private getRecords: any;
+  @ProfileAction('getAllGdprRecordsForAdmin')
+  private getRecords: any;
 
   private records: GdprRecordTableDto[] = [] as GdprRecordTableDto[];
   private isLoading: boolean = true;

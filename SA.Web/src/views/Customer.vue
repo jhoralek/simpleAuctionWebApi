@@ -70,16 +70,19 @@ import { Component } from 'vue-property-decorator';
 import { Getter, Action, State, namespace } from 'vuex-class';
 
 import LoadingComponent from '@/components/helpers/LoadingComponent.vue';
-import { Address } from '@/model';
-import { RecordTableDto } from '@/poco';
-import BaseView from './BaseView.vue';
-import { ProfileState } from '@/store/types';
+import { Address } from './../model';
+import { RecordTableDto } from './../poco';
+
+import { ProfileState } from './../store/types';
+
 import {
   UserDetailComponent,
   CustomerDetailComponent,
   AddressComponent,
   AuctionSummaryComponent,
-} from '@/components';
+} from './../components';
+
+import BaseView from './BaseView.vue';
 
 const ProfileGetter = namespace('profile', Getter);
 const ProfileAction = namespace('profile', Action);
@@ -94,15 +97,26 @@ const ProfileAction = namespace('profile', Action);
   },
 })
 export default class Customer extends BaseView {
-  @State('profile') public profile: ProfileState;
-  @ProfileGetter('getCurrentAuctions') private actualRecords: RecordTableDto[];
-  @ProfileGetter('getEndedAuctions') private endedRecords: RecordTableDto[];
-  @ProfileGetter('getCustomersFullName') private customersFullName: string;
-  @ProfileGetter('getCustomersAddress') private getCustomersAddress: Address;
-  @ProfileAction('initialState') private initProfile: any;
-  @ProfileAction('loadLoggedUser') private load: any;
-  @ProfileAction('loadUsersEndedAuctions') private loadEnded: any;
-  @ProfileAction('loadUsersCurrentAuctions') private loadCurrent: any;
+  @State('profile')
+  public profile: ProfileState;
+
+  @ProfileGetter('getCurrentAuctions')
+  private actualRecords: RecordTableDto[];
+  @ProfileGetter('getEndedAuctions')
+  private endedRecords: RecordTableDto[];
+  @ProfileGetter('getCustomersFullName')
+  private customersFullName: string;
+  @ProfileGetter('getCustomersAddress')
+  private getCustomersAddress: Address;
+
+  @ProfileAction('initialState')
+  private initProfile: any;
+  @ProfileAction('loadLoggedUser')
+  private load: any;
+  @ProfileAction('loadUsersEndedAuctions')
+  private loadEnded: any;
+  @ProfileAction('loadUsersCurrentAuctions')
+  private loadCurrent: any;
 
   private isLoading: boolean = true;
 

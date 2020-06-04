@@ -21,6 +21,9 @@ import ResetPassword from './results/ResetPassword.vue';
 import AuctionEndedAdministration from './admin/AuctionEndedAdministration.vue';
 import AuctionEnded from './AuctionEnded.vue';
 import GdprInfo from './GdprInfo.vue';
+import MainMenuDesktop from './MainMenuDesktop.vue';
+import MainMenuMobile from './MainMenuMobile.vue';
+import FooterView from './FooterView.vue';
 
 export {
     About,
@@ -46,4 +49,7 @@ export {
     AuctionEnded,
     AuctionEndedAdministration,
     GdprInfo,
+    MainMenuDesktop,
+    FooterView,
+    MainMenuMobile,
 };

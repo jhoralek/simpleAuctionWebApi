@@ -14,8 +14,11 @@ namespace SA.WebApi.Controllers
     [Route("api/Records")]
     public class RecordsController : BaseController<Record>
     {
-        public RecordsController(IEntityRepository<Record> repository)
-            : base(repository) { }
+        private IEntityRepository<Auction> _auctionRepo;
+        public RecordsController(IEntityRepository<Record> repository, IEntityRepository<Auction> auctionRepo)
+            : base(repository) {
+            _auctionRepo = auctionRepo;
+        }
 
         [HttpGet]
         [Route("getAllForList")]
@@ -63,7 +66,7 @@ namespace SA.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] Record record)
         {
-            var persistedItem = await _repository.GetOneAsync<Record>(x => x.Id == record.Id);
+                var persistedItem = await _repository.GetOneAsync<Record>(x => x.Id == record.Id);
             if (record == null && persistedItem == null)
             {
                 return BadRequest();
@@ -107,9 +110,22 @@ namespace SA.WebApi.Controllers
                 .ThenByDescending(x => x.ValidTo)
                 .ProjectTo<RecordTableDto>()
                 .ToListAsync());
-        //=> Json(await _repository
-        //        .GetAllAsync<RecordTableDto, bool>(order: y =>
-        //            y.IsActive));
+        
+        [Authorize("admin")]
+        [HttpGet("{id}")]
+        [Route("getAuctionRecordsForAdmin")]
+        public async Task<IActionResult> GetAuctionRecordsForAdmin(int id)
+            => Json(await _repository.Context.Records
+                .Where(x => x.AuctionId == id)
+                .Include(x => x.User)
+                .Include(x => x.Bids)
+                .Include(x => x.Files)
+                .OrderByDescending(x => x.Auction.IsActive)
+                .ThenByDescending(x => x.IsActive)
+                .ThenByDescending(x => x.ValidFrom)
+                .ThenByDescending(x => x.ValidTo)
+                .ProjectTo<RecordTableDto>()
+                .ToListAsync());
 
         [Authorize("admin")]
         [HttpDelete("{id}")]
@@ -157,7 +173,8 @@ namespace SA.WebApi.Controllers
             var items = await _repository
                 .GetAllAsync<RecordTableDto, DateTime>(x => x.ValidFrom < now
                     && x.ValidTo < now,
-                    x => x.ValidTo, take);
+                    orderDesc: x => x.ValidTo, 
+                    take: take);
 
             return Json(items);
         }
@@ -170,6 +187,30 @@ namespace SA.WebApi.Controllers
             var now = DateTime.Now;
             return Json(await _repository.GetAllAsync<RecordTableDto, int>(x => x.ValidFrom < now
                 && x.ValidTo < now, x => x.Id));
+        }
+
+        [Authorize("admin")]
+        [HttpGet("{id}")]
+        [Route("updateRecordDatesByAuctionId")]
+        public async Task<IActionResult> UpdateRecordDatesByAuctionId(int id)
+        {
+            var auction = await _auctionRepo.GetOneAsync<AuctionLookupDto>(x => x.Id == id);
+            var items = await _repository.Context.Records
+                    .Where(x => x.AuctionId == auction.Id)
+                    .Include(x => x.User)
+                    .Include(x => x.Bids)
+                    .Include(x => x.Files)
+                    .ToListAsync();
+
+            foreach (var item in items)
+            {
+                item.ValidFrom = auction.ValidFrom;
+                item.ValidTo = auction.ValidTo;
+
+                await _repository.UpdateAsync(item);
+            }
+
+            return await GetAuctionRecordsForAdmin(id);
         }
     }
 }

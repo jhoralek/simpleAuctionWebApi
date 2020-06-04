@@ -101,7 +101,13 @@ import PriceComponent from '@/components/helpers/PriceComponent.vue';
 import QuestionDialogComponent from '@/components/helpers/QuestionDialogComponent.vue';
 import LoadingComponent from '@/components/helpers/LoadingComponent.vue';
 
-import { RecordTableDto, FileSimpleDto, UserShortDto, UserShortInfo, UserSimpleDto } from '@/poco';
+import {
+  RecordTableDto,
+  FileSimpleDto,
+  UserShortDto,
+  UserShortInfo,
+  UserSimpleDto,
+} from './../../poco';
 
 const RecordAction = namespace('record', Action);
 const RecordGetter = namespace('record', Getter);
@@ -115,13 +121,18 @@ const ProfileAction = namespace('profile', Action);
   },
 })
 export default class AdminEndedTableComponent extends BaseComponent {
-  @RecordGetter('getRecords') private records: RecordTableDto[];
+  @RecordGetter('getRecords')
+  private records: RecordTableDto[];
 
-  @RecordAction('getAllEndedRecords') private loadRecords: any;
-  @RecordAction('getDetail') private getDetail: any;
-  @RecordAction('deleteRecord') private delete: any;
+  @RecordAction('getAllEndedRecords')
+  private loadRecords: any;
+  @RecordAction('getDetail')
+  private getDetail: any;
+  @RecordAction('deleteRecord')
+  private delete: any;
 
-  @ProfileAction('getCustomerInfo') private getCustomerInfo: any;
+  @ProfileAction('getCustomerInfo')
+  private getCustomerInfo: any;
 
   private loading: boolean = false;
   private questionDialog: boolean = false;

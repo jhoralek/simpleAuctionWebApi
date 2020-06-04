@@ -23,7 +23,8 @@
 
 import {  Prop, Component } from 'vue-property-decorator';
 import { Action, namespace } from 'vuex-class';
-import Helpers from '@/helpers';
+
+import Helpers from './../../helpers';
 import BaseComponent from '@/components/BaseComponent.vue';
 
 const RecordAction = namespace('record', Action);
@@ -34,9 +35,13 @@ const STATUS_FAILED = 3;
 
 @Component({})
 export default class FileUploadComponent extends BaseComponent {
-    @Prop({default: 'files'}) private name: string;
-    @Prop({default: 'Upload files'}) private title: string;
-    @RecordAction('uploadFiles') private upload: any;
+    @Prop({default: 'files'})
+    private name: string;
+    @Prop({default: 'Upload files'})
+    private title: string;
+
+    @RecordAction('uploadFiles')
+    private upload: any;
 
     private uploadedFiles: any[] = [];
     private currentStatus: number = null;

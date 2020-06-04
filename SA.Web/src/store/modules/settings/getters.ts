@@ -1,5 +1,5 @@
-import { GetterTree } from "vuex";
-import { RootState, SettingsState } from "@/store/types";
+import { GetterTree } from 'vuex';
+import { RootState, SettingsState } from '@/store/types';
 
 const getters: GetterTree<SettingsState, RootState> = {
   /**
@@ -49,7 +49,7 @@ const getters: GetterTree<SettingsState, RootState> = {
    */
   getIsMobile(state) {
     return state.isMobile;
-  }
+  },
 };
 
 export default getters;

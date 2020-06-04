@@ -10,7 +10,7 @@
                 <v-flex xs12>
                     <v-text-field
                         v-model="newUser.userName"
-                        v-validate="'required|max:25|min:4|userNameUnique'"
+                        v-validate="'required|regex:^\\S*$|max:25|min:4|userNameUnique'"
                         :error-messages="errors.collect('userName')"
                         data-vv-name="userName"
                         couter
@@ -212,8 +212,14 @@
         </v-form>
         <v-container v-if="profile.user && state === 4">
             <v-layout row wrap>
-                <v-flex xs12>
+                <v-flex xs12 class="text-xs-center">
                     <h3>{{ resx('registrationSent') }}</h3>
+                </v-flex>
+                <v-flex xs12 class="text-xs-center">
+                    <p>{{ resx('registrationCompleteInfo') }}</p>
+                </v-flex>
+                <v-flex xs12 class="text-xs-center">
+                    <v-icon size="100px" color="green darken-2">check_circle_outline</v-icon>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -246,13 +252,13 @@ import { Component, Vue } from 'vue-property-decorator';
 import { State, Action, namespace, Getter } from 'vuex-class';
 
 import FormBaseComponent from '../FormBaseComponent.vue';
-import { ProfileState, SettingsState } from '@/store/types';
+import { ProfileState, SettingsState } from './../../store/types';
 import {
     User,
     Country,
     Customer,
     Address,
-} from '@/model';
+} from './../../model';
 import { ExtendOptions } from 'vee-validate';
 import { log } from 'util';
 
@@ -261,14 +267,24 @@ const SettingsGetter = namespace('settings', Getter);
 
 @Component({})
 export default class RegistrationComponent extends FormBaseComponent {
-    @State('profile') private profile: ProfileState;
-    @ProfileAction('setCurrentUser') private setUser: any;
-    @ProfileAction('setCurrentUsersCustomer') private setCustomer: any;
-    @ProfileAction('setCurrentUserCustomersAddress') private setAddress: any;
-    @ProfileAction('newUser') private saveUser: any;
-    @ProfileAction('checkUserName') private validateUser: any;
-    @ProfileAction('checkEmail') private validateEmail: any;
-    @SettingsGetter('getCountries') private countries: Country[];
+    @State('profile')
+    private profile: ProfileState;
+
+    @ProfileAction('setCurrentUser')
+    private setUser: any;
+    @ProfileAction('setCurrentUsersCustomer')
+    private setCustomer: any;
+    @ProfileAction('setCurrentUserCustomersAddress')
+    private setAddress: any;
+    @ProfileAction('newUser')
+    private saveUser: any;
+    @ProfileAction('checkUserName')
+    private validateUser: any;
+    @ProfileAction('checkEmail')
+    private validateEmail: any;
+
+    @SettingsGetter('getCountries')
+    private countries: Country[];
 
     private newUser: User = {
         isAgreementToTerms: null,
@@ -320,6 +336,60 @@ export default class RegistrationComponent extends FormBaseComponent {
         this.$validator.extend('emailUnique',
             emailRule,
             { imediate: false } as ExtendOptions);
+    }
+
+    private labelName(label: string): string {
+        return this.settings.resource[label];
+    }
+
+    private previous(): void {
+        if (this.state > 1) {
+            this.state -= 1;
+        }
+    }
+
+    private next(): void {
+        this.$validator.validateAll().then((response) => {
+            if (response) {
+                switch (this.state) {
+                    case 1:
+                        this.newUser.customer = this.newCustomer;
+                        this.setUser(this.newUser).then((nUserResponse) => {
+                            if (nUserResponse) {
+                                this.state += 1;
+                            }
+                        });
+                        break;
+                    case 2:
+                        this.newUser.customer.address = this.newAddress;
+                        this.setCustomer(this.newCustomer).then((nCustResponse) => {
+                            if (nCustResponse) {
+                                this.state += 1;
+                            }
+                        });
+                        break;
+                }
+            }
+        });
+    }
+
+    private submit(): void {
+        this.$validator.validateAll().then((response) => {
+            if (response) {
+                if (this.state === 3) {
+                    this.newAddress.country = this.countries
+                        .find((f) => f.id === this.newAddress.countryId);
+
+                    this.setAddress(this.newAddress).then((nAddrResponse) => {
+                        if (nAddrResponse) {
+                            this.saveUser(this.profile.user).then((saveResponse) => {
+                                this.state += 1;
+                            });
+                        }
+                    });
+                }
+            }
+        });
     }
 
     get isAlreadyUseMessage(): string {
@@ -419,60 +489,6 @@ export default class RegistrationComponent extends FormBaseComponent {
 
     set visibleRep(value: boolean) {
         this.visibleRepPwd = value;
-    }
-
-    private labelName(label: string): string {
-        return this.settings.resource[label];
-    }
-
-    private previous(): void {
-        if (this.state > 1) {
-            this.state -= 1;
-        }
-    }
-
-    private next(): void {
-        this.$validator.validateAll().then((response) => {
-            if (response) {
-                switch (this.state) {
-                    case 1:
-                        this.newUser.customer = this.newCustomer;
-                        this.setUser(this.newUser).then((nUserResponse) => {
-                            if (nUserResponse) {
-                                this.state += 1;
-                            }
-                        });
-                        break;
-                    case 2:
-                        this.newUser.customer.address = this.newAddress;
-                        this.setCustomer(this.newCustomer).then((nCustResponse) => {
-                            if (nCustResponse) {
-                                this.state += 1;
-                            }
-                        });
-                        break;
-                }
-            }
-        });
-    }
-
-    private submit(): void {
-        this.$validator.validateAll().then((response) => {
-            if (response) {
-                if (this.state === 3) {
-                    this.newAddress.country = this.countries
-                        .find((f) => f.id === this.newAddress.countryId);
-
-                    this.setAddress(this.newAddress).then((nAddrResponse) => {
-                        if (nAddrResponse) {
-                            this.saveUser(this.profile.user).then((saveResponse) => {
-                                this.state += 1;
-                            });
-                        }
-                    });
-                }
-            }
-        });
     }
 }
 

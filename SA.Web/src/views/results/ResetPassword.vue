@@ -55,15 +55,18 @@ import Component from 'vue-class-component';
 
 import BaseView from '../BaseView.vue';
 
-import { ChangePasswordDto } from '@/poco';
-import { SettingsState } from '@/store/types';
+import { ChangePasswordDto } from './../../poco';
+import { SettingsState } from './../../store/types';
 
 const AuthAction = namespace('auth', Action);
 
 @Component({})
 export default class ResetPassword extends BaseView {
-  @State('settings') private settings: SettingsState;
-  @AuthAction('resetPassword') private resetPwd: any;
+  @State('settings')
+  private settings: SettingsState;
+
+  @AuthAction('resetPassword')
+  private resetPwd: any;
 
   private visiblePwd: boolean = false;
   private visibleRepPwd: boolean = false;
@@ -125,6 +128,7 @@ export default class ResetPassword extends BaseView {
       }
     });
   }
+
 }
 
 </script>

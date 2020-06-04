@@ -50,16 +50,18 @@
 import { Component, Prop, Watch } from 'vue-property-decorator';
 import { State, Action, namespace } from 'vuex-class';
 
-import { GdprRecordTableDto } from '@/poco';
-import { ProfileState } from '@/store/types';
+import { GdprRecordTableDto } from './../../poco';
+import { ProfileState } from './../../store/types';
 import BaseComponent from '../BaseComponent.vue';
 
 const ProfileAction = namespace('profile', Action);
 
 @Component({})
 export default class GdprTableComponent extends BaseComponent {
-    @Prop({default: []}) private gdprRecords: GdprRecordTableDto[];
-    @Prop({default: true}) private loading: boolean;
+    @Prop({default: []})
+    private gdprRecords: GdprRecordTableDto[];
+    @Prop({default: true})
+    private loading: boolean;
 
     private actionInProgress: boolean = false;
     private dialog: boolean = false;
@@ -69,10 +71,25 @@ export default class GdprTableComponent extends BaseComponent {
         totalItems: 0,
     };
 
-    @Watch('gdprRecords') private changeUsers(gdprRecords) {
+    @Watch('gdprRecords')
+    private changeUsers(gdprRecords) {
         if (gdprRecords !== undefined && gdprRecords.length > 0) {
             this.pagination.totalItems = gdprRecords.length;
         }
+    }
+
+    private edit(item: GdprRecordTableDto): void {
+        // this.setUser(item).then((response) => {
+        //     this.dialog = response;
+        // });
+    }
+
+    private saveEdit(): void {
+        this.actionInProgress = true;
+    }
+
+    private closeDialog(): void {
+        this.dialog = false;
     }
 
     private mounted() {
@@ -124,20 +141,6 @@ export default class GdprTableComponent extends BaseComponent {
               return 0;
         }
         return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage);
-    }
-
-    private edit(item: GdprRecordTableDto): void {
-        // this.setUser(item).then((response) => {
-        //     this.dialog = response;
-        // });
-    }
-
-    private saveEdit(): void {
-        this.actionInProgress = true;
-    }
-
-    private closeDialog(): void {
-        this.dialog = false;
     }
 }
 

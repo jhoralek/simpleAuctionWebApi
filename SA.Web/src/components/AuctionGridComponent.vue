@@ -6,22 +6,7 @@
         <v-flex xs12 sm4 v-for="(record, index) in records" :key="index" class="auction-box">
           <v-card>
               <v-card-media :src="firstImagePath(record)" @click="detail(record.id)">
-                <v-layout row wrap v-if="auth.isFeePayed && auth.isAuthenticated && isBidding(record.biddingUserIds)">
-                  <v-flex xs12 class="text-xs-right">
-                    <v-tooltip top v-if="auth.userId === record.winningUserId">
-                        <v-btn icon slot="activator" color="white">
-                          <v-icon small color="green" style="cursor: pointer">thumb_up</v-icon>
-                        </v-btn>
-                        <span>{{ resx('winning') }} </span>
-                    </v-tooltip>
-                    <v-tooltip top v-else>
-                        <v-btn icon slot="activator" color="white">
-                          <v-icon small color="red" style="cursor: pointer">thumb_down</v-icon>
-                        </v-btn>
-                        <span>{{ resx('notWinning') }} </span>
-                    </v-tooltip>
-                  </v-flex>
-                </v-layout>
+                <thumbs-component :record="record"></thumbs-component>
               </v-card-media>
               <v-card-title>
                 <v-layout row wrap>
@@ -87,14 +72,20 @@ import { Lory, Item, Prev, Next } from 'vue-lory';
 import { Component, Prop } from 'vue-property-decorator';
 import { State, Action, Getter, namespace } from 'vuex-class';
 
-import { Record } from '@/model';
+import { Record } from './../model';
 import BaseComponent from './BaseComponent.vue';
+
 import CountdownComponent from './helpers/CountdownComponent.vue';
 import PriceComponent from './helpers/PriceComponent.vue';
 import LoadingComponent from './helpers/LoadingComponent.vue';
 import Carousel from './helpers/Carousel.vue';
-import { RecordTableDto, AuctionDto, CarouselDto } from '@/poco';
-import { AuthState } from '@/store/types' ;
+import ThumbsComponent from './helpers/ThumbsComponent.vue';
+
+import {
+  RecordTableDto,
+  AuctionDto,
+  CarouselDto,
+} from './../poco';
 
 const RecordAction = namespace('record', Action);
 const RecordGetter = namespace('record', Getter);
@@ -107,6 +98,7 @@ const AuctionAction = namespace('auction', Action);
         CountdownComponent,
         PriceComponent,
         LoadingComponent,
+        ThumbsComponent,
         Lory,
         Item,
         Prev,
@@ -114,14 +106,19 @@ const AuctionAction = namespace('auction', Action);
     },
 })
 export default class AuctionGridComponent extends BaseComponent {
-  @State('auth') private auth: AuthState;
+  @RecordGetter('getRecords')
+  private records: RecordTableDto[];
 
-  @RecordGetter('getRecords') private records: RecordTableDto[];
-  @RecordAction('loadAllPublished') private loadRecods: any;
-  @RecordAction('getDetail') private loadRecord: any;
+  @RecordAction('loadAllPublished')
+  private loadRecods: any;
+  @RecordAction('getDetail')
+  private loadRecord: any;
 
-  @AuctionGetter('getAuctionsCarousel') private auctions: CarouselDto[];
-  @AuctionAction('getFutureAutions') private featuredAcutions: any;
+  @AuctionGetter('getAuctionsCarousel')
+  private auctions: CarouselDto[];
+
+  @AuctionAction('getFutureAutions')
+  private featuredAcutions: any;
 
   private isLoading: boolean = false;
 
@@ -157,11 +154,6 @@ export default class AuctionGridComponent extends BaseComponent {
       }
     });
   }
-
-  private isBidding(biddingIds: number[]): boolean {
-    return biddingIds.indexOf(this.auth.userId) !== -1;
-  }
-
 }
 
 </script>

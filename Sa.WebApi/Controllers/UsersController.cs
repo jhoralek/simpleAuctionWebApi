@@ -71,7 +71,7 @@ namespace SA.WebApi.Controllers
 
                 if (activation.Id > 0)
                 {
-                    _userEmailFactory.SendActivationEmail(user, activation);
+                    await _userEmailFactory.SendActivationEmail(user, activation);
                 }
             }
 
@@ -83,7 +83,7 @@ namespace SA.WebApi.Controllers
         [Route("getAllUsersForAdmin")]
         public async Task<IActionResult> GetAllUsersForAdmin()
             => Json(await _repository
-                .GetAllAsync<UserSimpleDto, bool>(order: u => u.IsActive));
+                .GetAllAsync<UserSimpleDto, DateTime?>(orderDesc: u => u.Created));
 
         [HttpGet("{userId}")]
         [Authorize("read:messages")]
@@ -93,7 +93,7 @@ namespace SA.WebApi.Controllers
             var now = DateTime.Now;
             var records = await _recordRepository
                 .GetAllAsync<RecordTableDto, DateTime>(x => x.IsActive
-                    && x.ValidFrom <= now 
+                    && x.ValidFrom <= now
                     && x.ValidTo >= now
                     && x.Bids.Any(y => y.UserId == userId), x => x.ValidFrom);
 
@@ -157,7 +157,7 @@ namespace SA.WebApi.Controllers
                 Token = token,
             });
 
-            _userEmailFactory.ResetPassword(user, activation);
+            await _userEmailFactory.ResetPassword(user, activation);
 
             return Json(true);
         }

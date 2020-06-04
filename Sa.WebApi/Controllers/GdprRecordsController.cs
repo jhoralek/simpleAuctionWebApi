@@ -25,7 +25,7 @@ namespace SA.WebApi.Controllers
         [Route("getAllGdprRecordsAdmin")]
         public async Task<IActionResult> GetAllGdprRecordsAdmin()
             => Json(await _repository
-                .GetAllAsync<GdprRecordTableDto, DateTime?>(order: x => x.Created));
+                .GetAllAsync<GdprRecordTableDto, DateTime?>(orderAsc: x => x.Created));
 
         [HttpGet]
         [Authorize("admin")]

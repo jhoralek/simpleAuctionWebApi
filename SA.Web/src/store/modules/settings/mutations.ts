@@ -1,5 +1,5 @@
-import { MutationTree } from "vuex";
-import { SettingsState } from "@/store/types";
+import { MutationTree } from 'vuex';
+import { SettingsState } from '@/store/types';
 
 const mutations: MutationTree<SettingsState> = {
   /**
@@ -8,12 +8,12 @@ const mutations: MutationTree<SettingsState> = {
    * @param res - resource with language mutation
    */
   SETTINGS_INITIAL_STATE(state, { res, apiUrl, version }) {
-    state.language = "cs";
+    state.language = 'cs';
     state.resource = res;
     state.countries = undefined;
     state.apiUrl = apiUrl;
     state.tableView = true;
-    state.currentForm = "";
+    state.currentForm = '';
     state.version = version;
     state.isMobile = true;
   },
@@ -58,7 +58,7 @@ const mutations: MutationTree<SettingsState> = {
    */
   SETTINGS_CHANGE_DEVICE(state, { isMobile }) {
     state.isMobile = isMobile;
-  }
+  },
 };
 
 export default mutations;

@@ -11,6 +11,8 @@ export default interface UserSimpleDto {
     isFeePayed: boolean;
     email: string;
     phoneNumber: string;
+    companyNumber: string;
+    birthNumber: string;
     actualAuctions: RecordTableDto[];
     endedAuctions: RecordTableDto[];
 }

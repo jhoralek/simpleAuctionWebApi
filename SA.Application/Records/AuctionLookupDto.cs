@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SA.Application.Records
 {
@@ -8,5 +6,7 @@ namespace SA.Application.Records
     {
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }
+        public virtual DateTime ValidFrom { get; set; }
+        public virtual DateTime ValidTo { get; set; }
     }
 }

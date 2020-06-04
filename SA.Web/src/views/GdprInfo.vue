@@ -114,7 +114,7 @@
 import BaseView from './BaseView.vue';
 import Component from 'vue-class-component';
 
-import { SettingsState } from '@/store/types';
+import { SettingsState } from './../store/types';
 
 @Component({})
 export default class GdprInfo extends BaseView {
