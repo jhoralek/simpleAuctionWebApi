@@ -75,11 +75,12 @@ import { State } from 'vuex-class';
 import Component from 'vue-class-component';
 
 import BaseView from '../BaseView.vue';
-import { SettingsState } from '@/store/types';
+import { SettingsState } from './../../store/types';
 
 @Component({})
 export default class Results extends BaseView {
-  @State('settings') private settings: SettingsState;
+  @State('settings')
+  private settings: SettingsState;
 
   private validationExpired: boolean = false;
   private validationSuccessfully: boolean = false;

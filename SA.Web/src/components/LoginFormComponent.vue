@@ -83,14 +83,17 @@
 
 <script lang="ts">
 
+import { log } from 'util';
+
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { State, Action, namespace } from 'vuex-class';
 
-import { AuthState, ProfileState } from '@/store/types';
-import { log } from 'util';
-import FormBaseComponent from '@/components/FormBaseComponent.vue';
-import { AuthResponse, UserShortInfo } from '@/poco';
-import { profile } from '@/store/modules';
+import { AuthState, ProfileState } from './../store/types';
+
+import { AuthResponse, UserShortInfo } from './../poco';
+import { profile } from './../store/modules';
+
+import FormBaseComponent from './../components/FormBaseComponent.vue';
 
 const SettingsAction = namespace('settings', Action);
 const AuthAction = namespace('auth', Action);
@@ -98,15 +101,26 @@ const ProfileAction = namespace('profile', Action);
 
 @Component({})
 export default class LoginFormComponent extends FormBaseComponent {
-    @State('auth') public  auth: AuthState;
-    @State('profile') public profile: ProfileState;
+    @State('auth')
+    public  auth: AuthState;
+    @State('profile')
+    public profile: ProfileState;
 
-    @ProfileAction('loadByUserNameAndToken') public user: any;
-    @SettingsAction('changeLanguage') public langChange: any;
-    @SettingsAction('changeFormView') public changeFormView: any;
-    @AuthAction('loginUser') public login: any;
-    @AuthAction('logoutUser') public logoutUser: any;
-    @AuthAction('sendEmailToResetPassowrd') private resetPasswordFnc: any;
+    @ProfileAction('loadByUserNameAndToken')
+    public user: any;
+
+    @SettingsAction('changeLanguage')
+    public langChange: any;
+    @SettingsAction('changeFormView')
+
+    public changeFormView: any;
+    @AuthAction('loginUser')
+    public login: any;
+    @AuthAction('logoutUser')
+    public logoutUser: any;
+
+    @AuthAction('sendEmailToResetPassowrd')
+    private resetPasswordFnc: any;
 
     private visiblePwd: boolean = false;
     private openedModal: boolean = false;
@@ -115,32 +129,6 @@ export default class LoginFormComponent extends FormBaseComponent {
     private email: string = '';
     private isLoging: boolean = false;
     private resetPassword: boolean = false;
-
-    // this is because I cannot pass getter function to the component props
-    // so I need to create computed props. They can be used in component props
-    // example:
-    // <component :label="lableUserName" />
-    get labelUserName(): string {
-        return this.settings.resource.userName;
-    }
-    get labelPassword(): string {
-        return this.settings.resource.password;
-    }
-
-    get labelEmail(): string {
-        return this.settings.resource.email;
-    }
-
-    get validationMinPasswordChars(): string {
-        return this.settings.resource.validation_min_chars.replace('{0}', '4');
-    }
-
-    get visible(): boolean {
-        return this.visiblePwd;
-    }
-    set visible(value: boolean) {
-        this.visiblePwd = value;
-    }
 
     public submit() {
         this.isLoging = true;
@@ -175,6 +163,32 @@ export default class LoginFormComponent extends FormBaseComponent {
         this.logoutUser().then((user) => {
             this.$router.push('/'); // it is Vue handler
         });
+    }
+
+    // this is because I cannot pass getter function to the component props
+    // so I need to create computed props. They can be used in component props
+    // example:
+    // <component :label="lableUserName" />
+    get labelUserName(): string {
+        return this.settings.resource.userName;
+    }
+    get labelPassword(): string {
+        return this.settings.resource.password;
+    }
+
+    get labelEmail(): string {
+        return this.settings.resource.email;
+    }
+
+    get validationMinPasswordChars(): string {
+        return this.settings.resource.validation_min_chars.replace('{0}', '4');
+    }
+
+    get visible(): boolean {
+        return this.visiblePwd;
+    }
+    set visible(value: boolean) {
+        this.visiblePwd = value;
     }
 }
 

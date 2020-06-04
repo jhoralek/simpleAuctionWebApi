@@ -72,9 +72,7 @@ namespace Sa.WebApi.Controllers
                 .ThenByDescending(x => x.ValidFrom)
                 .ThenByDescending(x => x.ValidTo)
                 .ProjectTo<AuctionTableDto>()
-                .ToListAsync());
-        //=> Json(await _repository
-        //        .GetAllAsync<AuctionTableDto, DateTime>(order: y => y.ValidTo));
+                .ToListAsync());        
 
         [Authorize("admin")]
         [HttpDelete("{id}")]
@@ -108,8 +106,6 @@ namespace Sa.WebApi.Controllers
                 .ThenByDescending(x => x.ValidFrom)
                 .ThenByDescending(x => x.ValidTo)
                 .ProjectTo<AuctionLookupDto>()
-                .ToListAsync());
-        //=> Json(await _repository
-        //    .GetAllAsync<AuctionLookupDto, bool>(order: x => x.IsActive));
+                .ToListAsync());        
     }
 }

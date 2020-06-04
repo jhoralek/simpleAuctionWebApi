@@ -51,11 +51,11 @@ import { Component, Prop } from 'vue-property-decorator';
 import { State, Action, Getter, namespace } from 'vuex-class';
 
 import BaseComponent from './BaseComponent.vue';
-import PriceComponent from './helpers/PriceComponent.vue';
-import LoadingComponent from './helpers/LoadingComponent.vue';
 
-import { Record } from '@/model';
-import { RecordTableDto } from '@/poco';
+import { PriceComponent, LoadingComponent } from './../components';
+
+import { Record } from './../model';
+import { RecordTableDto } from './../poco';
 
 const RecordAction = namespace('record', Action);
 const RecordGetter = namespace('record', Getter);

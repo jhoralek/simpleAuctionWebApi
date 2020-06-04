@@ -33,12 +33,12 @@
             <v-list-tile to="/auctionsAdministration">
                 <v-list-tile-title>{{ resx('auctionsAdministration')}}</v-list-tile-title>
             </v-list-tile>
-            <v-list-tile to="/endedAdministration">
+            <!-- <v-list-tile to="/endedAdministration">
                 <v-list-tile-title>{{ resx('endedAuctions')}}</v-list-tile-title>
-            </v-list-tile>
-            <v-list-tile to="/record-administration">
+            </v-list-tile> -->
+            <!-- <v-list-tile to="/record-administration">
                 <v-list-tile-title>{{ resx('recordAdministration')}}</v-list-tile-title>
-            </v-list-tile>
+            </v-list-tile> -->
             <v-list-tile to="/gdprAdministration">
                 <v-list-tile-title>{{ resx('gdprAdministration')}}</v-list-tile-title>
             </v-list-tile>
@@ -60,12 +60,12 @@
 import BaseView from './BaseView.vue';
 import Component from 'vue-class-component';
 import { State } from 'vuex-class';
-import { SettingsState, AuthState } from '@/store/types';
+import { SettingsState, AuthState } from './../store/types';
 
 import {
   LoginFormComponent,
   LanguageComponent,
-} from '@/components';
+} from './../components';
 
 @Component({
     components: {
@@ -74,8 +74,10 @@ import {
     },
 })
 export default class MainMenuDesktop extends BaseView {
-    @State('settings') private settings: SettingsState;
-    @State('auth') private auth: AuthState;
+    @State('settings')
+    private settings: SettingsState;
+    @State('auth')
+    private auth: AuthState;
 
     get pageLogo(): string {
          return `${this.settings.apiUrl.replace('/api', '')}/img/logo-big.png`;

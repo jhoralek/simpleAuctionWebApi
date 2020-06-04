@@ -1,11 +1,11 @@
-import { User, Country, Record, Auction, Customer } from "@/model";
+import { User, Country, Record, Auction, Customer } from '@/model';
 import {
   MessageDto,
   RecordTableDto,
   AuctionTableDto,
   AuctionDto,
-  AuctionLookupDto
-} from "@/poco";
+  AuctionLookupDto,
+} from '@/poco';
 
 /**
  * This is root state of app store
@@ -65,6 +65,7 @@ export interface SettingsState {
  */
 export interface RecordState {
   current?: Record;
+  currentWinnerId: number;
   records: RecordTableDto[];
   error: boolean;
 }

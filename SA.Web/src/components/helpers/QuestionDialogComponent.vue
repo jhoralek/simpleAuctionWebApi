@@ -29,13 +29,17 @@ import BaseComponent from '../BaseComponent.vue';
 
 @Component({})
 export default class QuestionDialogComponent extends BaseComponent {
-    @Prop({default: 'Question'}) private header: string;
-    @Prop({default: undefined}) private question: string;
-    @Prop({default: false}) private dialog: boolean;
+    @Prop({default: 'Question'})
+    private header: string;
+    @Prop({default: undefined})
+    private question: string;
+    @Prop({default: false})
+    private dialog: boolean;
 
     private progress: boolean = false;
 
-    @Watch('dialog') private watchDialog(newDialog) {
+    @Watch('dialog')
+    private watchDialog(newDialog) {
         if (newDialog !== undefined) {
             if (newDialog === false) {
                 this.progress = newDialog;

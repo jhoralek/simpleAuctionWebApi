@@ -31,9 +31,15 @@ const getters: GetterTree<RecordState, RootState> = {
         const { records } = !state.error && state;
         return records;
     },
+
     getBids(state): BidDto[] {
         const { bids } = !state.error && state.current;
         return bids;
+    },
+
+    getCurrentWinnerId(state): number {
+        const { currentWinnerId } = !state.error && state;
+        return currentWinnerId;
     },
 };
 

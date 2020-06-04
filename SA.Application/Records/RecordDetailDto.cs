@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SA.Application.Bid;
+using System;
 using System.Collections.Generic;
 
 namespace SA.Application.Records
@@ -46,6 +47,6 @@ namespace SA.Application.Records
         public virtual bool WithVat { get; set; }
         public virtual AuctionDto Auction { get; set; }
         public virtual ICollection<FileSimpleDto> Files { get; set; } = new List<FileSimpleDto>();
-        public virtual ICollection<BidSimpleDto> Bids { get; set; } = new List<BidSimpleDto>();        
+        public virtual ICollection<BidSimpleDto> Bids { get; set; } = new List<BidSimpleDto>();
     }
 }

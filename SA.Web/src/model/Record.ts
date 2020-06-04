@@ -26,6 +26,7 @@ export default interface Record {
     equipment?: string; // výbava
     vin?: string;
     numberOfSeets?: number;
+    numberOfBids?: number;
     euroNorm?: string;
     doors?: number;
     dateOfFirstRegistration: Date;

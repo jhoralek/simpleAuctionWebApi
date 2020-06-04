@@ -74,12 +74,15 @@
 import BaseView from './BaseView.vue';
 import Component from 'vue-class-component';
 import { State } from 'vuex-class';
-import { SettingsState, AuthState } from '@/store/types';
+import { SettingsState, AuthState } from './../store/types';
 
 @Component({})
 export default class FooterView extends BaseView {
-    @State('settings') private settings: SettingsState;
-    @State('auth') private auth: AuthState;
+    @State('settings')
+    private settings: SettingsState;
+
+    @State('auth')
+    private auth: AuthState;
 
     get sokolovskaLogo(): string {
         return `${this.settings.apiUrl.replace('/api', '')}/img/sokolovska-logo.png`;

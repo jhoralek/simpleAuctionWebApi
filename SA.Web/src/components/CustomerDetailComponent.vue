@@ -122,16 +122,32 @@ import { Component, Prop } from 'vue-property-decorator';
 import { State, Action, namespace } from 'vuex-class';
 
 import BaseComponent from './BaseComponent.vue';
-import { Customer } from '@/model';
+import { Customer } from './../model';
 
 const ProfileAction = namespace('profile', Action);
 
 @Component({})
 export default class CustomerDetailComponent extends BaseComponent {
-  @Prop({default: undefined}) public customer: Customer;
-  @ProfileAction('updateCustomer')  private update: any;
+  @Prop({default: undefined})
+  public customer: Customer;
+
+  @ProfileAction('updateCustomer')
+  private update: any;
 
   private isLoading: boolean = false;
+
+  private submitCustomer(): void {
+    this.$validator.validateAll().then((response) => {
+      if (response) {
+        this.isLoading = true;
+        this.update(this.customer).then((responseCustomer) => {
+          if (responseCustomer) {
+            this.isLoading = false;
+          }
+        });
+      }
+    });
+  }
 
   get labelFirstName(): string {
     return this.settings.resource.firstName;
@@ -175,19 +191,6 @@ export default class CustomerDetailComponent extends BaseComponent {
 
   get labelCompanyLegalNumber(): string {
     return this.settings.resource.companyLegalNumber;
-  }
-
-  private submitCustomer(): void {
-    this.$validator.validateAll().then((response) => {
-      if (response) {
-        this.isLoading = true;
-        this.update(this.customer).then((responseCustomer) => {
-          if (responseCustomer) {
-            this.isLoading = false;
-          }
-        });
-      }
-    });
   }
 }
 

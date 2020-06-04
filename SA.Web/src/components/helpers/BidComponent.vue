@@ -37,29 +37,36 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { Action, Getter, namespace } from "vuex-class";
+import { Component, Prop, Watch } from 'vue-property-decorator';
+import { Action, Getter, namespace } from 'vuex-class';
 
-import BaseComponent from "../BaseComponent.vue";
-import QuestionDialogComponent from "./QuestionDialogComponent.vue";
+import BaseComponent from '../BaseComponent.vue';
+import QuestionDialogComponent from './QuestionDialogComponent.vue';
 
-import { Record, Bid } from "@/model";
-import { AuthUser } from "@/poco";
+import { Record, Bid } from './../../model';
+import { AuthUser } from './../../poco';
 
-const RecordAction = namespace("record", Action);
-const RecordGetter = namespace("record", Getter);
-const AuthGetter = namespace("auth", Getter);
+const RecordAction = namespace('record', Action);
+const RecordGetter = namespace('record', Getter);
+const AuthGetter = namespace('auth', Getter);
 
 @Component({
   components: {
-    QuestionDialogComponent
-  }
+    QuestionDialogComponent,
+  },
 })
 export default class BidComponent extends BaseComponent {
-  @Prop({ default: 0 }) private bid: number;
-  @RecordAction("addBid") private addBid: any;
-  @RecordGetter("getCurrent") private record: Record;
-  @AuthGetter("getCurrentLoggedUser") private user: AuthUser;
+  @Prop({ default: 0 })
+  private bid: number;
+
+  @RecordAction('addBid')
+  private addBid: any;
+
+  @RecordGetter('getCurrent')
+  private record: Record;
+
+  @AuthGetter('getCurrentLoggedUser')
+  private user: AuthUser;
 
   private loading: boolean = false;
   private localBid: number = 0;
@@ -70,11 +77,12 @@ export default class BidComponent extends BaseComponent {
     this.localBid = this.bid;
   }
 
-  @Watch("localBid") private watchBid(newBid: string) {
+  @Watch('localBid')
+  private watchBid(newBid: string) {
     if (!/^[0-9]+$/.test(newBid)) {
       this.disable = true;
     } else {
-      if (this.record.bids.length == 0 && this.record.currentPrice == parseInt(newBid)) {
+      if (this.record.bids.length === 0 && this.record.currentPrice === parseInt(newBid, 10)) {
         this.disable = false;
       } else if (
         parseInt(newBid, 0) <
@@ -85,6 +93,13 @@ export default class BidComponent extends BaseComponent {
         this.disable = false;
       }
       this.localBid = parseInt(newBid, 0);
+    }
+  }
+
+  @Watch('record.currentPrice')
+  private watchPrice(newPrice: number) {
+    if (newPrice > this.localBid) {
+      this.localBid = newPrice + this.record.minimumBid;
     }
   }
 
@@ -102,20 +117,18 @@ export default class BidComponent extends BaseComponent {
       recordId: this.record.id,
       price: bidPrice,
       created: new Date(),
-      userId: this.user.userId
-    } as Bid).then(response => {
+      userId: this.user.userId,
+    } as Bid)
+    .then((response) => {
       this.loading = false;
       this.disable = false;
-      this.localBid += this.record.minimumBid;
       this.questionDialog = false;
     });
   }
 
   get questionMessage(): string {
-    return this.settings.resource.bidQuestionMessage.replace(
-      "{0}",
-      this.localBid.toString()
-    );
+    return this.settings.resource.bidQuestionMessage
+      .replace('{0}', this.localBid.toString());
   }
 
   get headerMessage(): string {

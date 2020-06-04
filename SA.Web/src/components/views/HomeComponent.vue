@@ -34,7 +34,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 import FormBaseComponent from '@/components/FormBaseComponent.vue';
-import { Dictionary } from '@/store/types';
+import { Dictionary } from './../../store/types';
 
 @Component({})
 export default class HomeComponent extends FormBaseComponent {

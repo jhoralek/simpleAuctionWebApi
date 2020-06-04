@@ -35,24 +35,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop } from 'vue-property-decorator';
 
-import BaseComponent from "../BaseComponent.vue";
-import PriceComponent from "./PriceComponent.vue";
+import BaseComponent from '../BaseComponent.vue';
+import PriceComponent from './PriceComponent.vue';
 
-import { CarouselItemDto } from "@/poco";
+import { CarouselItemDto } from './../../poco';
 
 @Component({
   components: {
-    PriceComponent
-  }
+    PriceComponent,
+  },
 })
 export default class CarouselItem extends BaseComponent {
   @Prop({ default: undefined })
   private item: CarouselItemDto;
 
   private detail(id: number): void {
-    this.$emit("detail", id);
+    this.$emit('detail', id);
   }
 }
 </script>

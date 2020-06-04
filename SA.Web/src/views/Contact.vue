@@ -58,11 +58,12 @@ import BaseView from './BaseView.vue';
 import Component from 'vue-class-component';
 import { State } from 'vuex-class';
 
-import { SettingsState } from '@/store/types';
+import { SettingsState } from './../store/types';
 
 @Component({})
 export default class Contact extends BaseView {
-  @State('settings') private settings: SettingsState;
+  @State('settings')
+  private settings: SettingsState;
 
   get filedBy(): string {
       return this.settings.resource.filedByTheRegionalCurtInPilsen.replace('{0}', 'C 36595');

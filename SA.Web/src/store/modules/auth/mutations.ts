@@ -1,7 +1,5 @@
-import { MutationTree } from "vuex";
-
-import { AuthState } from "@/store/types";
-import { AUTH_SET_TIMER } from "@/store/mutation-types";
+import { MutationTree } from 'vuex';
+import { AuthState } from '@/store/types';
 
 const TIME_TO_LOGOUT = 30 * 60; // in minutes
 
@@ -60,7 +58,9 @@ const mutations: MutationTree<AuthState> = {
     state.error = language !== undefined;
   },
   AUTH_TAKE_SECOND_TO_LOGOUT(state) {
-    if (state.secondsToLogout == 0) return;
+    if (state.secondsToLogout === 0) {
+      return;
+    }
     state.secondsToLogout--;
   },
   AUTH_SET_TIMER(state, { timer }) {
@@ -72,7 +72,7 @@ const mutations: MutationTree<AuthState> = {
   },
   AUTH_RESET_TIMER(state) {
     state.secondsToLogout = TIME_TO_LOGOUT;
-  }
+  },
 };
 
 export default mutations;

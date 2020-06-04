@@ -20,8 +20,8 @@ import BaseView from './BaseView.vue';
 import Component from 'vue-class-component';
 import { State} from 'vuex-class';
 
-import { SettingsState } from '@/store/types';
-import { RegistrationComponent } from '@/components';
+import { SettingsState } from './../store/types';
+import { RegistrationComponent } from './../components';
 
 @Component({
   components: {
@@ -29,7 +29,8 @@ import { RegistrationComponent } from '@/components';
   },
 })
 export default class Registration extends BaseView {
-    @State('settings') private settings: SettingsState;
+    @State('settings')
+    private settings: SettingsState;
 
     get logo(): string {
         return `${this.settings.apiUrl.replace('/api', '')}/img/home_cars_jera_trading.png`;

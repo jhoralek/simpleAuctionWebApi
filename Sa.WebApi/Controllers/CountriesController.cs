@@ -16,6 +16,9 @@ namespace SA.WebApi.Controllers
         [Authorize("read:messages")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
-            => Json(await _repository.GetAllAsync<CountryDto, string>(order: x => x.Name));
+        {
+            var countries = await _repository.GetAllAsync<CountryDto, string>(orderAsc: x => x.Name);
+            return Json(countries);
+        }
     }
 }

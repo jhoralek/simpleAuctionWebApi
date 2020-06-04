@@ -46,7 +46,7 @@ import BaseView from './BaseView.vue';
 import Component from 'vue-class-component';
 import { State } from 'vuex-class';
 
-import { Dictionary, SettingsState } from '@/store/types';
+import { Dictionary, SettingsState } from './../store/types';
 
 @Component({})
 export default class Cookies extends BaseView {

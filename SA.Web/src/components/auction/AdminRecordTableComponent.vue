@@ -1,5 +1,71 @@
 <template>
   <div class="admin-auciton-table">
+    <v-dialog v-model="showBidsInfo" persistent max-width="700px">
+      <v-card v-if="current !== null">
+        <v-card-title class="headline grey lighten-2">
+          {{ resx('auctions') }}: {{ current.name }}
+        </v-card-title>
+        <v-layout row wrap>
+          <v-flex xs12>
+            <bids-list-component
+              :bids="bids"
+              :anonymizeUser="false"
+              :withHeaders="true">
+            </bids-list-component>
+          </v-flex>
+        </v-layout>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-container>
+            <v-layout row wrap justify-end align-center>
+              <v-btn color="black" class="white-btn" @click="disposeBidsInfo()">{{ resx('close') }}</v-btn>
+            </v-layout>
+          </v-container>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="showCustomerInfo" persistent max-width="500px">
+      <v-card v-if="customerInfo !== null">
+        <v-card-title class="headline grey lighten-2">
+          {{ customerInfo.fullName }}
+        </v-card-title>
+        <v-layout row wrap>
+          <v-flex xs6 class="info-text">{{ resx('phoneNumber') }}</v-flex>
+          <v-flex xs6 class="info-value">{{ customerInfo.phoneNumber }}</v-flex>
+        </v-layout>
+        <v-layout row wrap>
+          <v-flex xs6 class="info-text">{{ resx('email') }}</v-flex>
+          <v-flex xs6 class="info-value">{{ customerInfo.email }}</v-flex>
+        </v-layout>
+        <v-layout row wrap>
+          <v-flex xs6 class="info-text">{{ resx('companyName') }}</v-flex>
+          <v-flex xs6 class="info-value">{{ customerInfo.companyName }}</v-flex>
+        </v-layout>
+        <v-layout row wrap>
+          <v-flex xs6 class="info-text">{{ resx('companyNumber') }}</v-flex>
+          <v-flex xs6 class="info-value">{{ customerInfo.companyNumber }}</v-flex>
+        </v-layout>
+        <v-layout row wrap>
+          <v-flex xs12 class="info-text"><strong>{{ resx('address') }}</strong></v-flex>
+        </v-layout>
+        <v-layout row wrap>
+          <v-flex xs6 class="info-text">{{ resx('street') }}</v-flex>
+          <v-flex xs6 class="info-value">{{ customerInfo.street }}</v-flex>
+        </v-layout>
+        <v-layout row wrap>
+          <v-flex xs6 class="info-text">{{ resx('city') }}, {{ resx('postCode') }}</v-flex>
+          <v-flex xs6 class="info-value">{{ customerInfo.postCode }} {{ customerInfo.city }}</v-flex>
+        </v-layout>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-container>
+            <v-layout row wrap justify-end align-center>
+              <v-btn color="black" class="white-btn" @click="disposeCustomerInfo()">{{ resx('close') }}</v-btn>
+            </v-layout>
+          </v-container>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <loading-component :open="loading" />
     <question-dialog-component
       :header="questionWarning"
@@ -67,21 +133,6 @@
               </v-layout>
               <v-layout row wrap>
                 <v-flex xs12 md4>
-                  <time-picker-component
-                    :time="timeFrom"
-                    name="timeFrom"
-                    :label="labelTimeFrom"
-                    :validation="{ required: true}"
-                    @time="setTime($event, 'from')" />
-                </v-flex>
-                <v-flex xs12 md4>
-                  <time-picker-component
-                    :time="timeTo"
-                    name="timeTo"
-                    :label="labelTimeTo"
-                    @time="setTime($event, 'to')" />
-                </v-flex>
-                <v-flex xs12 md4>
                   <v-text-field
                     v-model="record.current.mileage"
                     v-validate="'max:50'"
@@ -89,18 +140,6 @@
                     data-vv-name="mileAge"
                     couter
                     :label="labelMileAge" />
-                </v-flex>
-              </v-layout>
-              <v-layout row wrap>
-                <v-flex xs12 md2>
-                  <v-switch
-                    v-model="record.current.isActive"
-                    :label="labelIsActive" />
-                </v-flex>
-                <v-flex xs12 md2>
-                  <v-switch
-                    v-model="record.current.withVat"
-                    :label="labelWithVat" />
                 </v-flex>
                 <v-flex xs12 md4>
                   <v-text-field
@@ -119,6 +158,18 @@
                     data-vv-name="fuel"
                     couter
                     :label="labelFuel" />
+                </v-flex>
+              </v-layout>
+              <v-layout row wrap>
+                <v-flex xs12 md2>
+                  <v-switch
+                    v-model="record.current.isActive"
+                    :label="labelIsActive" />
+                </v-flex>
+                <v-flex xs12 md2>
+                  <v-switch
+                    v-model="record.current.withVat"
+                    :label="labelWithVat" />
                 </v-flex>
               </v-layout>
             </v-container>
@@ -310,36 +361,16 @@
               </v-layout>
               <v-layout row wrap>
                 <v-flex xs12 md4>
-                  <!-- <v-textarea
-                    v-model="record.current.equipment"
-                    v-validate="'max:1000'"
-                    :error-messages="errors.collect('equipment')"
-                    :label="labelEquipment"
-                    data-vv-name="equipment" /> -->
                     <wysiwyg
                       v-model="record.current.equipment"
                       :placeholder="labelEquipment" />
                 </v-flex>
                 <v-flex xs12 md4>
-                  <!-- <v-textarea
-                    v-model="record.current.defects"
-                    v-validate="'max:1000'"
-                    :error-messages="errors.collect('defects')"
-                    :label="labelDefects"
-                    data-vv-name="defects" /> -->
                     <wysiwyg
                       v-model="record.current.defects"
                       :placeholder="labelDefects" />
                 </v-flex>
                 <v-flex xs12 md4>
-                  <!-- <v-text-field
-                    multi-line
-                    v-model="record.current.moreDescription"
-                    v-validate="'max:1000'"
-                    :error-messages="errors.collect('moreDescription')"
-                    data-vv-name="moreDescription"
-                    couter
-                    :label="labelMoreDescription" /> -->
                     <wysiwyg
                       v-model="record.current.moreDescription"
                       :placeholder="labelMoreDescription" />
@@ -431,8 +462,20 @@
               <td class="text-xs-right"><price-component :price="props.item.startingPrice" /></td>
               <td class="text-xs-right"><price-component :price="props.item.minimumBid" /></td>
               <td class="text-xs-right"><price-component :price="props.item.currentPrice" /></td>
-              <td class="text-xs-right">{{ props.item.numberOfBids }}</td>
               <td class="text-xs-right">
+                <a href="#" @click="showBids(props.item.id)">
+                  {{ props.item.numberOfBids }}
+                </a>
+              </td>
+              <td class="text-xs-right">
+                  <v-icon
+                      v-if="props.item.numberOfBids > 0"
+                      style="cursor: pointer"
+                      small
+                      class="mr-2"
+                      @click="showCustomer(props.item.winningUserId)">
+                      info
+                  </v-icon>
                   <v-icon
                       style="cursor: pointer"
                       small
@@ -471,16 +514,27 @@ import TimePickerComponent from '@/components/helpers/TimePickerComponent.vue';
 import FileUploadComponent from '@/components/helpers/FileUploadComponent.vue';
 import QuestionDialogComponent from '@/components/helpers/QuestionDialogComponent.vue';
 import LoadingComponent from '@/components/helpers/LoadingComponent.vue';
+import BidsListComponent from '@/components/helpers/BidsListComponent.vue';
 
-import { RecordTableDto, AuthUser, FileSimpleDto, AuctionLookupDto } from '@/poco';
-import { Record, File } from '@/model';
-import { RecordState, AuthState } from '@/store/types';
-import moment from 'moment';
+import {
+  RecordTableDto,
+  AuthUser,
+  FileSimpleDto,
+  AuctionLookupDto,
+  AuctionTableDto,
+  BidDto,
+  UserShortDto,
+} from './../../poco';
+
+import { Record, File, Auction } from './../../model';
+import { RecordState, AuthState } from './../../store/types';
+import moment from 'moment-timezone';
 
 const RecordAction = namespace('record', Action);
 const RecordGetter = namespace('record', Getter);
 const AuctionGetter = namespace('auction', Getter);
 const AuctionAction = namespace('auction', Action);
+const ProfileAction = namespace('profile', Action);
 
 @Component({
   components: {
@@ -490,33 +544,42 @@ const AuctionAction = namespace('auction', Action);
     QuestionDialogComponent,
     LoadingComponent,
     TimePickerComponent,
+    BidsListComponent,
   },
 })
 export default class AdminRecordTableComponent extends BaseComponent {
   @State('record') private record: RecordState;
   @State('auth') private auth: AuthState;
 
-  @RecordGetter('getRecords') private records: RecordTableDto[];
-  @RecordAction('getAllForAdmin') private loadRecords: any;
+  @Prop({default: undefined}) private auction: AuctionTableDto;
+  @Prop({default: []}) private records: RecordTableDto[];
+  @Prop({default: false}) private loading: boolean;
 
   @RecordAction('initialCurrent') private initCurrent: any;
   @RecordAction('getDetail') private getDetail: any;
   @RecordAction('createRecord') private create: any;
+  @RecordGetter('getBids') private bids: BidDto[];
+  @RecordGetter('getCurrent') private current: Record;
 
   @RecordAction('deleteRecord') private delete: any;
   @RecordAction('updateRecord') private updateRecord: any;
   @RecordAction('setFiles') private setFiles: any;
   @RecordAction('addFiles') private addFiles: any;
   @RecordAction('setCurrentUserId') private setCurrentUserId: any;
-  @RecordAction('setValidDates') private setDates: any;
-  @RecordAction('setValidTimes') private setTimes: any;
+  @RecordAction('setCurrentAuctionId') private setCurrentAuctionId: any;
+  @RecordAction('setCurrentRecordDates') private setCurrentDates: any;
+  @RecordAction('setCurrentRecordDatesFromAuction') private setCurrentDateFromAuction: any;
+  @RecordAction('getRecordsBidForAdmin') private getRecordsBidForAdmin: any;
 
   @AuctionAction('getAllLookup') private loadAuctionsCombo: any;
+  @AuctionAction('getDetail') private getSelectedAuction: any;
   @AuctionGetter('getLookupList') private auctionsCombo: AuctionLookupDto[];
+
+  @ProfileAction('getCustomerInfo')
+  private getCustomerInfo: any;
 
   private timeTo: string = null;
   private timeFrom: string = null;
-  private loading: boolean = false;
   private questionDialog: boolean = false;
   private objectToDelete: RecordTableDto = undefined;
   private state: number = 1;
@@ -526,6 +589,11 @@ export default class AdminRecordTableComponent extends BaseComponent {
       rowsPerPage: 10,
       totalItems: 0,
   };
+  private showBidsInfo: boolean = false;
+  private bidsInfo: BidDto[] = null;
+
+  private showCustomerInfo: boolean = false;
+  private customerInfo: UserShortDto = null;
 
   @Watch('records') private changeUsers(records) {
       if (records !== undefined && records.length > 0) {
@@ -533,13 +601,30 @@ export default class AdminRecordTableComponent extends BaseComponent {
       }
   }
 
+  private showBids(itemId: number): void {
+    this.getRecordsBidForAdmin(itemId).then((response) => {
+       this.showBidsInfo = true;
+    });
+  }
+
+  private disposeBidsInfo(): void {
+    this.bidsInfo = null;
+    this.showBidsInfo = false;
+  }
+
+  private showCustomer(userId: number): void {
+    this.getCustomerInfo(userId).then((response) => {
+      this.showCustomerInfo = true;
+      this.customerInfo = response as UserShortDto;
+    });
+  }
+
+  private disposeCustomerInfo(): void {
+    this.customerInfo = null;
+    this.showCustomerInfo = false;
+  }
+
   private mounted() {
-      this.loading = true;
-      this.loadRecords().then((response) => {
-        if (response) {
-          this.loading = false;
-        }
-      });
       this.headers.push({
           text: this.settings.resource.name,
           align: 'left',
@@ -586,14 +671,6 @@ export default class AdminRecordTableComponent extends BaseComponent {
           sortable: true,
           value: 'action' });
       this.loadAuctionsCombo();
-  }
-
-  get labelTimeFrom(): string {
-    return this.settings.resource.timeFrom;
-  }
-
-  get labelTimeTo(): string {
-    return this.settings.resource.timeTo;
   }
 
   get questionWarning(): string {
@@ -750,33 +827,15 @@ export default class AdminRecordTableComponent extends BaseComponent {
 
   private auctionChange(): void {
     if (this.record.current !== undefined) {
+
       if (this.record.current.auctionId !== undefined) {
         const auction: AuctionLookupDto = this.auctionsCombo
           .find((x) => x.id === this.record.current.auctionId);
 
         if (auction) {
-          const datesString: string[] = auction.name.substring(
-              auction.name.indexOf('[') + 1,
-              auction.name.lastIndexOf(']')).split('-');
-          const fromDate = moment(datesString[0].trim(), 'DD.MM.YYYY HH:mm');
-          const toDate = moment(datesString[1].trim(), 'DD.MM.YYYY HH:mm');
-
-          this.record.current.validFrom = fromDate.toDate();
-          this.record.current.validTo = toDate.toDate();
-          this.setDates(this.record.current);
+          this.setCurrentDateFromAuction(auction);
         }
       }
-    }
-  }
-
-  private setTime($event, time: string): void {
-    switch (time) {
-      case 'from':
-        this.setTimes({ from: $event, to: undefined });
-        break;
-      case 'to':
-        this.setTimes({ from: undefined, to: $event });
-        break;
     }
   }
 
@@ -820,24 +879,9 @@ export default class AdminRecordTableComponent extends BaseComponent {
 
   private edit(item: RecordTableDto): void {
     if (item.id > 0) {
-      this.loading = true;
+      // this.loading = true;
       this.getDetail(item.id).then((response) => {
         this.formActive = response as boolean;
-        const { current } = this.record;
-        const fromHours: string = current.validFrom.getHours().toString();
-        const fromMinutes: string = current.validFrom.getMinutes().toString();
-
-        const toHours: string = current.validTo.getHours().toString();
-        const toMinutes: string = current.validTo.getMinutes().toString();
-
-        const fH: string = '00'.substring(fromHours.length) + fromHours;
-        const fM: string = '00'.substring(fromMinutes.length) + fromMinutes;
-
-        const tH: string = '00'.substring(toHours.length) + toHours;
-        const tM: string = '00'.substring(toMinutes.length) + toMinutes;
-
-        this.timeFrom = `${fH}:${fM}`;
-        this.timeTo = `${tH}:${tM}`;
         this.loading = false;
       });
     }
@@ -865,6 +909,8 @@ export default class AdminRecordTableComponent extends BaseComponent {
     this.initCurrent().then((response) => {
       this.formActive = response as boolean;
       this.setCurrentUserId(this.auth.userId);
+      this.setCurrentAuctionId(this.auction.id);
+      this.setCurrentDateFromAuction(this.auction);
     });
   }
 

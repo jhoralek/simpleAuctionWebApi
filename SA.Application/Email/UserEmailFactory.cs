@@ -1,9 +1,9 @@
-﻿using System;
-using System.Globalization;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using SA.Application.Account;
 using SA.Application.Records;
 using SA.Core.Model;
+using System.Globalization;
+using System.Threading.Tasks;
 
 namespace SA.Application.Email
 {
@@ -22,12 +22,14 @@ namespace SA.Application.Email
             _configuration = configuration;
         }
 
-        public EmailMessage ResetPassword(UserSimpleDto user, UserActivation activation)
+        private const string SENDER_NAME = "JeraTrading s.r.o.";
+
+        public async Task<EmailMessage> ResetPassword(UserSimpleDto user, UserActivation activation)
         {
             var email = new EmailMessage();
             email.FromAddresses.Add(new EmailAddress
             {
-                Name = "JeraTrading s.r.o.",
+                Name = SENDER_NAME,
                 Address = _emailConfiguration.NoReplyEmail
             });
 
@@ -44,17 +46,17 @@ namespace SA.Application.Email
 <p>Pro obnovení hesla přejděte na stránky prostřednictvím odkazu { resetPasswordHyperlink }</p>
 <p>Váš tým <strong>Jera Trading s.r.o.</strong></p>";
 
-            _emailService.Send(email);
+            await _emailService.Send(email);
 
             return email;
         }
 
-        public EmailMessage SendActivationEmail(User user, UserActivation activation)
+        public async Task<EmailMessage> SendActivationEmail(User user, UserActivation activation)
         {
             var email = new EmailMessage();
             email.FromAddresses.Add(new EmailAddress
             {
-                Name = "JeraTrading s.r.o.",
+                Name = SENDER_NAME,
                 Address = _emailConfiguration.NoReplyEmail
             });
 
@@ -112,17 +114,17 @@ namespace SA.Application.Email
 <p>Pro dokončení registrace prosím potvrďte kliknutím na tento odkaz { registrationHyperlink }</p>
 <p>Váš tým <strong>Jera Trading s.r.o.</strong></p>";
 
-            _emailService.Send(email);
+            await _emailService.Send(email);
 
             return email;
         }
 
-        public EmailMessage SendAuctionWonEmail(User user, RecordDetailDto record)
+        public async Task<EmailMessage> SendAuctionWonEmail(User user, RecordDetailDto record)
         {
             var email = new EmailMessage();
             email.FromAddresses.Add(new EmailAddress
             {
-                Name = "JeraTrading s.r.o.",
+                Name = SENDER_NAME,
                 Address = _emailConfiguration.NoReplyEmail
             });
 
@@ -141,7 +143,37 @@ namespace SA.Application.Email
 </ul>
 <p>Brzy vás budeme kontaktovat pro další postup platby a předávky draženého předmětu</p>";
 
-            _emailService.Send(email);
+            await _emailService.Send(email);
+
+            return email;
+        }
+
+        /// <summary>
+        /// Email bude zaslan uzivateli, ktery vyhraval a byl prehozen
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="record"></param>
+        /// <returns></returns>
+        public async Task<EmailMessage> SendAuctionOverbidenEmail(User user, RecordTableDto record)
+        {
+            var email = new EmailMessage();
+            email.FromAddresses.Add(new EmailAddress
+            {
+                Name = SENDER_NAME,
+                Address = _emailConfiguration.NoReplyEmail
+            });
+
+            email.ToAddresses.Add(new EmailAddress {
+                Name = $"{user.Customer.FirstName} {user.Customer.LastName}",
+                Address = user.Customer.Email
+            });
+
+            email.Subject = $"Byl jste přehozen v aukci Jera Trading s.r.o. na položce { record.Name }";
+            email.Content = $@"<h1>Bohužel jste byl přehozen</h1>
+<p>Aukce končí {record.ValidTo.ToString("dd.MM.yyyy HH:mm")}. Aktuální cena dražené položky je { record.CurrentPrice.ToString("C", new CultureInfo("cs-CZ")) } .</p>
+<p>Pokud chcete v aukci nadále pokračovat můžete přejít na položku tímto odkazem. <a href='{_configuration["Web:Url"]}/auctionDetail?id={record.Id}'>{ record.Name }</a></p>";
+
+            await _emailService.Send(email);
 
             return email;
         }

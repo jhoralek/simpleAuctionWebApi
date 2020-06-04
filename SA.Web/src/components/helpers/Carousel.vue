@@ -40,20 +40,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { Getter, namespace } from "vuex-class";
+import { Component, Prop, Watch } from 'vue-property-decorator';
+import { Getter, namespace } from 'vuex-class';
 
-import BaseComponent from "../BaseComponent.vue";
-import CarouselItem from "./CarouselItem.vue";
+import BaseComponent from '../BaseComponent.vue';
+import CarouselItem from './CarouselItem.vue';
 
-import { CarouselDto, CarouselItemDto } from "@/poco";
+import { CarouselDto, CarouselItemDto } from './../../poco';
 
-const SettingsGetter = namespace("settings", Getter);
+const SettingsGetter = namespace('settings', Getter);
 
 @Component({
   components: {
-    CarouselItem
-  }
+    CarouselItem,
+  },
 })
 export default class Carousel extends BaseComponent {
   @Prop({ default: undefined })
@@ -61,23 +61,24 @@ export default class Carousel extends BaseComponent {
   @Prop({ default: undefined })
   private data: CarouselDto;
 
-  @SettingsGetter("getIsMobile") private isMobile: boolean;
+  @SettingsGetter('getIsMobile')
+  private isMobile: boolean;
 
   private sliderWidth: number = 0;
   private step: number = 0;
   private take: number = 1;
 
-  private mounted() {
-    this.sliderWidth = this.$el.offsetWidth;
-    this.setTake();
-  }
-
-  @Watch("sliderWidth")
+  @Watch('sliderWidth')
   private watchSliderWidth(sliderWidth: number) {
     if (sliderWidth !== this.sliderWidth) {
       this.sliderWidth = sliderWidth;
       this.setTake();
     }
+  }
+
+  private mounted() {
+    this.sliderWidth = this.$el.offsetWidth;
+    this.setTake();
   }
 
   private moveBack(): void {
@@ -105,7 +106,7 @@ export default class Carousel extends BaseComponent {
   }
 
   private detail(id: number): void {
-    this.$emit("detail", id);
+    this.$emit('detail', id);
   }
 
   private isValidForwardStep(): boolean {

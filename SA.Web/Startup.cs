@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 using SA.Application.Account;
+using SA.Application.Bid;
 using SA.Application.Country;
 using SA.Application.Customer;
 using SA.Application.Email;
@@ -18,7 +19,6 @@ using SA.Core.Model;
 using SA.Core.Security;
 using SA.EntityFramework.EntityFramework;
 using SA.EntityFramework.EntityFramework.Repository;
-using System;
 using System.Linq;
 using System.Reflection;
 
@@ -136,7 +136,9 @@ namespace SA.Web
                 cfg.CreateMap<User, UserSimpleDto>()
                     .ForMember(dto => dto.IsFeePayed, dto => dto.MapFrom(x => x.Customer.IsFeePayed))
                     .ForMember(dto => dto.PhoneNumber, dto => dto.MapFrom(x => x.Customer.PhoneNumber))
-                    .ForMember(dto => dto.Email, dto => dto.MapFrom(x => x.Customer.Email));
+                    .ForMember(dto => dto.Email, dto => dto.MapFrom(x => x.Customer.Email))
+                    .ForMember(dto => dto.BirthNumber, dto => dto.MapFrom(x => x.Customer.BirthNumber))
+                    .ForMember(dto => dto.CompanyNumber, dto => dto.MapFrom(x => x.Customer.CompanyNumber));
                 cfg.CreateMap<User, UserShortDto>()
                     .ForMember(dto => dto.Email, dto => dto.MapFrom(x => x.Customer.Email))
                     .ForMember(dto => dto.PhoneNumber, dto => dto.MapFrom(x => x.Customer.PhoneNumber))

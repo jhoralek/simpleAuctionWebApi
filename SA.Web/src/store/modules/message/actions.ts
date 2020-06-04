@@ -1,13 +1,11 @@
-import { ActionTree } from "vuex";
+import { ActionTree } from 'vuex';
 
-import { RootState, MessageState } from "@/store/types";
-
-import { MessageDto } from "@/poco";
+import { RootState, MessageState } from '@/store/types';
 
 import {
   MESSAGE_INITIAL_STATE,
-  MESSAGE_CHANGE_STATE
-} from "@/store/mutation-types";
+  MESSAGE_CHANGE_STATE,
+} from '@/store/mutation-types';
 
 const actions: ActionTree<MessageState, RootState> = {
   /**
@@ -15,7 +13,7 @@ const actions: ActionTree<MessageState, RootState> = {
    * @param param - comit with mutating of the state
    */
   initialState({ commit }): Promise<boolean> {
-    return new Promise<boolean>(resolve => {
+    return new Promise<boolean>((resolve) => {
       commit(MESSAGE_INITIAL_STATE);
       return resolve(true);
     });
@@ -30,19 +28,16 @@ const actions: ActionTree<MessageState, RootState> = {
    * @param callbackFnc Customized func to the message button
    * @param buttonText Text on the button (close is default value)
    */
-  change(
-    { commit },
-    { mod, message, timeout, fromResources, callbackFnc, buttonText }
-  ): void {
+  change({ commit }, { mod, message, timeout, fromResources, callbackFnc, buttonText }): void {
     commit(MESSAGE_CHANGE_STATE, {
       mod,
       message,
       timeout,
       fromResources,
       callbackFnc,
-      buttonText
+      buttonText,
     });
-  }
+  },
 };
 
 export default actions;

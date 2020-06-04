@@ -58,7 +58,8 @@
 import { Component, Prop } from 'vue-property-decorator';
 import { Action, namespace } from 'vuex-class';
 
-import { Record } from '@/model';
+import { Record } from './../model';
+
 import BaseComponent from './BaseComponent.vue';
 import CountdownComponent from './helpers/CountdownComponent.vue';
 
@@ -70,8 +71,11 @@ const RecordAction = namespace('record', Action);
     },
 })
 export default class AuctionTableComponent extends BaseComponent {
-    @Prop({default: undefined}) public records: Record[];
-    @RecordAction('getDetail') public loadRecord: any;
+    @Prop({default: undefined})
+    public records: Record[];
+
+    @RecordAction('getDetail')
+    public loadRecord: any;
 
     private isLoading: boolean = false;
     private headers: any[] = [];
@@ -122,14 +126,6 @@ export default class AuctionTableComponent extends BaseComponent {
         return `count-down-${id}`;
     }
 
-    get pages() {
-        if (this.pagination.rowsPerPage == null ||
-          this.pagination.totalItems == null) {
-              return 0;
-        }
-        return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage);
-    }
-
     private recordIdToString(record: Record): string {
         return record.id.toString();
     }
@@ -143,6 +139,14 @@ export default class AuctionTableComponent extends BaseComponent {
             this.$router.push({ name: 'auctionDetail' });
         }
         });
+    }
+
+    get pages() {
+        if (this.pagination.rowsPerPage == null ||
+          this.pagination.totalItems == null) {
+              return 0;
+        }
+        return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage);
     }
 }
 

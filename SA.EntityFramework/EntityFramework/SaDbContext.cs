@@ -1,13 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 using SA.Core.Model;
 
 namespace SA.EntityFramework.EntityFramework
 {
     public class SaDbContext : DbContext
     {
-        public SaDbContext(){}
+        private IConfiguration _configuration { get; }
 
-        public SaDbContext(DbContextOptions<SaDbContext> options) : base(options) {}
+        public SaDbContext() { }
+
+        public SaDbContext(
+            IConfiguration configuration,
+            DbContextOptions<SaDbContext> options)
+            : base(options)
+        {
+            _configuration = configuration;
+        }
 
         public DbSet<Address> Addresses { get; set; }
 
@@ -29,11 +38,11 @@ namespace SA.EntityFramework.EntityFramework
 
         public DbSet<Auction> Auctions { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder builder) {}
+        protected override void OnConfiguring(DbContextOptionsBuilder builder) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.HasDefaultSchema(schema: DbGlobals.SchemaName);
+            builder.HasDefaultSchema(schema: _configuration["Db:Name"]);
             base.OnModelCreating(builder);
         }
     }

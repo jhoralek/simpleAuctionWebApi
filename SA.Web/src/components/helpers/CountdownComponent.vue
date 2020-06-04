@@ -5,20 +5,24 @@
 <script lang="ts">
 
 import { Vue, Prop, Component, Watch } from 'vue-property-decorator';
-import Helpers from '@/helpers';
+import Helpers from './../../helpers';
 
 import BaseComponent from '../BaseComponent.vue';
 import { clearTimeout, setTimeout } from 'timers';
 
 @Component({})
 export default class CountdownComponent extends BaseComponent {
-    @Prop({default: undefined}) private date: string;
-    @Prop({default: undefined}) private startDate: string;
-    @Prop({default: 1}) private id: string;
+    @Prop({default: undefined})
+    private date: string;
+    @Prop({default: undefined})
+    private startDate: string;
+    @Prop({default: 1})
+    private id: string;
 
     private counter: any = null;
 
-    @Watch('date') private changeDate(newDate) {
+    @Watch('date')
+    private changeDate(newDate) {
         if (newDate !== undefined) {
             this.setCountdownWatch(new Date(this.startDate), newDate);
         }

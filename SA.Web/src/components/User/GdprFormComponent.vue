@@ -172,16 +172,19 @@ import {
     GdprApplicationType,
     GdprRecord,
     Country,
-} from '@/model';
+} from './../../model';
 
 const ProfileAction = namespace('profile', Action);
 const SettingsGetter = namespace('settings', Getter);
 
 @Component({})
 export default class GdprFromComponent extends FormBaseComponent {
-    @SettingsGetter('getCountries') private countries: Country[];
-    @SettingsGetter('getLanguage') private language: string;
-    @ProfileAction('createGdprRequest') private sendGdpr: any;
+    @SettingsGetter('getCountries')
+    private countries: Country[];
+    @SettingsGetter('getLanguage')
+    private language: string;
+    @ProfileAction('createGdprRequest')
+    private sendGdpr: any;
 
     private newGdprRecord: GdprRecord = {} as GdprRecord;
     private applicationTypes: any[] = [];
@@ -204,6 +207,16 @@ export default class GdprFromComponent extends FormBaseComponent {
             id: GdprApplicationType.newObjection,
             name: this.settings.resource.newObjection,
         }];
+    }
+
+    private submit(): void {
+        this.$validator.validateAll().then((response) => {
+            if (response) {
+                this.sendGdpr(this.newGdprRecord).then((resp1) => {
+                    this.sent = resp1;
+                });
+            }
+        });
     }
 
     get labelFirstName(): string {
@@ -256,16 +269,6 @@ export default class GdprFromComponent extends FormBaseComponent {
 
     get labelApplicationType(): string {
         return this.settings.resource.applicationType;
-    }
-
-    private submit(): void {
-        this.$validator.validateAll().then((response) => {
-            if (response) {
-                this.sendGdpr(this.newGdprRecord).then((resp1) => {
-                    this.sent = resp1;
-                });
-            }
-        });
     }
 }
 

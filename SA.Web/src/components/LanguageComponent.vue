@@ -20,28 +20,19 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Action, namespace } from 'vuex-class';
 
-import { SettingsState } from '@/store/types';
-import { Translator } from '@/lang';
+import { SettingsState } from './../store/types';
+import { Translator } from './../lang';
+import Validation from './../validation';
+
 import BaseComponent from '@/components/BaseComponent.vue';
-import Validation from '@/validation';
 
 const SettingsAction = namespace('settings', Action);
 
 @Component({})
 export default class LanguageComponent extends BaseComponent {
 
-    @SettingsAction('changeLanguage') public change: any;
-
-    get current(): any {
-        return require(`@/assets/${this.settings.language}.png`);
-    }
-    get flags(): any [] {
-        return Translator.languages
-            .filter((x) => x !== this.settings.language)
-            .map((item) => {
-                return { key: item, value: require(`@/assets/${item}.png`)};
-            });
-    }
+    @SettingsAction('changeLanguage')
+    public change: any;
 
     public selectLang(key: string) {
         this.change(key);
@@ -52,6 +43,18 @@ export default class LanguageComponent extends BaseComponent {
             this.$validator.localize(key, attributes);
         }
         this.$validator.localize(key);
+    }
+
+    get current(): any {
+        return require(`@/assets/${this.settings.language}.png`);
+    }
+
+    get flags(): any [] {
+        return Translator.languages
+            .filter((x) => x !== this.settings.language)
+            .map((item) => {
+                return { key: item, value: require(`@/assets/${item}.png`)};
+            });
     }
 }
 

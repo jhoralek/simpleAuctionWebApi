@@ -27,8 +27,10 @@ import BaseComponent from '../BaseComponent.vue';
 
 @Component({})
 export default class LoadingComponent extends BaseComponent {
-    @Prop({default: false}) public open: boolean;
-    @Prop({default: 'loadingData'}) public message: string;
+    @Prop({default: false})
+    public open: boolean;
+    @Prop({default: 'loadingData'})
+    public message: string;
 }
 
 </script>

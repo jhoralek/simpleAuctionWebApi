@@ -15,7 +15,7 @@
 import { Component } from 'vue-property-decorator';
 
 import BaseView from '@/views/BaseView.vue';
-import { AuctionGridComponent } from '@/components';
+import { AuctionGridComponent } from './../components';
 
 @Component({
   components: {

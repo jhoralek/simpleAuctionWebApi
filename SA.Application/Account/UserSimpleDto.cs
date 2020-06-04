@@ -27,5 +27,9 @@ namespace SA.Application.Account
         public virtual string Email { get; set; }
 
         public virtual string PhoneNumber { get; set; }
+
+        public virtual string BirthNumber { get; set; }
+
+        public virtual string CompanyNumber { get; set; }
     }
 }

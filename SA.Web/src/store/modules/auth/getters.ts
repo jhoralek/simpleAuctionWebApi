@@ -1,7 +1,7 @@
-import { GetterTree } from "vuex";
+import { GetterTree } from 'vuex';
 
-import { RootState, AuthState } from "@/store/types";
-import { AuthUser } from "@/poco";
+import { RootState, AuthState } from '@/store/types';
+import { AuthUser } from '@/poco';
 
 const getters: GetterTree<AuthState, RootState> = {
   getCurrentLoggedUser(state): AuthUser {
@@ -12,9 +12,9 @@ const getters: GetterTree<AuthState, RootState> = {
       token: state.token,
       langauge: state.language,
       isFeePayed: state.isFeePayed,
-      userId: state.userId
+      userId: state.userId,
     } as AuthUser;
-  }
+  },
 };
 
 export default getters;

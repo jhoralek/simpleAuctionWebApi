@@ -33,19 +33,7 @@
                                         </div>
                                         <v-layout row wrap>
                                             <v-flex xs12>
-                                                <v-data-table
-                                                    :items="record.bids"
-                                                    hide-actions
-                                                    class="elevation-1">
-                                                    <template slot="items" slot-scope="props">
-                                                    <td class="text-xs-left">{{ props.item.created | moment('HH:mm DD.MM.YYYY') }}</td>
-                                                    <td class="text-xs-left">{{ anonymize(props.item.userName) }}</td>
-                                                    <td class="text-xs-left">{{ resx('bidedBy') }}</td>
-                                                    <td class="text-xs-right">
-                                                        <price-component :price="props.item.price" />
-                                                    </td>
-                                                    </template>
-                                                </v-data-table>
+                                                <bids-list-component :bids="record.bids" :pageRows="4"></bids-list-component>
                                             </v-flex>
                                         </v-layout>
                                         <v-layout row wrap v-if="currentUser.isFeePayed">
@@ -103,10 +91,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Action, Getter, namespace } from 'vuex-class';
 
 import FormBaseComponent from '@/components/FormBaseComponent.vue';
-import { PriceComponent, CountdownComponent, BidComponent } from '@/components';
-import { Record } from '@/model';
-import { AuthUser } from '@/poco';
-import Helpers from '@/helpers';
+import BidsListComponent from '@/components/helpers/BidsListComponent.vue';
+
+import { PriceComponent, CountdownComponent, BidComponent } from './../../components';
+import { Record } from './../../model';
+import { AuthUser } from './../../poco';
 
 const RecordAction = namespace('record', Action);
 const RecordGetter = namespace('record', Getter);
@@ -117,19 +106,21 @@ const AuthGetter = namespace('auth', Getter);
         PriceComponent,
         CountdownComponent,
         BidComponent,
+        BidsListComponent,
     },
 })
 export default class ActualRandomComponent extends FormBaseComponent {
-    @RecordAction('getActualRandom') private randomRecord: any;
-    @RecordGetter('getCurrent') private record: Record;
-    @AuthGetter('getCurrentLoggedUser') private currentUser: AuthUser;
+    @RecordAction('getActualRandom')
+    private randomRecord: any;
+
+    @RecordGetter('getCurrent')
+    private record: Record;
+
+    @AuthGetter('getCurrentLoggedUser')
+    private currentUser: AuthUser;
 
     public mounted() {
         this.randomRecord();
-    }
-
-    get minimumBid(): number {
-        return this.record.currentPrice + this.record.minimumBid;
     }
 
     private firstImagePath(record: Record): string {
@@ -149,14 +140,14 @@ export default class ActualRandomComponent extends FormBaseComponent {
         return validTo.toString();
     }
 
-    private anonymize(str: string): string {
-        return Helpers.anonymizeString(str, 1, str.length);
-    }
-
     private detail(record: Record): void {
         if (record) {
             this.$router.push({ path: `/auctionDetail?id=${record.id}` });
         }
+    }
+
+    get minimumBid(): number {
+        return this.record.currentPrice + this.record.minimumBid;
     }
 }
 

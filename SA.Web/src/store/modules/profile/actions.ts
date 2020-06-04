@@ -55,6 +55,19 @@ const actions: ActionTree<ProfileState, RootState> = {
                 });
         });
     },
+
+    /**
+     * Change user list state
+     * @param param - commit
+     * @param filteredUsers - list of users who will be set to the list of users
+     */
+    filterUsers({commit}, filteredUsers: UserSimpleDto[]): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            commit(USER_CHANGE_ADMIN_LIST, filteredUsers);
+            return resolve(true);
+        });
+    },
+
     /**
      * Load user to the store
      * @param param - commit

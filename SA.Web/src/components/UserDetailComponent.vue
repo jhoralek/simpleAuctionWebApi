@@ -39,20 +39,36 @@
 import { Component, Prop } from 'vue-property-decorator';
 import { Action, namespace } from 'vuex-class';
 
-import { SettingsState } from '@/store/types';
-import { User } from '@/model';
-import BaseComponent from './BaseComponent.vue';
+import { SettingsState } from './../store/types';
+import { User } from './../model';
 
-import { Translator } from '@/lang';
+import { Translator } from './../lang';
+
+import BaseComponent from './BaseComponent.vue';
 
 const ProfileAction = namespace('profile', Action);
 
 @Component({})
 export default class UserDetailComponent extends BaseComponent {
-  @Prop({ default: undefined }) private user: User;
-  @ProfileAction('userUpdate') private update: any;
+  @Prop({ default: undefined })
+  private user: User;
+  @ProfileAction('userUpdate')
+  private update: any;
 
   private isLoading: boolean = false;
+
+  private submitUser(): void {
+    this.$validator.validateAll().then((response) => {
+      if (response) {
+        this.isLoading = true;
+        this.update(this.user).then((responseUser) => {
+          if (responseUser) {
+            this.isLoading = false;
+          }
+        });
+      }
+    });
+  }
 
   get labelUserName(): string {
     return this.settings.resource.userName;
@@ -72,19 +88,6 @@ export default class UserDetailComponent extends BaseComponent {
 
   get current(): NodeRequire {
     return require(`@/assets/${this.user.language}.png`);
-  }
-
-  private submitUser(): void {
-    this.$validator.validateAll().then((response) => {
-      if (response) {
-        this.isLoading = true;
-        this.update(this.user).then((responseUser) => {
-          if (responseUser) {
-            this.isLoading = false;
-          }
-        });
-      }
-    });
   }
 }
 

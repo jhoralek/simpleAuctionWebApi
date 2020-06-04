@@ -30,20 +30,22 @@ import CookieConsent from 'vue-cookieconsent-component';
 import { Component, Vue } from 'vue-property-decorator';
 import { State, Action, Getter, namespace } from 'vuex-class';
 
-import { MessageComponent } from '@/components';
+import { MessageComponent } from './components';
 
 import {
   AuthState,
   ProfileState,
   SettingsState,
   MessageState,
-} from '@/store/types';
+} from './store/types';
 
-import MainMenuDesktop from './views/MainMenuDesktop.vue';
-import MainMenuMobile from './views/MainMenuMobile.vue';
-import FooterView from './views/FooterView.vue';
+import {
+  MainMenuDesktop,
+  MainMenuMobile,
+  FooterView,
+} from './views';
 
-import { UserShortInfo } from '@/poco';
+import { UserShortInfo } from './poco';
 
 const SettingsGetter = namespace('settings', Getter);
 const AuthGetter = namespace('auth', Getter);
@@ -63,20 +65,35 @@ const MessageAction = namespace('message', Action);
 })
 export default class App extends Vue {
   // define states in app root
-  @State('message') public message: MessageState;
-  @State('auth') public auth: AuthState;
-  @State('profile') public profile: ProfileState;
-  @State('settings') public settings: SettingsState;
+  @State('message')
+  public message: MessageState;
+  @State('auth')
+  public auth: AuthState;
+  @State('profile')
+  public profile: ProfileState;
+  @State('settings')
+  public settings: SettingsState;
 
-  @SettingsGetter('getTranslate') public resx: string;
+  @SettingsGetter('getTranslate')
+  public resx: string;
 
-  @AuthAction('initialState') public initAuth: any;
-  @AuthAction('startTimer') public startTimer: any;
-  @ProfileAction('loadByToken') public loadByToken: any;
-  @ProfileAction('initialState')  public initProfile: any;
-  @SettingsAction('initialState') public initSettings: any;
-  @SettingsAction('changeLanguage') public setLang: any;
-  @MessageAction('initialState') public initMessage: any;
+  @AuthAction('initialState')
+  public initAuth: any;
+  @AuthAction('startTimer')
+  public startTimer: any;
+
+  @ProfileAction('loadByToken')
+  public loadByToken: any;
+  @ProfileAction('initialState')
+  public initProfile: any;
+
+  @SettingsAction('initialState')
+  public initSettings: any;
+  @SettingsAction('changeLanguage')
+  public setLang: any;
+
+  @MessageAction('initialState')
+  public initMessage: any;
 
   private isLoading: boolean = false;
   /**
@@ -94,7 +111,7 @@ export default class App extends Vue {
         this.initProfile().then((x) => {
           if (this.auth.timer != null
             && this.auth.secondsToLogout > 0
-            && this.auth.token != undefined
+            && this.auth.token !== undefined
             && this.auth.isAuthenticated) {
             this.startTimer();
           }
