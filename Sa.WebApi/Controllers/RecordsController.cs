@@ -46,6 +46,23 @@ namespace SA.WebApi.Controllers
             return Json(records);
         }
 
+        [HttpGet]
+        [Route("getAllCurrentAuctionItemsMinimum")]
+        public async Task<IActionResult> GetAllCurrentAuctionItemsMinimum()
+        {
+            var today = DateTime.Now;
+            var records = await _repository.GetAllAsync<RecordMinimumDto, DateTime>(x => x.IsActive
+                && x.Auction.IsActive
+                && x.Auction.ValidFrom <= today
+                && x.Auction.ValidTo >= today
+                && !x.Auction.IsEnded
+                && x.ValidFrom <= today
+                && x.ValidTo >= today,
+                x => x.ValidTo);
+
+            return Json(records);
+        }
+
         [Route("getById")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -110,7 +127,7 @@ namespace SA.WebApi.Controllers
                 .ThenByDescending(x => x.ValidTo)
                 .ProjectTo<RecordTableDto>()
                 .ToListAsync());
-        
+
         [Authorize("admin")]
         [HttpGet("{id}")]
         [Route("getAuctionRecordsForAdmin")]
@@ -173,7 +190,7 @@ namespace SA.WebApi.Controllers
             var items = await _repository
                 .GetAllAsync<RecordTableDto, DateTime>(x => x.ValidFrom < now
                     && x.ValidTo < now,
-                    orderDesc: x => x.ValidTo, 
+                    orderDesc: x => x.ValidTo,
                     take: take);
 
             return Json(items);

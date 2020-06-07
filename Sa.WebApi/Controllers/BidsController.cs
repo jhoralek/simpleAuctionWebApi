@@ -20,7 +20,7 @@ namespace SA.WebApi.Controllers
         private readonly IEntityRepository<Record> _recordRepository;
         private readonly IEntityRepository<Auction> _auctionRepository;
         private readonly IEntityRepository<User> _userRepository;
-        private readonly IUserEmailFactory _userEmailFactory;        
+        private readonly IUserEmailFactory _userEmailFactory;
 
         public BidsController(
             IEntityRepository<Bid> repository,
@@ -94,8 +94,6 @@ namespace SA.WebApi.Controllers
                 return Json(response);
             }
 
-            var oldWinner = await _userRepository.GetOneAsync<User>(x => x.Id == record.WinningUserId);
-
             try
             {
                 var newBid = await _repository.AddAsync(bid);
@@ -115,8 +113,6 @@ namespace SA.WebApi.Controllers
                     await _auctionRepository.UpdateAsync(auction);
                 }
 
-                await _userEmailFactory.SendAuctionOverbidenEmail(oldWinner, record);
-
                 response.Status = MessageStatusEnum.Success; ;
                 response.Code = "createdSuccessfully";
             }
@@ -127,6 +123,39 @@ namespace SA.WebApi.Controllers
             }
 
             return Json(response);
+        }
+
+
+        [Authorize("read:messages")]
+        [HttpGet("{recordId}")]
+        [Route("sendEmailToOverbided")]
+        public async Task<IActionResult> SendEmailToOverbidedCustomer(int recordId)
+        {
+            try
+            {
+                var record = await _recordRepository
+                        .GetOneAsync<RecordTableDto>(x => x.Id == recordId);
+
+                var userOverbidedIds = await _repository.Context.Bids
+                    .Include(x => x.User)
+                    .Include(x => x.User.Customer)
+                    .Where(x => x.RecordId == recordId)
+                    .OrderByDescending(x => x.Price)
+                    .Take(2)
+                    .Select(x => x.User.Id)
+                    .ToListAsync();
+
+                var overbidedUserId = userOverbidedIds.Last();
+                var overbidedUser = await _userRepository.GetOneAsync<User>(x => x.Id == overbidedUserId);
+
+                await _userEmailFactory.SendAuctionOverbidenEmail(overbidedUser, record);
+
+                return Json(true);
+            }
+            catch (Exception e)
+            {
+                return Json(false);
+            }
         }
     }
 }

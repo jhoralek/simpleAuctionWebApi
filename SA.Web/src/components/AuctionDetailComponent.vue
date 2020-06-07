@@ -65,7 +65,7 @@
                         </v-layout>
                         <v-layout row wrap class="info3">
                             <v-flex xs12 class="text-xs-center">
-                                <bid-component :bid="minimumBid" v-if="currentUser.isFeePayed && canBid(record.validFrom, record.validTo) && record.isActive" />
+                                <bid-component :bid="minimumBid" v-if="currentUser.isFeePayed && canBid && record.isActive" />
                             </v-flex>
                         </v-layout>
                     </div>
@@ -382,36 +382,48 @@ export default class AuctionDetalComponent extends BaseComponent {
     private isLoading: boolean = false;
     private expander: boolean[] = [true, true, true, true, true, true];
     private expander1: boolean[] = [true];
+    private canBid: boolean = false;
 
     private winnigRefreshCounter: any = null;
+    private checkEndAucitonCoutner: any = null;
 
     @Watch('record.bids')
     private watchBids(newBids) {
         if (this.winnigRefreshCounter == null) {
-            if (this.isCurrentUserBidding()) {
-                clearInterval(this.winnigRefreshCounter);
-                this.startWinningRefreshCounter();
-            }
+            clearInterval(this.winnigRefreshCounter);
+            this.startWinningRefreshCounter();
         }
     }
 
     private mounted() {
         if (this.record.id === undefined) {
-            this.detail(this.$route.query.id);
+            this.detail(this.$route.query.id).then((result) => {
+                clearInterval(this.checkEndAucitonCoutner);
+                this.startCheckEndAuction();
+            });
+        } else {
+            clearInterval(this.checkEndAucitonCoutner);
+            this.startCheckEndAuction();
         }
+
         this.featuredAcutions();
 
-        if (this.isCurrentUserBidding()) {
-            clearInterval(this.winnigRefreshCounter);
-
-            this.startWinningRefreshCounter();
-        }
+        clearInterval(this.winnigRefreshCounter);
+        this.startWinningRefreshCounter();
     }
 
     private startWinningRefreshCounter(): void {
         this.winnigRefreshCounter = setInterval(() => {
             this.updateWinnerId(this.record.id);
         }, 30000); // every 30s
+    }
+
+    private startCheckEndAuction(): void {
+        this.checkEndAucitonCoutner = setInterval(() => {
+            if (!this.canBidFnc(this.record.validFrom, this.record.validTo)) {
+                clearInterval(this.checkEndAucitonCoutner);
+            }
+        }, 1000);
     }
 
     private beforeDestroy() {
@@ -454,9 +466,13 @@ export default class AuctionDetalComponent extends BaseComponent {
         return biddingIds.indexOf(this.currentUser.userId) !== -1;
     }
 
-    private canBid(validFrom: Date, validTo: Date): boolean {
-        return new Date(validFrom) <= new Date()
+    private canBidFnc(validFrom: Date, validTo: Date): boolean {
+        const canBid =  new Date(validFrom) <= new Date()
             && new Date(validTo) >= new Date();
+
+        this.canBid = canBid;
+
+        return canBid;
     }
 
     private loadDetail(id: number): void {

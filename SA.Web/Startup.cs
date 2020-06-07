@@ -123,12 +123,18 @@ namespace SA.Web
                 cfg.CreateMap<Record, RecordMinimumDto>()
                     .ForMember(dto => dto.CurrentPrice, dto => dto.MapFrom(x => x.Bids.Any()
                         ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().Price
-                        : x.StartingPrice));
+                        : x.StartingPrice))
+                    .ForMember(dto => dto.WinningUserId, dto => dto.MapFrom(x => x.Bids.Any()
+                        ? x.Bids.OrderByDescending(y => y.Price).FirstOrDefault().UserId
+                        : 0))
+                    .ForMember(dto => dto.BiddingUserIds, dto => dto.MapFrom(x => x.Bids
+                        .Select(y => y.UserId).Distinct()));
 
                 cfg.CreateMap<File, FileSimpleDto>();
 
                 cfg.CreateMap<Bid, BidSimpleDto>()
-                    .ForMember(dto => dto.UserName, dto => dto.MapFrom(x => x.User.UserName));
+                    .ForMember(dto => dto.UserName, dto => dto.MapFrom(x => x.User.UserName))
+                    .ForMember(dto => dto.RecordValidTo, dto => dto.MapFrom(x => x.Record.ValidTo));
 
                 cfg.CreateMap<Customer, CustomerSimpleDto>();
 

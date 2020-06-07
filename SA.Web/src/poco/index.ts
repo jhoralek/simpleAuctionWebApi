@@ -6,6 +6,7 @@ import GdprRecordTableDto from './GdprRecordTableDto';
 import LoginDto from './LoginDto';
 import MessageDto from './MessageDto';
 import RecordTableDto from './RecordTableDto';
+import RecordMinimumDto from './RecordMinimumDto';
 import ResponseMessage from './ResponseMessage';
 import UserShortInfo from './UserShortInfo';
 import UserSimpleDto from './UserSimpleDto';
@@ -38,4 +39,5 @@ export {
     UserShortDto,
     CarouselDto,
     CarouselItemDto,
+    RecordMinimumDto,
 };
