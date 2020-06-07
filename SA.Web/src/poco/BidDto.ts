@@ -5,4 +5,5 @@ export default interface BidDto {
     id?: number;
     userId: number;
     recordId: number;
+    recordValidTo: Date;
 }

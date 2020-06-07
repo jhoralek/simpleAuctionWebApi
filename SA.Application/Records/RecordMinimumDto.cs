@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SA.Application.Records
 {
@@ -10,5 +11,7 @@ namespace SA.Application.Records
         public DateTime ValidFrom { get; set; }
         public decimal CurrentPrice { get; set; }
         public bool WithVat { get; set; }
+        public int WinningUserId { get; set; }
+        public List<int> BiddingUserIds { get; set; } = new List<int>();
     }
 }

@@ -46,8 +46,6 @@ namespace SA.EntityFramework.EntityFramework.Repository
                 var deleted = _context.Records.Remove(itemToDelte);
                 var root = _hostingEnvironment.WebRootPath;
 
-
-
                 if (itemToDelte.Files.Any())
                 {
                     var item = itemToDelte.Files.FirstOrDefault();

@@ -21,13 +21,16 @@ import {
     RECORD_SET_VALID_DATES,
     RECORD_CHANGE_BIDS_TO_CURRENT,
     RECORD_CHANGE_WINNING_USER_ID,
+    RECORD_UPDATE_LIST_STATE,
 } from '@/store/mutation-types';
 import {
     RecordTableDto,
     FileSimpleDto,
     ResponseMessage,
     BidDto,
+    RecordMinimumDto,
 } from '@/poco';
+import { record } from '.';
 
 const actions: ActionTree<RecordState, RootState> = {
     /**
@@ -77,6 +80,28 @@ const actions: ActionTree<RecordState, RootState> = {
                 });
         });
     },
+    loadUpdateAllPublished({commit, rootState, dispatch}): Promise<boolean> {
+        return new Promise<boolean> ((resolve) => {
+            return axios.get(
+                `${rootState.settings.apiUrl}/records/getAllCurrentAuctionItemsMinimum`)
+                .then((response) => {
+                    const records: RecordMinimumDto[] = response.data as RecordMinimumDto[];
+                    commit(RECORD_UPDATE_LIST_STATE, records);
+                    return resolve(true);
+                })
+                .catch((error) => {
+                    dispatch('message/change', {
+                        mod: 'Record',
+                        message: {
+                            state: MessageStatusEnum.Error,
+                            message: error.message,
+                        },
+                    },
+                    { root: true});
+                    return resolve(false);
+                });
+        });
+    },
     /**
      * Get record detail by id
      * @param id - record id
@@ -85,12 +110,12 @@ const actions: ActionTree<RecordState, RootState> = {
         return new Promise<boolean>((resolve) => {
             return axios.get(`${rootState.settings.apiUrl}/records/getById?id=${id}`)
                 .then((response) => {
-                    const record: Record = response.data as Record;
-                    commit(RECORD_CHANGE_CURRENT_STATE, record);
+                    const r: Record = response.data as Record;
+                    commit(RECORD_CHANGE_CURRENT_STATE, r);
 
                     const { auth } = rootState;
 
-                    const biddingsIds = record.bids.map((b) => b.userId);
+                    const biddingsIds = r.bids.map((b) => b.userId);
 
                     if (auth.isAuthenticated
                             && auth.isFeePayed
@@ -116,8 +141,8 @@ const actions: ActionTree<RecordState, RootState> = {
         return new Promise<boolean>((resolve) => {
             return axios.get(`${rootState.settings.apiUrl}/records/actualRandom`)
                 .then((response) => {
-                    const record: Record = response.data as Record;
-                    commit(RECORD_CHANGE_CURRENT_STATE, record);
+                    const r: Record = response.data as Record;
+                    commit(RECORD_CHANGE_CURRENT_STATE, r);
                     return resolve(true);
                 })
                 .catch((error) => {
@@ -244,9 +269,9 @@ const actions: ActionTree<RecordState, RootState> = {
             });
         });
     },
-    createRecord({commit, rootState, dispatch}, record: Record): Promise<boolean> {
+    createRecord({commit, rootState, dispatch}, r: Record): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
-            return axios.post(`${rootState.settings.apiUrl}/records/create`, record,
+            return axios.post(`${rootState.settings.apiUrl}/records/create`, r,
                 { headers: { authorization: rootState.auth.token } })
             .then((response) => {
                 commit(RECORD_CHANGE_CURRENT_STATE, response.data as Record);
@@ -258,7 +283,7 @@ const actions: ActionTree<RecordState, RootState> = {
                     },
                 },
                 { root: true });
-                dispatch('record/getAuctionRecordsForAdmin', record.auctionId, { root: true });
+                dispatch('record/getAuctionRecordsForAdmin', r.auctionId, { root: true });
                 dispatch('record/initialCurrent', {}, { root: true });
                 return resolve(true);
             })
@@ -295,9 +320,9 @@ const actions: ActionTree<RecordState, RootState> = {
             });
         });
     },
-    setCurrent({commit}, record: Record): Promise<boolean> {
+    setCurrent({commit}, r: Record): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
-            commit(RECORD_CHANGE_CURRENT_STATE, record);
+            commit(RECORD_CHANGE_CURRENT_STATE, r);
             return resolve(true);
         });
     },
@@ -315,9 +340,9 @@ const actions: ActionTree<RecordState, RootState> = {
             return resolve(true);
         });
     },
-    setCurrentRecordDates({commit}, record: Record): Promise<boolean> {
+    setCurrentRecordDates({commit}, r: Record): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
-            const { validFrom, validTo } = record;
+            const { validFrom, validTo } = r;
 
             commit(RECORD_SET_VALID_DATES, { validFrom, validTo });
             return resolve(true);
@@ -341,9 +366,9 @@ const actions: ActionTree<RecordState, RootState> = {
             return resolve(true);
         });
     },
-    updateRecord({rootState, dispatch}, record: Record): Promise<boolean> {
+    updateRecord({rootState, dispatch}, r: Record): Promise<boolean> {
         return new Promise<boolean> ((resolve) => {
-            return axios.put(`${rootState.settings.apiUrl}/records`, record,
+            return axios.put(`${rootState.settings.apiUrl}/records`, r,
                 { headers: { authorization: rootState.auth.token } })
             .then((response) => {
                 dispatch('message/change', {
@@ -414,6 +439,10 @@ const actions: ActionTree<RecordState, RootState> = {
                 { headers: { authorization: rootState.auth.token }})
             .then((resp1) => {
                 const response = resp1.data as ResponseMessage<Bid>;
+                if (response.code === 'createdSuccessfully') {
+                    dispatch('record/sendEmailToOverbideduser', bid.recordId, { root: true});
+                }
+
                 dispatch('record/getDetail', bid.recordId, { root: true}).then((resp2) => {
                     dispatch('message/change', {
                         mod: 'Record',
@@ -440,7 +469,18 @@ const actions: ActionTree<RecordState, RootState> = {
             });
         });
     },
-
+    sendEmailToOverbideduser({rootState}, recordId: number): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            return axios.get(`${rootState.settings.apiUrl}/bids/sendEmailToOverbided?recordId=${recordId}`,
+                { headers: { authorization: rootState.auth.token } })
+            .then(() => {
+                return resolve(true);
+            })
+            .catch(() => {
+                return resolve(false);
+            });
+        });
+    },
     getAllEndedRecords({commit, rootState, dispatch}): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
             return axios.get(`${rootState.settings.apiUrl}/records/getAllEndedRecords`,

@@ -9,6 +9,7 @@ namespace SA.Application.Bid
         public virtual int RecordId { get; set; }
         public virtual int UserId { get; set; }
         public virtual DateTime Created {get; set; }
-        public virtual string UserName {get; set; }
+        public virtual string UserName { get; set; }
+        public virtual DateTime RecordValidTo { get; set;}
     }
 }

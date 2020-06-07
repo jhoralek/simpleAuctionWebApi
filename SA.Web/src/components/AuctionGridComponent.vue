@@ -71,6 +71,7 @@
 import { Lory, Item, Prev, Next } from 'vue-lory';
 import { Component, Prop } from 'vue-property-decorator';
 import { State, Action, Getter, namespace } from 'vuex-class';
+import { clearTimeout, setTimeout } from 'timers';
 
 import { Record } from './../model';
 import BaseComponent from './BaseComponent.vue';
@@ -113,6 +114,8 @@ export default class AuctionGridComponent extends BaseComponent {
   private loadRecods: any;
   @RecordAction('getDetail')
   private loadRecord: any;
+  @RecordAction('loadUpdateAllPublished')
+  private loadRecordUpdates: any;
 
   @AuctionGetter('getAuctionsCarousel')
   private auctions: CarouselDto[];
@@ -121,10 +124,17 @@ export default class AuctionGridComponent extends BaseComponent {
   private featuredAcutions: any;
 
   private isLoading: boolean = false;
+  private refreshTimer: any = null;
 
   private mounted() {
     this.isLoading = true;
     this.loadRecods().then((respAuction) => {
+        clearInterval(this.refreshTimer);
+
+        this.refreshTimer = setInterval(() => {
+          this.loadRecordUpdates();
+        }, 30000);
+
         this.featuredAcutions().then(() => {
           this.isLoading = false;
         });

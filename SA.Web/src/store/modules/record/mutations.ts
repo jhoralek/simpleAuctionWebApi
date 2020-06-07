@@ -1,7 +1,7 @@
 import { MutationTree } from 'vuex';
 import { RecordState } from '@/store/types';
 import { Record } from '@/model';
-import { FileSimpleDto, RecordTableDto, BidDto } from '@/poco';
+import { FileSimpleDto, RecordTableDto, BidDto, RecordMinimumDto } from '@/poco';
 
 const DATE_FORMAT = 'DD.MM.YYYY HH:mm';
 
@@ -92,11 +92,12 @@ const mutations: MutationTree<RecordState> = {
         state.current.validTo = formatedTo;
     },
     RECORD_CHANGE_WINNING_USER_ID(state, bid: BidDto) {
-        const { userId, price } = bid;
+        const { userId, price, recordValidTo } = bid;
 
         state.error = false;
         state.currentWinnerId = userId;
         state.current.currentPrice = price;
+        state.current.validTo = recordValidTo;
 
         const isIn = state.current.bids
             .filter((item) => item.id === bid.id).length > 0;
@@ -105,6 +106,19 @@ const mutations: MutationTree<RecordState> = {
             state.current.bids.unshift(bid);
             state.current.numberOfBids ++;
         }
+    },
+    RECORD_UPDATE_LIST_STATE(state, records: RecordMinimumDto[]) {
+        state.error = false;
+
+        state.records.forEach((item) => {
+            const updItem = records.find((f) => f.id === item.id);
+
+            if (updItem !== undefined) {
+                item.validTo = updItem.validTo;
+                item.currentPrice = updItem.currentPrice;
+                item.winningUserId = updItem.winningUserId;
+            }
+        });
     },
 };
 
