@@ -95,6 +95,7 @@ const mutations: MutationTree<RecordState> = {
         const { userId, price, recordValidTo } = bid;
 
         state.error = false;
+
         state.currentWinnerId = userId;
         state.current.currentPrice = price;
         state.current.validTo = recordValidTo;
