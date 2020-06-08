@@ -430,6 +430,10 @@ export default class AuctionDetalComponent extends BaseComponent {
         if (this.winnigRefreshCounter !== null) {
             clearInterval(this.winnigRefreshCounter);
         }
+
+        if (this.checkEndAucitonCoutner !== null) {
+            clearInterval(this.checkEndAucitonCoutner);
+        }
     }
 
     private updated() {

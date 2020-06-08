@@ -141,6 +141,12 @@ export default class AuctionGridComponent extends BaseComponent {
     });
   }
 
+  private beforeDestroy() {
+    if (this.refreshTimer !== null) {
+        clearInterval(this.refreshTimer);
+    }
+  }
+
   private firstImagePath(record: Record): string {
     const { files } = record;
     if (files.length === 0) {
