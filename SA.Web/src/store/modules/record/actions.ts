@@ -575,7 +575,7 @@ const actions: ActionTree<RecordState, RootState> = {
             .then((resp1) => {
                 const data = resp1.data as BidDto;
 
-                if (data !== undefined) {
+                if (data !== null) {
                     commit(RECORD_CHANGE_WINNING_USER_ID, data);
                 }
                 return resolve(true);
