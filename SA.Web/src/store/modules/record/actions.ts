@@ -111,17 +111,10 @@ const actions: ActionTree<RecordState, RootState> = {
             return axios.get(`${rootState.settings.apiUrl}/records/getById?id=${id}`)
                 .then((response) => {
                     const r: Record = response.data as Record;
+
                     commit(RECORD_CHANGE_CURRENT_STATE, r);
+                    dispatch('record/getRecordsLastBid', id, { root: true});
 
-                    const { auth } = rootState;
-
-                    const biddingsIds = r.bids.map((b) => b.userId);
-
-                    if (auth.isAuthenticated
-                            && auth.isFeePayed
-                            && biddingsIds.length > 0) {
-                        dispatch('record/getRecordsLastBid', id, { root: true});
-                    }
                     return resolve(true);
                 })
                 .catch((error) => {
@@ -578,10 +571,13 @@ const actions: ActionTree<RecordState, RootState> = {
     },
     getRecordsLastBid({commit, rootState, dispatch}, recordId: number): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
-            return axios.get(`${rootState.settings.apiUrl}/bids/getRecordsLastBid?id=${recordId}`,
-                { headers: { authorization: rootState.auth.token } })
+            return axios.get(`${rootState.settings.apiUrl}/bids/getRecordsLastBid?id=${recordId}`)
             .then((resp1) => {
-                commit(RECORD_CHANGE_WINNING_USER_ID, resp1.data as BidDto);
+                const data = resp1.data as BidDto;
+
+                if (data !== undefined) {
+                    commit(RECORD_CHANGE_WINNING_USER_ID, data);
+                }
                 return resolve(true);
             })
             .catch((error) => {

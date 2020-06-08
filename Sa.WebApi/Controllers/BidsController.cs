@@ -56,7 +56,6 @@ namespace SA.WebApi.Controllers
                     x => x.RecordId == id,
                     orderDesc: x => x.Created));
 
-        [Authorize("admin")]
         [HttpGet("{id}")]
         [Route("getRecordsLastBid")]
         public async Task<IActionResult> GetRecordsLastBid(int id)

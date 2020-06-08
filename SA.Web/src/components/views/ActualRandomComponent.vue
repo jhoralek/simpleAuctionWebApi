@@ -39,7 +39,7 @@
                                         <v-layout row wrap v-if="currentUser.isFeePayed">
                                             <v-flex md4></v-flex>
                                             <v-flex xs12 md8 class="text-xs-right">
-                                                <bid-component :bid="minimumBid" />
+                                                <bid-component :bid="minimumBid" v-if="canBid" />
                                             </v-flex>
                                         </v-layout>
                                     </div>
@@ -119,8 +119,20 @@ export default class ActualRandomComponent extends FormBaseComponent {
     @AuthGetter('getCurrentLoggedUser')
     private currentUser: AuthUser;
 
+    private canBid: boolean = false;
+    private checkEndAucitonCoutner: any = null;
+
     public mounted() {
-        this.randomRecord();
+        this.randomRecord().then((response) => {
+            clearInterval(this.checkEndAucitonCoutner);
+            this.startCheckEndAuction();
+        });
+    }
+
+    private beforeDestroy() {
+        if (this.checkEndAucitonCoutner !== null) {
+            clearInterval(this.checkEndAucitonCoutner);
+        }
     }
 
     private firstImagePath(record: Record): string {
@@ -130,6 +142,24 @@ export default class ActualRandomComponent extends FormBaseComponent {
         }
         const rf = files[0];
         return `/${rf.path}/${rf.recordId}/images/${rf.name}`;
+    }
+
+    private startCheckEndAuction(): void {
+        this.checkEndAucitonCoutner = setInterval(() => {
+            if (this.record !== null &&
+                !this.canBidFnc(this.record.validFrom, this.record.validTo)) {
+                clearInterval(this.checkEndAucitonCoutner);
+            }
+        }, 1000);
+    }
+
+    private canBidFnc(validFrom: Date, validTo: Date): boolean {
+        const canBid =  new Date(validFrom) <= new Date()
+            && new Date(validTo) >= new Date();
+
+        this.canBid = canBid;
+
+        return canBid;
     }
 
     private recordIdToString(record: Record): string {
