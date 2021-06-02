@@ -39,7 +39,8 @@ namespace SA.Application.Email
             {
                 using (var emailClient = new SmtpClient())
                 {
-                    emailClient.Connect(_emailConfiguration.SmtpServer, _emailConfiguration.SmtpPort, true);
+                    emailClient.CheckCertificateRevocation = false;
+                    emailClient.Connect(_emailConfiguration.SmtpServer, _emailConfiguration.SmtpPort, MailKit.Security.SecureSocketOptions.StartTls);
                     emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
                     
                     await emailClient.AuthenticateAsync(_emailConfiguration.SmtpUsername, _emailConfiguration.SmtpPassword);
